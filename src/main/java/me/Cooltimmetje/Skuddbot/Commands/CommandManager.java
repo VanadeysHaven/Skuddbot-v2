@@ -6,6 +6,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
+/**
+ * This class is responsible for registering commands and process incoming requests for commands.
+ *
+ * @author Tim (Cooltimmetje)
+ * @since ALPHA-2.0
+ * @version ALPHA-2.0
+ */
 public class CommandManager {
 
     private static Logger logger = LoggerFactory.getLogger(CommandManager.class);

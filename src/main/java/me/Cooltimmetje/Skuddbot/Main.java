@@ -4,6 +4,13 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Main class, this is where the bot starts up from.
+ *
+ * @author Tim (Cooltimmetje)
+ * @since ALPHA-2.0
+ * @version ALPHA-2.0
+ */
 public class Main {
 
     final static Logger logger = LoggerFactory.getLogger(Main.class);

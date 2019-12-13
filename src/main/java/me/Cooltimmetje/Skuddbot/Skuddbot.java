@@ -7,6 +7,13 @@ import org.javacord.api.DiscordApiBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class represents the bot, and is used to register commands and listeners.
+ *
+ * @author Tim (Cooltimmetje)
+ * @since ALPHA-2.0
+ * @version ALPHA-2.0
+ */
 public class Skuddbot {
 
     private static Logger logger = LoggerFactory.getLogger(Skuddbot.class);
