@@ -1,18 +1,23 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import org.javacord.api.entity.message.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
 public class CommandManager {
 
+    private static Logger logger = LoggerFactory.getLogger(CommandManager.class);
+
     private ArrayList<Command> commands;
 
     public CommandManager(){
-        this.commands = new ArrayList<>();
+        commands = new ArrayList<>();
     }
 
     public void registerCommand(Command command){
+        logger.info("Registering commmand " + command.toString() + " with invokers " + String.join(",", command.getInvokers()));
         commands.add(command);
     }
 

@@ -1,6 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
-
 import lombok.Getter;
 import org.javacord.api.entity.message.Message;
 
