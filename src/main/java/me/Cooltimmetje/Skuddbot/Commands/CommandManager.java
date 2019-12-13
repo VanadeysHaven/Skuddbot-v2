@@ -21,6 +21,12 @@ public class CommandManager {
         commands.add(command);
     }
 
+    public void registerCommand(Command... commands){
+        for(Command command : commands){
+            registerCommand(command);
+        }
+    }
+
     public void process(Message message){
         String commandPrefix = ">>";
         String requestedInvoker = message.getContent().split(" ")[0].toLowerCase();

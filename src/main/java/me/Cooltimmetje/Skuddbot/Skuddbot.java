@@ -34,8 +34,6 @@ public class Skuddbot {
 
     public void registerListeners() {
         logger.info("Registering MessageCreateListener...");
-        api.addMessageCreateListener(event -> {
-           this.commandManager.process(event.getMessage());
-        });
+        api.addMessageCreateListener(event -> this.commandManager.process(event.getMessage()));
     }
 }
