@@ -1,22 +1,17 @@
 package me.Cooltimmetje.Skuddbot;
 
-import org.javacord.api.DiscordApi;
-import org.javacord.api.DiscordApiBuilder;
+import lombok.Getter;
 
 public class Main {
 
+    @Getter private static Skuddbot skuddbot;
+
     public static void main(String[] args){
         String token = args[0];
-        DiscordApi api = new DiscordApiBuilder().setToken(token).login().join();
-
-        api.addMessageCreateListener(event -> {
-            if(event.getMessageContent().toLowerCase().startsWith("!ping")){
-                event.getChannel().sendMessage("PONG!");
-            }
-            if(event.getMessageContent().toLowerCase().startsWith("!logout")){
-                api.disconnect();
-            }
-        });
+        skuddbot = new Skuddbot(token);
+        skuddbot.registerCommands();
+        skuddbot.buildAndLogin();
+        skuddbot.registerListeners();
     }
 
 }
