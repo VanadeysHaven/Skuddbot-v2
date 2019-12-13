@@ -5,7 +5,7 @@ import org.javacord.api.entity.message.Message;
 public class PingCommand extends Command {
 
     public PingCommand(){
-        super("!ping");
+        super(new String[] {"ping"});
     }
 
     @Override

@@ -8,7 +8,7 @@ public abstract class Command {
 
     @Getter private String[] invokers;
 
-    public Command(String... invokers){
+    public Command(String[] invokers) {
         this.invokers = invokers;
     }
 
