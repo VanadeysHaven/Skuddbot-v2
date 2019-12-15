@@ -7,7 +7,7 @@ package me.Cooltimmetje.Skuddbot.Profiles;
  * @since ALPHA-2.0
  * @version ALPHA-2.0
  */
-public class Guild {
+public class SkuddServer {
 
 
 

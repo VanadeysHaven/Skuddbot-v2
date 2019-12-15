@@ -13,9 +13,11 @@ import org.javacord.api.entity.message.Message;
 public abstract class Command {
 
     @Getter private String[] invokers;
+    @Getter private String description;
 
-    public Command(String[] invokers) {
+    public Command(String[] invokers, String description) {
         this.invokers = invokers;
+        this.description = description;
     }
 
     public abstract void run(Message message);
