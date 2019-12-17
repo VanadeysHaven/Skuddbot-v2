@@ -27,4 +27,8 @@ public class UserStatsSapling {
             return stats.get(stat);
         return null;
     }
+
+    public UserStatsContainer grow(){
+        return new UserStatsContainer(this);
+    }
 }
