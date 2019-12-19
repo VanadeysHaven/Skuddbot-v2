@@ -21,12 +21,12 @@ public class UserSettingsContainer {
     }
 
     private void processStatsSapling(UserSettingsSapling sapling){
-        for(UserSetting stat : UserSetting.values()){
-            String value = sapling.getStat(stat);
+        for(UserSetting setting : UserSetting.values()){
+            String value = sapling.getSetting(setting);
             if(value != null) {
-                setSetting(stat, value);
+                setSetting(setting, value);
             } else {
-                setSetting(stat, stat.getDefaultValue());
+                setSetting(setting, setting.getDefaultValue());
             }
         }
     }

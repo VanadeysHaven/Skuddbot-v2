@@ -1,7 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Settings;
 
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
-import me.Cooltimmetje.Skuddbot.Enums.UserStat;
 
 import java.util.HashMap;
 
@@ -24,7 +23,7 @@ public class UserSettingsSapling {
         settings.put(setting, value);
     }
 
-    public String getStat(UserStat setting){
+    public String getSetting(UserSetting setting){
         if (settings.containsKey(setting))
             return settings.get(setting);
         return null;
