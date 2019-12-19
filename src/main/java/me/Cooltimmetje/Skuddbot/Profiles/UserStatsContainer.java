@@ -2,6 +2,7 @@ package me.Cooltimmetje.Skuddbot.Profiles;
 
 import me.Cooltimmetje.Skuddbot.Enums.UserStat;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
 import java.util.HashMap;
 
@@ -33,6 +34,7 @@ public class UserStatsContainer {
     }
 
     public void setStat(UserStat stat, String value){
+        if(!checkType(value, stat.getType())) throw new IllegalArgumentException("Value " + value + " is unsuitable for stat " + stat + "; not of type " + stat.getType());
         this.stats.put(stat, value);
     }
 
@@ -59,8 +61,19 @@ public class UserStatsContainer {
         setStat(stat, getInt(stat) + incrementBy);
     }
 
+    private boolean checkType(String input, ValueType type){
+        if(type == ValueType.INTEGER){
+            return MiscUtils.isInt(input);
+        }
+        if(type == ValueType.JSON){
+            //TODO
+        }
+
+        return true;
+    }
+
     public String getFavouriteTeammate(){
-        //TODO: body
+        //TODO
         return "hi";
     }
 }

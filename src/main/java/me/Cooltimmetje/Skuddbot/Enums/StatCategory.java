@@ -3,7 +3,7 @@ package me.Cooltimmetje.Skuddbot.Enums;
 import lombok.Getter;
 
 /**
- * <class discription>
+ * The categories for stats.
  *
  * @author Tim (Cooltimmetje)
  * @since ALPHA-2.0
