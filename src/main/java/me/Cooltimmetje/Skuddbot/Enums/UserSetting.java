@@ -2,8 +2,6 @@ package me.Cooltimmetje.Skuddbot.Enums;
 
 import lombok.Getter;
 
-import javax.print.DocFlavor;
-
 /**
  * Settings for users.
  *
@@ -12,7 +10,7 @@ import javax.print.DocFlavor;
  * @version ALPHA-2.0
  */
 @Getter
-public enum UserSettings {
+public enum UserSetting {
 
     LEVEL_UP_NOTIFY    ("lvl_up_notify",      "This defines how you get notified about you leveling up. You can choose between \"REACTION\", \"MESSAGE\", \"DM\" and \"NOTHING\".", ValueType.STRING,  "REACTION"),
     TRACK_ME           ("track_me",           "Defines if the bot will track your activity and stats. Turning off PAUSES progress.",                                                ValueType.BOOLEAN, "true"),
@@ -25,7 +23,7 @@ public enum UserSettings {
     private ValueType type;
     private String defaultValue;
 
-    UserSettings(String dbReference, String description, ValueType type, String defaultValue){
+    UserSetting(String dbReference, String description, ValueType type, String defaultValue){
         this.dbReference = dbReference;
         this.description = description;
         this.type = type;

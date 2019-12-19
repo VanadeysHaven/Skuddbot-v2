@@ -61,7 +61,8 @@ public class UserStatsContainer {
         setStat(stat, getInt(stat) + incrementBy);
     }
 
-    private boolean checkType(String input, ValueType type){
+    private boolean checkType(String input, UserStat stat){
+        ValueType type = stat.getType();
         if(type == ValueType.INTEGER){
             return MiscUtils.isInt(input);
         }
