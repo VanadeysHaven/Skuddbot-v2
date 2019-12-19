@@ -37,7 +37,8 @@ public class UserSettingsContainer {
     }
 
     private boolean checkType(String input, UserSetting setting){
-
+        //TODO
+        return false;
     }
 
 }

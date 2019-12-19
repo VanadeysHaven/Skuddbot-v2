@@ -34,7 +34,7 @@ public class UserStatsContainer {
     }
 
     public void setStat(UserStat stat, String value){
-        if(!checkType(value, stat.getType())) throw new IllegalArgumentException("Value " + value + " is unsuitable for stat " + stat + "; not of type " + stat.getType());
+        if(!checkType(value, stat)) throw new IllegalArgumentException("Value " + value + " is unsuitable for stat " + stat + "; not of type " + stat.getType());
         this.stats.put(stat, value);
     }
 
