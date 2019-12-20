@@ -30,5 +30,4 @@ public enum UserSetting {
         this.defaultValue = defaultValue;
     }
 
-
 }

@@ -18,4 +18,8 @@ public class MiscUtils {
         }
     }
 
+    public static boolean isBoolean(String str){
+        return str.equals("true") || str.equals("false");
+    }
+
 }

@@ -1,4 +1,4 @@
-package me.Cooltimmetje.Skuddbot.Profiles;
+package me.Cooltimmetje.Skuddbot.Profiles.Stats;
 
 import me.Cooltimmetje.Skuddbot.Enums.UserStat;
 
