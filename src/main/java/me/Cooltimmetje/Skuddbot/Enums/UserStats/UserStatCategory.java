@@ -1,4 +1,4 @@
-package me.Cooltimmetje.Skuddbot.Enums;
+package me.Cooltimmetje.Skuddbot.Enums.UserStats;
 
 import lombok.Getter;
 
@@ -10,7 +10,7 @@ import lombok.Getter;
  * @version ALPHA-2.0
  */
 @Getter
-public enum StatCategory {
+public enum UserStatCategory {
 
     NO_CATEGORY     (""               ),
     CHALLENGE       ("Challenge"      ),
@@ -20,7 +20,7 @@ public enum StatCategory {
 
     private String name;
 
-    StatCategory(String name){
+    UserStatCategory(String name){
         this.name = name;
     }
 

@@ -1,4 +1,4 @@
-package me.Cooltimmetje.Skuddbot.Profiles.Settings;
+package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 
 import me.Cooltimmetje.Skuddbot.Enums.LevelUpNotification;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
@@ -75,7 +75,7 @@ public class UserSettingsContainer {
             return LevelUpNotification.exists(input);
         }
 
-        return true;
+        return type == ValueType.STRING;
     }
 
 }

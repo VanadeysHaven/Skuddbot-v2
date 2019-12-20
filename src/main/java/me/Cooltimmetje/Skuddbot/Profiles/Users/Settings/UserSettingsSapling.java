@@ -1,11 +1,11 @@
-package me.Cooltimmetje.Skuddbot.Profiles.Settings;
+package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 
 import java.util.HashMap;
 
 /**
- * This class is used to provide an easy "interface" between the database and the profile system. This handles setting only.
+ * This class is used to provide an easy "interface" between the database and the profile system. This handles user settings only.
  *
  * @author Tim (Cooltimmetje)
  * @version ALPHA-2.0

@@ -1,6 +1,6 @@
-package me.Cooltimmetje.Skuddbot.Profiles.Stats;
+package me.Cooltimmetje.Skuddbot.Profiles.Users.Stats;
 
-import me.Cooltimmetje.Skuddbot.Enums.UserStat;
+import me.Cooltimmetje.Skuddbot.Enums.UserStats.UserStat;
 
 import java.util.HashMap;
 

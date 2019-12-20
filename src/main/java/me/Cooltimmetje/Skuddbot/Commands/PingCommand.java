@@ -12,7 +12,7 @@ import org.javacord.api.entity.message.Message;
 public class PingCommand extends Command {
 
     public PingCommand(){
-        super(new String[] {"ping"});
+        super(new String[] {"ping"}, "Ping command for testing bot responses.");
     }
 
     @Override

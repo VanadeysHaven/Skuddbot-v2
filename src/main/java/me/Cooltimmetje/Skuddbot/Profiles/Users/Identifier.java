@@ -1,4 +1,4 @@
-package me.Cooltimmetje.Skuddbot.Profiles;
+package me.Cooltimmetje.Skuddbot.Profiles.Users;
 
 import lombok.Getter;
 import lombok.Setter;
