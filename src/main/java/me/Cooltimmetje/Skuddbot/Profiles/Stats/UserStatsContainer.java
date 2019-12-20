@@ -26,20 +26,20 @@ public class UserStatsContainer {
         for(UserStat stat : UserStat.values()){
             String value = sapling.getStat(stat);
             if(value != null) {
-                setStat(stat, value);
+                setString(stat, value);
             } else {
-                setStat(stat, stat.getDefaultValue());
+                setString(stat, stat.getDefaultValue());
             }
         }
     }
 
-    public void setStat(UserStat stat, String value){
+    public void setString(UserStat stat, String value){
         if(!checkType(value, stat)) throw new IllegalArgumentException("Value " + value + " is unsuitable for stat " + stat + "; not of type " + stat.getType());
         this.stats.put(stat, value);
     }
 
-    public void setStat(UserStat stat, int value){
-        setStat(stat, value+"");
+    public void setInt(UserStat stat, int value){
+        setString(stat, value+"");
     }
 
     public String getString(UserStat stat){
@@ -51,14 +51,14 @@ public class UserStatsContainer {
         return Integer.parseInt(getString(stat));
     }
 
-    public void incrementStat(UserStat stat){
+    public void incrementInt(UserStat stat){
         if(stat.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
-        incrementStat(stat, 1);
+        incrementInt(stat, 1);
     }
 
-    public void incrementStat(UserStat stat, int incrementBy) {
+    public void incrementInt(UserStat stat, int incrementBy) {
         if(stat.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
-        setStat(stat, getInt(stat) + incrementBy);
+        setInt(stat, getInt(stat) + incrementBy);
     }
 
     private boolean checkType(String input, UserStat stat){
