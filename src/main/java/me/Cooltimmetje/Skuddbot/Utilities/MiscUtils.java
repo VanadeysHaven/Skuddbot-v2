@@ -22,4 +22,21 @@ public class MiscUtils {
         return str.equals("true") || str.equals("false");
     }
 
+    public static boolean isDouble(String str) {
+        try {
+            double num = Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static boolean isLong(String str) {
+        try{
+            long num = Long.parseLong(str);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
 }

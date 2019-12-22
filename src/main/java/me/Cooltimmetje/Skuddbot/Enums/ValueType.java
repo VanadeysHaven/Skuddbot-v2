@@ -9,6 +9,6 @@ package me.Cooltimmetje.Skuddbot.Enums;
  */
 public enum ValueType {
 
-    INTEGER, DOUBLE, STRING, JSON, BOOLEAN
+    INTEGER, DOUBLE, STRING, JSON, BOOLEAN, LONG
 
 }

@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
+
+import lombok.Getter;
 
 /**
  * This class represents a guild, and it's settings and user profiles.
@@ -12,7 +13,11 @@ import jdk.nashorn.internal.objects.annotations.Getter;
 public class SkuddServer {
 
     @Getter private long serverId;
+    @Getter private ServerSettingsContainer settings;
 
-
+    public SkuddServer(long serverId, ServerSettingsSapling settingsSapling){
+        this.serverId = serverId;
+        this.settings = settingsSapling.grow();
+    }
 
 }

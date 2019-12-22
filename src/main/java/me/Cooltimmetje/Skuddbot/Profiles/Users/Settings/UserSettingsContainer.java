@@ -20,10 +20,10 @@ public class UserSettingsContainer {
 
     public UserSettingsContainer(UserSettingsSapling sapling){
         this.settings = new HashMap<>();
-        processStatsSapling(sapling);
+        processSettingsSapling(sapling);
     }
 
-    private void processStatsSapling(UserSettingsSapling sapling){
+    private void processSettingsSapling(UserSettingsSapling sapling){
         for(UserSetting setting : UserSetting.values()){
             String value = sapling.getSetting(setting);
             if(value != null) {
@@ -35,7 +35,7 @@ public class UserSettingsContainer {
     }
 
     public void setString(UserSetting setting, String value){
-        if(checkType(value, setting)) throw new IllegalArgumentException("Value " + value + " is unsuitable for setting " + setting + "; not of type " + setting.getType());
+        if(!checkType(value, setting)) throw new IllegalArgumentException("Value " + value + " is unsuitable for setting " + setting + "; not of type " + setting.getType());
         this.settings.put(setting, value);
     }
 
@@ -43,14 +43,14 @@ public class UserSettingsContainer {
         return this.settings.get(setting);
     }
 
-    public boolean getBoolean(UserSetting setting){
-        if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting " + setting + " is not of type BOOLEAN");
-        return Boolean.parseBoolean(getString(setting));
-    }
-
     public void setBoolean(UserSetting setting, boolean value){
         if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting " + setting + " is not of type BOOLEAN");
         setString(setting, value+"");
+    }
+
+    public boolean getBoolean(UserSetting setting){
+        if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting " + setting + " is not of type BOOLEAN");
+        return Boolean.parseBoolean(getString(setting));
     }
 
     public void toggleBoolean(UserSetting setting){
@@ -58,12 +58,12 @@ public class UserSettingsContainer {
         setBoolean(setting, !getBoolean(setting));
     }
 
-    public LevelUpNotification getLevelUpNotify(){
-        return LevelUpNotification.valueOf(getString(UserSetting.LEVEL_UP_NOTIFY));
-    }
-
     public void setLevelUpNotify(LevelUpNotification notification){
         setString(UserSetting.LEVEL_UP_NOTIFY, notification.toString());
+    }
+
+    public LevelUpNotification getLevelUpNotify(){
+        return LevelUpNotification.valueOf(getString(UserSetting.LEVEL_UP_NOTIFY));
     }
 
     private boolean checkType(String input, UserSetting setting){

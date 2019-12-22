@@ -38,12 +38,12 @@ public class UserStatsContainer {
         this.stats.put(stat, value);
     }
 
-    public void setInt(UserStat stat, int value){
-        setString(stat, value+"");
-    }
-
     public String getString(UserStat stat){
         return this.stats.get(stat);
+    }
+
+    public void setInt(UserStat stat, int value){
+        setString(stat, value+"");
     }
 
     public int getInt(UserStat stat){
@@ -61,6 +61,11 @@ public class UserStatsContainer {
         setInt(stat, getInt(stat) + incrementBy);
     }
 
+    public String getFavouriteTeammate(){
+        //TODO
+        return "hi";
+    }
+
     private boolean checkType(String input, UserStat stat){
         ValueType type = stat.getType();
         if(type == ValueType.INTEGER){
@@ -72,10 +77,5 @@ public class UserStatsContainer {
         }
 
         return type == ValueType.STRING;
-    }
-
-    public String getFavouriteTeammate(){
-        //TODO
-        return "hi";
     }
 }
