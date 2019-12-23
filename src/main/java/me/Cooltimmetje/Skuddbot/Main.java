@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Database.HikariManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,12 +14,16 @@ import org.slf4j.LoggerFactory;
  */
 public class Main {
 
-    final static Logger logger = LoggerFactory.getLogger(Main.class);
+    private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
     @Getter private static Skuddbot skuddbot;
 
     public static void main(String[] args){
+        if(args.length < 3) throw new IllegalArgumentException("Not enough arguments. - Required: 3 - Discord Token, MySql username, Mysql Password");
         logger.info("Starting Skuddbot v2...");
+        logger.info("Starting database connection for user " + args[1]);
+        HikariManager.setup(args[1], args[2]);
+
         String token = args[0];
         skuddbot = new Skuddbot(token);
         skuddbot.registerCommands();

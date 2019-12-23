@@ -41,4 +41,12 @@ public enum ServerSetting {
         this.category = category;
     }
 
+    public static ServerSetting getByDbReference(String reference){
+        for(ServerSetting setting : values())
+            if(setting.getDbReference().equals(reference))
+                return setting;
+
+        return null;
+    }
+
 }

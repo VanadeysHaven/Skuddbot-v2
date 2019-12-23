@@ -1,7 +1,11 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSettings.ServerSetting;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -15,21 +19,35 @@ public class ServerSettingsSapling {
 
     private HashMap<ServerSetting,String> settings;
 
-    public ServerSettingsSapling(){
-        this.settings = new HashMap<>();
+    public ServerSettingsSapling(long id){
+        settings = new HashMap<>();
+
+        QueryExecutor qe = null;
+        try {
+            qe = new QueryExecutor(Query.SELECT_SERVER_SETTINGS).setLong(1, id);
+            ResultSet rs = qe.executeQuery();
+            while (rs.next()){
+                addSetting(ServerSetting.getByDbReference(rs.getString("setting_name")), rs.getString("setting_value"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            assert qe != null;
+            qe.close();
+        }
     }
 
-    public void addSetting(ServerSetting setting, String value){
+    private void addSetting(ServerSetting setting, String value){
         settings.put(setting, value);
     }
 
-    public String getSetting(ServerSetting setting){
+    String getSetting(ServerSetting setting){
         if (settings.containsKey(setting))
             return settings.get(setting);
         return null;
     }
 
-    public ServerSettingsContainer grow(){
+    ServerSettingsContainer grow(){
         return new ServerSettingsContainer(this);
     }
 

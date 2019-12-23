@@ -1,6 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
-
 import lombok.Getter;
 
 /**
