@@ -17,9 +17,11 @@ import java.util.HashMap;
  */
 public class ServerSettingsSapling {
 
+    private long id;
     private HashMap<ServerSetting,String> settings;
 
     public ServerSettingsSapling(long id){
+        this.id = id;
         settings = new HashMap<>();
 
         QueryExecutor qe = null;
@@ -48,7 +50,7 @@ public class ServerSettingsSapling {
     }
 
     ServerSettingsContainer grow(){
-        return new ServerSettingsContainer(this);
+        return new ServerSettingsContainer(id, this);
     }
 
 }

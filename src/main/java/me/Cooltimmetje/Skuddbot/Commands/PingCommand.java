@@ -1,5 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
+import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
 
 /**
@@ -17,7 +19,8 @@ public class PingCommand extends Command {
 
     @Override
     public void run(Message message) {
-        message.getChannel().sendMessage("PONG!");
+//        message.getChannel().sendMessage("PONG!");
+        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "PONG!");
     }
 
 }

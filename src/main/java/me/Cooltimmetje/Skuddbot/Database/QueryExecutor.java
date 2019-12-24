@@ -1,6 +1,8 @@
 package me.Cooltimmetje.Skuddbot.Database;
 
 import me.Cooltimmetje.Skuddbot.Enums.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,6 +19,8 @@ import java.util.ArrayList;
  */
 public class QueryExecutor {
 
+    private static final Logger logger = LoggerFactory.getLogger(QueryExecutor.class);
+
     private enum Operation {
         INT, LONG, STRING
     }
@@ -29,6 +33,7 @@ public class QueryExecutor {
     private Object lastValue;
 
     public QueryExecutor(Query query) throws SQLException {
+        logger.info("Making new query of type " + query);
         c = HikariManager.getConnection();
         ps = c.prepareStatement(query.getQuery());
         usedPositions = new ArrayList<>();
@@ -36,6 +41,7 @@ public class QueryExecutor {
 
     public QueryExecutor setInt(int position, int value) throws SQLException {
         if(isPositionUsed(position)) throw new IllegalArgumentException("Position " + position + " is not free.");
+        logger.info("Setting INT at position " + position + " with value " + value);
         usedPositions.add(position);
         ps.setInt(position, value);
         lastOperation = Operation.INT;
@@ -45,6 +51,7 @@ public class QueryExecutor {
 
     public QueryExecutor setLong(int position, long value) throws SQLException {
         if(isPositionUsed(position)) throw new IllegalArgumentException("Position " + position + " is not free.");
+        logger.info("Setting LONG at position " + position + " with value " + value);
         usedPositions.add(position);
         ps.setLong(position, value);
         lastOperation = Operation.LONG;
@@ -54,6 +61,7 @@ public class QueryExecutor {
 
     public QueryExecutor setString(int position, String value) throws SQLException {
         if(isPositionUsed(position)) throw new IllegalArgumentException("Position " + position + " is not free.");
+        logger.info("Setting STRING at position " + position + " with value " + value);
         usedPositions.add(position);
         ps.setString(position, value);
         lastOperation = Operation.STRING;
@@ -63,6 +71,7 @@ public class QueryExecutor {
 
     public QueryExecutor and(int position) throws SQLException {
         if(isPositionUsed(position)) throw new IllegalArgumentException("Position " + position + " is not free.");
+        logger.info("Repeating last " + lastOperation + " value at position " + position);
         if(lastOperation == Operation.INT) ps.setInt(position, (int) lastValue);
         if(lastOperation == Operation.LONG) ps.setLong(position, (long) lastValue);
         if(lastOperation == Operation.STRING) ps.setString(position, (String) lastValue);
@@ -74,10 +83,12 @@ public class QueryExecutor {
     }
 
     public void execute() throws SQLException {
+        logger.info("Executing query " + ps.toString());
         ps.execute();
     }
 
     public ResultSet executeQuery() throws SQLException {
+        logger.info("Executing query " + ps.toString());
         rs = ps.executeQuery();
         return rs;
     }

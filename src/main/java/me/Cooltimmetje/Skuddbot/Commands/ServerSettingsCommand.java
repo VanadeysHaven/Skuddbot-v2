@@ -45,6 +45,7 @@ public class ServerSettingsCommand extends Command {
 
     private void showAll(Message message){
         Server server = message.getServer().orElse(null);
+        assert server != null;
         SkuddServer ss = sm.getServer(server.getId());
         TableArrayGenerator tag = new TableArrayGenerator();
         tag.addRow(new TableRow("Setting", "Value"));
@@ -53,15 +54,16 @@ public class ServerSettingsCommand extends Command {
         }
         String table = new TableDrawer(tag.generateArray()).drawTable();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Server settings for ").append(server.getName()).append("\n```\n").append(table).append("\n```\n")
-                .append("Type `!serversettings <setting>` for more information about that setting.")
-                .append("Type `!serversettings <setting> <newValue>` to change it.");
-
-        message.getChannel().sendMessage(sb.toString());
+        String sb = "Server settings for " + server.getName() + "\n```\n" + table + "\n```\n" +
+                "Type `!serversettings <setting>` for more information about that setting." +
+                "Type `!serversettings <setting> <newValue>` to change it.";
+        message.getChannel().sendMessage(sb);
     }
 
     private void showDetails(Message message){
+        Server server = message.getServer().orElse(null);
+        assert server != null;
+        SkuddServer ss = sm.getServer(server.getId());
 
     }
 

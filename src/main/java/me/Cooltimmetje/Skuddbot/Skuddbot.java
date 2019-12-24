@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.CommandManager;
 import me.Cooltimmetje.Skuddbot.Commands.PingCommand;
 import me.Cooltimmetje.Skuddbot.Commands.ServerSettingsCommand;
+import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.slf4j.Logger;
@@ -47,6 +48,8 @@ public class Skuddbot {
     void registerListeners() {
         logger.info("Registering MessageCreateListener...");
         api.addMessageCreateListener(event -> this.commandManager.process(event.getMessage()));
+        logger.info("Registering ReactionAddListener...");
+        api.addReactionAddListener(ReactionAddListener::run);
     }
 
 }

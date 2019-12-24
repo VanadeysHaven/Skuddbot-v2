@@ -1,9 +1,12 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSettings.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -15,9 +18,11 @@ import java.util.HashMap;
  */
 public class ServerSettingsContainer {
 
+    private long serverId;
     private HashMap<ServerSetting,String> settings;
 
-    public ServerSettingsContainer(ServerSettingsSapling sapling){
+    ServerSettingsContainer(long serverId, ServerSettingsSapling sapling){
+        this.serverId = serverId;
         this.settings = new HashMap<>();
         processSapling(sapling);
     }
@@ -35,7 +40,6 @@ public class ServerSettingsContainer {
 
     public void setString(ServerSetting setting, String value){
         if(!checkType(value, setting)) throw new IllegalArgumentException("Value " + value + " is unsuitable for setting " + setting + "; not of type " + setting.getType());
-        if(value.equals("null")) value = null;
         this.settings.put(setting, value);
     }
 
@@ -87,6 +91,31 @@ public class ServerSettingsContainer {
         }
 
         return type == ValueType.STRING;
+    }
+
+    public void save(){
+        for(ServerSetting setting : ServerSetting.values()){
+            QueryExecutor qe = null;
+            if(getString(setting).equals(setting.getDefaultValue())){
+                try {
+                    qe = new QueryExecutor(Query.DELETE_SERVER_SETTING_VALUE).setLong(1, serverId).setString(2, setting.getDbReference());
+                    qe.execute();
+                } catch (SQLException e){
+                    e.printStackTrace();
+                } finally {
+                    if(qe != null) qe.close();
+                }
+            } else {
+                try {
+                    qe = new QueryExecutor(Query.UPDATE_SERVER_SETTING_VALUE).setString(1, setting.getDbReference()).setLong(2, serverId).setString(3, getString(setting)).and(4);
+                    qe.execute();
+                } catch (SQLException e){
+                    e.printStackTrace();
+                } finally {
+                    if(qe != null) qe.close();
+                }
+            }
+        }
     }
 
 }

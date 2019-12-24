@@ -1,7 +1,11 @@
 package me.Cooltimmetje.Skuddbot.Enums.ServerSettings;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+
+import java.sql.SQLException;
 
 /**
  * Settings for servers.
@@ -47,6 +51,20 @@ public enum ServerSetting {
                 return setting;
 
         return null;
+    }
+
+    public static void saveToDatabase(){
+        for(ServerSetting setting : values()){
+            QueryExecutor qe = null;
+            try {
+                qe = new QueryExecutor(Query.INSERT_SERVER_SETTING).setString(1, setting.getDbReference());
+                qe.execute();
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                if(qe != null) qe.close();
+            }
+        }
     }
 
 }
