@@ -35,6 +35,7 @@ public class ServerSettingsContainer {
 
     public void setString(ServerSetting setting, String value){
         if(!checkType(value, setting)) throw new IllegalArgumentException("Value " + value + " is unsuitable for setting " + setting + "; not of type " + setting.getType());
+        if(value.equals("null")) value = null;
         this.settings.put(setting, value);
     }
 
@@ -73,6 +74,7 @@ public class ServerSettingsContainer {
     }
 
     private boolean checkType(String input, ServerSetting setting) {
+        if(input.equals("null")) return true;
         ValueType type = setting.getType();
         if(type == ValueType.INTEGER){
             return MiscUtils.isInt(input);

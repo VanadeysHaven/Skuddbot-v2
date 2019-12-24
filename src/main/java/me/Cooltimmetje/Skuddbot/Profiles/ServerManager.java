@@ -46,8 +46,8 @@ public class ServerManager {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            assert qe != null;
-            qe.close();
+            if(qe != null)
+                qe.close();
         }
     }
 

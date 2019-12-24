@@ -3,6 +3,7 @@ package me.Cooltimmetje.Skuddbot;
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.CommandManager;
 import me.Cooltimmetje.Skuddbot.Commands.PingCommand;
+import me.Cooltimmetje.Skuddbot.Commands.ServerSettingsCommand;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ public class Skuddbot {
 
     void registerCommands() {
         logger.info("Registering global commands...");
-        this.commandManager.registerCommand(new PingCommand());
+        this.commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand());
     }
 
     void registerListeners() {

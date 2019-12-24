@@ -47,6 +47,8 @@ public class QueryExecutor {
         if(isPositionUsed(position)) throw new IllegalArgumentException("Position " + position + " is not free.");
         usedPositions.add(position);
         ps.setLong(position, value);
+        lastOperation = Operation.LONG;
+        lastValue = value;
         return this;
     }
 
@@ -54,6 +56,8 @@ public class QueryExecutor {
         if(isPositionUsed(position)) throw new IllegalArgumentException("Position " + position + " is not free.");
         usedPositions.add(position);
         ps.setString(position, value);
+        lastOperation = Operation.STRING;
+        lastValue = value;
         return this;
     }
 

@@ -35,7 +35,7 @@ public class CommandManager {
     }
 
     public void process(Message message){
-        String commandPrefix = ">>";
+        String commandPrefix = "!";
         String requestedInvoker = message.getContent().split(" ")[0].toLowerCase();
         if(!requestedInvoker.startsWith(commandPrefix)) return;
         requestedInvoker = requestedInvoker.substring(commandPrefix.length());

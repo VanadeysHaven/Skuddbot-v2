@@ -21,7 +21,7 @@ public class HikariManager {
         hikari.setMaximumPoolSize(10);
 
         hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-        hikari.addDataSourceProperty("servername", "localhost");
+        hikari.addDataSourceProperty("serverName", "localhost");
         hikari.addDataSourceProperty("port", 3306);
         hikari.addDataSourceProperty("databaseName", "skuddbot_v2");
         hikari.addDataSourceProperty("user", user);
