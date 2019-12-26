@@ -4,7 +4,7 @@ use skuddbot_v2;
 
 create table servers(
     id bigint primary key,
-    name varchar(40)
+    server_name varchar(40)
 );
 
 create table identifier(
@@ -12,20 +12,22 @@ create table identifier(
     server_id bigint not null,
     user_id bigint default null,
     twitch_username varchar(40) default null,
+    mixer_username varchar(40) default null,
     foreign key (server_id) references servers(id),
     unique index(server_id, user_id),
-    unique index(server_id, twitch_username)
+    unique index(server_id, twitch_username),
+    unique index(server_id, mixer_username)
 );
 
 create table stats(
     id int primary key auto_increment,
-    name varchar(40) not null
+    stat_name varchar(40) not null unique
 );
 
 create table user_has_stats(
     stat_id int,
     user_id int,
-    value text not null,
+    stat_value text not null,
     primary key (stat_id, user_id),
     foreign key (stat_id) references stats(id),
     foreign key (user_id) references identifier(id)
@@ -33,13 +35,13 @@ create table user_has_stats(
 
 create table user_settings(
     id int primary key auto_increment,
-    name varchar(40) not null
+    setting_name varchar(40) not null
 );
 
 create table user_has_settings(
     setting_id int,
     user_id int,
-    value text not null ,
+    setting_value text not null ,
     primary key (setting_id, user_id),
     foreign key (setting_id) references user_settings(id),
     foreign key (user_id) references identifier(id)
@@ -47,13 +49,13 @@ create table user_has_settings(
 
 create table currencies(
     id int primary key auto_increment,
-    name varchar(40) not null
+    currency_name varchar(40) not null unique
 );
 
 create table user_has_currencies(
     currency_id int,
     user_id int,
-    value int not null,
+    currency_value int not null,
     primary key (currency_id, user_id),
     foreign key (currency_id) references currencies(id),
     foreign key (user_id) references identifier(id)
@@ -61,13 +63,13 @@ create table user_has_currencies(
 
 create table server_settings(
     id int primary key auto_increment,
-    name varchar(40) not null
+    setting_name varchar(40) not null unique
 );
 
 create table server_has_settings(
     setting_id int,
     server_id bigint,
-    value text not null ,
+    setting_value text not null ,
     primary key (setting_id, server_id),
     foreign key (setting_id) references server_settings(id),
     foreign key (server_id) references servers(id)
@@ -84,13 +86,13 @@ create table commands(
 
 create table metadata(
     id int primary key auto_increment,
-    name varchar(40) not null
+    metadata_name varchar(40) not null unique
 );
 
 create table command_has_metadata(
     metadata_id int,
     command_id int,
-    value text not null,
+    metadata_value text not null,
     primary key (metadata_id, command_id),
     foreign key (metadata_id) references metadata(id),
     foreign key (command_id) references commands(id)
@@ -98,28 +100,29 @@ create table command_has_metadata(
 
 create table properties(
     id int primary key auto_increment,
-    name varchar(40) not null
+    property_name varchar(40) not null unique
 );
 
 create table command_has_properties(
     property_id int,
     command_id int,
-    value text not null,
+    property_value text not null,
     primary key (property_id, command_id),
     foreign key (property_id) references properties(id),
     foreign key (command_id) references commands(id)
 );
 
-create table transactions(
-    id int primary key auto_increment,
-    user_id int,
-    stat_id int,
-    mutation int,
-    foreign key (user_id) references identifier(id),
-    foreign key (stat_id) references stats(id)
-);
-
-insert into servers (id, name) value (123, 'Dank Meme\'s');
+insert into servers (id, server_name) value (123, 'Dank Meme\'s');
 insert into identifier (server_id, user_id) value (123, 123);
-update identifier set twitch_username='cooltimmetje' where id=1;
-insert into stats(name) value ('XP');
+update identifier set twitch_username='cooltimmetje', mixer_username='yo_mama' where id=1;
+
+insert ignore into server_settings (setting_name) value ('xp_min');
+select * from server_settings;
+
+insert into server_has_settings (setting_id, server_id, setting_value) value ((select id from server_settings where setting_name='xp_min'), 224987945638035456, '5') on duplicate key update setting_value='7';
+
+delete shs from server_has_settings shs join server_settings ss on shs.setting_id = ss.id where shs.server_id=123 AND ss.setting_name='xp_min';
+
+select setting_name, setting_value from server_has_settings shs join server_settings ss on shs.setting_id = ss.id where server_id=224987945638035456;
+
+insert into servers (id, server_name) value (123,'test') on duplicate key update server_name=?;
