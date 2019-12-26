@@ -18,7 +18,7 @@ public class PingCommand extends Command {
     }
 
     @Override
-    public void run(Message message) {
+    public void run(Message message, String messageContent) {
 //        message.getChannel().sendMessage("PONG!");
         MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "PONG!");
     }

@@ -20,6 +20,6 @@ public abstract class Command {
         this.description = description;
     }
 
-    public abstract void run(Message message);
+    public abstract void run(Message message, String content);
 
 }

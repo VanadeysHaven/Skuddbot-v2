@@ -1,6 +1,9 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
+import me.Cooltimmetje.Skuddbot.Enums.ServerSettings.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +18,8 @@ import java.util.ArrayList;
  */
 public class CommandManager {
 
-    private static Logger logger = LoggerFactory.getLogger(CommandManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommandManager.class);
+    private static final ServerManager sm = new ServerManager();
 
     private ArrayList<Command> commands;
 
@@ -35,14 +39,18 @@ public class CommandManager {
     }
 
     public void process(Message message){
-        String commandPrefix = "!";
-        String requestedInvoker = message.getContent().split(" ")[0].toLowerCase();
-        if(!requestedInvoker.startsWith(commandPrefix)) return;
-        requestedInvoker = requestedInvoker.substring(commandPrefix.length());
+        Server server = message.getServer().orElse(null);
+        assert server != null; //TODO PROCESS DM's
+        String commandPrefix = sm.getServer(server.getId()).getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
+
+        if(!message.getContent().startsWith(commandPrefix)) return;
+        String messageContent = message.getContent().substring(commandPrefix.length());
+        String requestedInvoker = messageContent.split(" ")[0];
+
         for(Command command : commands){
             for(String invoker : command.getInvokers()){
                 if (requestedInvoker.equals(invoker)) {
-                    command.run(message);
+                    command.run(message, messageContent);
                     return;
                 }
             }

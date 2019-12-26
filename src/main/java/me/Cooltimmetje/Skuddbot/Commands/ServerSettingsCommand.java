@@ -28,13 +28,13 @@ public class ServerSettingsCommand extends Command {
     }
 
     @Override
-    public void run(Message message){
+    public void run(Message message, String content){
         boolean allowAccess = true; //TODO: Implement permissions.
         if(!allowAccess) {
             MessagesUtils.addReaction(message, Emoji.X, "You do not have permission to do this.");
             return;
         }
-        String[] args = message.getContent().split(" ");
+        String[] args = content.split(" ");
         Server server = message.getServer().orElse(null);
         assert server != null;
         SkuddServer ss = sm.getServer(server.getId());
@@ -99,13 +99,15 @@ public class ServerSettingsCommand extends Command {
     private void alterSetting(Message message, Server server, SkuddServer ss, ServerSetting setting, String newValue){
         try {
             ss.getSettings().setString(setting, newValue);
+            ss.getSettings().save(setting);
+            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Successfully updated setting `" + setting + "` to `" + newValue + "`!");
         } catch (IllegalArgumentException e){
             MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
         }
     }
 
     private ServerSetting fromString(String input){
-        String enumSetting = input.split(" ")[1].toUpperCase().replace("-", "_");
+        String enumSetting = input.toUpperCase().replace("-", "_");
         ServerSetting setting = null;
         try {
             setting = ServerSetting.valueOf(enumSetting);
