@@ -93,28 +93,33 @@ public class ServerSettingsContainer {
         return type == ValueType.STRING;
     }
 
+    public void save(ServerSetting setting) {
+        QueryExecutor qe = null;
+        if (getString(setting).equals(setting.getDefaultValue())) {
+            try {
+                qe = new QueryExecutor(Query.DELETE_SERVER_SETTING_VALUE).setLong(1, serverId).setString(2, setting.getDbReference());
+                qe.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (qe != null) qe.close();
+            }
+        } else {
+            try {
+                qe = new QueryExecutor(Query.UPDATE_SERVER_SETTING_VALUE).setString(1, setting.getDbReference()).setLong(2, serverId).setString(3, getString(setting)).and(4);
+                qe.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (qe != null) qe.close();
+            }
+        }
+    }
+
+
     public void save(){
         for(ServerSetting setting : ServerSetting.values()){
-            QueryExecutor qe = null;
-            if(getString(setting).equals(setting.getDefaultValue())){
-                try {
-                    qe = new QueryExecutor(Query.DELETE_SERVER_SETTING_VALUE).setLong(1, serverId).setString(2, setting.getDbReference());
-                    qe.execute();
-                } catch (SQLException e){
-                    e.printStackTrace();
-                } finally {
-                    if(qe != null) qe.close();
-                }
-            } else {
-                try {
-                    qe = new QueryExecutor(Query.UPDATE_SERVER_SETTING_VALUE).setString(1, setting.getDbReference()).setLong(2, serverId).setString(3, getString(setting)).and(4);
-                    qe.execute();
-                } catch (SQLException e){
-                    e.printStackTrace();
-                } finally {
-                    if(qe != null) qe.close();
-                }
-            }
+            save(setting);
         }
     }
 
