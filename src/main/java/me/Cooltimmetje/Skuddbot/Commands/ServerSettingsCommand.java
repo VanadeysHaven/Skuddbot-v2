@@ -30,24 +30,47 @@ public class ServerSettingsCommand extends Command {
     @Override
     public void run(Message message){
         boolean allowAccess = true; //TODO: Implement permissions.
-        String[] args = message.getContent().split(" ");
-
-        if(allowAccess){
-            if(args.length == 1){
-                showAll(message);
-            } else if (args.length == 2){
-                showDetails(message);
-            } else if (args.length >= 3){
-                alterSetting(message);
-            }
-        } else {
+        if(!allowAccess) {
             MessagesUtils.addReaction(message, Emoji.X, "You do not have permission to do this.");
+            return;
+        }
+        String[] args = message.getContent().split(" ");
+        Server server = message.getServer().orElse(null);
+        assert server != null;
+        SkuddServer ss = sm.getServer(server.getId());
+        ServerSetting setting = null;
+        String newValue = "";
+        if(args.length >= 2) {
+            setting = fromString(args[1]);
+            if (setting == null) {
+                MessagesUtils.addReaction(message, Emoji.X, "Setting " + args[1] + " does not exist!");
+                return;
+            }
+
+            if(args.length >= 3){
+                if(!setting.isAllowSpaces()){
+                    newValue = args[2];
+                } else {
+                    StringBuilder sb = new StringBuilder();
+                    for(int i = 2; i < args.length; i++){
+                        sb.append(args[i]).append(" ");
+                    }
+
+                    newValue = sb.toString().trim();
+                }
+            }
+        }
+
+        if(args.length == 1){
+            showAll(message, server, ss);
+        } else if (args.length == 2){
+            showDetails(message, server, ss, setting);
+        } else if (args.length >= 3){
+            alterSetting(message, server, ss, setting, newValue);
         }
     }
 
-    private void showAll(Message message){
-        Server server = message.getServer().orElse(null); assert server != null;
-        SkuddServer ss = sm.getServer(server.getId());
+    private void showAll(Message message, Server server, SkuddServer ss){
         TableArrayGenerator tag = new TableArrayGenerator();
         tag.addRow(new TableRow("Setting", "Value"));
         for(ServerSetting setting : ServerSetting.values()){
@@ -61,16 +84,7 @@ public class ServerSettingsCommand extends Command {
         message.getChannel().sendMessage(sb);
     }
 
-    private void showDetails(Message message){
-        Server server = message.getServer().orElse(null); assert server != null;
-        SkuddServer ss = sm.getServer(server.getId());
-        String enumSetting = message.getContent().split(" ")[1];
-        ServerSetting setting = fromString(message.getContent().split(" ")[1]);
-        if(setting == null) {
-            MessagesUtils.addReaction(message, Emoji.X, "Setting " + enumSetting + " does not exist!");
-            return;
-        }
-
+    private void showDetails(Message message, Server server, SkuddServer ss, ServerSetting setting){
         String sb = "```\n" +
                 "Setting:       " + setting + "\n" +
                 "Description:   " + setting.getDescription() + "\n" +
@@ -82,18 +96,12 @@ public class ServerSettingsCommand extends Command {
         message.getChannel().sendMessage(sb);
     }
 
-    private void alterSetting(Message message){
-        Server server = message.getServer().orElse(null); assert server != null;
-        SkuddServer ss = sm.getServer(server.getId());
-        String enumSetting = message.getContent().split(" ")[1];
-        ServerSetting setting = fromString(message.getContent().split(" ")[1]);
-        String newValue = message.getContent().split(" ")[2];
-        if(setting == null) {
-            MessagesUtils.addReaction(message, Emoji.X, "Setting " + enumSetting + " does not exist!");
-            return;
+    private void alterSetting(Message message, Server server, SkuddServer ss, ServerSetting setting, String newValue){
+        try {
+            ss.getSettings().setString(setting, newValue);
+        } catch (IllegalArgumentException e){
+            MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
         }
-
-
     }
 
     private ServerSetting fromString(String input){
