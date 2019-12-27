@@ -17,6 +17,7 @@ public class ReactionAddListener {
         for(DebugReaction reaction : MessagesUtils.reactions){
             if(event.getUser() != reaction.getMessage().getAuthor().asUser().orElse(null)) continue;
             if(!event.getReaction().orElse(null).getEmoji().asUnicodeEmoji().orElse(null).equals(reaction.getEmoji())) continue; //TODO: FIX NULL WARNINGS
+            if(event.getMessage().get().getId() != reaction.getMessage().getId()) continue;
 
             reaction.post();
         }
