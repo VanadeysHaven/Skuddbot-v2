@@ -12,28 +12,37 @@ import lombok.Setter;
  */
 public class Identifier {
 
-    @Getter private int id;
     @Getter private long serverId;
     @Getter @Setter private long userId;
     @Getter @Setter private String twitchUsername;
 
-    public Identifier(int id, long serverId, long userId){
-        this.id = id;
+    public Identifier(long serverId, long userId){
         this.serverId = serverId;
         this.userId = userId;
+        twitchUsername = null;
     }
 
-    public Identifier(int id, long serverId, String twitchUsername){
-        this.id = id;
+    public Identifier(long serverId, String twitchUsername){
         this.serverId = serverId;
+        this.twitchUsername = twitchUsername;
+        userId = -1;
+    }
+
+    public Identifier(long serverId, long userId, String twitchUsername){
+        this.serverId = serverId;
+        this.userId = userId;
         this.twitchUsername = twitchUsername;
     }
 
-    public Identifier(int id, long serverId, long userId, String twitchUsername){
-        this.id = id;
-        this.serverId = serverId;
-        this.userId = userId;
-        this.twitchUsername = twitchUsername;
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof Identifier)) return false;
+        Identifier id = (Identifier) obj;
+        if(serverId != id.getServerId()) return false;
+        if(userId != -1 && id.getUserId() != -1) if(userId != id.getUserId()) return false;
+        if(twitchUsername != null && id.getTwitchUsername() != null) return twitchUsername.equals(id.getTwitchUsername());
+
+        return true;
     }
 
 }
