@@ -27,14 +27,14 @@ public class SkuddServer {
 
     public SkuddUser getUser(long id){
         for(SkuddUser user : users)
-            if(user.getId().getUserId() == id)
+            if(user.getId().getDiscordId() == id)
                 return user;
 
         return null;
     }
 
     public SkuddUser getUser(Identifier id){
-        return getUser(id.getUserId());
+        return getUser(id.getDiscordId());
     }
 
 }

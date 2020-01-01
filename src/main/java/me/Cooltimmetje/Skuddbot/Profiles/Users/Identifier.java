@@ -13,24 +13,24 @@ import lombok.Setter;
 public class Identifier {
 
     @Getter private long serverId;
-    @Getter @Setter private long userId;
+    @Getter @Setter private long discordId;
     @Getter @Setter private String twitchUsername;
 
-    public Identifier(long serverId, long userId){
+    public Identifier(long serverId, long discordId){
         this.serverId = serverId;
-        this.userId = userId;
+        this.discordId = discordId;
         twitchUsername = null;
     }
 
     public Identifier(long serverId, String twitchUsername){
         this.serverId = serverId;
         this.twitchUsername = twitchUsername;
-        userId = -1;
+        discordId = -1;
     }
 
-    public Identifier(long serverId, long userId, String twitchUsername){
+    public Identifier(long serverId, long discordId, String twitchUsername){
         this.serverId = serverId;
-        this.userId = userId;
+        this.discordId = discordId;
         this.twitchUsername = twitchUsername;
     }
 
@@ -39,7 +39,7 @@ public class Identifier {
         if(!(obj instanceof Identifier)) return false;
         Identifier id = (Identifier) obj;
         if(serverId != id.getServerId()) return false;
-        if(userId != -1 && id.getUserId() != -1) if(userId != id.getUserId()) return false;
+        if(discordId != -1 && id.getDiscordId() != -1) if(discordId != id.getDiscordId()) return false;
         if(twitchUsername != null && id.getTwitchUsername() != null) return twitchUsername.equals(id.getTwitchUsername());
 
         return true;

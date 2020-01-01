@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 
 import java.util.HashMap;
 
@@ -13,9 +14,11 @@ import java.util.HashMap;
  */
 public class UserSettingsSapling {
 
+    private Identifier id;
     private HashMap<UserSetting,String> settings;
 
-    public UserSettingsSapling(){
+    public UserSettingsSapling(Identifier id){
+        this.id = id;
         this.settings = new HashMap<>();
     }
 
