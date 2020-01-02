@@ -1,8 +1,12 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -20,6 +24,20 @@ public class UserSettingsSapling {
     public UserSettingsSapling(Identifier id){
         this.id = id;
         this.settings = new HashMap<>();
+
+        QueryExecutor qe = null;
+        try {
+            qe = new QueryExecutor(Query.SELECT_USER_SETTINGS).setLong(1, id.getServerId()).setLong(2, id.getDiscordId());
+            ResultSet rs = qe.executeQuery();
+            while (rs.next()) {
+                addSetting(UserSetting.getByDbReference(rs.getString("setting_name")), rs.getString("setting_value"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            assert qe != null;
+            qe.close();
+        }
     }
 
     public void addSetting(UserSetting setting, String value){
@@ -33,7 +51,7 @@ public class UserSettingsSapling {
     }
 
     public UserSettingsContainer grow(){
-        return new UserSettingsContainer(this);
+        return new UserSettingsContainer(id, this);
     }
 
 }

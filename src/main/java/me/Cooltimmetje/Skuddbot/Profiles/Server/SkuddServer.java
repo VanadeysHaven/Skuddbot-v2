@@ -33,6 +33,10 @@ public class SkuddServer {
         return null;
     }
 
+    public void addUser(SkuddUser su){
+        users.add(su);
+    }
+
     public SkuddUser getUser(Identifier id){
         return getUser(id.getDiscordId());
     }

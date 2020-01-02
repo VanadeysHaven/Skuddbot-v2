@@ -2,7 +2,9 @@ package me.Cooltimmetje.Skuddbot.Profiles;
 
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.UserStatsSapling;
 
 /**
  * This class is used to recall profiles.
@@ -13,19 +15,24 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
  */
 public class ProfileManager {
 
-    ServerManager sm = new ServerManager();
+    private ServerManager sm = new ServerManager();
 
-    public void getUser(long serverId, long userId){
-        SkuddServer server = sm.getServer(serverId);
-        SkuddUser su = server.getUser(userId);
+    public SkuddUser getUser(long serverId, long discordId){
+        SkuddServer ss = sm.getServer(serverId);
+        SkuddUser su = ss.getUser(discordId);
 
         if(su == null){ //Doesn't exist, create new
-
+            Identifier id = new Identifier(serverId, discordId);
+            id.save();
+            su = new SkuddUser(id, new UserStatsSapling(), new UserSettingsSapling(id));
+            ss.addUser(su);
         }
+
+        return su;
     }
 
-    public void getUser(Identifier id){
-        getUser(id.getServerId(), id.getDiscordId());
+    public SkuddUser getUser(Identifier id){
+        return getUser(id.getServerId(), id.getDiscordId());
     }
 
 

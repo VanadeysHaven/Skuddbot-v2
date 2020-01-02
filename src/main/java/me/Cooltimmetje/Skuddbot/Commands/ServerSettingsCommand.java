@@ -66,7 +66,7 @@ public class ServerSettingsCommand extends Command {
         } else if (args.length == 2){
             showDetails(message, server, ss, setting);
         } else if (args.length >= 3){
-            alterSetting(message, server, ss, setting, newValue);
+            alterSetting(message, ss, setting, newValue);
         }
     }
 
@@ -96,7 +96,7 @@ public class ServerSettingsCommand extends Command {
         message.getChannel().sendMessage(sb);
     }
 
-    private void alterSetting(Message message, Server server, SkuddServer ss, ServerSetting setting, String newValue){
+    private void alterSetting(Message message, SkuddServer ss, ServerSetting setting, String newValue){
         try {
             ss.getSettings().setString(setting, newValue);
             ss.getSettings().save(setting);

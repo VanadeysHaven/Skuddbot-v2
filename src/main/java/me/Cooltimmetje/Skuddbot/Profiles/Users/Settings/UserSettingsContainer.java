@@ -1,10 +1,14 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.LevelUpNotification;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -16,9 +20,11 @@ import java.util.HashMap;
  */
 public class UserSettingsContainer {
 
+    private Identifier id;
     private HashMap<UserSetting,String> settings;
 
-    public UserSettingsContainer(UserSettingsSapling sapling){
+    public UserSettingsContainer(Identifier id, UserSettingsSapling sapling){
+        this.id = id;
         this.settings = new HashMap<>();
         processSettingsSapling(sapling);
     }
@@ -77,5 +83,37 @@ public class UserSettingsContainer {
 
         return type == ValueType.STRING;
     }
+
+    public void save(UserSetting setting){
+        QueryExecutor qe = null;
+        if (getString(setting).equals(setting.getDefaultValue())) {
+            try {
+                qe = new QueryExecutor(Query.DELETE_USER_SETTING_VALUE).setInt(1, id.getId()).setString(2, setting.getDbReference());
+                qe.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (qe != null) qe.close();
+            }
+        } else {
+            try {
+                qe = new QueryExecutor(Query.UPDATE_USER_SETTING_VALUE).setString(1, setting.getDbReference()).setInt(2, id.getId()).setString(3, getString(setting)).and(4);
+                qe.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (qe != null) qe.close();
+            }
+        }
+    }
+
+    public void save(){
+        for(UserSetting setting : UserSetting.values()){
+            save(setting);
+        }
+    }
+
+
+
 
 }
