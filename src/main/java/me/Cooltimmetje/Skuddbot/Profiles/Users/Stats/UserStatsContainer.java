@@ -1,10 +1,13 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Users.Stats;
 
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Enums.UserStats.UserStat;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -67,6 +70,35 @@ public class UserStatsContainer {
     public String getFavouriteTeammate(){
         //TODO
         return "hi";
+    }
+
+    public void save(UserStat stat){
+        QueryExecutor qe = null;
+        if (getString(stat).equals(stat.getDefaultValue())) {
+            try {
+                qe = new QueryExecutor(Query.DELETE_STAT_VALUE).setInt(1, id.getId()).setString(2, stat.getDbReference());
+                qe.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (qe != null) qe.close();
+            }
+        } else {
+            try {
+                qe = new QueryExecutor(Query.UPDATE_STAT_VALUE).setString(1, stat.getDbReference()).setInt(2, id.getId()).setString(3, getString(stat)).and(4);
+                qe.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (qe != null) qe.close();
+            }
+        }
+    }
+
+    public void save(){
+        for(UserStat stat : UserStat.values()){
+            save(stat);
+        }
     }
 
     private boolean checkType(String input, UserStat stat){

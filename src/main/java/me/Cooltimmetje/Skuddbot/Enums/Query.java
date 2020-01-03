@@ -18,7 +18,7 @@ public enum Query {
 
     //SERVER SETTINGS
     INSERT_SERVER_SETTING("insert ignore into server_settings (setting_name) value (?);"),
-    UPDATE_SERVER_SETTING_VALUE("insert into server_has_settings (setting_id, server_id, setting_value) value ((select get_server_setting_id(?)), ?, ?) on duplicate key update setting_value=?;"),
+    UPDATE_SERVER_SETTING_VALUE("insert into server_has_settings (setting_id, server_id, setting_value) value ((select get_server_setting_id(?)),?,?) on duplicate key update setting_value=?;"),
     DELETE_SERVER_SETTING_VALUE("delete shs from server_has_settings shs join server_settings ss on shs.setting_id = ss.id where shs.server_id=? AND ss.setting_name=?;"),
     SELECT_SERVER_SETTINGS("select setting_name, setting_value from server_has_settings shs join server_settings ss on shs.setting_id = ss.id where server_id=?;"),
     INSERT_SERVER("insert into servers (id, server_name) value (?,?) on duplicate key update server_name=?;"),
@@ -29,12 +29,14 @@ public enum Query {
     SELECT_ALL_USER_SETTINGS("select setting_name from user_settings;"),
     SELECT_USER_SETTINGS("select us.setting_name, ush.setting_value from user_has_settings ush join user_settings us on ush.setting_id = us.id where user_id=?;"),
     DELETE_USER_SETTING_VALUE("delete ush from user_has_settings ush join user_settings us on ush.setting_id = us.id where ush.user_id=? and us.setting_name=?;"),
-    UPDATE_USER_SETTING_VALUE("insert into user_has_settings (setting_id, user_id, setting_value) values ((select get_user_setting_id(?)), ?, ?) on duplicate key update setting_value=?;"),
+    UPDATE_USER_SETTING_VALUE("insert into user_has_settings (setting_id, user_id, setting_value) values ((select get_user_setting_id(?)),?,?) on duplicate key update setting_value=?;"),
 
     //STATS
     INSERT_STAT("insert ignore into stats (stat_name) value (?);"),
     SELECT_ALL_STATS("select stat_name from stats;"),
-    SELECT_STATS("select s.stat_name, uhs.stat_value from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=?;");
+    SELECT_STATS("select s.stat_name, uhs.stat_value from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=?;"),
+    DELETE_STAT_VALUE("delete uhs from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=? and s.stat_name=?;"),
+    UPDATE_STAT_VALUE("insert into user_has_stats(stat_id, user_id, stat_value) value ((select get_stat_id(?)),?,?) on duplicate key update stat_value=?;");
 
     private String query;
 
