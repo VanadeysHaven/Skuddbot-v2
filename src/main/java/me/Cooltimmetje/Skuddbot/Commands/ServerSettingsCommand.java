@@ -23,7 +23,7 @@ public class ServerSettingsCommand extends Command {
     private ServerManager sm;
 
     public ServerSettingsCommand(){
-        super(new String[]{"serversettings"}, "You can change and view server settings with this.");
+        super(new String[]{"serversettings"}, "Change and view server settings.");
         sm = new ServerManager();
     }
 
@@ -78,7 +78,7 @@ public class ServerSettingsCommand extends Command {
         }
         String table = new TableDrawer(tag.generateArray()).drawTable();
 
-        String sb = "Server settings for " + server.getName() + "\n```\n" + table + "\n```\n" +
+        String sb = "Server settings for " + server.getName() + "\n```\n" + table + "\n```\n" + //TODO: FORMATTING AND COMMAND
                 "Type `!serversettings <setting>` for more information about that setting." +
                 "Type `!serversettings <setting> <newValue>` to change it.";
         message.getChannel().sendMessage(sb);

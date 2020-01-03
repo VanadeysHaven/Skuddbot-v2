@@ -27,7 +27,7 @@ public class UserSettingsSapling {
 
         QueryExecutor qe = null;
         try {
-            qe = new QueryExecutor(Query.SELECT_USER_SETTINGS).setLong(1, id.getServerId()).setLong(2, id.getDiscordId());
+            qe = new QueryExecutor(Query.SELECT_USER_SETTINGS).setInt(1, id.getId());
             ResultSet rs = qe.executeQuery();
             while (rs.next()) {
                 addSetting(UserSetting.getByDbReference(rs.getString("setting_name")), rs.getString("setting_value"));

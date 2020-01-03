@@ -73,7 +73,7 @@ public class UserStatsContainer {
         }
         if(type == ValueType.JSON){
             //TODO
-            return false;
+            return input.equals("{}");
         }
 
         return type == ValueType.STRING;

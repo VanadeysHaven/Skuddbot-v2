@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.CommandManager;
 import me.Cooltimmetje.Skuddbot.Commands.PingCommand;
 import me.Cooltimmetje.Skuddbot.Commands.ServerSettingsCommand;
+import me.Cooltimmetje.Skuddbot.Commands.UserSettingsCommand;
 import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -42,7 +43,7 @@ public class Skuddbot {
 
     void registerCommands() {
         logger.info("Registering global commands...");
-        this.commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand());
+        this.commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand());
     }
 
     void registerListeners() {
