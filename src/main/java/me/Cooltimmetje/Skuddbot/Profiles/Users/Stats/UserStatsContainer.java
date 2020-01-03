@@ -2,6 +2,7 @@ package me.Cooltimmetje.Skuddbot.Profiles.Users.Stats;
 
 import me.Cooltimmetje.Skuddbot.Enums.UserStats.UserStat;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
 import java.util.HashMap;
@@ -15,9 +16,11 @@ import java.util.HashMap;
  */
 public class UserStatsContainer {
 
+    private Identifier id;
     private HashMap<UserStat,String> stats;
 
-    public UserStatsContainer(UserStatsSapling sapling){
+    public UserStatsContainer(Identifier id, UserStatsSapling sapling){
+        this.id = id;
         this.stats = new HashMap<>();
         processStatsSapling(sapling);
     }

@@ -24,7 +24,7 @@ public class ProfileManager {
         if(su == null){ //Doesn't exist, create new
             Identifier id = new Identifier(serverId, discordId);
             id.save();
-            su = new SkuddUser(id, new UserStatsSapling(), new UserSettingsSapling(id));
+            su = new SkuddUser(id, new UserStatsSapling(id), new UserSettingsSapling(id));
             ss.addUser(su);
         }
 

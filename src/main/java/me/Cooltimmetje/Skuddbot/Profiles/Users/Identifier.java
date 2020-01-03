@@ -17,23 +17,27 @@ import java.sql.SQLException;
  */
 public class Identifier {
 
+    @Getter private int id;
     @Getter private long serverId;
     @Getter @Setter private long discordId;
     @Getter @Setter private String twitchUsername;
 
     public Identifier(long serverId, long discordId){
+        id = -1;
         this.serverId = serverId;
         this.discordId = discordId;
         twitchUsername = null;
     }
 
     public Identifier(long serverId, String twitchUsername){
+        id = -1;
         this.serverId = serverId;
         this.twitchUsername = twitchUsername;
         discordId = -1;
     }
 
     public Identifier(long serverId, long discordId, String twitchUsername){
+        id = -1;
         this.serverId = serverId;
         this.discordId = discordId;
         this.twitchUsername = twitchUsername;
@@ -51,6 +55,9 @@ public class Identifier {
     }
 
     public int getId(){
+        if(this.id != -1){
+            return id;
+        }
         QueryExecutor qe = null;
         int id = -1;
         try{
@@ -66,6 +73,7 @@ public class Identifier {
             qe.close();
         }
 
+        this.id = id;
         return id;
     }
 

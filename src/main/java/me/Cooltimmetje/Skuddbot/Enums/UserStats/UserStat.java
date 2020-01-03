@@ -1,7 +1,13 @@
 package me.Cooltimmetje.Skuddbot.Enums.UserStats;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Constants for user stats.
@@ -58,6 +64,34 @@ public enum UserStat {
                 return stat;
 
         return null;
+    }
+
+    public static void saveToDatabase(){
+        QueryExecutor qe = null;
+        ResultSet rs;
+        ArrayList<String> stats = new ArrayList<>();
+        try {
+            qe = new QueryExecutor(Query.SELECT_ALL_STATS);
+            rs = qe.executeQuery();
+            while(rs.next()){
+                stats.add(rs.getString("stat_name"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            if(qe != null) qe.close();
+        }
+        for(UserStat stat : values()){
+            if(stats.contains(stat.getDbReference())) continue;
+            try {
+                qe = new QueryExecutor(Query.INSERT_STAT).setString(1, stat.getDbReference());
+                qe.execute();
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                if(qe != null) qe.close();
+            }
+        }
     }
 
 }

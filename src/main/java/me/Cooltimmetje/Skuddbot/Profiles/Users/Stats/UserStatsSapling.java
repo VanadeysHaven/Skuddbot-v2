@@ -1,7 +1,12 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Users.Stats;
 
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Enums.UserStats.UserStat;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -13,9 +18,26 @@ import java.util.HashMap;
  */
 public class UserStatsSapling {
 
+    private Identifier id;
     private HashMap<UserStat,String> stats;
-    public UserStatsSapling(){
+
+    public UserStatsSapling(Identifier id){
+        this.id = id;
         this.stats = new HashMap<>();
+
+        QueryExecutor qe = null;
+        try {
+            qe = new QueryExecutor(Query.SELECT_STATS).setInt(1, id.getId());
+            ResultSet rs = qe.executeQuery();
+            while(rs.next()){
+                addStat(UserStat.getByDbReference(rs.getString("stat_name")), rs.getString("stat_value"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            assert qe != null;
+            qe.close();
+        }
     }
 
     public void addStat(UserStat stat, String value){
@@ -29,7 +51,7 @@ public class UserStatsSapling {
     }
 
     public UserStatsContainer grow(){
-        return new UserStatsContainer(this);
+        return new UserStatsContainer(id, this);
     }
 
 }
