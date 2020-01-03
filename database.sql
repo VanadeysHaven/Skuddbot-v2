@@ -10,11 +10,11 @@ create table servers(
 create table identifier(
     id int primary key auto_increment,
     server_id bigint not null,
-    user_id bigint default null,
+    discord_id bigint default null,
     twitch_username varchar(40) default null,
     mixer_username varchar(40) default null,
     foreign key (server_id) references servers(id),
-    unique index(server_id, user_id),
+    unique index(server_id, discord_id),
     unique index(server_id, twitch_username),
     unique index(server_id, mixer_username)
 );
@@ -114,16 +114,16 @@ create table command_has_properties(
 
 delimiter //
 
-create function get_user_identifier(serverId bigint, userId bigint)
-returns int
-begin
-    return (select id from identifier id where id.server_id=serverId and id.user_id=userId);
-end //
-
 create function get_server_setting_id(settingReference text)
 returns int
 begin
     return (select id from server_settings where setting_name=settingReference);
+end //
+
+create function get_user_setting_id(settingReference text)
+returns int
+begin
+    return (select id from user_settings where setting_name=settingReference);
 end //
 
 delimiter ;
@@ -131,22 +131,21 @@ delimiter ;
 # FOR PRODUCTION: RUN UNTIL THIS LINE
 
 insert into servers (id, server_name) value (123, 'Dank Meme\'s');
-insert into identifier (server_id, user_id) value (123, 123);
+insert into identifier (server_id, discord_id) value (123, 123);
 update identifier set twitch_username='cooltimmetje', mixer_username='yo_mama' where id=1;
 insert ignore into server_settings (setting_name) value ('xp_min');
 insert ignore into user_settings (setting_name) value ('lvl_up_notify');
 insert into server_has_settings (setting_id, server_id, setting_value) value ((select get_server_setting_id('xp_min')), 123, '5') on duplicate key update setting_value='7';
+insert into user_has_settings (setting_id, user_id, setting_value) values ((select get_user_setting_id('lvl_up_notify')), 1, 'MESSAGE') on duplicate key update setting_value='DM';
 
 # FOR TESTING: RUN UNTIL THIS LINE
 
 select * from server_settings;
 delete shs from server_has_settings shs join server_settings ss on shs.setting_id = ss.id where shs.server_id=123 AND ss.setting_name='xp_min';
 select setting_name, setting_value from server_has_settings shs join server_settings ss on shs.setting_id = ss.id where server_id=224987945638035456;
+
 insert into servers (id, server_name) value (123,'test') on duplicate key update server_name=?;
-
 select setting_name from user_settings;
-insert into user_has_settings (setting_id, user_id, setting_value) values ((select id from user_settings where setting_name='lvl_up_notify'), (select get_user_identifier(123, 123)), 'REACTION') on duplicate key update setting_value='DM';
-delete ush from user_has_settings ush join user_settings us on ush.setting_id = us.id where ush.user_id=(select get_user_identifier(123, 123)) and us.setting_name='lvl_up_notify';
-select us.setting_name, ush.setting_value from user_has_settings ush join user_settings us on ush.setting_id = us.id where user_id=(select get_user_identifier(123, 123));
+delete ush from user_has_settings ush join user_settings us on ush.setting_id = us.id where ush.user_id=1 and us.setting_name='lvl_up_notify';
+select us.setting_name, uhs.setting_value from user_has_settings uhs join user_settings us on uhs.setting_id = us.id where uhs.user_id=1);
 
-select get_user_identifier(123, 123);
