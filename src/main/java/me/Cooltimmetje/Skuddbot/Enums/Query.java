@@ -14,7 +14,7 @@ public enum Query {
 
     //USER IDENTIFIERS
     SELECT_USER_ID("select id from identifier where server_id=? and discord_id=?;"),
-    SAVE_USER_ID("insert into identifier (server_id, user_id) value (?,?);"),
+    SAVE_USER_ID("insert into identifier (server_id, discord_id) value (?,?);"),
 
     //SERVER SETTINGS
     INSERT_SERVER_SETTING("insert ignore into server_settings (setting_name) value (?);"),

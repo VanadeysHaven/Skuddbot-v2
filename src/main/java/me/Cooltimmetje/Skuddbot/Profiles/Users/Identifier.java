@@ -56,8 +56,8 @@ public class Identifier {
         try{
             qe = new QueryExecutor(Query.SELECT_USER_ID).setLong(1, serverId).setLong(2, discordId);
             ResultSet rs = qe.executeQuery();
-            while(rs.next()){
-                id = rs.getInt(1);
+            if(rs.first()){
+                id = rs.getInt("id");
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -71,9 +71,8 @@ public class Identifier {
 
     public void save(){
         int userId = getId();
-        boolean exists = userId == -1;
 
-        if(exists) return;
+        if(userId != -1) return;
         QueryExecutor qe = null;
         try {
             qe = new QueryExecutor(Query.SAVE_USER_ID).setLong(1, serverId).setLong(2, discordId);

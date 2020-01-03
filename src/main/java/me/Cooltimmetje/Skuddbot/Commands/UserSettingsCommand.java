@@ -65,6 +65,10 @@ public class UserSettingsCommand extends Command {
 
         if(args.length == 1){
             showAll(message, user, su);
+        } else if(args.length == 2){
+            showDetails(message, su, setting);
+        } else if(args.length >= 3){
+            alterSetting(message, su, setting, newValue);
         }
     }
 
@@ -83,6 +87,27 @@ public class UserSettingsCommand extends Command {
         message.getChannel().sendMessage(msg);
     }
 
+    private void showDetails(Message message, SkuddUser su, UserSetting setting){
+        String msg = "```\n" +
+                "Setting:       " + setting + "\n" +
+                "Description:   " + setting.getDescription() + "\n" +
+                "Type:          " + setting.getType() + "\n" +
+                "Default value: " + setting.getDefaultValue() + "\n" +
+                "Current value: " + su.getSettings().getString(setting) + "\n" +
+                "```\n" + "To change the value type: `!usersettings " + setting + " <newValue>`";
+
+        message.getChannel().sendMessage(msg);
+    }
+
+    private void alterSetting(Message message, SkuddUser su, UserSetting setting, String newValue){
+        try {
+            su.getSettings().setString(setting, newValue);
+            su.getSettings().save(setting);
+            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Successfully updated setting `" + setting + "` to `" + newValue + "`!");
+        } catch (IllegalArgumentException e){
+            MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
+        }
+    }
 
     private UserSetting fromString(String input){
         String enumSetting = input.toUpperCase().replace("-", "_");

@@ -64,7 +64,7 @@ public class ServerSettingsCommand extends Command {
         if(args.length == 1){
             showAll(message, server, ss);
         } else if (args.length == 2){
-            showDetails(message, server, ss, setting);
+            showDetails(message, ss, setting);
         } else if (args.length >= 3){
             alterSetting(message, ss, setting, newValue);
         }
@@ -84,7 +84,7 @@ public class ServerSettingsCommand extends Command {
         message.getChannel().sendMessage(sb);
     }
 
-    private void showDetails(Message message, Server server, SkuddServer ss, ServerSetting setting){
+    private void showDetails(Message message, SkuddServer ss, ServerSetting setting){
         String sb = "```\n" +
                 "Setting:       " + setting + "\n" +
                 "Description:   " + setting.getDescription() + "\n" +
