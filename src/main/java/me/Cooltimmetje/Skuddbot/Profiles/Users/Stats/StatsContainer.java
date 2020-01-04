@@ -2,7 +2,7 @@ package me.Cooltimmetje.Skuddbot.Profiles.Users.Stats;
 
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Query;
-import me.Cooltimmetje.Skuddbot.Enums.UserStats.UserStat;
+import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
@@ -17,52 +17,57 @@ import java.util.HashMap;
  * @since ALPHA-2.0
  * @version ALPHA-2.0
  */
-public class UserStatsContainer {
+public class StatsContainer {
 
     private Identifier id;
-    private HashMap<UserStat,String> stats;
+    private HashMap<Stat,String> stats;
 
-    public UserStatsContainer(Identifier id, UserStatsSapling sapling){
+    public StatsContainer(Identifier id, StatsSapling sapling){
         this.id = id;
         this.stats = new HashMap<>();
         processStatsSapling(sapling);
     }
 
-    private void processStatsSapling(UserStatsSapling sapling){
-        for(UserStat stat : UserStat.values()){
+    private void processStatsSapling(StatsSapling sapling){
+        for(Stat stat : Stat.values()){
             String value = sapling.getStat(stat);
             if(value != null) {
-                setString(stat, value);
+                setString(stat, value, false);
             } else {
-                setString(stat, stat.getDefaultValue());
+                setString(stat, stat.getDefaultValue(), false);
             }
         }
     }
 
-    public void setString(UserStat stat, String value){
-        if(!checkType(value, stat)) throw new IllegalArgumentException("Value " + value + " is unsuitable for stat " + stat + "; not of type " + stat.getType());
-        this.stats.put(stat, value);
+    public void setString(Stat stat, String value){
+        setString(stat, value, true);
     }
 
-    public String getString(UserStat stat){
+    public void setString(Stat stat, String value, boolean save){
+        if(!checkType(value, stat)) throw new IllegalArgumentException("Value " + value + " is unsuitable for stat " + stat + "; not of type " + stat.getType());
+        this.stats.put(stat, value);
+        if(save) save(stat);
+    }
+
+    public String getString(Stat stat){
         return this.stats.get(stat);
     }
 
-    public void setInt(UserStat stat, int value){
+    public void setInt(Stat stat, int value){
         setString(stat, value+"");
     }
 
-    public int getInt(UserStat stat){
+    public int getInt(Stat stat){
         if(stat.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
         return Integer.parseInt(getString(stat));
     }
 
-    public void incrementInt(UserStat stat){
+    public void incrementInt(Stat stat){
         if(stat.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
         incrementInt(stat, 1);
     }
 
-    public void incrementInt(UserStat stat, int incrementBy) {
+    public void incrementInt(Stat stat, int incrementBy) {
         if(stat.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
         setInt(stat, getInt(stat) + incrementBy);
     }
@@ -72,7 +77,7 @@ public class UserStatsContainer {
         return "hi";
     }
 
-    public void save(UserStat stat){
+    private void save(Stat stat){
         QueryExecutor qe = null;
         if (getString(stat).equals(stat.getDefaultValue())) {
             try {
@@ -96,12 +101,12 @@ public class UserStatsContainer {
     }
 
     public void save(){
-        for(UserStat stat : UserStat.values()){
+        for(Stat stat : Stat.values()){
             save(stat);
         }
     }
 
-    private boolean checkType(String input, UserStat stat){
+    private boolean checkType(String input, Stat stat){
         ValueType type = stat.getType();
         if(type == ValueType.INTEGER){
             return MiscUtils.isInt(input);

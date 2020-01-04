@@ -3,8 +3,8 @@ package me.Cooltimmetje.Skuddbot.Profiles.Users;
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsSapling;
-import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.UserStatsContainer;
-import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.UserStatsSapling;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.StatsContainer;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.StatsSapling;
 
 /**
  * This class represents a user and their data and statistics.
@@ -16,10 +16,10 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.UserStatsSapling;
 public class SkuddUser {
 
     @Getter private Identifier id;
-    @Getter private UserStatsContainer stats;
+    @Getter private StatsContainer stats;
     @Getter private UserSettingsContainer settings;
 
-    public SkuddUser(Identifier id, UserStatsSapling stats, UserSettingsSapling settings){
+    public SkuddUser(Identifier id, StatsSapling stats, UserSettingsSapling settings){
         this.id = id;
         this.stats = stats.grow();
         this.settings = settings.grow();

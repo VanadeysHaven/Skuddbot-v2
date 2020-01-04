@@ -1,7 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSettings.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
@@ -99,7 +99,6 @@ public class ServerSettingsCommand extends Command {
     private void alterSetting(Message message, SkuddServer ss, ServerSetting setting, String newValue){
         try {
             ss.getSettings().setString(setting, newValue);
-            ss.getSettings().save(setting);
             MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Successfully updated setting `" + setting + "` to `" + newValue + "`!");
         } catch (IllegalArgumentException e){
             MessagesUtils.addReaction(message, Emoji.X, e.getMessage());

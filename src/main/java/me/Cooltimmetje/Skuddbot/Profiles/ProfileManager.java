@@ -4,7 +4,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
-import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.UserStatsSapling;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.StatsSapling;
 
 /**
  * This class is used to recall profiles.
@@ -24,7 +24,7 @@ public class ProfileManager {
         if(su == null){ //Doesn't exist, create new
             Identifier id = new Identifier(serverId, discordId);
             id.save();
-            su = new SkuddUser(id, new UserStatsSapling(id), new UserSettingsSapling(id));
+            su = new SkuddUser(id, new StatsSapling(id), new UserSettingsSapling(id));
             ss.addUser(su);
         }
 

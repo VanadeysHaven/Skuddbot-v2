@@ -1,6 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
-import me.Cooltimmetje.Skuddbot.Enums.ServerSettings.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;

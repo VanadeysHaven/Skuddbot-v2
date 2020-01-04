@@ -109,7 +109,6 @@ public class UserSettingsCommand extends Command {
         }
         try {
             su.getSettings().setString(setting, newValue);
-            su.getSettings().save(setting);
             MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Successfully updated setting `" + setting + "` to `" + newValue + "`!");
         } catch (IllegalArgumentException e){
             MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
@@ -121,7 +120,6 @@ public class UserSettingsCommand extends Command {
         try {
             newVal = LevelUpNotification.valueOf(newValue.toUpperCase().replace("-", "_"));
             su.getSettings().setLevelUpNotify(newVal);
-            su.getSettings().save(UserSetting.LEVEL_UP_NOTIFY);
         } catch (IllegalArgumentException e){
             MessagesUtils.addReaction(message, Emoji.X, "Unsuitable value; must be one of the following: " + Arrays.toString(LevelUpNotification.values()));
         }

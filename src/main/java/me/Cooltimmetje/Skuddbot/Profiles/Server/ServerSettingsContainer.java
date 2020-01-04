@@ -2,7 +2,7 @@ package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Query;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSettings.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
@@ -31,16 +31,21 @@ public class ServerSettingsContainer {
         for(ServerSetting setting : ServerSetting.values()){
             String value = sapling.getSetting(setting);
             if(value != null){
-                setString(setting, value);
+                setString(setting, value, false);
             } else {
-                setString(setting, setting.getDefaultValue());
+                setString(setting, setting.getDefaultValue(), false);
             }
         }
     }
 
     public void setString(ServerSetting setting, String value){
+        setString(setting, value, true);
+    }
+
+    public void setString(ServerSetting setting, String value, boolean save){
         if(!checkType(value, setting)) throw new IllegalArgumentException("Value " + value + " is unsuitable for setting " + setting + "; not of type " + setting.getType());
         this.settings.put(setting, value);
+        if(save) save(setting);
     }
 
     public String getString(ServerSetting setting){
@@ -93,7 +98,7 @@ public class ServerSettingsContainer {
         return type == ValueType.STRING;
     }
 
-    public void save(ServerSetting setting) {
+    private void save(ServerSetting setting) {
         QueryExecutor qe = null;
         if (getString(setting).equals(setting.getDefaultValue())) {
             try {

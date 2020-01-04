@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Database;
 
 import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,13 +21,12 @@ import java.util.ArrayList;
 public class QueryExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(QueryExecutor.class);
-    private static int newId = 0;
 
     private enum Operation {
         INT, LONG, STRING
     }
 
-    private int id;
+    private String id;
     private ArrayList<Integer> usedPositions;
     private Connection c;
     private PreparedStatement ps;
@@ -35,9 +35,8 @@ public class QueryExecutor {
     private Object lastValue;
 
     public QueryExecutor(Query query) throws SQLException {
-        logger.info("Making new query of type " + query + " with id " + newId);
-        id = newId;
-        newId++;
+        id = MiscUtils.randomString(10); //ID is only used for differentiating queries in the logs, it's fine if there are duplicates.
+        logger.info("Making new query of type " + query + " with id " + id);
         c = HikariManager.getConnection();
         ps = c.prepareStatement(query.getQuery());
         usedPositions = new ArrayList<>();

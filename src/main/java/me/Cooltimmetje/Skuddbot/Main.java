@@ -2,9 +2,9 @@ package me.Cooltimmetje.Skuddbot;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Database.HikariManager;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSettings.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
-import me.Cooltimmetje.Skuddbot.Enums.UserStats.UserStat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ public class Main {
         HikariManager.setup(args[1], args[2]);
         ServerSetting.saveToDatabase();
         UserSetting.saveToDatabase();
-        UserStat.saveToDatabase();
+        Stat.saveToDatabase();
 
         String token = args[0];
         skuddbot = new Skuddbot(token);

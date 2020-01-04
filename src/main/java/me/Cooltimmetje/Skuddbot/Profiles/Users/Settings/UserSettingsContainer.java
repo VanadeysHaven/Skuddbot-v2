@@ -33,16 +33,21 @@ public class UserSettingsContainer {
         for(UserSetting setting : UserSetting.values()){
             String value = sapling.getSetting(setting);
             if(value != null) {
-                setString(setting, value);
+                setString(setting, value, false);
             } else {
-                setString(setting, setting.getDefaultValue());
+                setString(setting, setting.getDefaultValue(), false);
             }
         }
     }
 
     public void setString(UserSetting setting, String value){
+        setString(setting, value, true);
+    }
+
+    public void setString(UserSetting setting, String value, boolean save){
         if(!checkType(value, setting)) throw new IllegalArgumentException("Value " + value + " is unsuitable for setting " + setting + "; not of type " + setting.getType());
         this.settings.put(setting, value);
+        if(save) save(setting);
     }
 
     public String getString(UserSetting setting){
@@ -84,7 +89,7 @@ public class UserSettingsContainer {
         return type == ValueType.STRING;
     }
 
-    public void save(UserSetting setting){
+    private void save(UserSetting setting){
         QueryExecutor qe = null;
         if (getString(setting).equals(setting.getDefaultValue())) {
             try {

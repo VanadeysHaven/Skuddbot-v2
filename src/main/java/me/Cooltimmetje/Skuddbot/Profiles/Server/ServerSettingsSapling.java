@@ -2,7 +2,7 @@ package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Query;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSettings.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
