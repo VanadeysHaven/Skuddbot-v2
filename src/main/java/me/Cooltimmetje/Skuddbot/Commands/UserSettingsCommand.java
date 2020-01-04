@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Enums.LevelUpNotification;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -13,6 +14,8 @@ import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
 
 /**
  * Used for viewing and changing usersettings
@@ -100,12 +103,27 @@ public class UserSettingsCommand extends Command {
     }
 
     private void alterSetting(Message message, SkuddUser su, UserSetting setting, String newValue){
+        if(setting == UserSetting.LEVEL_UP_NOTIFY) {
+            changeLevelUp(message, su, newValue);
+            return;
+        }
         try {
             su.getSettings().setString(setting, newValue);
             su.getSettings().save(setting);
             MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Successfully updated setting `" + setting + "` to `" + newValue + "`!");
         } catch (IllegalArgumentException e){
             MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
+        }
+    }
+
+    private void changeLevelUp(Message message, SkuddUser su, String newValue){
+        LevelUpNotification newVal;
+        try {
+            newVal = LevelUpNotification.valueOf(newValue.toUpperCase().replace("-", "_"));
+            su.getSettings().setLevelUpNotify(newVal);
+            su.getSettings().save(UserSetting.LEVEL_UP_NOTIFY);
+        } catch (IllegalArgumentException e){
+            MessagesUtils.addReaction(message, Emoji.X, "Unsuitable value; must be one of the following: " + Arrays.toString(LevelUpNotification.values()));
         }
     }
 

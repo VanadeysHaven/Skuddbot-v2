@@ -36,7 +36,7 @@ public class StatsCommand extends Command {
             user = message.getMentionedUsers().get(0);
         Server server = message.getServer().orElse(null); assert server != null;
         SkuddUser su = pm.getUser(server.getId(), user.getId());
-        if(user.getId() != author.getId() && su.getSettings().getBoolean(UserSetting.STATS_PRIVATE)) {
+        if(user.getId() != author.getId() && su.getSettings().getBoolean(UserSetting.STATS_PRIVATE)) { //TODO: ADD PERMISSION OVERRIDE
             MessagesUtils.addReaction(message, Emoji.X, "This user has set their stats to private.");
             return;
         }
