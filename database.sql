@@ -55,7 +55,7 @@ create table currencies(
 create table user_has_currencies(
     currency_id int,
     user_id int,
-    currency_value int not null,
+    currency_value text not null,
     primary key (currency_id, user_id),
     foreign key (currency_id) references currencies(id),
     foreign key (user_id) references identifier(id)
@@ -69,7 +69,7 @@ create table server_settings(
 create table server_has_settings(
     setting_id int,
     server_id bigint,
-    setting_value text not null ,
+    setting_value text not null,
     primary key (setting_id, server_id),
     foreign key (setting_id) references server_settings(id),
     foreign key (server_id) references servers(id)
@@ -112,6 +112,26 @@ create table command_has_properties(
     foreign key (command_id) references commands(id)
 );
 
+create table donators(
+    id bigint primary key,
+    ping_message text
+);
+
+create table donator_data(
+    id int primary key auto_increment,
+    data_name varchar(40)
+);
+
+create table donator_has_data(
+    data_id int,
+    discord_id bigint,
+    data_value text not null,
+    primary key (data_id, discord_id),
+    foreign key (data_id) references donator_data(id),
+    foreign key (discord_id) references donators(id)
+);
+
+
 delimiter //
 
 create function get_server_setting_id(settingReference text)
@@ -126,6 +146,12 @@ begin
     return (select id from user_settings where setting_name=settingReference);
 end //
 
+create function get_stat_id(statReference text)
+returns int
+begin
+    return (select id from stats where stat_name=statReference);
+end //
+
 delimiter ;
 
 # FOR PRODUCTION: RUN UNTIL THIS LINE
@@ -135,8 +161,10 @@ insert into identifier (server_id, discord_id) value (123, 123);
 update identifier set twitch_username='cooltimmetje', mixer_username='yo_mama' where id=1;
 insert ignore into server_settings (setting_name) value ('xp_min');
 insert ignore into user_settings (setting_name) value ('lvl_up_notify');
+insert ignore into stats (stat_name) value ('xp');
 insert into server_has_settings (setting_id, server_id, setting_value) value ((select get_server_setting_id('xp_min')), 123, '5') on duplicate key update setting_value='7';
 insert into user_has_settings (setting_id, user_id, setting_value) values ((select get_user_setting_id('lvl_up_notify')), 1, 'MESSAGE') on duplicate key update setting_value='DM';
+insert into user_has_stats(stat_id, user_id, stat_value) value ((select get_stat_id('xp')), 1, '5') on duplicate key update stat_value='7';
 
 # FOR TESTING: RUN UNTIL THIS LINE
 
@@ -149,3 +177,6 @@ select setting_name from user_settings;
 delete ush from user_has_settings ush join user_settings us on ush.setting_id = us.id where ush.user_id=1 and us.setting_name='lvl_up_notify';
 select us.setting_name, uhs.setting_value from user_has_settings uhs join user_settings us on uhs.setting_id = us.id where uhs.user_id=1);
 
+select stat_name from stats;
+select s.stat_name, uhs.stat_value from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=2;
+delete uhs from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=1 and s.stat_name='xp';
