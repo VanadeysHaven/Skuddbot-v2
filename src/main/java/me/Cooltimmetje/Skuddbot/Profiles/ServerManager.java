@@ -6,10 +6,12 @@ import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSettingsSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import org.javacord.api.entity.server.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.Iterator;
 
 /**
  * This class is used for managing server profiles.
@@ -21,17 +23,19 @@ import java.util.Optional;
 public class ServerManager {
 
     private static ArrayList<SkuddServer> servers = new ArrayList<>();
+    private final static Logger logger = LoggerFactory.getLogger(ServerManager.class);
 
     public SkuddServer getServer(long id){
-        Optional<Server> oServer =  Main.getSkuddbot().getApi().getServerById(id);
-        if(!oServer.isPresent()) throw new IllegalArgumentException("Server id " + id + " does not exist");
-        Server server = oServer.get();
+        logger.info("Requested server profile for id " + id);
+        Server server = Main.getSkuddbot().getApi().getServerById(id).orElse(null); assert server != null;
 
         SkuddServer ss = searchList(id);
         if(ss != null){
+            logger.info("Profile found, returning...");
             return ss;
         }
 
+        logger.info("No profile, loading...");
         insertServerKey(id, server.getName());
         ss = new SkuddServer(id, new ServerSettingsSapling(id));
         servers.add(ss);
@@ -54,6 +58,10 @@ public class ServerManager {
     private SkuddServer searchList(long id){
         for(SkuddServer server : servers) if(server.getServerId() == id) return server;
         return null;
+    }
+
+    public Iterator<SkuddServer> getServers(){
+        return servers.iterator();
     }
 
 

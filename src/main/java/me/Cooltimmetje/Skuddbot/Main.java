@@ -5,8 +5,12 @@ import me.Cooltimmetje.Skuddbot.Database.HikariManager;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
+import me.Cooltimmetje.Skuddbot.Timers.TenMinutes;
+import me.Cooltimmetje.Skuddbot.Utilities.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Timer;
 
 /**
  * Main class, this is where the bot starts up from.
@@ -18,6 +22,7 @@ import org.slf4j.LoggerFactory;
 public class Main {
 
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
+    private static Timer timer = new Timer();
 
     @Getter private static Skuddbot skuddbot;
 
@@ -35,6 +40,7 @@ public class Main {
         skuddbot.registerCommands();
         skuddbot.buildAndLogin();
         skuddbot.registerListeners();
+        timer.schedule(new TenMinutes(), Constants.TEN_MINUTE_TIMER_DELAY, Constants.TEN_MINUTE_TIMER_DELAY);
     }
 
 }
