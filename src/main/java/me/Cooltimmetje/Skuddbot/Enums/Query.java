@@ -36,7 +36,11 @@ public enum Query {
     SELECT_ALL_STATS("select stat_name from stats;"),
     SELECT_STATS("select s.stat_name, uhs.stat_value from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=?;"),
     DELETE_STAT_VALUE("delete uhs from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=? and s.stat_name=?;"),
-    UPDATE_STAT_VALUE("insert into user_has_stats(stat_id, user_id, stat_value) value ((select get_stat_id(?)),?,?) on duplicate key update stat_value=?;");
+    UPDATE_STAT_VALUE("insert into user_has_stats(stat_id, user_id, stat_value) value ((select get_stat_id(?)),?,?) on duplicate key update stat_value=?;"),
+
+    //DONATORS
+    LOAD_ALL_DONATORS("select * from donators;"),
+    LOAD_ALL_MESSAGES("select data_name, discord_id, data_value from donator_has_data dhd join donator_data dd on dhd.data_id = dd.id;");
 
     private String query;
 

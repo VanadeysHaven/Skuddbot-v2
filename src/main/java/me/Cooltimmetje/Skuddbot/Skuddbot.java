@@ -2,6 +2,7 @@ package me.Cooltimmetje.Skuddbot;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.*;
+import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -25,12 +26,15 @@ public class Skuddbot {
     @Getter private DiscordApi api;
     private String token;
     private CommandManager commandManager;
+    private DonatorManager donatorManager;
 
     public Skuddbot(String token){
         logger.info("Received token.");
         this.token = token;
         logger.info("Creating command manager...");
-        this.commandManager = new CommandManager();
+        commandManager = new CommandManager();
+        logger.info("Creating donator manager and loading data...");
+        donatorManager = new DonatorManager();
     }
 
     void buildAndLogin(){
@@ -40,7 +44,7 @@ public class Skuddbot {
 
     void registerCommands() {
         logger.info("Registering global commands...");
-        this.commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand());
+        commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand());
     }
 
     void registerListeners() {
