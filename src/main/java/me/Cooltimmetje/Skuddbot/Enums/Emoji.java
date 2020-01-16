@@ -40,7 +40,11 @@ public enum Emoji {
     J                       ("\uD83C\uDDEF", "regional_indicator_symbol_j"),
     K                       ("\uD83C\uDDF0", "regional_indicator_symbol_k"),
     Q                       ("\uD83C\uDDF6", "regional_indicator_symbol_q"),
-    S                       ("\uD83C\uDDF8", "regional_indicator_symbol_s");
+    S                       ("\uD83C\uDDF8", "regional_indicator_symbol_s"),
+    BACON                   ("\uD83E\uDD53", "bacon"),
+    DOG                     ("\uD83D\uDC36", "dog"),
+    CAT                     ("\uD83D\uDC31", "cat"),
+    CAKE                    ("\uD83C\uDF70", "cake");
 
     private String unicode;
     private String alias;

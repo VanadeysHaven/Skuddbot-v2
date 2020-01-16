@@ -1,6 +1,9 @@
 package me.Cooltimmetje.Skuddbot.Donator;
 
 import lombok.Getter;
+import lombok.Setter;
+import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,21 +20,28 @@ public class DonatorMessage {
 
     @Getter
     public enum Type {
-        AI_NAME           ("ai_name",           64 ),
-        BACON             ("bacon",             512),
-        CAKE              ("cake",              512),
-        KITTY             ("kitty",             512),
-        PLAYING           ("playing",           128),
-        PLAYING_CHRISTMAS ("playing_christmas", 128),
-        PLAYING_NEW_YEAR  ("playing_new_year",  128),
-        PUPPY             ("puppy",             512);
+        AI_NAME           ("ai_name",           64              ),
+        BACON             ("bacon",             512, Emoji.BACON),
+        CAKE              ("cake",              512, Emoji.CAKE ),
+        KITTY             ("kitty",             512, Emoji.CAT  ),
+        PLAYING           ("playing",           128             ),
+        PLAYING_CHRISTMAS ("playing_christmas", 128             ),
+        PLAYING_NEW_YEAR  ("playing_new_year",  128             ),
+        PUPPY             ("puppy",             512, Emoji.DOG  );
 
         private String dbReference;
         private int maxLength;
+        private Emoji emoji;
 
         Type(String dbReference, int maxLength){
             this.dbReference = dbReference;
             this.maxLength = maxLength;
+        }
+
+        Type(String dbReference, int maxLength, Emoji emoji){
+            this.dbReference = dbReference;
+            this.maxLength = maxLength;
+            this.emoji = emoji;
         }
 
         public static Type getByDbReference(String reference){
@@ -46,13 +56,24 @@ public class DonatorMessage {
     @Getter private DonatorUser owner;
     @Getter private Type type;
     @Getter private String message;
+    @Getter @Setter private long lastShown;
 
     public DonatorMessage(DonatorUser owner, Type type, String message){
         this.owner = owner;
         this.type = type;
         this.message = message;
+        lastShown = 0;
 
         logger.info("Added DonatorMessage with owner id " + owner.getId() + ", type " + type + " and message " + message);
     }
 
+    public boolean isAllowed(){
+        if((System.currentTimeMillis() - lastShown) > (24*60*60*1000)) return true;
+        return MiscUtils.randomInt(0,100) < 25;
+    }
+
+    @Override
+    public String toString() {
+        return message;
+    }
 }

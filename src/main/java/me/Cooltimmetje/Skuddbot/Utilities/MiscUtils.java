@@ -11,6 +11,12 @@ import java.util.Random;
  */
 public class MiscUtils {
 
+    private static Random rnd = new Random(); //TODO: Random manager
+
+    public static int randomInt(int min, int max) {
+        return rnd.nextInt((max - min) + 1) + min;
+    }
+
     public static boolean isInt(String str){
         try {
             int num = Integer.parseInt(str);
@@ -44,7 +50,6 @@ public class MiscUtils {
 
     public static String randomString(int len){
         final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        Random rnd = new Random(); //TODO: Random manager
 
         StringBuilder sb = new StringBuilder( len );
         for( int i = 0; i < len; i++ )

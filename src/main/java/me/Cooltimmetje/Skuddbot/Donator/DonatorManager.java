@@ -2,6 +2,7 @@ package me.Cooltimmetje.Skuddbot.Donator;
 
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,11 +23,13 @@ public class DonatorManager {
 
     private static ArrayList<DonatorMessage> messages = new ArrayList<>();
     private static ArrayList<DonatorUser> users = new ArrayList<>();
+    private static ArrayList<DonatorMessage.Type> presentTypes = new ArrayList<>();
 
     public DonatorManager(){
-        logger.info("New donator manager created, loading data.");
-
-        loadAll();
+        if(messages.isEmpty() && users.isEmpty()) {
+            logger.info("No donator data present, loading data.");
+            loadAll();
+        }
     }
 
     private void loadAll(){
@@ -46,13 +49,35 @@ public class DonatorManager {
             logger.info("Load messages...");
             qe = new QueryExecutor(Query.LOAD_ALL_MESSAGES);
             ResultSet rs = qe.executeQuery();
-            while(rs.next()) messages.add(new DonatorMessage(getUser(rs.getLong("discord_id")), DonatorMessage.Type.getByDbReference(rs.getString("data_name")), rs.getString("data_value")));
+            while(rs.next()) addMessage(getUser(rs.getLong("discord_id")), DonatorMessage.Type.getByDbReference(rs.getString("data_name")), rs.getString("data_value"));
 
         } catch (SQLException e){
             e.printStackTrace();
         } finally {
             qe.close();
         }
+    }
+
+    public DonatorMessage getMessage(DonatorMessage.Type type){
+        logger.info("Requesting donator message of type " + type);
+        if(!presentTypes.contains(type)) throw new IllegalArgumentException("Type " + type + " is not present.");
+        int attempts = 0;
+        DonatorMessage dm;
+        do {
+            do {
+                dm = messages.get(MiscUtils.randomInt(0, messages.size() - 1));
+                attempts++;
+            } while (dm.getType() != type);
+        } while (!dm.isAllowed());
+
+        logger.info("Found valid donator message in " + attempts + "attempts.");
+        dm.setLastShown(System.currentTimeMillis());
+        return dm;
+    }
+
+    public void addMessage(DonatorUser owner, DonatorMessage.Type type, String message){
+        if(!presentTypes.contains(type)) presentTypes.add(type);
+        messages.add(new DonatorMessage(owner, type, message));
     }
 
     public DonatorUser getUser(long id){

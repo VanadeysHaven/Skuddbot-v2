@@ -2,7 +2,10 @@ package me.Cooltimmetje.Skuddbot;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.*;
-import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
+import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.BaconCommand;
+import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.CakeCommand;
+import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.KittyCommand;
+import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.PuppyCommand;
 import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -26,7 +29,6 @@ public class Skuddbot {
     @Getter private DiscordApi api;
     private String token;
     private CommandManager commandManager;
-    private DonatorManager donatorManager;
 
     public Skuddbot(String token){
         logger.info("Received token.");
@@ -34,7 +36,6 @@ public class Skuddbot {
         logger.info("Creating command manager...");
         commandManager = new CommandManager();
         logger.info("Creating donator manager and loading data...");
-        donatorManager = new DonatorManager();
     }
 
     void buildAndLogin(){
@@ -44,7 +45,8 @@ public class Skuddbot {
 
     void registerCommands() {
         logger.info("Registering global commands...");
-        commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand());
+        commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
+                new BaconCommand());
     }
 
     void registerListeners() {
