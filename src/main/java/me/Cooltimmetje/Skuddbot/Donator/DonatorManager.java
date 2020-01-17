@@ -70,7 +70,7 @@ public class DonatorManager {
             } while (dm.getType() != type);
         } while (!dm.isAllowed());
 
-        logger.info("Found valid donator message in " + attempts + "attempts.");
+        logger.info("Found valid donator message in " + attempts + " attempts.");
         dm.setLastShown(System.currentTimeMillis());
         return dm;
     }
@@ -78,6 +78,18 @@ public class DonatorManager {
     public void addMessage(DonatorUser owner, DonatorMessage.Type type, String message){
         if(!presentTypes.contains(type)) presentTypes.add(type);
         messages.add(new DonatorMessage(owner, type, message));
+    }
+
+    public void addDonator(long id){
+        DonatorUser du = new DonatorUser(id);
+        users.add(du);
+        du.save();
+    }
+
+    public void removeDonator(long id){
+        DonatorUser du = getUser(id);
+        users.remove(du);
+        du.purge();
     }
 
     public DonatorUser getUser(long id){

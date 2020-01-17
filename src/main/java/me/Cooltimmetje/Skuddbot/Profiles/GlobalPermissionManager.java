@@ -36,6 +36,9 @@ public class GlobalPermissionManager {
 
     public boolean hasPermission(long id, PermissionLevel level){
         List<PermissionLevel> list = getPermissionsList(id);
+        if(level == PermissionLevel.DONATOR){
+            return list.contains(PermissionLevel.DONATOR);
+        }
         if(list.contains(PermissionLevel.TIMMY)) return true;
         if(list.contains(PermissionLevel.BOT_ADMIN)) return level != PermissionLevel.TIMMY;
         return list.contains(level);
