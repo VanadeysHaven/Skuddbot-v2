@@ -2,10 +2,12 @@ package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalPermissionManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
+import org.javacord.api.entity.channel.ChannelType;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.slf4j.Logger;
@@ -25,6 +27,7 @@ public class CommandManager {
     private static final Logger logger = LoggerFactory.getLogger(CommandManager.class);
     private static final ServerManager sm = new ServerManager();
     private static final ProfileManager pm = new ProfileManager();
+    private static final GlobalPermissionManager gpm = new GlobalPermissionManager();
 
     private ArrayList<Command> commands;
 
@@ -44,11 +47,13 @@ public class CommandManager {
     }
 
     public void process(Message message){
-        Server server = message.getServer().orElse(null);
-        String commandPrefix = "!";
-        if(server != null) {
-            commandPrefix = sm.getServer(server.getId()).getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
+        if(message.getChannel().getType() == ChannelType.PRIVATE_CHANNEL){
+            processPrivate(message);
+            return;
         }
+        Server server = message.getServer().orElse(null);
+        assert server != null;
+        String commandPrefix = sm.getServer(server.getId()).getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
         if(!message.getContent().startsWith(commandPrefix)) return;
         String messageContent = message.getContent().substring(commandPrefix.length());
         String requestedInvoker = messageContent.split(" ")[0];
@@ -57,12 +62,34 @@ public class CommandManager {
         for(Command command : commands){
             for(String invoker : command.getInvokers()){
                 if (requestedInvoker.equals(invoker)) {
-                    if(su.hasPermissionLevel(command.getRequiredPermission())) {
-                        command.run(message, messageContent);
+                    if (command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
+                        if (su.hasPermissionLevel(command.getRequiredPermission())) {
+                            command.run(message, messageContent);
+                        } else {
+                            MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    private void processPrivate(Message message){
+        String commandPrefix = "!";
+        if(!message.getContent().startsWith(commandPrefix)) return;
+        String messageContent = message.getContent().substring(commandPrefix.length());
+        String requestedInvoker = messageContent.split(" ")[0];
+        for(Command command : commands){
+            for(String invoker : command.getInvokers()){
+                if(requestedInvoker.equals(invoker)){
+                    if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.DM){
+                        if(gpm.hasPermission(message.getAuthor().getId(), command.getRequiredPermission())){
+                            command.run(message, messageContent);
+                        }
                     } else {
                         MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
                     }
-                    return;
                 }
             }
         }

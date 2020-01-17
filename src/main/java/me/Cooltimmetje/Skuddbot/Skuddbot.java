@@ -2,6 +2,8 @@ package me.Cooltimmetje.Skuddbot;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.*;
+import me.Cooltimmetje.Skuddbot.Commands.Donator.GameCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Donator.ManageMessageCommand;
 import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.BaconCommand;
 import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.CakeCommand;
 import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.KittyCommand;
@@ -47,7 +49,7 @@ public class Skuddbot {
     void registerCommands() {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
-                new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand());
+                new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand());
     }
 
     void registerListeners() {

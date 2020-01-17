@@ -15,7 +15,7 @@ import org.javacord.api.entity.message.Message;
 public class PingCommand extends Command {
 
     public PingCommand(){
-        super(new String[] {"ping"}, "Ping command for testing bot responses.", PermissionLevel.DEFAULT);
+        super(new String[] {"ping"}, "Ping command for testing bot responses.", PermissionLevel.DEFAULT, Location.BOTH);
     }
 
     @Override

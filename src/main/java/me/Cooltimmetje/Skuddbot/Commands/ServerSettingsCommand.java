@@ -24,17 +24,12 @@ public class ServerSettingsCommand extends Command {
     private ServerManager sm;
 
     public ServerSettingsCommand(){
-        super(new String[]{"serversettings"}, "Change and view server settings.", PermissionLevel.SERVER_ADMIN);
+        super(new String[]{"serversettings"}, "Change and view server settings.", PermissionLevel.SERVER_ADMIN, Location.SERVER);
         sm = new ServerManager();
     }
 
     @Override
     public void run(Message message, String content){
-        boolean allowAccess = true; //TODO: Implement permissions.
-        if(!allowAccess) {
-            MessagesUtils.addReaction(message, Emoji.X, "You do not have permission to do this.");
-            return;
-        }
         String[] args = content.split(" ");
         Server server = message.getServer().orElse(null);
         assert server != null;

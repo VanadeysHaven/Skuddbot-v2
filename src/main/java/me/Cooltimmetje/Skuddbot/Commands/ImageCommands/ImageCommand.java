@@ -19,7 +19,7 @@ public abstract class ImageCommand extends Command {
     private DonatorMessage.Type type;
 
     public ImageCommand(String[] invokers, String description, DonatorMessage.Type type) {
-        super(invokers, description, PermissionLevel.DEFAULT);
+        super(invokers, description, PermissionLevel.DEFAULT, Location.BOTH);
         this.type = type;
     }
 

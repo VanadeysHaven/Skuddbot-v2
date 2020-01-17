@@ -16,13 +16,23 @@ public abstract class Command {
     @Getter private String[] invokers;
     @Getter private String description;
     @Getter private PermissionLevel requiredPermission;
+    @Getter private Location allowedLocation;
 
-    public Command(String[] invokers, String description, PermissionLevel requiredPermission) {
+    public Command(String[] invokers, String description, PermissionLevel requiredPermission, Location allowedLocation) {
         this.invokers = invokers;
         this.description = description;
         this.requiredPermission = requiredPermission;
+        this.allowedLocation = allowedLocation;
+    }
+
+    public Command(String[] invokers, String description){
+        this(invokers, description, PermissionLevel.DEFAULT, Location.SERVER);
     }
 
     public abstract void run(Message message, String content);
+
+    public enum Location {
+        SERVER, DM, BOTH
+    }
 
 }

@@ -34,7 +34,7 @@ public class ManageAdminsCommand extends Command {
             "If you have any questions regarding this, please contact Timmy.";
 
     public ManageAdminsCommand() {
-        super(new String[]{"admins"}, "Used to add and remove admins.", PermissionLevel.TIMMY);
+        super(new String[]{"admins"}, "Used to add and remove admins.", PermissionLevel.TIMMY, Location.BOTH);
         if(Constants.adminUsers.isEmpty()){
             logger.info("No admins present, loading from database...");
 

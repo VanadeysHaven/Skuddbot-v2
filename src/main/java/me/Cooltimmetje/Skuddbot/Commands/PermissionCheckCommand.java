@@ -20,7 +20,7 @@ public class PermissionCheckCommand extends Command {
     private static ProfileManager pm = new ProfileManager();
 
     public PermissionCheckCommand() {
-        super(new String[]{"permcheck"}, "Command used to check what permission levels you have access to.", PermissionLevel.DEFAULT);
+        super(new String[]{"permcheck"}, "Command used to check what permission levels you have access to.");
     }
 
     @Override

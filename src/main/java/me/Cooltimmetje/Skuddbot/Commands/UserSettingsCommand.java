@@ -2,7 +2,6 @@ package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.LevelUpNotification;
-import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -32,7 +31,7 @@ public class UserSettingsCommand extends Command {
 
 
     public UserSettingsCommand() {
-        super(new String[]{"usersettings"}, "View and change user settings with this command.", PermissionLevel.DEFAULT);
+        super(new String[]{"usersettings"}, "View and change user settings with this command.");
         pm = new ProfileManager();
     }
 
