@@ -131,6 +131,9 @@ create table donator_has_data(
     foreign key (discord_id) references donators(id)
 );
 
+create table admin_users(
+    discord_id bigint primary key
+);
 
 delimiter //
 
@@ -203,7 +206,6 @@ INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) V
 INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) VALUES (52, 3, 123, 'https://www.biggerbolderbaking.com/wp-content/uploads/bb-plugin/cache/BBB28-Funfetti-Birthday-Cake-Thumbnail-v.2-square.jpg');
 INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) VALUES (53, 3, 123, 'https://www.biggerbolderbaking.com/wp-content/uploads/bb-plugin/cache/NakedCakeThumb-square.jpg');
 INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) VALUES (54, 3, 123, 'https://www.biggerbolderbaking.com/wp-content/uploads/bb-plugin/cache/BBB198-Cinnamon_Roll_Cake-square.jpg');
-INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) VALUES (55, 3, 123, 'https://www.biggerbolderbaking.com/wp-content/uploads/bb-plugin/cache/BBB57-Double-Rainbow-Cake-Thumbnail-Final-square.jpg');
 INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) VALUES (56, 3, 123, 'https://www.biggerbolderbaking.com/wp-content/uploads/bb-plugin/cache/1C5A0658-square.jpg');
 INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) VALUES (57, 3, 123, 'https://keyassets-p2.timeincuk.net/wp/prod/wp-content/uploads/sites/53/2019/07/pick-and-mix-choc-cake-920x605.jpg');
 INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) VALUES (58, 3, 123, 'https://blog.williams-sonoma.com/wp-content/uploads/2018/04/apr-26-Neapolitan-Ice-Cream-Cake.jpg');
@@ -432,6 +434,7 @@ INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) V
 INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) VALUES (336, 8, 123, 'https://cdn.discordapp.com/attachments/285882951831388161/662634621824925706/ENWx7BHX0AAY_sF.png');
 INSERT INTO skuddbot_v2.donator_has_data (id, data_id, discord_id, data_value) VALUES (337, 8, 123, 'https://cdn.discordapp.com/attachments/285882951831388161/662639926030106634/DSC01608.JPG');
 
+
 # FOR PRODUCTION: RUN UNTIL THIS LINE
 
 insert into servers (id, server_name) value (123, 'Dank Meme\'s');
@@ -443,6 +446,7 @@ insert ignore into stats (stat_name) value ('xp');
 insert into server_has_settings (setting_id, server_id, setting_value) value ((select get_server_setting_id('xp_min')), 123, '5') on duplicate key update setting_value='7';
 insert into user_has_settings (setting_id, user_id, setting_value) values ((select get_user_setting_id('lvl_up_notify')), 1, 'MESSAGE') on duplicate key update setting_value='DM';
 insert into user_has_stats(stat_id, user_id, stat_value) value ((select get_stat_id('xp')), 1, '5') on duplicate key update stat_value='7';
+insert into donators(id) value (76593288865394688);
 
 # FOR TESTING: RUN UNTIL THIS LINE
 
@@ -458,3 +462,14 @@ select us.setting_name, uhs.setting_value from user_has_settings uhs join user_s
 select stat_name from stats;
 select s.stat_name, uhs.stat_value from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=2;
 delete uhs from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=1 and s.stat_name='xp';
+
+select * from donators;
+select data_name, discord_id, data_value from donator_has_data dhd join donator_data dd on dhd.data_id = dd.id;
+insert into donators(id, ping_message) value (3742, null) on duplicate key update ping_message='hi';
+delete from donator_has_data where discord_id=76593288865394688;
+delete from donators where id=76593288865394688;
+
+insert into admin_users(discord_id) value (76593288865394688);
+delete from admin_users where discord_id=76593288865394688;
+select * from admin_users;
+
