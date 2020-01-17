@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Main;
@@ -28,7 +29,7 @@ public class StatsCommand extends Command {
     private ProfileManager pm = new ProfileManager();
 
     public StatsCommand(){
-        super(new String[]{"stats"}, "View stats from users with this command.");
+        super(new String[]{"stats"}, "View stats from users with this command.", PermissionLevel.DEFAULT);
     }
 
     @Override

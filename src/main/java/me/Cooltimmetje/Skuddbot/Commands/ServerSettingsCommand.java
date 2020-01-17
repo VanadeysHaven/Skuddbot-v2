@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
@@ -23,7 +24,7 @@ public class ServerSettingsCommand extends Command {
     private ServerManager sm;
 
     public ServerSettingsCommand(){
-        super(new String[]{"serversettings"}, "Change and view server settings.");
+        super(new String[]{"serversettings"}, "Change and view server settings.", PermissionLevel.SERVER_ADMIN);
         sm = new ServerManager();
     }
 

@@ -88,4 +88,12 @@ public class DonatorManager {
         return null;
     }
 
+    public boolean isDonator(long id){
+        for(DonatorUser user : users)
+            if(user.getId() == id)
+                return true;
+
+        return false;
+    }
+
 }

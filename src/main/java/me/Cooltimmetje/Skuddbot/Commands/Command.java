@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import org.javacord.api.entity.message.Message;
 
 /**
@@ -14,10 +15,12 @@ public abstract class Command {
 
     @Getter private String[] invokers;
     @Getter private String description;
+    @Getter private PermissionLevel requiredPermission;
 
-    public Command(String[] invokers, String description) {
+    public Command(String[] invokers, String description, PermissionLevel requiredPermission) {
         this.invokers = invokers;
         this.description = description;
+        this.requiredPermission = requiredPermission;
     }
 
     public abstract void run(Message message, String content);

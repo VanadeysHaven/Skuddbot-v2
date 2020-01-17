@@ -3,6 +3,7 @@ package me.Cooltimmetje.Skuddbot.Commands.ImageCommands;
 import me.Cooltimmetje.Skuddbot.Commands.Command;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorMessage;
+import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import org.javacord.api.entity.message.Message;
 
 /**
@@ -18,7 +19,7 @@ public abstract class ImageCommand extends Command {
     private DonatorMessage.Type type;
 
     public ImageCommand(String[] invokers, String description, DonatorMessage.Type type) {
-        super(invokers, description);
+        super(invokers, description, PermissionLevel.DEFAULT);
         this.type = type;
     }
 

@@ -40,7 +40,12 @@ public enum Query {
 
     //DONATORS
     LOAD_ALL_DONATORS("select * from donators;"),
-    LOAD_ALL_MESSAGES("select data_name, discord_id, data_value from donator_has_data dhd join donator_data dd on dhd.data_id = dd.id;");
+    LOAD_ALL_MESSAGES("select data_name, discord_id, data_value from donator_has_data dhd join donator_data dd on dhd.data_id = dd.id;"),
+
+    //ADMINS
+    ADD_ADMIN("insert into admin_users (discord_id) value (?);"),
+    DELETE_ADMIN("delete from admin_users where discord_id=?;"),
+    LOAD_ADMINS("select * from admin_users;");
 
     private String query;
 
