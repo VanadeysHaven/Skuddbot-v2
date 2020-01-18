@@ -143,6 +143,12 @@ begin
     return (select id from server_settings where setting_name=settingReference);
 end //
 
+create function get_donator_type_id(typeReference text)
+returns int
+begin
+    return (select id from donator_data where data_name=typeReference);
+end //
+
 create function get_user_setting_id(settingReference text)
 returns int
 begin
@@ -447,6 +453,7 @@ insert into server_has_settings (setting_id, server_id, setting_value) value ((s
 insert into user_has_settings (setting_id, user_id, setting_value) values ((select get_user_setting_id('lvl_up_notify')), 1, 'MESSAGE') on duplicate key update setting_value='DM';
 insert into user_has_stats(stat_id, user_id, stat_value) value ((select get_stat_id('xp')), 1, '5') on duplicate key update stat_value='7';
 insert into donators(id) value (76593288865394688);
+insert into admin_users(discord_id) value (76593288865394688);
 
 # FOR TESTING: RUN UNTIL THIS LINE
 
@@ -468,6 +475,7 @@ select data_name, discord_id, data_value from donator_has_data dhd join donator_
 insert into donators(id, ping_message) value (3742, null) on duplicate key update ping_message='hi';
 delete from donator_has_data where discord_id=76593288865394688;
 delete from donators where id=76593288865394688;
+insert into donator_has_data(data_id, discord_id, data_value) value (get_donator_type_id('no_u'), 69, 'new number who dis');
 
 insert into admin_users(discord_id) value (76593288865394688);
 delete from admin_users where discord_id=76593288865394688;
