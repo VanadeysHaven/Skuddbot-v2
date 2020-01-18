@@ -9,6 +9,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
+import org.javacord.api.entity.channel.ChannelType;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 
@@ -26,11 +27,12 @@ public class MessageListener {
 
     public static void run(Message message){
         String content = message.getContent();
+        if(message.getAuthor().isBotUser()) return;
+        if(message.getChannel().getType() != ChannelType.SERVER_TEXT_CHANNEL) return;
         Server server = message.getServer().orElse(null); assert server != null;
         SkuddServer ss = sm.getServer(server.getId());
         String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX);
         if(content.startsWith(commandPrefix)) return;
-        if(message.getAuthor().isBotUser()) return;
 
         SkuddUser su = pm.getUser(server.getId(), message.getAuthor().getId());
         su.getStats().incrementInt(Stat.EXPERIENCE, MiscUtils.randomInt(ss.getSettings().getInt(ServerSetting.XP_MIN), ss.getSettings().getInt(ServerSetting.XP_MAX)));
