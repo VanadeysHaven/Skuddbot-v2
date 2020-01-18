@@ -67,9 +67,13 @@ public class StatsCommand extends Command {
 
         for(Stat.Category category : Stat.Category.values()){
             if(category != Stat.Category.NO_CATEGORY) eb.addField("\u200B", "__" + category.getName() + ":__");
-            for(Stat stat : Stat.values()){
-                if(stat.getCategory() != category) continue;
-                eb.addInlineField("__" + stat.getName() + ":__", su.getStats().getString(stat) + " " + stat.getSuffix());
+            for(Stat stat : Stat.values()) {
+                if (stat.getCategory() != category) continue;
+                if (stat == Stat.EXPERIENCE) {
+                    eb.addInlineField("__" + stat.getName() + ":__", su.getStats().formatLevel());
+                } else {
+                    eb.addInlineField("__" + stat.getName() + ":__", su.getStats().getString(stat) + " " + stat.getSuffix());
+                }
             }
         }
 

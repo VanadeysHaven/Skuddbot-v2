@@ -17,6 +17,8 @@ public abstract class Command {
 
     private static final String HELP_FORMAT =  "- {0}\n*{1}*";
     private static final int MAX_ALIASES = 3;
+    private static final PermissionLevel DEFAULT_PERMISSION = PermissionLevel.DEFAULT;
+    private static final Location DEFAULT_LOCATION = Location.SERVER;
 
     @Getter private String[] invokers;
     @Getter private String description;
@@ -31,7 +33,7 @@ public abstract class Command {
     }
 
     public Command(String[] invokers, String description){
-        this(invokers, description, PermissionLevel.DEFAULT, Location.SERVER);
+        this(invokers, description, DEFAULT_PERMISSION, DEFAULT_LOCATION);
     }
 
     public abstract void run(Message message, String content);

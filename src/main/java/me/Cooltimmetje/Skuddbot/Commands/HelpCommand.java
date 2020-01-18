@@ -14,7 +14,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 
 /**
- * Help for commmands
+ * Help for commands
  *
  * @author Tim (Cooltimmetje)
  * @version ALPHA-2.0

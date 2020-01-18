@@ -17,7 +17,7 @@ import java.util.ArrayList;
 @Getter
 public enum Stat {
 
-    XP                          ("xp",                      ValueType.INTEGER, "Experience",             "xp",        "0",  true,  Category.NO_CATEGORY,     true ),
+    EXPERIENCE                  ("xp",                      ValueType.INTEGER, "Experience",             "xp",        "0",  true,  Category.NO_CATEGORY,     true ),
     CHALLENGE_WINS              ("chlng_wins",              ValueType.INTEGER, "Wins",                   "wins",      "0",  true,  Category.CHALLENGE,       true ),
     CHALLENGE_LOSSES            ("chlng_losses",            ValueType.INTEGER, "Losses",                 "Losses",    "0",  true,  Category.CHALLENGE,       true ),
     CHALLENGE_WINSTREAK         ("chlng_winstreak",         ValueType.INTEGER, "Winstreak",              "wins",      "0",  true,  Category.CHALLENGE,       true ),

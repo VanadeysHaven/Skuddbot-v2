@@ -2,8 +2,12 @@ package me.Cooltimmetje.Skuddbot.Profiles.Users.Stats;
 
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
@@ -19,13 +23,18 @@ import java.util.HashMap;
  */
 public class StatsContainer {
 
+    private static final ServerManager sm = new ServerManager();
+    private static final ProfileManager pm = new ProfileManager();
+
     private Identifier id;
     private HashMap<Stat,String> stats;
+    private int lastLevel;
 
     public StatsContainer(Identifier id, StatsSapling sapling){
         this.id = id;
         this.stats = new HashMap<>();
         processStatsSapling(sapling);
+        lastLevel = getLevelProgress()[0];
     }
 
     private void processStatsSapling(StatsSapling sapling){
@@ -45,6 +54,7 @@ public class StatsContainer {
 
     public void setString(Stat stat, String value, boolean save){
         if(!checkType(value, stat)) throw new IllegalArgumentException("Value " + value + " is unsuitable for stat " + stat + "; not of type " + stat.getType());
+//        if(!pm.getUser(id).getSettings().getBoolean(UserSetting.TRACK_ME)) return; //TODO FIX
         this.stats.put(stat, value);
         if(save) save(stat);
     }
@@ -117,5 +127,43 @@ public class StatsContainer {
         }
 
         return type == ValueType.STRING;
+    }
+
+    public int[] getLevelProgress(){ //[level,progress,cur,lvlup]
+        SkuddServer ss = sm.getServer(id.getServerId());
+        int playerExperience = getInt(Stat.EXPERIENCE);
+        int level = 1;
+        int base = ss.getSettings().getInt(ServerSetting.XP_BASE);
+        double multiplier = ss.getSettings().getDouble(ServerSetting.XP_MULTIPLIER);
+
+        int lvlUpReq = base;
+        while (playerExperience >= lvlUpReq) {
+            playerExperience -= lvlUpReq;
+            level++;
+            lvlUpReq = (int) (base * Math.pow(multiplier, level - 1));
+        }
+        int progress = (int) ((double) playerExperience / (double) lvlUpReq * 100);
+
+        return new int[]{level, progress, playerExperience, lvlUpReq};
+    }
+
+    public boolean hasLeveledUp(){
+        int[] lvl = getLevelProgress();
+        if(lvl[0] != lastLevel){
+            lastLevel = lvl[0];
+            return true;
+        }
+
+        return false;
+    }
+
+    public String formatLevel(){
+        int[] lvl = getLevelProgress();
+        return "Level " + lvl[0] + " (" + lvl[1] + "%)";
+    }
+
+    public String formatLevelLong(){
+        int[] lvl = getLevelProgress();
+        return "Level " + lvl[0] + " | Level progress: " + lvl[2] + "/" + lvl[3] + " (" + lvl[1] + "%) | Total experience: " + getInt(Stat.EXPERIENCE) + " XP";
     }
 }

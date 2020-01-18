@@ -10,6 +10,7 @@ import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.KittyCommand;
 import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.PuppyCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageAdminsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageDonatorsCommand;
+import me.Cooltimmetje.Skuddbot.Listeners.MessageListener;
 import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -50,14 +51,17 @@ public class Skuddbot {
     void registerCommands() {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
-                new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand());
+                new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(),
+                new ExperienceCommand());
     }
 
     void registerListeners() {
         logger.info("Registering MessageCreateListener...");
         api.addMessageCreateListener(event -> this.commandManager.process(event.getMessage()));
+        api.addMessageCreateListener(event -> MessageListener.run(event.getMessage()));
         logger.info("Registering ReactionAddListener...");
         api.addReactionAddListener(ReactionAddListener::run);
+
     }
 
 }
