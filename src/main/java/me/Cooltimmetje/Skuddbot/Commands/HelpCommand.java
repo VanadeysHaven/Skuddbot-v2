@@ -22,7 +22,7 @@ import java.util.HashMap;
  */
 public class HelpCommand extends Command {
 
-    private static final String MESSAGE_FORMAT = "Commands for **{0}** in {1} | `[Page {2}/{3}]`\n\n" +
+    private static final String MESSAGE_FORMAT = "Commands for **{0}** in **{1}** | `[Page {2}/{3}]`\n\n" +
             "{4}\n" +
             "> *View different pages using `!help [page]`.*\n> *{5}*";
     private static final int PAGE_SIZE = 5;
@@ -80,7 +80,7 @@ public class HelpCommand extends Command {
             MessagesUtils.addReaction(message, Emoji.MAILBOX_WITH_MAIL, "Sliding into the dm's... :smirk:");
         }
         author.getPrivateChannel().orElse(author.openPrivateChannel().join()).sendMessage(MessageFormat.format(MESSAGE_FORMAT,
-                author.getMentionTag(), helpLocation, page, pages, commands, helpLocation.equals("DM's") ? "Use the help command in a server to view the commands available in that server." : "Use `!help dm` to return to DM help."));
+                author.getDiscriminatedName(), helpLocation, page, pages, commands, helpLocation.equals("DM's") ? "Use the help command in a server to view the commands available in that server." : "Use `!help dm` to return to DM help."));
     }
 
 
