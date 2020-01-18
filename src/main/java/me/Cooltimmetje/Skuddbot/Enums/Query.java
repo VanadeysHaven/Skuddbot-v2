@@ -44,6 +44,7 @@ public enum Query {
     UPDATE_DONATOR("insert into donators(id, ping_message) value (?,?) on duplicate key update ping_message=?;"),
     PURGE_DONATOR_DATA("delete from donator_has_data where discord_id=?;"),
     DELETE_DONATOR("delete from donators where id=?;"),
+    INSERT_DONATOR_MESSAGE("insert into donator_has_data(data_id, discord_id, data_value) value (get_donator_type_id(?),?,?);"),
 
     //ADMINS
     ADD_ADMIN("insert into admin_users (discord_id) value (?);"),

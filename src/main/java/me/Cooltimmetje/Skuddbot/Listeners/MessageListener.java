@@ -35,7 +35,7 @@ public class MessageListener {
         SkuddUser su = pm.getUser(server.getId(), message.getAuthor().getId());
         su.getStats().incrementInt(Stat.EXPERIENCE, MiscUtils.randomInt(ss.getSettings().getInt(ServerSetting.XP_MIN), ss.getSettings().getInt(ServerSetting.XP_MAX)));
         if(su.getStats().hasLeveledUp()){
-            MessagesUtils.addReaction(message, Emoji.ARROW_UP, "**" + message.getAuthor().getDisplayName() + "** has leveled up to **level " + su.getStats().getLevelProgress()[0] + "**.");
+            MessagesUtils.addReaction(message, Emoji.ARROW_UP, "**" + message.getAuthor().getDisplayName() + "** has leveled up to **level " + su.getStats().getLevelProgress()[0] + "**."); //todo implement setting
         }
     }
 

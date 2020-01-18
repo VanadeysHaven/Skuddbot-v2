@@ -75,9 +75,12 @@ public class DonatorManager {
         return dm;
     }
 
-    public void addMessage(DonatorUser owner, DonatorMessage.Type type, String message){
+    public DonatorMessage addMessage(DonatorUser owner, DonatorMessage.Type type, String message){
         if(!presentTypes.contains(type)) presentTypes.add(type);
-        messages.add(new DonatorMessage(owner, type, message));
+        DonatorMessage dMsg = new DonatorMessage(owner, type, message);
+        messages.add(dMsg);
+
+        return dMsg;
     }
 
     public void addDonator(long id){
@@ -88,6 +91,7 @@ public class DonatorManager {
 
     public void removeDonator(long id){
         DonatorUser du = getUser(id);
+        messages.removeIf(message -> message.getOwner().getId() == id);
         users.remove(du);
         du.purge();
     }
@@ -103,6 +107,14 @@ public class DonatorManager {
     public boolean isDonator(long id){
         for(DonatorUser user : users)
             if(user.getId() == id)
+                return true;
+
+        return false;
+    }
+
+    public boolean doesMessageExist(DonatorMessage.Type type, String msg){
+        for(DonatorMessage message : messages)
+            if(type == message.getType() && msg.equals(message.getMessage()))
                 return true;
 
         return false;

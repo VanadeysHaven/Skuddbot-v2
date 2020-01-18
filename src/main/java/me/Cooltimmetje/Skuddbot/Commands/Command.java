@@ -1,7 +1,10 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
+import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import org.javacord.api.entity.message.Message;
 
 import java.text.MessageFormat;
@@ -14,6 +17,10 @@ import java.text.MessageFormat;
  * @version ALPHA-2.0
  */
 public abstract class Command {
+
+    protected static final ServerManager sm = new ServerManager();
+    protected static final ProfileManager pm = new ProfileManager();
+    protected static final DonatorManager dm = new DonatorManager();
 
     private static final String HELP_FORMAT =  "- {0}\n*{1}*";
     private static final int MAX_ALIASES = 3;

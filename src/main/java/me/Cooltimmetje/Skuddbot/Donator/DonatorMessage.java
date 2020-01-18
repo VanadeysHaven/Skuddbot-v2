@@ -2,10 +2,14 @@ package me.Cooltimmetje.Skuddbot.Donator;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
 
 /**
  * A donator message.
@@ -70,6 +74,19 @@ public class DonatorMessage {
     public boolean isAllowed(){
         if((System.currentTimeMillis() - lastShown) > (24*60*60*1000)) return true;
         return MiscUtils.randomInt(0,100) < 25;
+    }
+
+    public void save(){
+        QueryExecutor qe = null;
+        try {
+            qe = new QueryExecutor(Query.INSERT_DONATOR_MESSAGE).setString(1, type.getDbReference()).setLong(2, owner.getId()).setString(3, message);
+            qe.execute();
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            assert qe != null;
+            qe.close();
+        }
     }
 
     @Override
