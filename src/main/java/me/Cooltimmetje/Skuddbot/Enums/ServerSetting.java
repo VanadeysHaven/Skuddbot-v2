@@ -27,7 +27,7 @@ public enum ServerSetting {
     WELCOME_MESSAGE         ("welcome_message",         "This message will be posted when a new user joins the server.",               ValueType.STRING,  "null",                 Category.WELCOME_GOODBYE, true ), //TODO
     GOODBYE_MESSAGE         ("goodbye_message",         "This message will be posted when a user leaves the server.",                  ValueType.STRING,  "null",                 Category.WELCOME_GOODBYE, true ), //TODO
     WELCOME_GOODBYE_CHANNEL ("welcome_goodbye_channel", "This is the channel where the welcome/goodbye messages will be posted to.",   ValueType.LONG,    "null",                 Category.WELCOME_GOODBYE, false), //TODO
-    ADMIN_ROLE              ("admin_role",              "This role will have access to commands that require elevated permissions.",   ValueType.STRING,  "null",                 Category.DISCORD,         true ), //TODO
+    ADMIN_ROLE              ("admin_role",              "This role will have access to commands that require elevated permissions.",   ValueType.STRING,  "null",                 Category.DISCORD,         true ),
     ROLE_ON_JOIN            ("role_on_join",            "This role will be granted to new users when they join the server.",           ValueType.STRING,  "null",                 Category.DISCORD,         true ), //TODO
     ARENA_NAME              ("arena_name",              "This is the name of the arena used in various minigames.",                    ValueType.STRING,  "Skuddbot's Colosseum", Category.MINIGAMES,       true ), //TODO
     COMMAND_PREFIX          ("command_prefix",          "The command prefix you can change this to avoid confilcts with other bots.",  ValueType.STRING,  "!",                    Category.COMMANDS,        false);

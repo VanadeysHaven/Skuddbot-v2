@@ -36,10 +36,10 @@ public abstract class Command {
 
     public abstract void run(Message message, String content);
 
-    public String formatHelp(String invoker){
+    public String formatHelp(String commandPrefix){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < MAX_ALIASES && i < invokers.length; i++){
-            sb.append("`").append(invoker).append(invokers[i]).append("`, ");
+            sb.append("`").append(commandPrefix).append(invokers[i]).append("`, ");
         }
         String invokerString = sb.toString();
         invokerString = invokerString.substring(0, invokerString.length() - 2);

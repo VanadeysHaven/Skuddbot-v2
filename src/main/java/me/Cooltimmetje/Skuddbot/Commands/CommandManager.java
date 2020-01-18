@@ -53,12 +53,14 @@ public class CommandManager {
     public String getHelp(long userId, long serverId, int amount, int offset){
         PermissionManager permissions;
         Command.Location location;
+        String commandPrefix = "!";
         if(serverId == -1){
             permissions = new PermissionManager(userId);
             location = Command.Location.DM;
         } else {
             permissions = pm.getUser(serverId, userId).getPermissions();
             location = Command.Location.SERVER;
+            commandPrefix = sm.getServer(serverId).getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
         }
 
         StringBuilder sb = new StringBuilder();
@@ -69,7 +71,7 @@ public class CommandManager {
             if(permissions.hasPermission(command.getRequiredPermission())) {
                 if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == location) {
                     if(position >= offset)
-                        sb.append(command.formatHelp("!")).append("\n");
+                        sb.append(command.formatHelp(commandPrefix)).append("\n");
                     position++;
                 }
             }

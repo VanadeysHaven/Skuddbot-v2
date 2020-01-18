@@ -24,7 +24,7 @@ public class ServerSettingsCommand extends Command {
     private ServerManager sm;
 
     public ServerSettingsCommand(){
-        super(new String[]{"serversettings"}, "Change and view server settings.", PermissionLevel.SERVER_ADMIN, Location.SERVER);
+        super(new String[]{"serversettings", "ssettings"}, "Change and view server settings.", PermissionLevel.SERVER_ADMIN, Location.SERVER);
         sm = new ServerManager();
     }
 
@@ -73,14 +73,16 @@ public class ServerSettingsCommand extends Command {
             tag.addRow(new TableRow(setting.toString(), ss.getSettings().getString(setting)));
         }
         String table = new TableDrawer(tag.generateArray()).drawTable();
+        String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX);
 
-        String sb = "Server settings for " + server.getName() + "\n```\n" + table + "\n```\n" + //TODO: FORMATTING AND COMMAND
-                "Type `!serversettings <setting>` for more information about that setting." +
-                "Type `!serversettings <setting> <newValue>` to change it.";
+        String sb = "Server settings for **" + server.getName() + "**\n```\n" + table + "\n```\n" +
+                "Type `" + commandPrefix + "serversettings <setting>` for more information about that setting." +
+                "Type `" + commandPrefix + "serversettings <setting> <newValue>` to change it.";
         message.getChannel().sendMessage(sb);
     }
 
     private void showDetails(Message message, SkuddServer ss, ServerSetting setting){
+        String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX);
         String sb = "```\n" +
                 "Setting:       " + setting + "\n" +
                 "Description:   " + setting.getDescription() + "\n" +
@@ -88,7 +90,7 @@ public class ServerSettingsCommand extends Command {
                 "Category:      " + setting.getCategory() + "\n" +
                 "Default value: " + setting.getDefaultValue() + "\n" +
                 "Current value: " + ss.getSettings().getString(setting) + "\n" +
-                "```\n" + "To change the value type: `!serversettings " + setting + " <newValue>`";
+                "```\n" + "To change the value type: `" + commandPrefix + "serversettings " + setting + " <newValue>`";
         message.getChannel().sendMessage(sb);
     }
 

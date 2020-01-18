@@ -2,8 +2,11 @@ package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.LevelUpNotification;
+import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
@@ -26,13 +29,13 @@ import java.util.Arrays;
  */
 public class UserSettingsCommand extends Command {
 
-    private ProfileManager pm;
+    private static final ProfileManager pm = new ProfileManager();
+    private static final ServerManager sm = new ServerManager();
     private static Logger logger = LoggerFactory.getLogger(UserSettingsCommand.class);
 
 
     public UserSettingsCommand() {
-        super(new String[]{"usersettings"}, "View and change user settings with this command.");
-        pm = new ProfileManager();
+        super(new String[]{"usersettings","usettings"}, "View and change user settings with this command.");
     }
 
     @Override
@@ -82,22 +85,30 @@ public class UserSettingsCommand extends Command {
             tag.addRow(new TableRow(setting.toString(), su.getSettings().getString(setting)));
         }
         String table = new TableDrawer(tag.generateArray()).drawTable();
+        Server server = message.getServer().orElse(null);
+        assert server != null;
+        SkuddServer ss = sm.getServer(server.getId());
+        String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
 
-        String msg = "User settings for " + user.getDisplayName() + "\n```\n" + table + "\n```\n" + //TODO: FORMATTING AND COMMAND
-                "Type `!usersettings <setting>` for more information about that setting." +
-                "Type `!usersettings <setting> <newValue>` to change it.";
+        String msg = "User settings for **" + user.getDisplayName() + "** in **" + server.getName() + "**\n```\n" + table + "\n```\n" +
+                "Type `" + commandPrefix + "usersettings <setting>` for more information about that setting." +
+                "Type `" + commandPrefix + "usersettings <setting> <newValue>` to change it.";
 
         message.getChannel().sendMessage(msg);
     }
 
     private void showDetails(Message message, SkuddUser su, UserSetting setting){
+        Server server = message.getServer().orElse(null);
+        assert server != null;
+        SkuddServer ss = sm.getServer(server.getId());
+        String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
         String msg = "```\n" +
                 "Setting:       " + setting + "\n" +
                 "Description:   " + setting.getDescription() + "\n" +
                 "Type:          " + setting.getType() + "\n" +
                 "Default value: " + setting.getDefaultValue() + "\n" +
                 "Current value: " + su.getSettings().getString(setting) + "\n" +
-                "```\n" + "To change the value type: `!usersettings " + setting + " <newValue>`";
+                "```\n" + "To change the value type: `" + commandPrefix + "usersettings " + setting + " <newValue>`";
 
         message.getChannel().sendMessage(msg);
     }

@@ -1,10 +1,12 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.PermissionManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
@@ -36,8 +38,9 @@ public class StatsCommand extends Command {
         String[] args = content.split(" ");
         MessageAuthor author = message.getAuthor(); assert author != null;
         User user = message.getAuthor().asUser().orElse(null); assert user != null;
-        if(!message.getMentionedUsers().isEmpty())
+        if(!message.getMentionedUsers().isEmpty()) {
             user = message.getMentionedUsers().get(0);
+        }
         if(args.length >= 2) if(MiscUtils.isLong(args[1])) {
             try {
                 user = Main.getSkuddbot().getApi().getUserById(Long.parseLong(args[1])).get();
@@ -46,13 +49,14 @@ public class StatsCommand extends Command {
             }
         }
         Server server = message.getServer().orElse(null); assert server != null;
+        PermissionManager authorPermissions = pm.getUser(server.getId(), author.getId()).getPermissions();
         SkuddUser su = pm.getUser(server.getId(), user.getId());
         if(args.length >= 5) {
-            boolean hasPermission = true; //TODO: PERMISSION
+            boolean hasPermission = authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN);
             if(hasPermission) editValue(message, content, su, user, server);
             return;
         }
-        if(user.getId() != author.getId() && su.getSettings().getBoolean(UserSetting.STATS_PRIVATE)) { //TODO: ADD PERMISSION OVERRIDE
+        if(user.getId() != author.getId() && su.getSettings().getBoolean(UserSetting.STATS_PRIVATE) && !authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)) {
             MessagesUtils.addReaction(message, Emoji.X, "This user has set their stats to private.");
             return;
         }
