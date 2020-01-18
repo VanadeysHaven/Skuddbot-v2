@@ -32,7 +32,7 @@ public class Skuddbot {
 
     @Getter private DiscordApi api;
     private String token;
-    private CommandManager commandManager;
+    @Getter private CommandManager commandManager; //todo this getter is not desirable
 
     public Skuddbot(String token){
         logger.info("Received token.");
@@ -50,7 +50,7 @@ public class Skuddbot {
     void registerCommands() {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
-                new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand());
+                new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand());
     }
 
     void registerListeners() {
