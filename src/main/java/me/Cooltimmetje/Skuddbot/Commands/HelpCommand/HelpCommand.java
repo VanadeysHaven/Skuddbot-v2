@@ -80,7 +80,7 @@ public class HelpCommand extends Command {
         if (message.getChannel().getType() != ChannelType.PRIVATE_CHANNEL) {
             MessagesUtils.addReaction(message, Emoji.MAILBOX_WITH_MAIL, "Sliding into the dm's... :smirk:");
         }
-        author.getPrivateChannel().orElse(author.openPrivateChannel().join()).sendMessage(MessageFormat.format(MESSAGE_FORMAT,
+        MessagesUtils.sendPlain(author.getPrivateChannel().orElse(author.openPrivateChannel().join()), MessageFormat.format(MESSAGE_FORMAT,
                 author.getDiscriminatedName(), helpLocation, page, pages, commands, helpLocation.equals("DM's") ? "Use the help command in a server to view the commands available in that server." : "Use `!help dm` to return to DM help."));
     }
 

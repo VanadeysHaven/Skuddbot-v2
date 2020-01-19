@@ -51,7 +51,7 @@ public class ExperienceCommand extends Command {
             return;
         }
 
-        message.getChannel().sendMessage("**" + user.getDisplayName(server) + " | " + su.getStats().formatLevelLong() + "**");
+        MessagesUtils.sendPlain(message.getChannel(), "**" + user.getDisplayName(server) + " | " + su.getStats().formatLevelLong() + "**");
     }
 
 }

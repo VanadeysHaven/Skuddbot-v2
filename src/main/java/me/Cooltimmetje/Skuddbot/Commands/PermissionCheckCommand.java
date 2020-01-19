@@ -4,6 +4,7 @@ import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.PermissionManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
+import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 
@@ -34,9 +35,8 @@ public class PermissionCheckCommand extends Command {
         StringBuilder sb = new StringBuilder();
         Iterator<PermissionLevel> iterator = permissions.getPermissions();
         while(iterator.hasNext())
-            sb.append(iterator.next()).append(",");
-        String permString = sb.toString().trim();
+            sb.append(",").append(iterator.next());
 
-        message.getChannel().sendMessage(permString.substring(0, permString.length() - 1));
+        MessagesUtils.sendPlain(message.getChannel(), sb.toString().trim().substring(1));
     }
 }

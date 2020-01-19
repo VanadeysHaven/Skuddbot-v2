@@ -78,7 +78,7 @@ public class ServerSettingsCommand extends Command {
         String sb = "Server settings for **" + server.getName() + "**\n```\n" + table + "\n```\n" +
                 "Type `" + commandPrefix + "serversettings <setting>` for more information about that setting." +
                 "Type `" + commandPrefix + "serversettings <setting> <newValue>` to change it.";
-        message.getChannel().sendMessage(sb);
+        MessagesUtils.sendPlain(message.getChannel(), sb);
     }
 
     private void showDetails(Message message, SkuddServer ss, ServerSetting setting){
@@ -91,7 +91,7 @@ public class ServerSettingsCommand extends Command {
                 "Default value: " + setting.getDefaultValue() + "\n" +
                 "Current value: " + ss.getSettings().getString(setting) + "\n" +
                 "```\n" + "To change the value type: `" + commandPrefix + "serversettings " + setting + " <newValue>`";
-        message.getChannel().sendMessage(sb);
+        MessagesUtils.sendPlain(message.getChannel(), sb);
     }
 
     private void alterSetting(Message message, SkuddServer ss, ServerSetting setting, String newValue){

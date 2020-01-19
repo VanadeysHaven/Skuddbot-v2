@@ -4,6 +4,7 @@ import me.Cooltimmetje.Skuddbot.Commands.Command;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorMessage;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
+import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
 
 /**
@@ -25,6 +26,6 @@ public abstract class ImageCommand extends Command {
 
     @Override
     public void run(Message message, String content) {
-        message.getChannel().sendMessage(type.getEmoji().getUnicode() + " " + dm.getMessage(type));
+        MessagesUtils.sendPlain(message.getChannel(), type.getEmoji().getUnicode() + " " + dm.getMessage(type));
     }
 }

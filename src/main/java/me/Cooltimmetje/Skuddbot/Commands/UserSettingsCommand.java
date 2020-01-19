@@ -94,7 +94,7 @@ public class UserSettingsCommand extends Command {
                 "Type `" + commandPrefix + "usersettings <setting>` for more information about that setting." +
                 "Type `" + commandPrefix + "usersettings <setting> <newValue>` to change it.";
 
-        message.getChannel().sendMessage(msg);
+        MessagesUtils.sendPlain(message.getChannel(), msg);
     }
 
     private void showDetails(Message message, SkuddUser su, UserSetting setting){
@@ -110,7 +110,7 @@ public class UserSettingsCommand extends Command {
                 "Current value: " + su.getSettings().getString(setting) + "\n" +
                 "```\n" + "To change the value type: `" + commandPrefix + "usersettings " + setting + " <newValue>`";
 
-        message.getChannel().sendMessage(msg);
+        MessagesUtils.sendPlain(message.getChannel(), msg);
     }
 
     private void alterSetting(Message message, SkuddUser su, UserSetting setting, String newValue){

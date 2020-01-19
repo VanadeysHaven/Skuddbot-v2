@@ -31,7 +31,7 @@ public class DebugReaction {
 
     public void post(){
         if(!posted && System.currentTimeMillis() < validUntil) {
-            channel.sendMessage(output);
+            MessagesUtils.sendPlain(channel, output);
             posted = true;
         }
     }

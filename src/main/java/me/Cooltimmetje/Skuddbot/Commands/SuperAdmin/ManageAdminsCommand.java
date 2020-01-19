@@ -82,7 +82,7 @@ public class ManageAdminsCommand extends Command {
                     qe.close();
                 }
 
-                user.getPrivateChannel().orElse(user.openPrivateChannel().join()).sendMessage(DM_MESSAGE);
+                MessagesUtils.sendPlain(user.getPrivateChannel().orElse(user.openPrivateChannel().join()), DM_MESSAGE);
                 MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getDiscriminatedName() + "` is now a admin.");
                 break;
             case "remove":

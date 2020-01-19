@@ -48,7 +48,7 @@ public class LeaderboardCommand extends Command {
             return;
         }
         if(args[1].equalsIgnoreCase("list")){
-            message.getChannel().sendMessage("Available stats: \n\n" + Stat.formatStats());
+            MessagesUtils.sendPlain(message.getChannel(), "Available stats: \n\n" + Stat.formatStats());
             return;
         }
         Stat stat;
@@ -114,7 +114,7 @@ public class LeaderboardCommand extends Command {
         sb.append("**").append(stat.getCategory().getName()).append(": ").append(stat.getName()).append(" leaderboard** | **").append(server.getName()).append("**\n```\n");
         sb.append(new TableDrawer(tag).drawTable());
         sb.append("```").append("\n").append("Generated in `").append(System.currentTimeMillis() - startTime).append("ms`");
-        message.getChannel().sendMessage(sb.toString().trim());
+        MessagesUtils.sendPlain(message.getChannel(), sb.toString().trim());
     }
 
     private LinkedHashMap<Identifier, Integer> sortMap(HashMap<Identifier,Integer> unsortedMap){

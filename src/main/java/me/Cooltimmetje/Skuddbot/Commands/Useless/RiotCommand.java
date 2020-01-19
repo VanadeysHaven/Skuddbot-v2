@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Commands.Useless;
 
 import me.Cooltimmetje.Skuddbot.Commands.Command;
+import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
 
 /**
@@ -18,6 +19,6 @@ public class RiotCommand extends Command {
 
     @Override
     public void run(Message message, String content) {
-        message.getChannel().sendMessage("(╯°□°）╯︵ ┻━┻");
+        MessagesUtils.sendPlain(message.getChannel(), "(╯°□°）╯︵ ┻━┻");
     }
 }

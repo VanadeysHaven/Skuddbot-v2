@@ -64,7 +64,7 @@ public class ManageDonatorsCommand extends Command {
                     return;
                 }
                 dm.addDonator(id);
-                user.getPrivateChannel().orElse(user.openPrivateChannel().join()).sendMessage(MessageFormat.format(DM_MESSAGE, user.getDiscriminatedName()));
+                MessagesUtils.sendPlain(user.getPrivateChannel().orElse(user.openPrivateChannel().join()), MessageFormat.format(DM_MESSAGE, user.getDiscriminatedName()));
                 MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getDiscriminatedName() + "` has been added as donator!");
                 break;
             case "remove":
