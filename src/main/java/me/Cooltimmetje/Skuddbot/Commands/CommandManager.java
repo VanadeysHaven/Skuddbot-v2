@@ -160,8 +160,4 @@ public class CommandManager implements HelpGenerator {
         }
     }
 
-    public HelpGenerator getHelpGenerator(){
-        return this;
-    }
-
 }

@@ -66,7 +66,7 @@ public class Skuddbot {
     }
 
     public HelpGenerator getHelpGenerator(){
-        return commandManager.getHelpGenerator();
+        return commandManager;
     }
 
 }
