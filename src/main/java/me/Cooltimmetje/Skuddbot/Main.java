@@ -30,7 +30,11 @@ public class Main {
         if(args.length < 3) throw new IllegalArgumentException("Not enough arguments. - Required: 3 - Discord Token, MySql username, Mysql Password");
         logger.info("Starting Skuddbot v2...");
         logger.info("Starting database connection for user " + args[1]);
-        HikariManager.setup(args[1], args[2]);
+
+        String mysqlPass = args[2];
+        if(mysqlPass.equals("-nopass")) mysqlPass = ""; //For my testing environment
+
+        HikariManager.setup(args[1], mysqlPass);
         ServerSetting.saveToDatabase();
         UserSetting.saveToDatabase();
         Stat.saveToDatabase();
