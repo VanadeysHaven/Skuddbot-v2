@@ -109,7 +109,7 @@ public class CommandManager implements HelpGenerator {
     }
 
     public void process(Message message){
-        if(message.getAuthor().isBotUser()) return;
+        if(!message.getAuthor().isRegularUser()) return;
         if(message.getChannel().getType() == ChannelType.PRIVATE_CHANNEL){
             processPrivate(message);
             return;
