@@ -469,6 +469,7 @@ select us.setting_name, uhs.setting_value from user_has_settings uhs join user_s
 select stat_name from stats;
 select s.stat_name, uhs.stat_value from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=2;
 delete uhs from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=1 and s.stat_name='xp';
+select id.discord_id, id.twitch_username, id.mixer_username, uhs.stat_value from user_has_stats uhs join identifier id on uhs.user_id = id.id join stats s on uhs.stat_id = s.id where id.server_id=224987945638035456 and s.stat_name='xp';
 
 select * from donators;
 select data_name, discord_id, data_value from donator_has_data dhd join donator_data dd on dhd.data_id = dd.id;
@@ -480,4 +481,6 @@ insert into donator_has_data(data_id, discord_id, data_value) value (get_donator
 insert into admin_users(discord_id) value (76593288865394688);
 delete from admin_users where discord_id=76593288865394688;
 select * from admin_users;
+
+select server_id, discord_id, twitch_username, mixer_username from identifier where id=1;
 
