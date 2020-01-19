@@ -1,6 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
-
 import com.sun.xml.internal.ws.util.StringUtils;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;

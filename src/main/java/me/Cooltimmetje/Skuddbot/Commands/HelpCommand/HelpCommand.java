@@ -1,5 +1,6 @@
-package me.Cooltimmetje.Skuddbot.Commands;
+package me.Cooltimmetje.Skuddbot.Commands.HelpCommand;
 
+import me.Cooltimmetje.Skuddbot.Commands.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
@@ -48,7 +49,7 @@ public class HelpCommand extends Command {
         }
         String commands;
         Server server = message.getServer().orElse(null);
-        CommandManager cm = Main.getSkuddbot().getCommandManager();
+        HelpGenerator hg = Main.getSkuddbot().getHelpGenerator();
         long serverId = -1;
         User author = message.getAuthor().asUser().orElse(null);
         assert author != null;
@@ -68,8 +69,8 @@ public class HelpCommand extends Command {
             currentServer.put(author.getId(), serverId);
         }
 
-        commands = cm.getHelp(author.getId(), serverId, PAGE_SIZE, (page - 1) * PAGE_SIZE);
-        int commandAmount = cm.getCommandAmount(author.getId(), serverId);
+        commands = hg.getHelp(author.getId(), serverId, PAGE_SIZE, (page - 1) * PAGE_SIZE);
+        int commandAmount = hg.getCommandAmount(author.getId(), serverId);
         int pages = (int) Math.ceil((double) commandAmount / PAGE_SIZE);
         if(page > pages){
             MessagesUtils.addReaction(message, Emoji.X, "Page " + page + " does not exist.");

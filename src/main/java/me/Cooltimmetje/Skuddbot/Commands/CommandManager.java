@@ -1,5 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
+import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  * @since ALPHA-2.0
  * @version ALPHA-2.0
  */
-public class CommandManager {
+public class CommandManager implements HelpGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(CommandManager.class);
     private static final ServerManager sm = new ServerManager();
@@ -80,6 +81,10 @@ public class CommandManager {
         return sb.toString();
     }
 
+    public int getCommandAmount(Identifier id){
+        return getCommandAmount(id.getDiscordId(), id.getServerId());
+    }
+
     public int getCommandAmount(long userId, long serverId){
         PermissionManager permissions;
         Command.Location location;
@@ -101,10 +106,6 @@ public class CommandManager {
         }
 
         return amount;
-    }
-
-    public int getCommandAmount(Identifier id){
-        return getCommandAmount(id.getDiscordId(), id.getServerId());
     }
 
     public void process(Message message){
@@ -157,6 +158,10 @@ public class CommandManager {
                 }
             }
         }
+    }
+
+    public HelpGenerator getHelpGenerator(){
+        return this;
     }
 
 }

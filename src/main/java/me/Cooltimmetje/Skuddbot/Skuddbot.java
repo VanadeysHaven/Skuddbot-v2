@@ -4,6 +4,8 @@ import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.*;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.GameCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.ManageMessageCommand;
+import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpCommand;
+import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.BaconCommand;
 import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.CakeCommand;
 import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.KittyCommand;
@@ -33,7 +35,7 @@ public class Skuddbot {
 
     @Getter private DiscordApi api;
     private String token;
-    @Getter private CommandManager commandManager; //todo this getter is not desirable
+    private CommandManager commandManager;
 
     public Skuddbot(String token){
         logger.info("Received token.");
@@ -61,7 +63,10 @@ public class Skuddbot {
         api.addMessageCreateListener(event -> MessageListener.run(event.getMessage()));
         logger.info("Registering ReactionAddListener...");
         api.addReactionAddListener(ReactionAddListener::run);
+    }
 
+    public HelpGenerator getHelpGenerator(){
+        return commandManager.getHelpGenerator();
     }
 
 }
