@@ -27,7 +27,7 @@ public class MessageListener {
 
     public static void run(Message message){
         String content = message.getContent();
-        if(message.getAuthor().isBotUser()) return;
+        if(!message.getAuthor().isRegularUser()) return;
         if(message.getChannel().getType() != ChannelType.SERVER_TEXT_CHANNEL) return;
         Server server = message.getServer().orElse(null); assert server != null;
         SkuddServer ss = sm.getServer(server.getId());
