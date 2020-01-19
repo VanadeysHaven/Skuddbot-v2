@@ -1,4 +1,4 @@
-package me.Cooltimmetje.Skuddbot.Commands.ImageCommands;
+package me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands;
 
 import me.Cooltimmetje.Skuddbot.Commands.Command;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;

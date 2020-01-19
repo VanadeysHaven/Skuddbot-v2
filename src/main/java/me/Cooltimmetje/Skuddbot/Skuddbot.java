@@ -6,12 +6,13 @@ import me.Cooltimmetje.Skuddbot.Commands.Donator.GameCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.ManageMessageCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
-import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.BaconCommand;
-import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.CakeCommand;
-import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.KittyCommand;
-import me.Cooltimmetje.Skuddbot.Commands.ImageCommands.PuppyCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageAdminsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageDonatorsCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.BaconCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.CakeCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.KittyCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.PuppyCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.RiotCommand;
 import me.Cooltimmetje.Skuddbot.Listeners.MessageListener;
 import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
 import org.javacord.api.DiscordApi;
@@ -54,7 +55,7 @@ public class Skuddbot {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
                 new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(),
-                new ExperienceCommand(), new LeaderboardCommand());
+                new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand());
     }
 
     void registerListeners() {
