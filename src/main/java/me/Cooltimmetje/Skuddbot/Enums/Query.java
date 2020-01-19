@@ -15,6 +15,7 @@ public enum Query {
     //USER IDENTIFIERS
     SELECT_USER_ID("select id from identifier where server_id=? and discord_id=?;"),
     SAVE_USER_ID("insert into identifier (server_id, discord_id) value (?,?);"),
+    SELECT_USER_DETAILS("select server_id, discord_id, twitch_username, mixer_username from identifier where id=1;"),
 
     //SERVER SETTINGS
     INSERT_SERVER_SETTING("insert ignore into server_settings (setting_name) value (?);"),
@@ -37,6 +38,7 @@ public enum Query {
     SELECT_STATS("select s.stat_name, uhs.stat_value from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=?;"),
     DELETE_STAT_VALUE("delete uhs from user_has_stats uhs join stats s on uhs.stat_id = s.id where uhs.user_id=? and s.stat_name=?;"),
     UPDATE_STAT_VALUE("insert into user_has_stats(stat_id, user_id, stat_value) value ((select get_stat_id(?)),?,?) on duplicate key update stat_value=?;"),
+    SELECT_ALL_STAT_VALUES("select id.discord_id, id.twitch_username, id.mixer_username, uhs.stat_value from user_has_stats uhs join identifier id on uhs.user_id = id.id join stats s on uhs.stat_id = s.id where id.server_id=? and s.stat_name=?;"),
 
     //DONATORS
     LOAD_ALL_DONATORS("select * from donators;"),

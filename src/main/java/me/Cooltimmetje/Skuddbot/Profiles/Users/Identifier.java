@@ -29,6 +29,25 @@ public class Identifier {
         twitchUsername = null;
     }
 
+    public Identifier(int id){
+        this.id = id;
+        QueryExecutor qe = null;
+        try {
+            qe = new QueryExecutor(Query.SELECT_USER_DETAILS).setInt(1, id);
+            ResultSet rs = qe.executeQuery();
+            while(rs.next()){
+                this.serverId = rs.getLong("server_id");
+                this.discordId = rs.getLong("discord_id");
+                this.twitchUsername = rs.getString("twitch_username");
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            assert qe != null;
+            qe.close();
+        }
+    }
+
     public Identifier(long serverId, String twitchUsername){
         id = -1;
         this.serverId = serverId;

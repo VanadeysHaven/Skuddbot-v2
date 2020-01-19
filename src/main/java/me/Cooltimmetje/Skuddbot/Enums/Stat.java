@@ -94,6 +94,23 @@ public enum Stat {
         }
     }
 
+    public static String formatStats(){
+        StringBuilder sb = new StringBuilder();
+
+        for(Category category : Category.values()){
+            if(category != Category.NO_CATEGORY) sb.append("**").append(category.getName().toUpperCase()).append(": **");
+            StringBuilder sb1 = new StringBuilder();
+            for(Stat stat : values()){
+                if(stat.getCategory() == category && stat.isHasLeaderboard()){
+                    sb1.append(" | `").append(stat.toString().toLowerCase().replace("_", "-")).append("`");
+                }
+            }
+            sb.append(sb1.append("\n").toString().substring(3));
+        }
+
+        return sb.toString().trim();
+    }
+
     @Getter
     public enum Category {
         NO_CATEGORY     (""               ),

@@ -52,7 +52,7 @@ public class Skuddbot {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
                 new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(),
-                new ExperienceCommand());
+                new ExperienceCommand(), new LeaderboardCommand());
     }
 
     void registerListeners() {

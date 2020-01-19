@@ -8,7 +8,7 @@ import java.util.Iterator;
  * This class represents a row in a table.
  *
  * @author Tim (Cooltimmetje)
- * @version v0.4.62-ALPHA
+ * @version ALPHA-2.0
  * @since v0.4.62-ALPHA
  */
 public class TableRow {
@@ -16,15 +16,20 @@ public class TableRow {
     private ArrayList<String> strings;
 
     public TableRow(){
-        this.strings = new ArrayList<String>();
+        this.strings = new ArrayList<>();
     }
 
     public TableRow(String... strings){
-        this.strings = new ArrayList<String>(Arrays.asList(strings));
+        this.strings = new ArrayList<>(Arrays.asList(strings));
     }
 
-    public void addString(String string){
+    public TableRow add(String string){
         this.strings.add(string);
+        return this;
+    }
+
+    public TableRow add(int i){
+        return add(i+"");
     }
 
     public Iterator<String> getIterator(){
