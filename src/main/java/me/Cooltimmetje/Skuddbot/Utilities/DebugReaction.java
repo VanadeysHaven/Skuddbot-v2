@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Utilities;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 
@@ -14,13 +15,13 @@ import org.javacord.api.entity.message.Message;
 public class DebugReaction {
 
     private String output;
-    @Getter private String emoji;
+    @Getter private Emoji emoji;
     @Getter private Message message;
     private TextChannel channel;
     @Getter private long validUntil;
     @Getter private boolean posted;
 
-    DebugReaction(String output, String emoji, Message message, TextChannel channel, long validUntil){
+    DebugReaction(String output, Emoji emoji, Message message, TextChannel channel, long validUntil){
         this.output = output;
         this.emoji = emoji;
         this.message = message;
@@ -31,7 +32,7 @@ public class DebugReaction {
 
     public void post(){
         if(!posted && System.currentTimeMillis() < validUntil) {
-            MessagesUtils.sendPlain(channel, output);
+            MessagesUtils.sendEmoji(channel, emoji, output);
             posted = true;
         }
     }

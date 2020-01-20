@@ -82,6 +82,16 @@ public class ServerSettingsContainer {
         return Long.parseLong(getString(setting));
     }
 
+    public void setBoolean(ServerSetting setting, boolean value){
+        if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting" + setting + " is not of type BOOLEAN");
+        setString(setting, value+"");
+    }
+
+    public boolean getBoolean(ServerSetting setting){
+        if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting" + setting + " is not of type BOOLEAN");
+        return Boolean.parseBoolean(getString(setting));
+    }
+
     private boolean checkType(String input, ServerSetting setting) {
         if(input.equals("null")) return true;
         ValueType type = setting.getType();
@@ -93,6 +103,9 @@ public class ServerSettingsContainer {
         }
         if(type == ValueType.LONG){
             return MiscUtils.isLong(input);
+        }
+        if(type == ValueType.BOOLEAN){
+            return MiscUtils.isBoolean(input);
         }
 
         return type == ValueType.STRING;

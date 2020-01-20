@@ -17,20 +17,21 @@ import java.util.ArrayList;
 @Getter
 public enum ServerSetting {
 
-    XP_MIN                  ("xp_min",                  "Minimum amount of XP gain per message on Discord.",                           ValueType.INTEGER, "10",                   Category.XP,              false), //TODO
-    XP_MAX                  ("xp_max",                  "Maximum amount of XP gain per message on Discord.",                           ValueType.INTEGER, "15",                   Category.XP,              false), //TODO
-    XP_MIN_TWITCH           ("xp_min_twitch",           "Minimum amount of XP gain per message on Twitch.",                            ValueType.INTEGER, "10",                   Category.XP,              false), //TODO
-    XP_MAX_TWITCH           ("xp_max_twitch",           "Maximum amount of XP gain per message on Twitch.",                            ValueType.INTEGER, "15",                   Category.XP,              false), //TODO
-    XP_BASE                 ("xp_base",                 "Amount of XP an user will need to level up from level 1 to level 2.",         ValueType.INTEGER, "1500",                 Category.XP,              false), //TODO
-    XP_MULTIPLIER           ("xp_multiplier",           "Multiplier for XP levels. The higher this number, the steeper the XP curve.", ValueType.DOUBLE,  "1.2",                  Category.XP,              false), //TODO
-    TWITCH_CHANNEL          ("twitch_channel",          "The Twitch channel this bot should keep track of stats.",                     ValueType.STRING,  "null",                 Category.TWITCH,          false), //TODO
-    WELCOME_MESSAGE         ("welcome_message",         "This message will be posted when a new user joins the server.",               ValueType.STRING,  "null",                 Category.WELCOME_GOODBYE, true ), //TODO
-    GOODBYE_MESSAGE         ("goodbye_message",         "This message will be posted when a user leaves the server.",                  ValueType.STRING,  "null",                 Category.WELCOME_GOODBYE, true ), //TODO
-    WELCOME_GOODBYE_CHANNEL ("welcome_goodbye_channel", "This is the channel where the welcome/goodbye messages will be posted to.",   ValueType.LONG,    "null",                 Category.WELCOME_GOODBYE, false), //TODO
-    ADMIN_ROLE              ("admin_role",              "This role will have access to commands that require elevated permissions.",   ValueType.STRING,  "null",                 Category.DISCORD,         true ),
-    ROLE_ON_JOIN            ("role_on_join",            "This role will be granted to new users when they join the server.",           ValueType.STRING,  "null",                 Category.DISCORD,         true ), //TODO
-    ARENA_NAME              ("arena_name",              "This is the name of the arena used in various minigames.",                    ValueType.STRING,  "Skuddbot's Colosseum", Category.MINIGAMES,       true ), //TODO
-    COMMAND_PREFIX          ("command_prefix",          "The command prefix you can change this to avoid confilcts with other bots.",  ValueType.STRING,  "!",                    Category.COMMANDS,        false);
+    XP_MIN                  ("xp_min",                  "Minimum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "10",                   Category.XP,              false), //TODO
+    XP_MAX                  ("xp_max",                  "Maximum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "15",                   Category.XP,              false), //TODO
+    XP_MIN_TWITCH           ("xp_min_twitch",           "Minimum amount of XP gain per message on Twitch.",                             ValueType.INTEGER, "10",                   Category.XP,              false), //TODO
+    XP_MAX_TWITCH           ("xp_max_twitch",           "Maximum amount of XP gain per message on Twitch.",                             ValueType.INTEGER, "15",                   Category.XP,              false), //TODO
+    XP_BASE                 ("xp_base",                 "Amount of XP an user will need to level up from level 1 to level 2.",          ValueType.INTEGER, "1500",                 Category.XP,              false), //TODO
+    XP_MULTIPLIER           ("xp_multiplier",           "Multiplier for XP levels. The higher this number, the steeper the XP curve.",  ValueType.DOUBLE,  "1.2",                  Category.XP,              false), //TODO
+    TWITCH_CHANNEL          ("twitch_channel",          "The Twitch channel this bot should keep track of stats.",                      ValueType.STRING,  "null",                 Category.TWITCH,          false), //TODO
+    WELCOME_MESSAGE         ("welcome_message",         "This message will be posted when a new user joins the server.",                ValueType.STRING,  "null",                 Category.WELCOME_GOODBYE, true ), //TODO
+    GOODBYE_MESSAGE         ("goodbye_message",         "This message will be posted when a user leaves the server.",                   ValueType.STRING,  "null",                 Category.WELCOME_GOODBYE, true ), //TODO
+    WELCOME_GOODBYE_CHANNEL ("welcome_goodbye_channel", "This is the channel where the welcome/goodbye messages will be posted to.",    ValueType.LONG,    "null",                 Category.WELCOME_GOODBYE, false), //TODO
+    ADMIN_ROLE              ("admin_role",              "This role will have access to commands that require elevated permissions.",    ValueType.STRING,  "null",                 Category.DISCORD,         true ),
+    ROLE_ON_JOIN            ("role_on_join",            "This role will be granted to new users when they join the server.",            ValueType.STRING,  "null",                 Category.DISCORD,         true ), //TODO
+    ALLOW_MSG_LVL_UP_NOTIFY ("allow_msg_lvl_up_notify", "When set to false, users will not be notified by message when they level up.", ValueType.BOOLEAN, "true",                 Category.DISCORD,         false),
+    ARENA_NAME              ("arena_name",              "This is the name of the arena used in various minigames.",                     ValueType.STRING,  "Skuddbot's Colosseum", Category.MINIGAMES,       true ), //TODO
+    COMMAND_PREFIX          ("command_prefix",          "The command prefix you can change this to avoid confilcts with other bots.",   ValueType.STRING,  "!",                    Category.COMMANDS,        false);
 
     private String dbReference;
     private String description;

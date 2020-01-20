@@ -22,6 +22,7 @@ public class TenMinutes extends TimerTask {
 
     @Override
     public void run() {
+        logger.info("Ten minute timer running...");
         Iterator<SkuddServer> iterator = sm.getServers();
         while(iterator.hasNext()) iterator.next().runActivity();
     }

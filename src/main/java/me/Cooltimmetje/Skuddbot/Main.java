@@ -33,6 +33,7 @@ public class Main {
 
         String mysqlPass = args[2];
         if(mysqlPass.equals("-nopass")) mysqlPass = ""; //For my testing environment
+        //Yes I am too lazy to set a password, leave me alone.
 
         HikariManager.setup(args[1], mysqlPass);
         ServerSetting.saveToDatabase();
