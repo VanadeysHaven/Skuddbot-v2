@@ -56,4 +56,25 @@ public class MiscUtils {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
         return sb.toString();
     }
+
+    public static String flipText(String input){
+        String normal = "abcdefghijklmnopqrstuvwxyz_,;.?!'()[]{}";
+        String split  = "ɐqɔpǝɟbɥıɾʞlɯuodbɹsʇnʌʍxʎz‾'؛˙¿¡,)(][}{";
+//maj
+        normal += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        split  += "∀qϽᗡƎℲƃHIſʞ˥WNOԀὉᴚS⊥∩ΛMXʎZ";
+//number
+        normal += "0123456789";
+        split  += "0ƖᄅƐㄣϛ9ㄥ86";
+
+        char letter;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i< input.length(); i++) {
+            letter = input.charAt(i);
+
+            int a = normal.indexOf(letter);
+            sb.append((a != -1) ? split.charAt(a) : letter);
+        }
+        return sb.reverse().toString();
+    }
 }

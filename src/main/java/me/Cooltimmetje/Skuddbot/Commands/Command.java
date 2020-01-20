@@ -43,7 +43,13 @@ public abstract class Command {
         this(invokers, description, DEFAULT_PERMISSION, DEFAULT_LOCATION);
     }
 
-    public abstract void run(Message message, String content);
+    public Command(String[] invokers, String description, PermissionLevel requiredPermission){
+        this(invokers, description, requiredPermission, DEFAULT_LOCATION);
+    }
+
+    public Command(String[] invokers, String description, Location allowedLocation){
+        this(invokers, description, DEFAULT_PERMISSION, allowedLocation);
+    }
 
     public String formatHelp(String commandPrefix){
         StringBuilder sb = new StringBuilder();
@@ -59,6 +65,8 @@ public abstract class Command {
 
         return MessageFormat.format(HELP_FORMAT, invokerString, description);
     }
+
+    public abstract void run(Message message, String content);
 
     public enum Location {
         SERVER, DM, BOTH
