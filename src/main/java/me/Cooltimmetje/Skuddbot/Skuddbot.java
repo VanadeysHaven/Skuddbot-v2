@@ -14,6 +14,7 @@ import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.CakeCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.KittyCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.PuppyCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.RiotCommand;
+import me.Cooltimmetje.Skuddbot.Listeners.JoinQuitServerListener;
 import me.Cooltimmetje.Skuddbot.Listeners.MessageListener;
 import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
 import org.javacord.api.DiscordApi;
@@ -65,6 +66,10 @@ public class Skuddbot {
         api.addMessageCreateListener(event -> MessageListener.run(event.getMessage()));
         logger.info("Registering ReactionAddListener...");
         api.addReactionAddListener(ReactionAddListener::run);
+        logger.info("Registering ServerMemberJoinListener...");
+        api.addServerMemberJoinListener(JoinQuitServerListener::join);
+        logger.info("Registering ServerMemberLeaveListener...");
+        api.addServerMemberLeaveListener(JoinQuitServerListener::leave);
     }
 
     public HelpGenerator getHelpGenerator(){

@@ -92,8 +92,8 @@ public class ServerSettingsContainer {
         return Boolean.parseBoolean(getString(setting));
     }
 
-    private boolean checkType(String input, ServerSetting setting) {
-        if(input.equals("null")) return true;
+    private boolean checkType(String input, ServerSetting setting){
+        if(input == null) return true;
         ValueType type = setting.getType();
         if(type == ValueType.INTEGER){
             return MiscUtils.isInt(input);
