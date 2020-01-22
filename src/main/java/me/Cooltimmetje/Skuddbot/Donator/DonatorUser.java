@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Donator;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Query;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class DonatorUser {
     private static final Logger logger = LoggerFactory.getLogger(DonatorUser.class);
 
     @Getter private long id;
-    @Getter private String pingMessage;
+    @Getter @Setter private String pingMessage;
 
 
     public DonatorUser(long id, String pingMessage){

@@ -1,6 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
-import com.sun.xml.internal.ws.util.StringUtils;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.Query;
@@ -13,6 +12,7 @@ import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
 import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableDrawer;
 import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableRow;
+import org.apache.commons.lang3.StringUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.slf4j.Logger;

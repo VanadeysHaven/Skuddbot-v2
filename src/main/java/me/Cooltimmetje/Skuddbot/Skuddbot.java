@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.*;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.GameCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.ManageMessageCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Donator.SetPingCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageAdminsCommand;
@@ -57,7 +58,7 @@ public class Skuddbot {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
                 new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(),
-                new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand());
+                new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand());
     }
 
     void registerListeners() {

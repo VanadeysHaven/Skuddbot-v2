@@ -17,7 +17,7 @@ import java.sql.SQLException;
  */
 public class Identifier {
 
-    @Getter private int id;
+    private int id;
     @Getter private long serverId;
     @Getter @Setter private long discordId;
     @Getter @Setter private String twitchUsername;
