@@ -26,7 +26,7 @@ public class PermissionCheckCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) { //TODO formatting
+    public void run(Message message, String content) { //TODO change to user info command
         Server server = message.getServer().orElse(null);
         assert server != null;
         SkuddUser su = pm.getUser(server.getId(), message.getAuthor().getId());

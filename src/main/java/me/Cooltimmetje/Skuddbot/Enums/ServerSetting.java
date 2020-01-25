@@ -24,9 +24,9 @@ public enum ServerSetting {
     XP_BASE                 ("xp_base",                 "Amount of XP an user will need to level up from level 1 to level 2.",          ValueType.INTEGER, "1500",                 Category.XP,              false),
     XP_MULTIPLIER           ("xp_multiplier",           "Multiplier for XP levels. The higher this number, the steeper the XP curve.",  ValueType.DOUBLE,  "1.2",                  Category.XP,              false),
     TWITCH_CHANNEL          ("twitch_channel",          "The Twitch channel this bot should keep track of stats.",                      ValueType.STRING,  null,                   Category.TWITCH,          false), //TODO
-    WELCOME_MESSAGE         ("welcome_message",         "This message will be posted when a new user joins the server.",                ValueType.STRING,  null,                   Category.WELCOME_GOODBYE, true ), //TODO
-    GOODBYE_MESSAGE         ("goodbye_message",         "This message will be posted when a user leaves the server.",                   ValueType.STRING,  null,                   Category.WELCOME_GOODBYE, true ), //TODO
-    WELCOME_GOODBYE_CHANNEL ("welcome_goodbye_channel", "This is the channel where the welcome/goodbye messages will be posted to.",    ValueType.LONG,    "-1",                   Category.WELCOME_GOODBYE, false), //TODO
+    WELCOME_MESSAGE         ("welcome_message",         "This message will be posted when a new user joins the server.",                ValueType.STRING,  null,                   Category.WELCOME_GOODBYE, true ),
+    GOODBYE_MESSAGE         ("goodbye_message",         "This message will be posted when a user leaves the server.",                   ValueType.STRING,  null,                   Category.WELCOME_GOODBYE, true ),
+    WELCOME_GOODBYE_CHANNEL ("welcome_goodbye_channel", "This is the channel where the welcome/goodbye messages will be posted to.",    ValueType.LONG,    "-1",                   Category.WELCOME_GOODBYE, false),
     ADMIN_ROLE              ("admin_role",              "This role will have access to commands that require elevated permissions.",    ValueType.STRING,  null,                   Category.DISCORD,         true ),
     ROLE_ON_JOIN            ("role_on_join",            "This role will be granted to new users when they join the server.",            ValueType.STRING,  null,                   Category.DISCORD,         true ), //TODO
     ALLOW_MSG_LVL_UP_NOTIFY ("allow_msg_lvl_up_notify", "When set to false, users will not be notified by message when they level up.", ValueType.BOOLEAN, "true",                 Category.DISCORD,         false),
@@ -59,7 +59,7 @@ public enum ServerSetting {
 
     public static void saveToDatabase(){
         QueryExecutor qe = null;
-        ResultSet rs = null;
+        ResultSet rs;
         ArrayList<String> settings = new ArrayList<>();
         try {
             qe = new QueryExecutor(Query.SELECT_ALL_SERVER_SETTINGS);
