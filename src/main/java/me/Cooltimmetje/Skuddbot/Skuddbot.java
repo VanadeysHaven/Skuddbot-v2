@@ -9,6 +9,8 @@ import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageAdminsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageDonatorsCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.HugCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.PunchCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.FlipCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.BaconCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.CakeCommand;
@@ -23,8 +25,11 @@ import org.javacord.api.DiscordApiBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//In memory of Ray's Nan
-//RIP 22-12-2019
+//In loving memory of Ray's Nan
+//RIP 23-12-2019
+
+//In loving memory of Ray's Grandad
+//RIP 23-01-2020
 
 /**
  * This class represents the bot, and is used to register commands and listeners.
@@ -58,7 +63,7 @@ public class Skuddbot {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
                 new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(),
-                new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand());
+                new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand());
     }
 
     void registerListeners() {
