@@ -1,14 +1,15 @@
 # TODO
 ##### updated 25-01-2020
+> Items listed are in no particular order!
 
 ## Planned before launch
-- CooldownManager
-- About command
-- Playing messages/Avatars
-- Server/User info
-- Salutes
-- Panic command
-- Blackjack
+- [ ] Playing messages/Avatars
+- [ ] Panic command
+- [ ] Salutes
+- [ ] CooldownManager
+- [ ] About command
+- [ ] Server/User info
+- [ ] Blackjack
 
 
 ## Planned after launch
