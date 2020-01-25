@@ -1,15 +1,18 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 /**
  * This class represents a guild, and it's settings and user profiles.
@@ -58,17 +61,21 @@ public class SkuddServer {
 
     public Long getRandomActiveUser(long activeDelay){
         ArrayList<Long> active = gatherActiveUsers(activeDelay);
+        if(active.size() < 2) {
+            LinkedHashMap<Identifier,Integer> top = getTopStats(10, Stat.EXPERIENCE);
+            for(Identifier id : top.keySet()) lastSeen.put(id.getDiscordId(), System.currentTimeMillis());
+            active = gatherActiveUsers(activeDelay);
+        }
         if(active.size() < 2) throw new UnsupportedOperationException("The list is empty, sorry!");
+
         return active.get(MiscUtils.randomInt(0, active.size() - 1));
     }
 
     public ArrayList<Long> gatherActiveUsers(long activeDelay){
         ArrayList<Long> returnList = new ArrayList<>();
-        Iterator<Long> iterator = lastSeen.keySet().iterator();
-        while(iterator.hasNext()){
-            long user = iterator.next();
+        for (long user : lastSeen.keySet()) {
             long lastSeen = this.lastSeen.get(user);
-            if((System.currentTimeMillis() - lastSeen) < activeDelay)
+            if ((System.currentTimeMillis() - lastSeen) < activeDelay)
                 returnList.add(user);
         }
 
@@ -89,6 +96,55 @@ public class SkuddServer {
             logger.info(user.getId().toString() + " is inactive, removing...");
             users.remove(user);
         }
+    }
+
+    public LinkedHashMap<Identifier, Integer> getTopStats(int limit, Stat stat){
+        if(!stat.isHasLeaderboard()) throw new UnsupportedOperationException("This stat does not have a leaderboard!");
+
+        HashMap<Identifier, Integer> statValues = new HashMap<>();
+        QueryExecutor qe = null;
+        try {
+            qe = new QueryExecutor(Query.SELECT_ALL_STAT_VALUES).setLong(1, serverId).setString(2, stat.getDbReference());
+            ResultSet rs = qe.executeQuery();
+            while (rs.next()){
+                statValues.put(new Identifier(serverId, rs.getLong("discord_id"), rs.getString("twitch_username")), rs.getInt("stat_value"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            assert qe != null;
+            qe.close();
+        }
+
+        return sortMap(statValues);
+    }
+
+    private LinkedHashMap<Identifier, Integer> sortMap(HashMap<Identifier,Integer> unsortedMap){
+        List<Identifier> mapKeys = new ArrayList<>(unsortedMap.keySet());
+        List<Integer> mapValues = new ArrayList<>(unsortedMap.values());
+        mapValues.sort(Collections.reverseOrder());
+
+        LinkedHashMap<Identifier,Integer> sortedMap = new LinkedHashMap<>();
+        for(int mapValue : mapValues){
+            Iterator<Identifier> keyIt = mapKeys.iterator();
+
+            while(keyIt.hasNext()){
+                Identifier key = keyIt.next();
+                int comp = unsortedMap.get(key);
+
+                if(comp == mapValue){
+                    keyIt.remove();
+                    sortedMap.put(key, mapValue);
+                    break;
+                }
+            }
+
+            if(sortedMap.size() == 10){
+                return sortedMap;
+            }
+        }
+
+        return sortedMap;
     }
 
 }

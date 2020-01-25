@@ -1,11 +1,10 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
-import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
-import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
@@ -18,9 +17,7 @@ import org.javacord.api.entity.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.LinkedHashMap;
 
 /**
  * Command for stat leaderboards.
@@ -33,6 +30,8 @@ public class LeaderboardCommand extends Command {
 
     private static final Logger logger = LoggerFactory.getLogger(LeaderboardCommand.class);
 
+    private static final int LEADERBOARD_LIMIT = 10;
+
     public LeaderboardCommand(){
         super(new String[]{"leaderboard", "lb", "statlb"}, "Used to view the leaderboards of stats.");
     }
@@ -41,6 +40,7 @@ public class LeaderboardCommand extends Command {
     public void run(Message message, String content) {
         long startTime = System.currentTimeMillis();
         Server server = message.getServer().orElse(null); assert server != null;
+        SkuddServer ss = sm.getServer(server.getId());
         String commandPrefix = sm.getServer(server.getId()).getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
         String[] args = content.split(" ");
         if(args.length < 2){
@@ -64,22 +64,7 @@ public class LeaderboardCommand extends Command {
             return;
         }
 
-        HashMap<Identifier, Integer> statValues = new HashMap<>();
-        QueryExecutor qe = null;
-        try {
-            qe = new QueryExecutor(Query.SELECT_ALL_STAT_VALUES).setLong(1, server.getId()).setString(2, stat.getDbReference());
-            ResultSet rs = qe.executeQuery();
-            while (rs.next()){
-                statValues.put(new Identifier(server.getId(), rs.getLong("discord_id"), rs.getString("twitch_username")), rs.getInt("stat_value"));
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        } finally {
-            assert qe != null;
-            qe.close();
-        }
-
-        LinkedHashMap<Identifier,Integer> sortedMap = sortMap(statValues);
+        LinkedHashMap<Identifier,Integer> sortedMap = ss.getTopStats(LEADERBOARD_LIMIT, stat);
         int i = 0;
         int lastValue = -1;
         TableRow topRow = new TableRow("Pos", "Name");
@@ -115,34 +100,6 @@ public class LeaderboardCommand extends Command {
         sb.append(new TableDrawer(tag).drawTable());
         sb.append("```").append("\n").append("Generated in `").append(System.currentTimeMillis() - startTime).append("ms`");
         MessagesUtils.sendPlain(message.getChannel(), sb.toString().trim());
-    }
-
-    private LinkedHashMap<Identifier, Integer> sortMap(HashMap<Identifier,Integer> unsortedMap){
-        List<Identifier> mapKeys = new ArrayList<>(unsortedMap.keySet());
-        List<Integer> mapValues = new ArrayList<>(unsortedMap.values());
-        mapValues.sort(Collections.reverseOrder());
-
-        LinkedHashMap<Identifier,Integer> sortedMap = new LinkedHashMap<>();
-        for(int mapValue : mapValues){
-            Iterator<Identifier> keyIt = mapKeys.iterator();
-
-            while(keyIt.hasNext()){
-                Identifier key = keyIt.next();
-                int comp = unsortedMap.get(key);
-
-                if(comp == mapValue){
-                    keyIt.remove();
-                    sortedMap.put(key, mapValue);
-                    break;
-                }
-            }
-
-            if(sortedMap.size() == 10){
-                return sortedMap;
-            }
-        }
-
-        return sortedMap;
     }
 
     private String getName(Identifier id, Server server){
