@@ -1,5 +1,5 @@
 # TODO
-##### updated 25-01-2020
+##### updated 27-01-2020
 > Items listed are in no particular order!
 
 ## Planned before launch
