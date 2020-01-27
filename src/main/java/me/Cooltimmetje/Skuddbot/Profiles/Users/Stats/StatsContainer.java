@@ -4,6 +4,7 @@ import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
+import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
@@ -41,22 +42,22 @@ public class StatsContainer {
         for(Stat stat : Stat.values()){
             String value = sapling.getStat(stat);
             if(value != null) {
-                setString(stat, value, false);
+                setString(stat, value, true);
             } else {
-                setString(stat, stat.getDefaultValue(), false);
+                setString(stat, stat.getDefaultValue(), true);
             }
         }
     }
 
     public void setString(Stat stat, String value){
-        setString(stat, value, true);
+        setString(stat, value, false);
     }
 
-    public void setString(Stat stat, String value, boolean save){
+    public void setString(Stat stat, String value, boolean load){
         if(!checkType(value, stat)) throw new IllegalArgumentException("Value " + value + " is unsuitable for stat " + stat + "; not of type " + stat.getType());
-//        if(!pm.getUser(id).getSettings().getBoolean(UserSetting.TRACK_ME)) return; //TODO FIX
+        if(!load && !pm.getUser(id).getSettings().getBoolean(UserSetting.TRACK_ME)) return;
         this.stats.put(stat, value);
-        if(save) save(stat);
+        if(load) save(stat);
     }
 
     public String getString(Stat stat){

@@ -12,7 +12,7 @@
 - [ ] Server/User info
 - [ ] Blackjack
 - [ ] Role on join
-- [ ] Track me user setting
+- [x] Track me user setting
 - [ ] Memory cleanups
 - [ ] RNG manager
 
