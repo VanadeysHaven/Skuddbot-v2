@@ -4,11 +4,14 @@
 
 ## Planned before launch
 - [ ] Playing messages/Avatars
+  - [x] Playing messages
+  - [ ] Avatars
 - [ ] Bot log channel
 - [ ] Panic command
 - [ ] Salutes
 - [ ] CooldownManager
 - [ ] About command
+- [ ] Global Settings
 - [ ] Server/User info
 - [ ] Blackjack
 - [x] Role on join
@@ -23,3 +26,4 @@
 - Free for All
 - Team Deathmatch
 - Managing of donator messages
+- Use of the new types of playing statuses!

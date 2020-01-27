@@ -6,6 +6,7 @@ import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Timers.TenMinutes;
+import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
 import me.Cooltimmetje.Skuddbot.Utilities.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ public class Main {
 
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
     private static Timer timer = new Timer();
+    private static AppearanceManager am;
 
     @Getter private static Skuddbot skuddbot;
 
@@ -46,6 +48,8 @@ public class Main {
         skuddbot.buildAndLogin();
         skuddbot.registerListeners();
         timer.schedule(new TenMinutes(), Constants.TEN_MINUTE_TIMER_DELAY, Constants.TEN_MINUTE_TIMER_DELAY);
+        am = new AppearanceManager();
+        am.tickAppearance();
     }
 
 }

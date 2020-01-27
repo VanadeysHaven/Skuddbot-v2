@@ -5,7 +5,6 @@ import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.activity.ActivityType;
 import org.javacord.api.entity.message.Message;
 
 /**
@@ -29,7 +28,7 @@ public class GameCommand extends Command {
         }
 
         String game = content.substring(5);
-        Main.getSkuddbot().getApi().updateActivity(ActivityType.PLAYING, game);
+        Main.getSkuddbot().getApi().updateActivity(game);
         MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Game updated to: `" + game + "`!");
     }
 }

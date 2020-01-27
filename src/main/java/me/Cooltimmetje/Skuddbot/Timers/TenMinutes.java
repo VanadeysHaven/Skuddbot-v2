@@ -2,6 +2,7 @@ package me.Cooltimmetje.Skuddbot.Timers;
 
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
+import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,13 +19,16 @@ import java.util.TimerTask;
 public class TenMinutes extends TimerTask {
 
     private static final Logger logger = LoggerFactory.getLogger(TenMinutes.class);
-    private ServerManager sm = new ServerManager();
+    private static final ServerManager sm = new ServerManager();
+    private static final AppearanceManager am = new AppearanceManager();
 
     @Override
     public void run() {
         logger.info("Ten minute timer running...");
         Iterator<SkuddServer> iterator = sm.getServers();
         while(iterator.hasNext()) iterator.next().runActivity();
+
+        am.tickAppearance();
     }
 
 }
