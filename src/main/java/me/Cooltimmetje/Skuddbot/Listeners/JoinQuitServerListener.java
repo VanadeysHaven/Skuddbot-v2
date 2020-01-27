@@ -25,7 +25,13 @@ public class JoinQuitServerListener {
     private static final ServerManager sm = new ServerManager();
 
     public static void join(ServerMemberJoinEvent event){
-        send(event.getServer(), event.getUser(), ServerSetting.WELCOME_MESSAGE);
+        User user = event.getUser();
+        Server server = event.getServer();
+        send(server, user, ServerSetting.WELCOME_MESSAGE);
+
+        SkuddServer ss = sm.getServer(server.getId());
+        if(ss.getSettings().getString(ServerSetting.ROLE_ON_JOIN) == null) return;
+        user.addRole(server.getRolesByName(ss.getSettings().getString(ServerSetting.ROLE_ON_JOIN)).get(0), "User joined the server and was given the ROLE_ON_JOIN role.");
     }
 
     public static void leave(ServerMemberLeaveEvent event){

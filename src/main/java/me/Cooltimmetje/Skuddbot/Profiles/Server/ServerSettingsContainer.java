@@ -44,6 +44,7 @@ public class ServerSettingsContainer {
 
     public void setString(ServerSetting setting, String value, boolean save){
         if(!checkType(value, setting)) throw new IllegalArgumentException("Value " + value + " is unsuitable for setting " + setting + "; not of type " + setting.getType());
+        if(value != null) if(value.equalsIgnoreCase("null")) value = null;
         this.settings.put(setting, value);
         if(save) save(setting);
     }
@@ -111,9 +112,15 @@ public class ServerSettingsContainer {
         return type == ValueType.STRING;
     }
 
+    private boolean isDefault(ServerSetting setting, String value){
+        if(setting.getDefaultValue() == null && value == null) return true;
+        if(value == null && setting.getDefaultValue() != null) return false;
+        return value.equals(setting.getDefaultValue());
+    }
+
     private void save(ServerSetting setting) {
         QueryExecutor qe = null;
-        if (getString(setting).equals(setting.getDefaultValue())) {
+        if (isDefault(setting, getString(setting))){
             try {
                 qe = new QueryExecutor(Query.DELETE_SERVER_SETTING_VALUE).setLong(1, serverId).setString(2, setting.getDbReference());
                 qe.execute();

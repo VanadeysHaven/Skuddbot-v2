@@ -11,7 +11,7 @@
 - [ ] About command
 - [ ] Server/User info
 - [ ] Blackjack
-- [ ] Role on join
+- [x] Role on join
 - [x] Track me user setting
 - [ ] Memory cleanups
 - [ ] RNG manager
