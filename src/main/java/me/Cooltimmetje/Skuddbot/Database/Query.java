@@ -1,4 +1,4 @@
-package me.Cooltimmetje.Skuddbot.Enums;
+package me.Cooltimmetje.Skuddbot.Database;
 
 import lombok.Getter;
 

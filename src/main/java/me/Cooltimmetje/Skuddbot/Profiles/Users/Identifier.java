@@ -2,10 +2,10 @@ package me.Cooltimmetje.Skuddbot.Profiles.Users;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -34,11 +34,11 @@ public class Identifier {
         QueryExecutor qe = null;
         try {
             qe = new QueryExecutor(Query.SELECT_USER_DETAILS).setInt(1, id);
-            ResultSet rs = qe.executeQuery();
-            while(rs.next()){
-                this.serverId = rs.getLong("server_id");
-                this.discordId = rs.getLong("discord_id");
-                this.twitchUsername = rs.getString("twitch_username");
+            QueryResult qr = qe.executeQuery();
+            while(qr.nextResult()){
+                this.serverId = qr.getLong("server_id");
+                this.discordId = qr.getLong("discord_id");
+                this.twitchUsername = qr.getString("twitch_username");
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -81,9 +81,9 @@ public class Identifier {
         int id = -1;
         try{
             qe = new QueryExecutor(Query.SELECT_USER_ID).setLong(1, serverId).setLong(2, discordId);
-            ResultSet rs = qe.executeQuery();
-            if(rs.first()){
-                id = rs.getInt("id");
+            QueryResult qr = qe.executeQuery();
+            if(qr.nextResult()){
+                id = qr.getInt("id");
             }
         } catch (SQLException e){
             e.printStackTrace();

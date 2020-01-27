@@ -1,7 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Profiles;
 
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSettingsSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;

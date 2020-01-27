@@ -1,10 +1,11 @@
 package me.Cooltimmetje.Skuddbot.Commands.SuperAdmin;
 
 import me.Cooltimmetje.Skuddbot.Commands.Command;
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
-import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Utilities.Constants;
@@ -15,7 +16,6 @@ import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -113,10 +113,10 @@ public class ManageAdminsCommand extends Command {
         QueryExecutor qe = null;
         try {
             qe = new QueryExecutor(Query.LOAD_ADMINS);
-            ResultSet rs = qe.executeQuery();
-            while(rs.next()){
-                Constants.adminUsers.add(rs.getLong("discord_id"));
-                logger.info(rs.getLong("discord_id") + " is a admin.");
+            QueryResult qr = qe.executeQuery();
+            while(qr.nextResult()){
+                Constants.adminUsers.add(qr.getLong("discord_id"));
+                logger.info(qr.getLong("discord_id") + " is a admin.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

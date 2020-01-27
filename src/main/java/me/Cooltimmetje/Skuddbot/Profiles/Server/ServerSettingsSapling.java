@@ -1,10 +1,10 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -27,9 +27,9 @@ public class ServerSettingsSapling {
         QueryExecutor qe = null;
         try {
             qe = new QueryExecutor(Query.SELECT_SERVER_SETTINGS).setLong(1, id);
-            ResultSet rs = qe.executeQuery();
-            while (rs.next()){
-                addSetting(ServerSetting.getByDbReference(rs.getString("setting_name")), rs.getString("setting_value"));
+            QueryResult qr = qe.executeQuery();
+            while (qr.nextResult()){
+                addSetting(ServerSetting.getByDbReference(qr.getString("setting_name")), qr.getString("setting_value"));
             }
         } catch (SQLException e) {
             e.printStackTrace();

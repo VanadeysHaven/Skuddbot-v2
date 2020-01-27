@@ -1,8 +1,9 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -10,7 +11,6 @@ import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -105,9 +105,9 @@ public class SkuddServer {
         QueryExecutor qe = null;
         try {
             qe = new QueryExecutor(Query.SELECT_ALL_STAT_VALUES).setLong(1, serverId).setString(2, stat.getDbReference());
-            ResultSet rs = qe.executeQuery();
-            while (rs.next()){
-                statValues.put(new Identifier(serverId, rs.getLong("discord_id"), rs.getString("twitch_username")), rs.getInt("stat_value"));
+            QueryResult qr = qe.executeQuery();
+            while (qr.nextResult()){
+                statValues.put(new Identifier(serverId, qr.getLong("discord_id"), qr.getString("twitch_username")), qr.getInt("stat_value"));
             }
         } catch (SQLException e){
             e.printStackTrace();

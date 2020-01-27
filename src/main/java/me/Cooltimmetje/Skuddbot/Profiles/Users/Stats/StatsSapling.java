@@ -1,11 +1,11 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Users.Stats;
 
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -28,9 +28,9 @@ public class StatsSapling {
         QueryExecutor qe = null;
         try {
             qe = new QueryExecutor(Query.SELECT_STATS).setInt(1, id.getId());
-            ResultSet rs = qe.executeQuery();
-            while(rs.next()){
-                addStat(Stat.getByDbReference(rs.getString("stat_name")), rs.getString("stat_value"));
+            QueryResult qr = qe.executeQuery();
+            while(qr.nextResult()){
+                addStat(Stat.getByDbReference(qr.getString("stat_name")), qr.getString("stat_value"));
             }
         } catch (SQLException e){
             e.printStackTrace();

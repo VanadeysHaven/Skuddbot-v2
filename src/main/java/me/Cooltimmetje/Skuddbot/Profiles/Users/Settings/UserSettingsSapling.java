@@ -1,11 +1,11 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -28,9 +28,9 @@ public class UserSettingsSapling {
         QueryExecutor qe = null;
         try {
             qe = new QueryExecutor(Query.SELECT_USER_SETTINGS).setInt(1, id.getId());
-            ResultSet rs = qe.executeQuery();
-            while (rs.next()) {
-                addSetting(UserSetting.getByDbReference(rs.getString("setting_name")), rs.getString("setting_value"));
+            QueryResult qr = qe.executeQuery();
+            while (qr.nextResult()) {
+                addSetting(UserSetting.getByDbReference(qr.getString("setting_name")), qr.getString("setting_value"));
             }
         } catch (SQLException e){
             e.printStackTrace();

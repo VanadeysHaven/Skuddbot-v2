@@ -1,12 +1,12 @@
 package me.Cooltimmetje.Skuddbot.Donator;
 
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Enums.Query;
+import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -37,8 +37,8 @@ public class DonatorManager {
         try {
             logger.info("Load users...");
             qe = new QueryExecutor(Query.LOAD_ALL_DONATORS);
-            ResultSet rs = qe.executeQuery();
-            while(rs.next()) users.add(new DonatorUser(rs.getLong("id"), rs.getString("ping_message")));
+            QueryResult qr = qe.executeQuery();
+            while(qr.nextResult()) users.add(new DonatorUser(qr.getLong("id"), qr.getString("ping_message")));
         } catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -48,8 +48,8 @@ public class DonatorManager {
         try {
             logger.info("Load messages...");
             qe = new QueryExecutor(Query.LOAD_ALL_MESSAGES);
-            ResultSet rs = qe.executeQuery();
-            while(rs.next()) addMessage(getUser(rs.getLong("discord_id")), DonatorMessage.Type.getByDbReference(rs.getString("data_name")), rs.getString("data_value"));
+            QueryResult qr = qe.executeQuery();
+            while(qr.nextResult()) addMessage(getUser(qr.getLong("discord_id")), DonatorMessage.Type.getByDbReference(qr.getString("data_name")), qr.getString("data_value"));
 
         } catch (SQLException e){
             e.printStackTrace();

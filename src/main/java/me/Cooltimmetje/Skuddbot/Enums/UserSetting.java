@@ -1,7 +1,9 @@
 package me.Cooltimmetje.Skuddbot.Enums;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,9 +54,9 @@ public enum UserSetting {
         ArrayList<String> settings = new ArrayList<>();
         try {
             qe = new QueryExecutor(Query.SELECT_ALL_USER_SETTINGS);
-            rs = qe.executeQuery();
-            while(rs.next()){
-                settings.add(rs.getString("setting_name"));
+            QueryResult qr = qe.executeQuery();
+            while(qr.nextResult()){
+                settings.add(qr.getString("setting_name"));
             }
         } catch (SQLException e){
             e.printStackTrace();

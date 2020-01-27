@@ -1,6 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Database;
 
-import me.Cooltimmetje.Skuddbot.Enums.Query;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,10 +89,10 @@ public class QueryExecutor {
         ps.execute();
     }
 
-    public ResultSet executeQuery() throws SQLException {
+    public QueryResult executeQuery() throws SQLException {
         logger.info("[ID: " +  id + "] Executing query " + ps.toString());
         rs = ps.executeQuery();
-        return rs;
+        return new QueryResult(id, rs);
     }
 
     public void close(){
@@ -118,6 +117,10 @@ public class QueryExecutor {
                 e.printStackTrace();
             }
         }
+    }
+
+    private String formatId(){
+        return "[ID: " +  id + "] ";
     }
 
 
