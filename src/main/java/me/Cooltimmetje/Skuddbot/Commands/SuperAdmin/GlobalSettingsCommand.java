@@ -6,6 +6,7 @@ import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
+import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
 import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableDrawer;
@@ -88,7 +89,11 @@ public class GlobalSettingsCommand extends Command {
     private void alterSetting(Message message, GlobalSetting setting, String newValue){
         GlobalSettingsContainer settings = Main.getSkuddbot().getGlobalSettings();
         try {
-            settings.setString(setting, newValue);
+            if(setting == GlobalSetting.CURRENT_AVATAR){
+                new AppearanceManager().setAvatar(AppearanceManager.Avatar.valueOf(newValue.toUpperCase().replace("_", "-")));
+            } else {
+                settings.setString(setting, newValue);
+            }
             MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Successfully updated setting `" + setting + "` to `" + newValue + "`!");
         } catch (IllegalArgumentException e) {
             MessagesUtils.addReaction(message, Emoji.X, e.getMessage());

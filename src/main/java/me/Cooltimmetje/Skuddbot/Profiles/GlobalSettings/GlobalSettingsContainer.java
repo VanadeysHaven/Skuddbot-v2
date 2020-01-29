@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
- * [class description]
+ * Container for global settings.
  *
  * @author Tim (Cooltimmetje)
  * @version ALPHA-2.0
@@ -48,6 +48,14 @@ public class GlobalSettingsContainer {
 
     public String getString(GlobalSetting setting){
         return settings.get(setting);
+    }
+
+    public void setCurrentAvatar(AppearanceManager.Avatar avatar){
+        setString(GlobalSetting.CURRENT_AVATAR, avatar.toString());
+    }
+
+    public AppearanceManager.Avatar getCurrentAvatar(){
+        return AppearanceManager.Avatar.valueOf(getString(GlobalSetting.CURRENT_AVATAR));
     }
 
     private boolean checkType(String value, GlobalSetting setting){

@@ -3,9 +3,9 @@
 > Items listed are in no particular order!
 
 ## Planned before launch
-- [ ] Playing messages/Avatars
+- [x] Playing messages/Avatars
   - [x] Playing messages
-  - [ ] Avatars
+  - [x] Avatars
 - [ ] Bot log channel
 - [ ] Panic command
 - [ ] Salutes

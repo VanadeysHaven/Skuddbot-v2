@@ -4,7 +4,10 @@ import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorMessage;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,8 +33,8 @@ public class AppearanceManager {
 
         String url;
 
-        Avatar(String s) {
-            this.url = s;
+        Avatar(String url) {
+            this.url = url;
         }
 
         public static boolean exists(String str){
@@ -157,8 +160,22 @@ public class AppearanceManager {
             } else {
                 Main.getSkuddbot().getApi().updateActivity(dm.getMessage(event.getMessageType()).getMessage());
             }
+            setAvatar(event.getAvatar());
         } else {
             Main.getSkuddbot().getApi().updateActivity(dm.getMessage(DonatorMessage.Type.PLAYING).getMessage());
+            setAvatar(Avatar.DEFAULT);
+        }
+    }
+
+    public void setAvatar(Avatar avatar){
+        GlobalSettingsContainer settings = Main.getSkuddbot().getGlobalSettings();
+        if(settings.getCurrentAvatar() == avatar) return;
+
+        settings.setCurrentAvatar(avatar);
+        try {
+            Main.getSkuddbot().getApi().updateAvatar(new URL(avatar.getUrl()));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
     }
 
