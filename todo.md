@@ -1,5 +1,5 @@
 # TODO
-##### updated 27-01-2020
+##### updated 29-01-2020
 > Items listed are in no particular order!
 
 ## Planned before launch
@@ -27,3 +27,4 @@
 - Team Deathmatch
 - Managing of donator messages
 - Use of the new types of playing statuses!
+- The Wiki!
