@@ -21,7 +21,7 @@ public class AppearanceManager {
     private static final DonatorManager dm = new DonatorManager();
 
     @Getter
-    private enum Avatar {
+    public enum Avatar {
         DEFAULT   ("https://i.imgur.com/v1vlVru.png"),
         CHRISTMAS ("https://i.imgur.com/fc0ORQx.png"),
         WIP       ("https://i.imgur.com/HTZy6Ve.png"),
@@ -32,6 +32,13 @@ public class AppearanceManager {
 
         Avatar(String s) {
             this.url = s;
+        }
+
+        public static boolean exists(String str){
+            for(Avatar avatar : values())
+                if(avatar.toString().equals(str)) return true;
+
+            return false;
         }
     }
 

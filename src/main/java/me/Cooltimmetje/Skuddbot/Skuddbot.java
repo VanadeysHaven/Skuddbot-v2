@@ -7,6 +7,7 @@ import me.Cooltimmetje.Skuddbot.Commands.Donator.ManageMessageCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.SetPingCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
+import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.GlobalSettingsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageAdminsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageDonatorsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.HugCommand;
@@ -20,6 +21,8 @@ import me.Cooltimmetje.Skuddbot.Commands.Useless.RiotCommand;
 import me.Cooltimmetje.Skuddbot.Listeners.JoinQuitServerListener;
 import me.Cooltimmetje.Skuddbot.Listeners.MessageListener;
 import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsSapling;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.slf4j.Logger;
@@ -45,6 +48,7 @@ public class Skuddbot {
     @Getter private DiscordApi api;
     private String token;
     private CommandManager commandManager;
+    @Getter private GlobalSettingsContainer globalSettings;
 
     public Skuddbot(String token){
         logger.info("Received token.");
@@ -63,7 +67,7 @@ public class Skuddbot {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
                 new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(),
-                new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand());
+                new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand());
     }
 
     void registerListeners() {
@@ -80,6 +84,10 @@ public class Skuddbot {
 
     public HelpGenerator getHelpGenerator(){
         return commandManager;
+    }
+
+    public void loadGlobalSettings(){
+        globalSettings = new GlobalSettingsSapling().grow();
     }
 
 }

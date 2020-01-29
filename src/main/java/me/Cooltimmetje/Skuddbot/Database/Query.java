@@ -51,7 +51,12 @@ public enum Query {
     //ADMINS
     ADD_ADMIN("insert into admin_users (discord_id) value (?);"),
     DELETE_ADMIN("delete from admin_users where discord_id=?;"),
-    LOAD_ADMINS("select * from admin_users;");
+    LOAD_ADMINS("select * from admin_users;"),
+
+    //GLOBAL SETTINGS
+    SELECT_GLOBAL_SETTINGS("select * from global_settings;"),
+    UPDATE_GLOBAL_SETTING("insert into global_settings(setting, value) value (?,?) on duplicate key update value=?;"),
+    DELETE_GLOBAL_SETTING("delete from global_settings where setting=?;");
 
     private String query;
 

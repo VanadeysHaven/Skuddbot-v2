@@ -135,6 +135,11 @@ create table admin_users(
     discord_id bigint primary key
 );
 
+create table global_settings(
+    setting varchar(40) primary key,
+    value text
+);
+
 delimiter //
 
 create function get_server_setting_id(settingReference text)
@@ -483,4 +488,9 @@ delete from admin_users where discord_id=76593288865394688;
 select * from admin_users;
 
 select server_id, discord_id, twitch_username, mixer_username from identifier where id=1;
+
+select * from global_settings;
+insert into global_settings(setting, value) value ('commit', 'def456') on duplicate key update value='bye';
+delete from global_settings where setting='hi';
+
 

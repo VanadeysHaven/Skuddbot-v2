@@ -11,7 +11,7 @@
 - [ ] Salutes
 - [ ] CooldownManager
 - [ ] About command
-- [ ] Global Settings
+- [x] Global Settings
 - [ ] Server/User info
 - [ ] Blackjack
 - [x] Role on join

@@ -23,7 +23,7 @@ public class ServerSettingsContainer {
 
     ServerSettingsContainer(long serverId, ServerSettingsSapling sapling){
         this.serverId = serverId;
-        this.settings = new HashMap<>();
+        settings = new HashMap<>();
         processSapling(sapling);
     }
 
@@ -115,6 +115,7 @@ public class ServerSettingsContainer {
     private boolean isDefault(ServerSetting setting, String value){
         if(setting.getDefaultValue() == null && value == null) return true;
         if(value == null && setting.getDefaultValue() != null) return false;
+        assert value != null;
         return value.equals(setting.getDefaultValue());
     }
 

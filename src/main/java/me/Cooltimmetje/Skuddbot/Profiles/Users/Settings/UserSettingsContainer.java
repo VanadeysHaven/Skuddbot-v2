@@ -98,7 +98,8 @@ public class UserSettingsContainer {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                if (qe != null) qe.close();
+                assert qe != null;
+                qe.close();
             }
         } else {
             try {
@@ -107,7 +108,8 @@ public class UserSettingsContainer {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                if (qe != null) qe.close();
+                assert qe != null;
+                qe.close();
             }
         }
     }

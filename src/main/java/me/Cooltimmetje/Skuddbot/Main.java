@@ -47,6 +47,7 @@ public class Main {
         skuddbot.registerCommands();
         skuddbot.buildAndLogin();
         skuddbot.registerListeners();
+        skuddbot.loadGlobalSettings();
         timer.schedule(new TenMinutes(), Constants.TEN_MINUTE_TIMER_DELAY, Constants.TEN_MINUTE_TIMER_DELAY);
         am = new AppearanceManager();
         am.tickAppearance();
