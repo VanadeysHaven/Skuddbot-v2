@@ -19,6 +19,7 @@ import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.CakeCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.KittyCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.PuppyCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.RiotCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.SaluteCommand;
 import me.Cooltimmetje.Skuddbot.Listeners.JoinQuitServerListener;
 import me.Cooltimmetje.Skuddbot.Listeners.MessageListener;
 import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
@@ -69,7 +70,7 @@ public class Skuddbot {
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
                 new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(),
                 new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand(),
-                new ClearCooldownCommand());
+                new ClearCooldownCommand(), new SaluteCommand());
     }
 
     void registerListeners() {

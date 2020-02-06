@@ -23,8 +23,16 @@ public class CooldownManager {
         managers.add(this);
     }
 
+    public void startCooldown(String serverId, String identifier){
+        startCooldown(serverId + identifier);
+    }
+
     public void startCooldown(String identifier){
         lastUsed.put(identifier, System.currentTimeMillis());
+    }
+
+    public boolean isOnCooldown(String serverId, String identifier){
+        return isOnCooldown(serverId + identifier);
     }
 
     public boolean isOnCooldown(String identifier) {

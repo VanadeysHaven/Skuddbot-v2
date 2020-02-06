@@ -3,6 +3,7 @@ package me.Cooltimmetje.Skuddbot.Commands;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
+import me.Cooltimmetje.Skuddbot.NoPrefixCommand;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
@@ -31,20 +32,31 @@ public class CommandManager implements HelpGenerator {
     private static final ProfileManager pm = new ProfileManager();
 
     private ArrayList<Command> commands;
+    private ArrayList<NoPrefixCommand> noPrefixCommands;
 
     public CommandManager(){
         commands = new ArrayList<>();
-    }
-
-    public void registerCommand(Command command){
-        logger.info("Registering command " + command.toString() + " with invokers " + String.join(",", command.getInvokers()) + " and required permission " + command.getRequiredPermission());
-        commands.add(command);
+        noPrefixCommands = new ArrayList<>();
     }
 
     public void registerCommand(Command... commands){
-        for(Command command : commands){
-            registerCommand(command);
-        }
+        for(Command command : commands)
+            if(command instanceof NoPrefixCommand) {
+                registerNoPrefixCommand((NoPrefixCommand) command);
+            } else {
+                registerCommand(command);
+            }
+    }
+
+    public void registerCommand(Command command){
+        logger.info("Registering Command " + command.toString() + " with invokers " + String.join(",", command.getInvokers()) + " and required permission " + command.getRequiredPermission());
+        if(command instanceof NoPrefixCommand) throw new IllegalStateException("NoPrefixCommands must be registered with CommandManager#registerNoPrefixCommand().");
+        commands.add(command);
+    }
+
+    public void registerNoPrefixCommand(NoPrefixCommand command){
+        logger.info("Registering NoPrefixCommand " + command.toString() + " with invokers " + String.join(",", command.getInvokers()) + " and required permission " + command.getRequiredPermission());
+        noPrefixCommands.add(command);
     }
 
     public String getHelp(Identifier id, int amount, int offset){
@@ -117,7 +129,10 @@ public class CommandManager implements HelpGenerator {
         Server server = message.getServer().orElse(null);
         assert server != null;
         String commandPrefix = sm.getServer(server.getId()).getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
-        if(!message.getContent().startsWith(commandPrefix)) return;
+        if(!message.getContent().startsWith(commandPrefix)) {
+            processNoPrefix(message, server);
+            return;
+        }
         String messageContent = message.getContent().substring(commandPrefix.length());
         String requestedInvoker = messageContent.split(" ")[0];
         SkuddUser su = pm.getUser(server.getId(), message.getAuthor().getId());
@@ -139,12 +154,35 @@ public class CommandManager implements HelpGenerator {
         }
     }
 
+    private void processNoPrefix(Message message, Server server){
+        String messageContent = message.getContent();
+        String requestedInvoker = messageContent.split(" ")[0];
+        SkuddUser su = pm.getUser(server.getId(), message.getAuthor().getId());
+        PermissionManager permissions = su.getPermissions();
+
+        for(Command command : noPrefixCommands){
+            for(String invoker : command.getInvokers()){
+                if(requestedInvoker.equals(invoker)){
+                    if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
+                        if(permissions.hasPermission(command.getRequiredPermission())) {
+                            command.run(message, messageContent);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private void processPrivate(Message message){
         String commandPrefix = "!";
-        if(!message.getContent().startsWith(commandPrefix)) return;
+        if(!message.getContent().startsWith(commandPrefix)) {
+            processNoPrefixPrivate(message);
+            return;
+        }
         String messageContent = message.getContent().substring(commandPrefix.length());
         String requestedInvoker = messageContent.split(" ")[0];
         PermissionManager permissions = new PermissionManager(message.getAuthor().getId());
+
         for(Command command : commands){
             for(String invoker : command.getInvokers()){
                 if(requestedInvoker.equals(invoker)){
@@ -154,6 +192,24 @@ public class CommandManager implements HelpGenerator {
                         }
                     } else {
                         MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
+                    }
+                }
+            }
+        }
+    }
+
+    private void processNoPrefixPrivate(Message message){
+        String messageContent = message.getContent();
+        String requestedInvoker = messageContent.split(" ")[0];
+        PermissionManager permissions = new PermissionManager(message.getAuthor().getId());
+
+        for(Command command : noPrefixCommands){
+            for(String invoker : command.getInvokers()){
+                if(requestedInvoker.equals(invoker)){
+                    if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
+                        if(permissions.hasPermission(command.getRequiredPermission())) {
+                            command.run(message, messageContent);
+                        }
                     }
                 }
             }
