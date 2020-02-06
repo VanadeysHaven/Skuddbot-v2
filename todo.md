@@ -1,5 +1,5 @@
 # TODO
-##### updated 30-01-2020
+##### updated 06-02-2020
 > Items listed are in no particular order!
 
 ## Planned before launch
@@ -8,7 +8,7 @@
   - [x] Avatars
 - [ ] Bot log channel
 - [ ] Panic command
-- [ ] Salutes
+- [x] Salutes
 - [x] CooldownManager
 - [ ] About command
 - [x] Global Settings
