@@ -57,7 +57,7 @@ public class StatsContainer {
         if(!checkType(value, stat)) throw new IllegalArgumentException("Value " + value + " is unsuitable for stat " + stat + "; not of type " + stat.getType());
         if(!load && !pm.getUser(id).getSettings().getBoolean(UserSetting.TRACK_ME)) return;
         this.stats.put(stat, value);
-        if(load) save(stat);
+        if(!load) save(stat);
     }
 
     public String getString(Stat stat){

@@ -1,5 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
+import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;

@@ -1,7 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Commands.Donator;
 
 import com.vdurmont.emoji.EmojiParser;
-import me.Cooltimmetje.Skuddbot.Commands.Command;
+import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorUser;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;

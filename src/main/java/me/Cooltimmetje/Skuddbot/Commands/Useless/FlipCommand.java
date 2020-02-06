@@ -1,6 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Commands.Useless;
 
-import me.Cooltimmetje.Skuddbot.Commands.Command;
+import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.javacord.api.entity.message.Message;

@@ -1,9 +1,8 @@
-package me.Cooltimmetje.Skuddbot.Commands;
+package me.Cooltimmetje.Skuddbot.Commands.Managers;
 
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
-import me.Cooltimmetje.Skuddbot.NoPrefixCommand;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;

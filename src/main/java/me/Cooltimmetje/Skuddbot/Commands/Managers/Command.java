@@ -1,9 +1,8 @@
-package me.Cooltimmetje.Skuddbot.Commands;
+package me.Cooltimmetje.Skuddbot.Commands.Managers;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
-import me.Cooltimmetje.Skuddbot.NoPrefixCommand;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import org.javacord.api.entity.message.Message;

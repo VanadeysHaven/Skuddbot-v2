@@ -1,6 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands;
 
-import me.Cooltimmetje.Skuddbot.Commands.Command;
+import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Main;

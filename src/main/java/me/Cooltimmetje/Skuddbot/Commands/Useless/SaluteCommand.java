@@ -1,7 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Commands.Useless;
 
+import me.Cooltimmetje.Skuddbot.Commands.Managers.NoPrefixCommand;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
-import me.Cooltimmetje.Skuddbot.NoPrefixCommand;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.javacord.api.entity.emoji.KnownCustomEmoji;

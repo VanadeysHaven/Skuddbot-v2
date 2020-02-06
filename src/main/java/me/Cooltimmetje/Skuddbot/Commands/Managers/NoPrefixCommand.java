@@ -1,10 +1,9 @@
-package me.Cooltimmetje.Skuddbot;
+package me.Cooltimmetje.Skuddbot.Commands.Managers;
 
-import me.Cooltimmetje.Skuddbot.Commands.Command;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 
 /**
- * [class description]
+ * Command without a prefix
  *
  * @author Tim (Cooltimmetje)
  * @version ALPHA-2.0

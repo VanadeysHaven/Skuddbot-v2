@@ -1,6 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Commands.SuperAdmin;
 
-import me.Cooltimmetje.Skuddbot.Commands.Command;
+import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;

@@ -1,17 +1,19 @@
 package me.Cooltimmetje.Skuddbot;
 
 import lombok.Getter;
-import me.Cooltimmetje.Skuddbot.Commands.*;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.GameCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.ManageMessageCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.SetPingCommand;
+import me.Cooltimmetje.Skuddbot.Commands.*;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
+import me.Cooltimmetje.Skuddbot.Commands.Managers.CommandManager;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ClearCooldownCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.GlobalSettingsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageAdminsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageDonatorsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.HugCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.PanicCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.PunchCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.FlipCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.BaconCommand;
@@ -70,7 +72,7 @@ public class Skuddbot {
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
                 new BaconCommand(), new PermissionCheckCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(),
                 new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand(),
-                new ClearCooldownCommand(), new SaluteCommand());
+                new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand());
     }
 
     void registerListeners() {
