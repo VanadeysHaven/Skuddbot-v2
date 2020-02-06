@@ -3,6 +3,7 @@ package me.Cooltimmetje.Skuddbot.Commands;
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
+import me.Cooltimmetje.Skuddbot.NoPrefixCommand;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import org.javacord.api.entity.message.Message;
@@ -54,7 +55,10 @@ public abstract class Command {
     public String formatHelp(String commandPrefix){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < MAX_ALIASES && i < invokers.length; i++){
-            sb.append("`").append(commandPrefix).append(invokers[i]).append("`, ");
+            sb.append("`");
+            if(!(this instanceof NoPrefixCommand))
+                sb.append(commandPrefix);
+            sb.append(invokers[i]).append("`, ");
         }
         String invokerString = sb.toString();
         invokerString = invokerString.substring(0, invokerString.length() - 2);

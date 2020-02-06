@@ -1,5 +1,5 @@
 # TODO
-##### updated 29-01-2020
+##### updated 06-02-2020
 > Items listed are in no particular order!
 
 ## Planned before launch
@@ -8,8 +8,8 @@
   - [x] Avatars
 - [ ] Bot log channel
 - [ ] Panic command
-- [ ] Salutes
-- [ ] CooldownManager
+- [x] Salutes
+- [x] CooldownManager
 - [ ] About command
 - [x] Global Settings
 - [ ] Server/User info
@@ -27,4 +27,3 @@
 - Team Deathmatch
 - Managing of donator messages
 - Use of the new types of playing statuses!
-- The Wiki!
