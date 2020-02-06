@@ -79,8 +79,11 @@ public class CommandManager implements HelpGenerator {
         StringBuilder sb = new StringBuilder();
 
         int position = 0;
-        for(int i = 0; i < commands.size() && position < amount + offset; i++){
-            Command command = commands.get(i);
+        ArrayList<Command> allCommands = new ArrayList<>();
+        allCommands.addAll(commands);
+        allCommands.addAll(noPrefixCommands);
+        for(int i = 0; i < allCommands.size() && position < amount + offset; i++){
+            Command command = allCommands.get(i);
             if(permissions.hasPermission(command.getRequiredPermission())) {
                 if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == location) {
                     if(position >= offset)
