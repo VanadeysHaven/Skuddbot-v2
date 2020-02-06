@@ -83,4 +83,14 @@ public class PermissionManager {
         return list.contains(level);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        Iterator<PermissionLevel> permIt = getPermissions();
+        while(permIt.hasNext()){
+            sb.append(", ").append(permIt.next());
+        }
+
+        return sb.toString().substring(2).trim();
+    }
 }

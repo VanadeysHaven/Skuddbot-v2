@@ -17,7 +17,8 @@ public enum GlobalSetting {
     DEPLOY_TIME   ("deploy_time",    "Deployed at",    ValueType.STRING, "4/20",                       true ),
     BUILD_TIME    ("build_time",     "Built at",       ValueType.STRING, "4/20",                       false),
     BRANCH        ("branch",         "Branch",         ValueType.STRING, "master",                     false),
-    CURRENT_AVATAR("current_avatar", "Current avatar", ValueType.STRING, "DEFAULT",                    false);
+    CURRENT_AVATAR("current_avatar", "Current avatar", ValueType.STRING, "DEFAULT",                    false),
+    VERSION       ("version",        "Version",        ValueType.STRING, "ALPHA-2.0",                  false);
 
     private String dbReference;
     private String name;

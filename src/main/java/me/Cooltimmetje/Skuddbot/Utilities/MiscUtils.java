@@ -77,4 +77,9 @@ public class MiscUtils {
         }
         return sb.reverse().toString();
     }
+
+    public static String stripEveryone(String input){
+        return input.replace("@everyone", "@\u200Beveryone").replace("@here", "@\u200Bhere");
+    }
+
 }

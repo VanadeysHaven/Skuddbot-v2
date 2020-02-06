@@ -6,13 +6,16 @@
 - [x] Playing messages/Avatars
   - [x] Playing messages
   - [x] Avatars
+  - [ ] Start up playing message
 - [ ] Bot log channel
-- [ ] Panic command
+- [x] Panic command
 - [x] Salutes
 - [x] CooldownManager
 - [ ] About command
 - [x] Global Settings
 - [ ] Server/User info
+  - [x] User
+  - [ ] Server
 - [ ] Blackjack
 - [x] Role on join
 - [x] Track me user setting

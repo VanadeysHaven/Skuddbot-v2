@@ -54,8 +54,10 @@ public class StatsCommand extends Command {
         SkuddUser su = pm.getUser(server.getId(), user.getId());
         if(args.length >= 5) {
             boolean hasPermission = authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN);
-            if(hasPermission) editValue(message, content, su, user, server);
-            return;
+            if(hasPermission) {
+                editValue(message, content, su, user, server);
+                return;
+            }
         }
         if(user.getId() != author.getId() && su.getSettings().getBoolean(UserSetting.STATS_PRIVATE) && !authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)) {
             MessagesUtils.addReaction(message, Emoji.X, "This user has set their stats to private.");
