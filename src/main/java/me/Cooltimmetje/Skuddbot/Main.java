@@ -8,6 +8,7 @@ import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Timers.TenMinutes;
 import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
 import me.Cooltimmetje.Skuddbot.Utilities.Constants;
+import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +51,9 @@ public class Main {
         skuddbot.loadGlobalSettings();
         timer.schedule(new TenMinutes(), Constants.TEN_MINUTE_TIMER_DELAY, Constants.TEN_MINUTE_TIMER_DELAY);
         new AppearanceManager().appearanceStartup();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> getSkuddbot().logout()));
+
+        MessagesUtils.log(":robot: Bot started up!"); //TODO: make this better
     }
 
 }

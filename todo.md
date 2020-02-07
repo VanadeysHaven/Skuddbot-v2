@@ -7,7 +7,9 @@
   - [x] Playing messages
   - [x] Avatars
   - [x] Start up playing message
-- [ ] Bot log channel
+- [x] Bot log channel
+- [x] Shutdown Hook
+- [x] Logout command
 - [x] Panic command
 - [x] Salutes
 - [x] CooldownManager

@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Utilities;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Main;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 
@@ -42,5 +43,11 @@ public class MessagesUtils {
     public static void sendEmoji(TextChannel channel, Emoji emoji, String text, boolean allowEveryone){
         sendPlain(channel, emoji.getUnicode() + " " + text, allowEveryone);
     }
+
+    public static void log(String text){
+        if(Main.getSkuddbot().getApi().getApplicationInfo().join().getClientId() == 209779500018434058L)
+            sendPlain(Constants.getLogChannel(), text);
+    }
+
 
 }

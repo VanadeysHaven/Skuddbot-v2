@@ -6,6 +6,8 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.StatsContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.StatsSapling;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class represents a user and their data and statistics.
@@ -15,6 +17,8 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.StatsSapling;
  * @version ALPHA-2.0
  */
 public class SkuddUser {
+
+    private static final Logger logger = LoggerFactory.getLogger(SkuddUser.class);
 
     @Getter private Identifier id;
     @Getter private StatsContainer stats;
@@ -33,4 +37,9 @@ public class SkuddUser {
     }
 
 
+    public void save() {
+        logger.info("Saving user " + id.toString());
+        getStats().save();
+        getSettings().save();
+    }
 }

@@ -147,4 +147,12 @@ public class SkuddServer {
         return sortedMap;
     }
 
+    public void save(){
+        logger.info("Saving server " + serverId);
+        for(SkuddUser user : users) {
+            user.save();
+        }
+        getSettings().save();
+    }
+
 }

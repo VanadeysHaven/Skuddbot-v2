@@ -8,10 +8,7 @@ import me.Cooltimmetje.Skuddbot.Commands.*;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.Cooltimmetje.Skuddbot.Commands.Managers.CommandManager;
-import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ClearCooldownCommand;
-import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.GlobalSettingsCommand;
-import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageAdminsCommand;
-import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.ManageDonatorsCommand;
+import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.*;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.HugCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.PunchCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.FlipCommand;
@@ -27,10 +24,15 @@ import me.Cooltimmetje.Skuddbot.Listeners.MessageListener;
 import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsSapling;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
+import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Iterator;
 
 //In loving memory of Ray's Nan
 //RIP 23-12-2019
@@ -47,7 +49,8 @@ import org.slf4j.LoggerFactory;
  */
 public class Skuddbot {
 
-    private static Logger logger = LoggerFactory.getLogger(Skuddbot.class);
+    private static final Logger logger = LoggerFactory.getLogger(Skuddbot.class);
+    private static final ServerManager sm = new ServerManager();
 
     @Getter private DiscordApi api;
     private String token;
@@ -70,7 +73,7 @@ public class Skuddbot {
     void registerCommands() {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
-                new BaconCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(),
+                new BaconCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(), new LogoutCommand(),
                 new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand(),
                 new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand(), new UserInfoCommand());
     }
@@ -93,6 +96,18 @@ public class Skuddbot {
 
     public void loadGlobalSettings(){
         globalSettings = new GlobalSettingsSapling().grow();
+    }
+
+    public void logout(){
+        MessagesUtils.log("Logging out...");
+
+        Iterator<SkuddServer> serverIt = sm.getServers();
+        while (serverIt.hasNext()){
+            serverIt.next().save();
+        }
+
+        globalSettings.save();
+        getApi().disconnect();
     }
 
 }
