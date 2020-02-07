@@ -12,13 +12,14 @@ import lombok.Getter;
 @Getter
 public enum GlobalSetting {
 
-    COMMIT        ("commit",         "Deployed from",  ValueType.STRING, "abc123",                     false),
-    WIKI          ("wiki_url",       "Wiki",           ValueType.STRING, "https://wiki.skuddbot.xyz/", false),
-    DEPLOY_TIME   ("deploy_time",    "Deployed at",    ValueType.STRING, "4/20",                       true ),
-    BUILD_TIME    ("build_time",     "Built at",       ValueType.STRING, "4/20",                       false),
-    BRANCH        ("branch",         "Branch",         ValueType.STRING, "master",                     false),
-    CURRENT_AVATAR("current_avatar", "Current avatar", ValueType.STRING, "DEFAULT",                    false),
-    VERSION       ("version",        "Version",        ValueType.STRING, "ALPHA-2.0",                  false);
+    COMMIT         ("commit",          "Deployed from",   ValueType.STRING,  "abc123",                     false),
+    WIKI           ("wiki_url",        "Wiki",            ValueType.STRING,  "https://wiki.skuddbot.xyz/", false),
+    DEPLOY_TIME    ("deploy_time",     "Deployed at",     ValueType.STRING,  "02/02/2020 20:02 (GMT)",     true ),
+    BUILD_TIME     ("build_time",      "Built at",        ValueType.STRING,  "02/02/2020 20:02 (GMT)",     true ),
+    BRANCH         ("branch",          "Branch",          ValueType.STRING,  "master",                     false),
+    CURRENT_AVATAR ("current_avatar",  "Current avatar",  ValueType.STRING,  "DEFAULT",                    false),
+    VERSION        ("version",         "Version",         ValueType.STRING,  "ALPHA-2.0",                  false),
+    SALUTE_COOLDOWN("salute_cooldown", "Salute Cooldown", ValueType.BOOLEAN, "false",                      false);
 
     private String dbReference;
     private String name;

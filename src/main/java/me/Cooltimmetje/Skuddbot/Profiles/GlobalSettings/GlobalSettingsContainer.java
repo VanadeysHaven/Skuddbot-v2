@@ -5,6 +5,7 @@ import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
+import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -50,6 +51,16 @@ public class GlobalSettingsContainer {
         return settings.get(setting);
     }
 
+    public void setBoolean(GlobalSetting setting, boolean value){
+        if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting" + setting + " is not of type BOOLEAN");
+        setString(setting, value+"");
+    }
+
+    public boolean getBoolean(GlobalSetting setting) {
+        if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting" + setting + " is not of type BOOLEAN");
+        return Boolean.parseBoolean(getString(setting));
+    }
+
     public void setCurrentAvatar(AppearanceManager.Avatar avatar){
         setString(GlobalSetting.CURRENT_AVATAR, avatar.toString());
     }
@@ -62,6 +73,9 @@ public class GlobalSettingsContainer {
         ValueType type = setting.getType();
         if(setting == GlobalSetting.CURRENT_AVATAR) {
             return AppearanceManager.Avatar.exists(value);
+        }
+        if(type == ValueType.BOOLEAN){
+            return MiscUtils.isBoolean(value);
         }
         return type == ValueType.STRING;
     }

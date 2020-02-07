@@ -23,22 +23,22 @@ public class CooldownManager {
         managers.add(this);
     }
 
-    public void startCooldown(String serverId, String identifier){
-        startCooldown(serverId + identifier);
-    }
-
     public void startCooldown(String identifier){
         lastUsed.put(identifier, System.currentTimeMillis());
     }
 
-    public boolean isOnCooldown(String serverId, String identifier){
-        return isOnCooldown(serverId + identifier);
+    public void startCooldown(long identifier) {
+        startCooldown(identifier+"");
     }
 
     public boolean isOnCooldown(String identifier) {
         if(!lastUsed.containsKey(identifier)) return false;
         long secondsSinceLastUse = (System.currentTimeMillis() - lastUsed.get(identifier)) / 1000;
         return secondsSinceLastUse <= cooldown;
+    }
+
+    public boolean isOnCooldown(long identifier){
+        return isOnCooldown(identifier+"");
     }
 
     public void clear(){

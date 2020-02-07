@@ -12,7 +12,7 @@
 - [x] Logout command
 - [x] Panic command
 - [x] Salutes
-  - [ ] Cooldown
+  - [x] Cooldown
 - [x] CooldownManager
 - [x] About command
 - [x] Global Settings
