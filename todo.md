@@ -16,14 +16,15 @@
 - [x] CooldownManager
 - [x] About command
 - [x] Global Settings
-- [ ] Server/User info
+- [x] Server/User info
   - [x] User
-  - [ ] Server
+  - [x] Server
 - [ ] Blackjack
 - [x] Role on join
 - [x] Track me user setting
 - [ ] Memory cleanups
 - [ ] RNG manager
+- [ ] Server setup
 
 ## Planned after launch
 - Custom commands
