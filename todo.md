@@ -12,8 +12,9 @@
 - [x] Logout command
 - [x] Panic command
 - [x] Salutes
+  - [ ] Cooldown
 - [x] CooldownManager
-- [ ] About command
+- [x] About command
 - [x] Global Settings
 - [ ] Server/User info
   - [x] User

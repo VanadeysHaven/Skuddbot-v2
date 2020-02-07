@@ -1,10 +1,10 @@
 package me.Cooltimmetje.Skuddbot;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Commands.*;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.GameCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.ManageMessageCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Donator.SetPingCommand;
-import me.Cooltimmetje.Skuddbot.Commands.*;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpCommand;
 import me.Cooltimmetje.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.Cooltimmetje.Skuddbot.Commands.Managers.CommandManager;
@@ -29,6 +29,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +76,7 @@ public class Skuddbot {
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
                 new BaconCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(), new LogoutCommand(),
                 new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand(),
-                new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand(), new UserInfoCommand());
+                new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand(), new UserInfoCommand(), new AboutCommand());
     }
 
     void registerListeners() {
@@ -108,6 +109,10 @@ public class Skuddbot {
 
         globalSettings.save();
         getApi().disconnect();
+    }
+
+    public User getSelf(){
+        return getApi().getUserById(getApi().getClientId()).join();
     }
 
 }
