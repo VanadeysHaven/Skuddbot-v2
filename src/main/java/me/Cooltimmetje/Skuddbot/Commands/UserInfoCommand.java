@@ -36,33 +36,46 @@ public class UserInfoCommand extends Command {
         EmbedBuilder eb = new EmbedBuilder();
         SkuddUser su = null;
         User user = message.getUserAuthor().orElse(null); assert user != null;
+
+        if(message.getMentionedUsers().size() > 0) {
+            user = message.getMentionedUsers().get(0);
+        } else if(content.split(" ").length >= 2){
+            String idStr = content.split(" ")[1];
+            if(MiscUtils.isLong(idStr)){
+                User attemptUser = Main.getSkuddbot().getApi().getUserById(Long.parseLong(idStr)).join();
+                if(attemptUser != null) {
+                    user = attemptUser;
+                }
+            }
+        }
+
         PermissionManager permManager = new PermissionManager(user.getId());
         if(server != null) {
-            su = pm.getUser(server.getId(), message.getAuthor().getId());
+            su = pm.getUser(server.getId(), user.getId());
             permManager = su.getPermissions();
         }
 
-        eb.setAuthor(message.getAuthor().getDiscriminatedName(), null, message.getAuthor().getAvatar());
-        eb.setThumbnail(message.getAuthor().getAvatar());
+        eb.setAuthor(user.getDiscriminatedName(), null, user.getAvatar());
+        eb.setThumbnail(user.getAvatar());
         String title = "";
         Color color = Color.GRAY;
-        if (Constants.adminUsers.contains(message.getAuthor().getId())) {
+        if (Constants.adminUsers.contains(user.getId())) {
             title = "Skuddbot Admin";
             color = Color.RED;
-        } else if (dm.isDonator(message.getAuthor().getId())) {
+        } else if (dm.isDonator(user.getId())) {
             title = "Skuddbot Donator";
             color = Color.ORANGE;
         }
         if (!title.equals(""))
             eb.setTitle(title);
 
-        eb.addField("__User ID:__", message.getAuthor().getId()+"");
+        eb.addField("__User ID:__", user.getId()+"");
         eb.addField("__Permissions:__", permManager.toString());
 
         if(server != null){
             eb.addInlineField("__Skuddbot ID:__", su.getId().getId()+"");
-            String nick = message.getAuthor().getDisplayName();
-            if(nick.equals(message.getAuthor().getName())){
+            String nick = user.getDisplayName(server);
+            if(nick.equals(user.getName())){
                 nick = "No nickname";
             }
             eb.addInlineField("__Server Nickname:__", nick);
