@@ -3,6 +3,7 @@ package me.Cooltimmetje.Skuddbot.Utilities;
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorMessage;
+import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
 
@@ -177,6 +178,11 @@ public class AppearanceManager {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void appearanceStartup(){
+        GlobalSettingsContainer gsc = Main.getSkuddbot().getGlobalSettings();
+        Main.getSkuddbot().getApi().updateActivity(gsc.getString(GlobalSetting.VERSION) + " | " + gsc.getString(GlobalSetting.BRANCH) + " > " + gsc.getString(GlobalSetting.COMMIT));
     }
 
 }

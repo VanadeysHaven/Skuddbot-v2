@@ -1,12 +1,12 @@
 # TODO
-##### updated 06-02-2020
+##### updated 07-02-2020
 > Items listed are in no particular order!
 
 ## Planned before launch
 - [x] Playing messages/Avatars
   - [x] Playing messages
   - [x] Avatars
-  - [ ] Start up playing message
+  - [x] Start up playing message
 - [ ] Bot log channel
 - [x] Panic command
 - [x] Salutes

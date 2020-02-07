@@ -49,7 +49,7 @@ public class Main {
         skuddbot.registerListeners();
         skuddbot.loadGlobalSettings();
         timer.schedule(new TenMinutes(), Constants.TEN_MINUTE_TIMER_DELAY, Constants.TEN_MINUTE_TIMER_DELAY);
-        new AppearanceManager().tickAppearance();
+        new AppearanceManager().appearanceStartup();
     }
 
 }
