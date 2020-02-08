@@ -13,10 +13,6 @@ public class MiscUtils {
 
     private static Random rnd = new Random(); //TODO: Random manager
 
-    public static int randomInt(int min, int max) {
-        return rnd.nextInt((max - min) + 1) + min;
-    }
-
     public static boolean isInt(String str){
         try {
             int num = Integer.parseInt(str);

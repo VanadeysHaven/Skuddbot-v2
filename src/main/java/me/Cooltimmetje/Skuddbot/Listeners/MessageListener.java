@@ -9,7 +9,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
-import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.javacord.api.entity.channel.ChannelType;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
@@ -31,6 +31,7 @@ public class MessageListener {
 
     private static final ServerManager sm = new ServerManager();
     private static final ProfileManager pm = new ProfileManager();
+    private static final RNGManager random = new RNGManager();
 
     public static void run(Message message){
         String content = message.getContent();
@@ -43,7 +44,7 @@ public class MessageListener {
         if(content.startsWith(commandPrefix)) return;
 
         SkuddUser su = pm.getUser(server.getId(), message.getAuthor().getId());
-        su.getStats().incrementInt(Stat.EXPERIENCE, MiscUtils.randomInt(ss.getSettings().getInt(ServerSetting.XP_MIN), ss.getSettings().getInt(ServerSetting.XP_MAX)));
+        su.getStats().incrementInt(Stat.EXPERIENCE, random.integer(ss.getSettings().getInt(ServerSetting.XP_MIN), ss.getSettings().getInt(ServerSetting.XP_MAX)));
 
         if(su.getStats().hasLeveledUp()){
             LevelUpNotification notification = su.getSettings().getLevelUpNotify();

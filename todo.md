@@ -1,5 +1,5 @@
 # TODO
-##### updated 07-02-2020
+##### updated 08-02-2020
 > Items listed are in no particular order!
 
 ## Planned before launch
@@ -23,10 +23,11 @@
 - [x] Role on join
 - [x] Track me user setting
 - [ ] Memory cleanups
-- [ ] RNG manager
+- [x] RNG manager
 - [ ] Server setup
 
 ## Planned after launch
+- Currencies
 - Custom commands
 - Twitch integration
 - Challenge

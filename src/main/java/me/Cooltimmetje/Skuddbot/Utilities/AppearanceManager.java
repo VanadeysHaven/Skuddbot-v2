@@ -23,6 +23,7 @@ import java.util.Date;
 public class AppearanceManager {
 
     private static final DonatorManager dm = new DonatorManager();
+    private static RNGManager random = new RNGManager();
 
     @Getter
     public enum Avatar {
@@ -142,7 +143,7 @@ public class AppearanceManager {
         public static CalendarEvent getRandomEventForDay(int day, int month){
             ArrayList<CalendarEvent> list = gatherEventsForDay(day, month);
             if(list.isEmpty()) return null;
-            return list.get(MiscUtils.randomInt(0, list.size() - 1));
+            return list.get(random.integer(0, list.size() - 1));
         }
 
     }

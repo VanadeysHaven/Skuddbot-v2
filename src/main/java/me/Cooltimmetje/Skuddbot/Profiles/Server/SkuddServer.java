@@ -7,7 +7,7 @@ import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
-import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +28,14 @@ public class SkuddServer {
     @Getter private ServerSettingsContainer settings;
     private ArrayList<SkuddUser> users;
     private HashMap<Long,Long> lastSeen;
+    private RNGManager random;
 
     public SkuddServer(long serverId, ServerSettingsSapling settingsSapling){
         this.serverId = serverId;
         this.settings = settingsSapling.grow();
         this.users = new ArrayList<>();
         this.lastSeen = new HashMap<>();
+        random = new RNGManager();
     }
 
     public SkuddUser getUser(long id){
@@ -68,7 +70,7 @@ public class SkuddServer {
         }
         if(active.size() < 2) throw new UnsupportedOperationException("The list is empty, sorry!");
 
-        return active.get(MiscUtils.randomInt(0, active.size() - 1));
+        return active.get(random.integer(0, active.size() - 1));
     }
 
     public ArrayList<Long> gatherActiveUsers(long activeDelay){

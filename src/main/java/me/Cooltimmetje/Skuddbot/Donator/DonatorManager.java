@@ -3,7 +3,7 @@ package me.Cooltimmetje.Skuddbot.Donator;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
-import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +24,7 @@ public class DonatorManager {
     private static ArrayList<DonatorMessage> messages = new ArrayList<>();
     private static ArrayList<DonatorUser> users = new ArrayList<>();
     private static ArrayList<DonatorMessage.Type> presentTypes = new ArrayList<>();
+    private static RNGManager random = new RNGManager();
 
     public DonatorManager(){
         if(messages.isEmpty() && users.isEmpty()) {
@@ -65,7 +66,7 @@ public class DonatorManager {
         DonatorMessage dm;
         do {
             do {
-                dm = messages.get(MiscUtils.randomInt(0, messages.size() - 1));
+                dm = messages.get(random.integer(0, messages.size() - 1));
                 attempts++;
             } while (dm.getType() != type);
         } while (!dm.isAllowed());

@@ -6,7 +6,7 @@ import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
-import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.javacord.api.entity.emoji.KnownCustomEmoji;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
@@ -26,6 +26,7 @@ public class SaluteCommand extends NoPrefixCommand {
 
     private static final int COOLDOWN = 15;
     private HashMap<Long, CooldownManager> cooldowns = new HashMap<>();
+    private static RNGManager random = new RNGManager();
 
     public SaluteCommand() {
         super(new String[]{"o7"}, "o7 CMDR", PermissionLevel.DEFAULT, Location.BOTH);
@@ -52,7 +53,7 @@ public class SaluteCommand extends NoPrefixCommand {
             return;
         }
 
-        MessagesUtils.sendPlain(message.getChannel(), emoji.get(MiscUtils.randomInt(0, emoji.size() - 1)).getMentionTag() + "7");
+        MessagesUtils.sendPlain(message.getChannel(), emoji.get(random.integer(0, emoji.size() - 1)).getMentionTag() + "7");
         startCooldown(serverId, message.getAuthor().getId());
     }
 

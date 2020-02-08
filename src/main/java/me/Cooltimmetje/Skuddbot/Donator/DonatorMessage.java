@@ -5,7 +5,7 @@ import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
-import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +21,7 @@ import java.sql.SQLException;
 public class DonatorMessage {
 
     private static final Logger logger = LoggerFactory.getLogger(DonatorMessage.class);
+    private static RNGManager random = new RNGManager();
 
     @Getter
     public enum Type {
@@ -73,7 +74,7 @@ public class DonatorMessage {
 
     public boolean isAllowed(){
         if((System.currentTimeMillis() - lastShown) > (24*60*60*1000)) return true;
-        return MiscUtils.randomInt(0,100) < 25;
+        return random.integer(0, 100) < 25;
     }
 
     public void save(){
