@@ -36,6 +36,7 @@ public enum Emoji {
     NINE                    ("9⃣", "nine"),
     TEN                     ("\uD83D\uDD1F", "keycap_ten"),
     A                       ("\uD83C\uDDE6", "regional_indicator_symbol_a"),
+    D                       ("\uD83C\uDDE9", "regional_indicator_symbol_d"),
     H                       ("\uD83C\uDDED", "regional_indicator_symbol_h"),
     J                       ("\uD83C\uDDEF", "regional_indicator_symbol_j"),
     K                       ("\uD83C\uDDF0", "regional_indicator_symbol_k"),

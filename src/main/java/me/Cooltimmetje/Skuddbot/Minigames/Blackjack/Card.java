@@ -1,4 +1,4 @@
-package me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Cards;
+package me.Cooltimmetje.Skuddbot.Minigames.Blackjack;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
@@ -14,7 +14,7 @@ import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 public class Card {
 
     @Getter
-    private enum Rank {
+    public enum Rank {
 
         ACE  (-1, "Ace",   Emoji.A    ),
         TWO  (2,  "Two",   Emoji.TWO  ),
@@ -43,6 +43,7 @@ public class Card {
         public static Rank random(RNGManager random){
             return values()[random.integer(0, values().length - 1)];
         }
+
     }
 
     @Getter
@@ -67,8 +68,8 @@ public class Card {
 
     }
 
-    private Rank rank;
-    private Suit suit;
+    @Getter private Rank rank;
+    @Getter private Suit suit;
 
     public Card(Rank rank, Suit suit){
         this.rank = rank;
@@ -88,4 +89,8 @@ public class Card {
                 suit == card.suit;
     }
 
+    @Override
+    public String toString() {
+        return rank.getEmoji().getUnicode() + " " + suit.getEmoji().getUnicode();
+    }
 }

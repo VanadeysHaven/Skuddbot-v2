@@ -66,11 +66,12 @@ public class Identifier {
     public boolean equals(Object obj){
         if(!(obj instanceof Identifier)) return false;
         Identifier id = (Identifier) obj;
-        if(serverId != id.getServerId()) return false;
-        if(discordId != -1 && id.getDiscordId() != -1) if(discordId != id.getDiscordId()) return false;
-        if(twitchUsername != null && id.getTwitchUsername() != null) return twitchUsername.equals(id.getTwitchUsername());
+//        if(serverId != id.getServerId()) return false;
+//        if(discordId != -1 && id.getDiscordId() != -1) if(discordId != id.getDiscordId()) return false;
+//        if(twitchUsername != null && id.getTwitchUsername() != null) return twitchUsername.equals(id.getTwitchUsername());
 
-        return true;
+//        return true;
+        return getId() == id.getId();
     }
 
     public int getId(){

@@ -27,13 +27,13 @@ public class MessagesUtils {
         addReaction(message, emoji, output, 30*60*1000);
     }
 
-    public static void sendPlain(TextChannel channel, String text){
-        sendPlain(channel, text, false);
+    public static Message sendPlain(TextChannel channel, String text){
+        return sendPlain(channel, text, false);
     }
 
-    public static void sendPlain(TextChannel channel, String text, boolean allowEveryone) {
+    public static Message sendPlain(TextChannel channel, String text, boolean allowEveryone) {
         if(!allowEveryone) text = text.replace("@everyone", "@\u200Beveryone").replace("@here", "@\u200Bhere");
-        channel.sendMessage(text);
+        return channel.sendMessage(text).join();
     }
 
     public static void sendEmoji(TextChannel channel, Emoji emoji, String text){
