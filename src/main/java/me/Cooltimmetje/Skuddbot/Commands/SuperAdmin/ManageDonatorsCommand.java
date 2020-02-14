@@ -26,7 +26,7 @@ public class ManageDonatorsCommand extends Command {
             "You have become a Skuddbot Donator! This means you have either donated to the bot, or contributed something significant to it! Either way, this is our way to say thank you and that you are awesome!\n" +
             "This comes with several fun perks! These perks come in the form of some commands, and have been added to your `!help` command automatically!\n" +
             "If any questions arise, you can refer to the wiki or ask Timmy!\n\n" +
-            "Thank you for your continued support. <3";
+            "Thank you for your continued support. " + Emoji.HEART.getUnicode();
     private static final DonatorManager dm = new DonatorManager();
     private static HashMap<Long, Long> confirm = new HashMap<>();
 

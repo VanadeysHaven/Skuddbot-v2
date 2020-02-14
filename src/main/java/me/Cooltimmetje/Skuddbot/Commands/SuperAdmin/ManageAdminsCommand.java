@@ -7,7 +7,6 @@ import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
-import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Utilities.Constants;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
@@ -28,7 +27,7 @@ import java.sql.SQLException;
 public class ManageAdminsCommand extends Command {
 
     private static final Logger logger = LoggerFactory.getLogger(ManageAdminsCommand.class);
-    private static final ProfileManager pm = new ProfileManager();
+
     private static final String DM_MESSAGE = "Hello there,\n\n" +
             "Congratulations! You are now an Skuddbot admin. This means you can override almost all permissions. Please note that comes with some level of responsibility, don't abuse it!\n" +
             "If you have any questions regarding this, please contact Timmy.";

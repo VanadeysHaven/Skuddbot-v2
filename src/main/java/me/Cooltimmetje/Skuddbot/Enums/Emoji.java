@@ -45,7 +45,8 @@ public enum Emoji {
     BACON                   ("\uD83E\uDD53", "bacon"),
     DOG                     ("\uD83D\uDC36", "dog"),
     CAT                     ("\uD83D\uDC31", "cat"),
-    CAKE                    ("\uD83C\uDF70", "cake");
+    CAKE                    ("\uD83C\uDF70", "cake"),
+    HEART                   ("❤️", "heart");
 
     private String unicode;
     private String alias;
