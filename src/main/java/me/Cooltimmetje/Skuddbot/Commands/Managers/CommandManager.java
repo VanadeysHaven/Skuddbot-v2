@@ -142,7 +142,7 @@ public class CommandManager implements HelpGenerator {
 
         for(Command command : commands){
             for(String invoker : command.getInvokers()){
-                if (requestedInvoker.equals(invoker)) {
+                if (requestedInvoker.equalsIgnoreCase(invoker)) {
                     if (command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
                         if (permissions.hasPermission(command.getRequiredPermission())) {
                             command.run(message, messageContent);
@@ -164,7 +164,7 @@ public class CommandManager implements HelpGenerator {
 
         for(Command command : noPrefixCommands){
             for(String invoker : command.getInvokers()){
-                if(requestedInvoker.equals(invoker)){
+                if(requestedInvoker.equalsIgnoreCase(invoker)){
                     if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
                         if(permissions.hasPermission(command.getRequiredPermission())) {
                             command.run(message, messageContent);
@@ -187,7 +187,7 @@ public class CommandManager implements HelpGenerator {
 
         for(Command command : commands){
             for(String invoker : command.getInvokers()){
-                if(requestedInvoker.equals(invoker)){
+                if(requestedInvoker.equalsIgnoreCase(invoker)){
                     if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.DM){
                         if(permissions.hasPermission(command.getRequiredPermission())){
                             command.run(message, messageContent);
@@ -207,7 +207,7 @@ public class CommandManager implements HelpGenerator {
 
         for(Command command : noPrefixCommands){
             for(String invoker : command.getInvokers()){
-                if(requestedInvoker.equals(invoker)){
+                if(requestedInvoker.equalsIgnoreCase(invoker)){
                     if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
                         if(permissions.hasPermission(command.getRequiredPermission())) {
                             command.run(message, messageContent);

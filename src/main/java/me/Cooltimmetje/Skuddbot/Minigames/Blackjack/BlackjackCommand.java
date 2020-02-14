@@ -66,6 +66,7 @@ public class BlackjackCommand extends Command {
         BlackjackGameManager manager = getManager(server.getId());
         Identifier id = new Identifier(server.getId(), event.getUser().getId());
         BlackjackGame game = manager.getGame(id);
+        if(game.getMessage().getId() != event.getMessageId()) return;
 
         switch (emoji){
             case H:

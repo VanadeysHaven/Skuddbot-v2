@@ -56,7 +56,7 @@ public class BlackjackGame {
     private User user;
     private Server server;
     private TextChannel channel;
-    private Message message;
+    @Getter private Message message;
     private RNGManager random;
 
     private GameState gameState;
@@ -87,7 +87,7 @@ public class BlackjackGame {
             if(playerHand.isBlackjack()) {
                 endGame(false);
             } else {
-                playingInstruction = "*You got 21! Dealer playing...*";
+                playingInstruction = "**You got 21! Dealer playing...**";
                 updateMessage();
                 stand();
             }
@@ -129,7 +129,7 @@ public class BlackjackGame {
             endGame(false);
 
         if(playerHand.getHandValue() == 21){
-            playingInstruction = "*You got 21! Dealer playing...*";
+            playingInstruction = "**You got 21! Dealer playing...**";
             updateMessage();
             stand();
         }
