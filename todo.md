@@ -22,11 +22,11 @@
 - [x] Blackjack
 - [x] Role on join
 - [x] Track me user setting
-- [ ] Memory cleanups
 - [x] RNG manager
-- [ ] Server setup
+- [x] Server setup
 
 ## Planned after launch
+- Memory cleanups
 - Currencies
 - Custom commands
 - Twitch integration
