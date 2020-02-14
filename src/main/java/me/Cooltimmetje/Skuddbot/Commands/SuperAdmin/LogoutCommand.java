@@ -22,7 +22,7 @@ public class LogoutCommand extends Command {
 
     @Override
     public void run(Message message, String content) {
-        if(!message.getMentionedUsers().isEmpty() && message.getMentionedUsers().get(0).getId() == Main.getSkuddbot().getApi().getApplicationInfo().join().getClientId()){
+        if(!message.getMentionedUsers().isEmpty() && message.getMentionedUsers().get(0).getId() == Main.getSkuddbot().getApi().getYourself().getId()){
             MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "yes");
             Main.getSkuddbot().logout();
         } else {

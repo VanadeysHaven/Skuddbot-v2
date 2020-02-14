@@ -28,8 +28,8 @@ public class AboutCommand extends Command {
     public void run(Message message, String content) {
         EmbedBuilder eb = new EmbedBuilder();
         GlobalSettingsContainer gsc = Main.getSkuddbot().getGlobalSettings();
-        eb.setAuthor("Skuddbot " + gsc.getString(GlobalSetting.VERSION), null, Main.getSkuddbot().getSelf().getAvatar());
-        eb.setThumbnail(Main.getSkuddbot().getSelf().getAvatar());
+        eb.setAuthor("Skuddbot " + gsc.getString(GlobalSetting.VERSION), null, Main.getSkuddbot().getApi().getYourself().getAvatar());
+        eb.setThumbnail(Main.getSkuddbot().getApi().getYourself().getAvatar());
 
         Iterator<GlobalSetting> show = new ArrayList<>(Arrays.asList(GlobalSetting.BUILD_TIME, GlobalSetting.DEPLOY_TIME, GlobalSetting.BRANCH, GlobalSetting.COMMIT, GlobalSetting.WIKI)).iterator();
         while(show.hasNext()){

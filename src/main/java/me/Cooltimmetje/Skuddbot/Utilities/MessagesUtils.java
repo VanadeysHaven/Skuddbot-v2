@@ -45,7 +45,7 @@ public class MessagesUtils {
     }
 
     public static void log(String text){
-        if(Main.getSkuddbot().getApi().getApplicationInfo().join().getClientId() == 209779500018434058L)
+        if(Main.getSkuddbot().getApi().getYourself().getId() == 209779500018434058L)
             sendPlain(Constants.getLogChannel(), text);
     }
 

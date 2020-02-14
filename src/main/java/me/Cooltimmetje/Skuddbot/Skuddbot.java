@@ -30,7 +30,6 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
-import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,10 +110,6 @@ public class Skuddbot {
 
         globalSettings.save();
         getApi().disconnect();
-    }
-
-    public User getSelf(){
-        return getApi().getUserById(getApi().getClientId()).join();
     }
 
 }
