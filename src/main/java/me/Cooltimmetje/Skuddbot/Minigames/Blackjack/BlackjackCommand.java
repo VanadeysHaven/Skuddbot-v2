@@ -6,6 +6,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.event.message.reaction.ReactionAddEvent;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  */
 public class BlackjackCommand extends Command {
 
-    private ArrayList<BlackjackGameManager> managers;
+    private static ArrayList<BlackjackGameManager> managers;
 
     public BlackjackCommand() {
         super(new String[]{"blackjack", "bj", "21", "deal"}, "Play a game of blackjack against the dealer.", Location.SERVER);
@@ -43,13 +44,42 @@ public class BlackjackCommand extends Command {
         manager.createGame(id, message.getChannel());
     }
 
-    private BlackjackGameManager getManager(long serverId){
+    private static BlackjackGameManager getManager(long serverId){
         for(BlackjackGameManager manager : managers)
             if(manager.getServerId() == serverId) return manager;
 
         BlackjackGameManager newManager = new BlackjackGameManager(serverId);
         managers.add(newManager);
         return newManager;
+    }
+
+    public static void cleanUp(Identifier id){
+        getManager(id.getServerId()).cleanUp(id);
+    }
+
+    public static void onReaction(ReactionAddEvent event){
+        if(event.getUser().isBot()) return;
+        if(!event.getEmoji().isUnicodeEmoji()) return;
+        String unicode = event.getEmoji().asUnicodeEmoji().orElse(Emoji.EYES.getUnicode());
+        Emoji emoji = Emoji.getByUnicode(unicode); assert emoji != null;
+        Server server = event.getServer().orElse(null); assert server != null;
+        BlackjackGameManager manager = getManager(server.getId());
+        Identifier id = new Identifier(server.getId(), event.getUser().getId());
+        BlackjackGame game = manager.getGame(id);
+
+        switch (emoji){
+            case H:
+                game.hit();
+                break;
+            case S:
+                game.stand();
+                break;
+            case D:
+                game.doubleDown();
+                break;
+            default:
+                break;
+        }
     }
 
 }

@@ -1,5 +1,5 @@
 # TODO
-##### updated 08-02-2020
+##### updated 14-02-2020
 > Items listed are in no particular order!
 
 ## Planned before launch
@@ -19,7 +19,7 @@
 - [x] Server/User info
   - [x] User
   - [x] Server
-- [ ] Blackjack
+- [x] Blackjack
 - [x] Role on join
 - [x] Track me user setting
 - [ ] Memory cleanups

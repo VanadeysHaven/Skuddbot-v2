@@ -23,39 +23,45 @@ public class QueryResult {
 
     private String id;
     private ResultSet rs;
+    private boolean verboseLogging;
 
-    public QueryResult(String id, ResultSet rs) throws SQLException {
+    public QueryResult(String id, ResultSet rs, boolean verboseLogging) throws SQLException {
         this.id = id;
         this.rs = rs;
+        this.verboseLogging = verboseLogging;
 
         logger.info(formatId() + "QueryResult Created: \n" + generateTable());
     }
 
+    public QueryResult(String id, ResultSet rs) throws SQLException {
+        this(id, rs, false);
+    }
+
     public boolean nextResult() throws SQLException {
         if(rs.next()) {
-            logger.info(formatId() + "Getting next result");
+            if(verboseLogging) logger.info(formatId() + "Getting next result");
             return true;
         } else {
-            logger.info(formatId() + "Result set is empty...");
+            if(verboseLogging) logger.info(formatId() + "Result set is empty...");
             return false;
         }
     }
 
     public int getInt(String columnReference) throws SQLException {
         int val = rs.getInt(columnReference);
-        logger.info(formatId() + "Returning INT value " + val + " from column " + columnReference);
+        if(verboseLogging) logger.info(formatId() + "Returning INT value " + val + " from column " + columnReference);
         return val;
     }
 
     public long getLong(String columnReference) throws SQLException {
         long val = rs.getLong(columnReference);
-        logger.info(formatId() + "Returning LONG value " + val + " from column " + columnReference);
+        if(verboseLogging) logger.info(formatId() + "Returning LONG value " + val + " from column " + columnReference);
         return val;
     }
 
     public String getString(String columnReference) throws SQLException {
         String val = rs.getString(columnReference);
-        logger.info(formatId() + "Returning STRING value " + val + " from column " + columnReference);
+        if(verboseLogging) logger.info(formatId() + "Returning STRING value " + val + " from column " + columnReference);
         return val;
     }
 

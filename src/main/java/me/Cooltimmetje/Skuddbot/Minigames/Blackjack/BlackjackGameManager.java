@@ -32,7 +32,7 @@ public class BlackjackGameManager {
         cm = new CooldownManager(COOLDOWN);
     }
 
-    private BlackjackGame getGame(Identifier id){
+    public BlackjackGame getGame(Identifier id){
         for(BlackjackGame game : games)
             if(id.equals(game.getId())) return game;
 
@@ -49,7 +49,16 @@ public class BlackjackGameManager {
         return getGame(id) != null;
     }
 
-    public void startCooldown(Identifier id){
+    public void cleanUp(Identifier id){
+        BlackjackGame toRemove = null;
+        for(BlackjackGame game : games)
+            if(game.getId().equals(id))
+                toRemove = game;
+
+        if(toRemove == null)
+            return;
+
+        games.remove(toRemove);
         cm.startCooldown(id.getDiscordId());
     }
 

@@ -46,6 +46,20 @@ public class BlackjackHand {
         return false;
     }
 
+    public int getHandSize(){
+        return cards.size();
+    }
+
+    public boolean isBlackjack(){
+        if(getHandSize() != 2) return false;
+        Card cardOne = cards.get(0);
+        Card cardTwo = cards.get(1);
+        if(cardOne.getRank() != Card.Rank.ACE || cardOne.getRank().getValue() != 10) return false;
+        if(cardTwo.getRank() != Card.Rank.ACE || cardTwo.getRank().getValue() != 10) return false;
+
+        return cardOne.getRank() != cardTwo.getRank();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

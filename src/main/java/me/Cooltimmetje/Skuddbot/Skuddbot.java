@@ -86,6 +86,7 @@ public class Skuddbot {
         api.addMessageCreateListener(event -> MessageListener.run(event.getMessage()));
         logger.info("Registering ReactionAddListener...");
         api.addReactionAddListener(ReactionAddListener::run);
+        api.addReactionAddListener(BlackjackCommand::onReaction);
         logger.info("Registering ServerMemberJoinListener...");
         api.addServerMemberJoinListener(JoinQuitServerListener::join);
         logger.info("Registering ServerMemberLeaveListener...");

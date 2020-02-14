@@ -19,27 +19,28 @@ import java.util.ArrayList;
 @Getter
 public enum Stat {
 
-    EXPERIENCE                  ("xp",                      ValueType.INTEGER, "Experience",             "xp",        "0",  true,  Category.NO_CATEGORY,     true ),
-    CHALLENGE_WINS              ("chlng_wins",              ValueType.INTEGER, "Wins",                   "wins",      "0",  true,  Category.CHALLENGE,       true ),
-    CHALLENGE_LOSSES            ("chlng_losses",            ValueType.INTEGER, "Losses",                 "Losses",    "0",  true,  Category.CHALLENGE,       true ),
-    CHALLENGE_WINSTREAK         ("chlng_winstreak",         ValueType.INTEGER, "Winstreak",              "wins",      "0",  true,  Category.CHALLENGE,       true ),
-    CHALLENGE_LONGEST_WINSTREAK ("chlng_longest_winstreak", ValueType.INTEGER, "Longest winstreak",      "wins",      "0",  true,  Category.CHALLENGE,       true ),
-    FFA_WINS                    ("ffa_wins",                ValueType.INTEGER, "Wins",                   "wins",      "0",  true,  Category.FREE_FOR_ALL,    true ),
-    FFA_LOSSES                  ("ffa_losses",              ValueType.INTEGER, "Losses",                 "losses",    "0",  true,  Category.FREE_FOR_ALL,    true ),
-    FFA_HIGHEST_WIN             ("ffa_highest_win",         ValueType.INTEGER, "Most entrants win",      "entrants",  "0",  true,  Category.FREE_FOR_ALL,    true ),
-    FFA_KILLS                   ("ffa_kills",               ValueType.INTEGER, "Kills",                  "kills",     "0",  true,  Category.FREE_FOR_ALL,    true ),
-    BJ_WINS                     ("bj_wins",                 ValueType.INTEGER, "Wins",                   "wins",      "0",  true,  Category.BLACKJACK,       true ),
-    BJ_LOSSES                   ("bj_losses",               ValueType.INTEGER, "Losses",                 "losses",    "0",  true,  Category.BLACKJACK,       true ),
-    BJ_PUSHES                   ("bj_pushes",               ValueType.INTEGER, "Pushes",                 "pushes",    "0",  true,  Category.BLACKJACK,       true ),
-    BJ_TWENTY_ONES              ("bj_twenty_ones",          ValueType.INTEGER, "21's",                   "21's",      "0",  true,  Category.BLACKJACK,       true ),
-    TD_WINS                     ("td_wins",                 ValueType.INTEGER, "Wins",                   "wins",      "0",  true,  Category.TEAM_DEATHMATCH, true ),
-    TD_LOSSES                   ("td_losses",               ValueType.INTEGER, "Losses",                 "losses",    "0",  true,  Category.TEAM_DEATHMATCH, true ),
-    TD_DEFENSES                 ("td_defences",             ValueType.INTEGER, "Teammate defences",      "defences",  "0",  true,  Category.TEAM_DEATHMATCH, true ),
-    TD_HIGHEST_WIN              ("td_highest_win",          ValueType.INTEGER, "Most entrants win",      "entrants",  "0",  true,  Category.TEAM_DEATHMATCH, true ),
-    TD_ALL_SURVIVED             ("td_all_survived",         ValueType.INTEGER, "All teammates survived", "times",     "0",  true,  Category.TEAM_DEATHMATCH, true ),
-    TD_KILLS                    ("td_kills",                ValueType.INTEGER, "Kills",                  "kills",     "0",  true,  Category.TEAM_DEATHMATCH, true ),
-    TD_TEAMMATES                ("td_teammates",            ValueType.JSON,    "Favourite Teammate",     "",          "{}", false, Category.TEAM_DEATHMATCH, false);
-
+    EXPERIENCE                  ("xp",                      ValueType.INTEGER, "Experience",             "xp",         "0",  true,  Category.NO_CATEGORY,     true ),
+    CHALLENGE_WINS              ("chlng_wins",              ValueType.INTEGER, "Wins",                   "wins",       "0",  true,  Category.CHALLENGE,       true ),
+    CHALLENGE_LOSSES            ("chlng_losses",            ValueType.INTEGER, "Losses",                 "Losses",     "0",  true,  Category.CHALLENGE,       true ),
+    CHALLENGE_WINSTREAK         ("chlng_winstreak",         ValueType.INTEGER, "Winstreak",              "wins",       "0",  true,  Category.CHALLENGE,       true ),
+    CHALLENGE_LONGEST_WINSTREAK ("chlng_longest_winstreak", ValueType.INTEGER, "Longest winstreak",      "wins",       "0",  true,  Category.CHALLENGE,       true ),
+    FFA_WINS                    ("ffa_wins",                ValueType.INTEGER, "Wins",                   "wins",       "0",  true,  Category.FREE_FOR_ALL,    true ),
+    FFA_LOSSES                  ("ffa_losses",              ValueType.INTEGER, "Losses",                 "losses",     "0",  true,  Category.FREE_FOR_ALL,    true ),
+    FFA_HIGHEST_WIN             ("ffa_highest_win",         ValueType.INTEGER, "Most entrants win",      "entrants",   "0",  true,  Category.FREE_FOR_ALL,    true ),
+    FFA_KILLS                   ("ffa_kills",               ValueType.INTEGER, "Kills",                  "kills",      "0",  true,  Category.FREE_FOR_ALL,    true ),
+    BJ_WINS                     ("bj_wins",                 ValueType.INTEGER, "Wins",                   "wins",       "0",  true,  Category.BLACKJACK,       true ),
+    BJ_LOSSES                   ("bj_losses",               ValueType.INTEGER, "Losses",                 "losses",     "0",  true,  Category.BLACKJACK,       true ),
+    BJ_PUSHES                   ("bj_pushes",               ValueType.INTEGER, "Pushes",                 "pushes",     "0",  true,  Category.BLACKJACK,       true ),
+    BJ_TWENTY_ONES              ("bj_twenty_ones",          ValueType.INTEGER, "21's",                   "21's",       "0",  true,  Category.BLACKJACK,       true ),
+    BJ_BLACKJACKS               ("bj_blackjacks",           ValueType.INTEGER, "Blackjack's",            "blackjacks", "0",  true,  Category.BLACKJACK,       true ),
+    TD_WINS                     ("td_wins",                 ValueType.INTEGER, "Wins",                   "wins",       "0",  true,  Category.TEAM_DEATHMATCH, true ),
+    TD_LOSSES                   ("td_losses",               ValueType.INTEGER, "Losses",                 "losses",     "0",  true,  Category.TEAM_DEATHMATCH, true ),
+    TD_DEFENSES                 ("td_defences",             ValueType.INTEGER, "Teammate defences",      "defences",   "0",  true,  Category.TEAM_DEATHMATCH, true ),
+    TD_HIGHEST_WIN              ("td_highest_win",          ValueType.INTEGER, "Most entrants win",      "entrants",   "0",  true,  Category.TEAM_DEATHMATCH, true ),
+    TD_ALL_SURVIVED             ("td_all_survived",         ValueType.INTEGER, "All teammates survived", "times",      "0",  true,  Category.TEAM_DEATHMATCH, true ),
+    TD_KILLS                    ("td_kills",                ValueType.INTEGER, "Kills",                  "kills",      "0",  true,  Category.TEAM_DEATHMATCH, true ),
+    TD_TEAMMATES                ("td_teammates",            ValueType.JSON,    "Favourite Teammate",     "",           "{}", false, Category.TEAM_DEATHMATCH, false);
+ 
     private String dbReference;
     private ValueType type;
     private String name;
