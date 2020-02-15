@@ -83,17 +83,6 @@ public class BlackjackGame {
 
         message = MessagesUtils.sendPlain(channel, formatMessage());
 
-        if(playerHand.getHandValue() == 21){
-            if(playerHand.isBlackjack()) {
-                endGame(false);
-            } else {
-                playingInstruction = "**You got 21! Dealer playing...**";
-                updateMessage();
-                stand();
-            }
-            return;
-        }
-
         message.addReaction(Emoji.H.getUnicode());
         message.addReaction(Emoji.S.getUnicode());
         if(playerHand.getHandValue() <= 10)
@@ -105,6 +94,19 @@ public class BlackjackGame {
         dealerHand.addCard(getNewCard());
         playerHand.addCard(getNewCard());
         holeCard = getNewCard();
+    }
+
+    public void preGameChecks(){
+        if(playerHand.getHandValue() == 21){
+            if(playerHand.isBlackjack()) {
+                endGame(false);
+            } else {
+                playingInstruction = "**You got 21! Dealer playing...**";
+                updateMessage();
+                stand();
+            }
+            return;
+        }
     }
 
     private String formatMessage() {

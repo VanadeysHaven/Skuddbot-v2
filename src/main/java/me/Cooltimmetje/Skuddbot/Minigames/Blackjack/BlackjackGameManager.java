@@ -39,10 +39,11 @@ public class BlackjackGameManager {
         return null;
     }
 
-    public BlackjackGame createGame(Identifier id, TextChannel channel){
+    public void createGame(Identifier id, TextChannel channel){
         BlackjackGame game = new BlackjackGame(id, channel);
         games.add(game);
-        return game;
+
+        game.preGameChecks();
     }
 
     public boolean hasGameActive(Identifier id){
