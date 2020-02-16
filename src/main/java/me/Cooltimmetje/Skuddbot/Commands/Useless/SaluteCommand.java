@@ -46,14 +46,18 @@ public class SaluteCommand extends NoPrefixCommand {
         serverId = server.getId();
 
         if(isOnCooldown(serverId, message.getAuthor().getId())) return;
-        ArrayList<KnownCustomEmoji> emoji = new ArrayList<>(server.getCustomEmojis());
-        if(emoji.isEmpty()){
+        ArrayList<KnownCustomEmoji> emojis = new ArrayList<>(server.getCustomEmojis());
+        if(emojis.isEmpty()){
             MessagesUtils.sendPlain(message.getChannel(), "o7");
             startCooldown(serverId, message.getAuthor().getId());
             return;
         }
+        KnownCustomEmoji emoji;
+        do {
+            emoji = emojis.get(random.integer(0, emojis.size() - 1));
+        } while (emoji.isManaged());
 
-        MessagesUtils.sendPlain(message.getChannel(), emoji.get(random.integer(0, emoji.size() - 1)).getMentionTag() + "7");
+        MessagesUtils.sendPlain(message.getChannel(), emoji.getMentionTag() + "7");
         startCooldown(serverId, message.getAuthor().getId());
     }
 
