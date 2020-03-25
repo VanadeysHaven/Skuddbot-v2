@@ -34,8 +34,7 @@ public class BlackjackGame {
     }
 
     private static final Logger logger = LoggerFactory.getLogger(BlackjackGame.class);
-    private static final String MESSAGE_FORMAT =
-            "**BLACKJACK** | *{0}*\n\n" +
+    private static final String MESSAGE_FORMAT = Emoji.BLACK_JOKER.getUnicode() + " **BLACKJACK** | *{0}*\n\n" +
                     "**DEALER HAND:** (hand value: {1}) *Dealer draws to 16, stands on 17.*\n" +
                     "{2}\n\n" +
                     "**YOUR HAND:** (hand value: {3})\n" +
@@ -105,7 +104,6 @@ public class BlackjackGame {
                 updateMessage();
                 stand();
             }
-            return;
         }
     }
 

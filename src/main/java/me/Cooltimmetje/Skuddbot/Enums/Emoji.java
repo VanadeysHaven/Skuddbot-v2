@@ -6,7 +6,7 @@ import lombok.Getter;
  * Emoji's for easy recalling throughout the code.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1
  * @since ALPHA-2.0
  */
 @Getter
@@ -46,7 +46,9 @@ public enum Emoji {
     DOG                     ("\uD83D\uDC36", "dog"),
     CAT                     ("\uD83D\uDC31", "cat"),
     CAKE                    ("\uD83C\uDF70", "cake"),
-    HEART                   ("❤️", "heart");
+    HEART                   ("❤️", "heart"),
+    BLACK_JOKER             ("\uD83C\uDCCF", "black_joker"),
+    SOON                    ("\uD83D\uDD1C", "soon");
 
     private String unicode;
     private String alias;
