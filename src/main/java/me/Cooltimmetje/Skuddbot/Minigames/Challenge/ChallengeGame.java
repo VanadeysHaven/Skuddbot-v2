@@ -162,6 +162,7 @@ public class ChallengeGame {
     }
 
     public boolean isMatch(Message message, User user2){
+        if(user2.getId() == challengerOne.getId()) return false;
         boolean messageMatches = message.getId() == initialMessage.getId();
         if(messageMatches && isOpen()) return true;
         return messageMatches && user2.getId() == challengerTwo.getId();
