@@ -3,8 +3,8 @@ package me.Cooltimmetje.Skuddbot.Utilities;
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorMessage;
-import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
 
 import java.net.MalformedURLException;

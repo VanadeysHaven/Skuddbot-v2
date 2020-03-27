@@ -1,4 +1,4 @@
-package me.Cooltimmetje.Skuddbot.Enums;
+package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 
 /**
  * Settings for level up notifications.

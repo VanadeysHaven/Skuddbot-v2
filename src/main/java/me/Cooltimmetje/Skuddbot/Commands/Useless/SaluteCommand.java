@@ -1,9 +1,9 @@
 package me.Cooltimmetje.Skuddbot.Commands.Useless;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.NoPrefixCommand;
-import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;

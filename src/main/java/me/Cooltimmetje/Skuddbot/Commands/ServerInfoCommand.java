@@ -1,8 +1,8 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
-import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.message.Message;

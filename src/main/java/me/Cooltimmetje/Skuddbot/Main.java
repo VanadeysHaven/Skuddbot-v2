@@ -2,9 +2,10 @@ package me.Cooltimmetje.Skuddbot;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Database.HikariManager;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
-import me.Cooltimmetje.Skuddbot.Enums.Stat;
-import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Timers.TenMinutes;
 import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
 import me.Cooltimmetje.Skuddbot.Utilities.Constants;
@@ -42,6 +43,7 @@ public class Main {
         ServerSetting.saveToDatabase();
         UserSetting.saveToDatabase();
         Stat.saveToDatabase();
+        Currency.saveToDatabase();
 
         String token = args[0];
         skuddbot = new Skuddbot(token);

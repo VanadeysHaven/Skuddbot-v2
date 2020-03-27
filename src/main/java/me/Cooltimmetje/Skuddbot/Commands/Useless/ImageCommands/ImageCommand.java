@@ -4,7 +4,7 @@ import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorMessage;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.javacord.api.entity.channel.ChannelType;

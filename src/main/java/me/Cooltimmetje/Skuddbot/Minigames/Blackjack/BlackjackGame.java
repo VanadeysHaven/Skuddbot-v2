@@ -2,11 +2,11 @@ package me.Cooltimmetje.Skuddbot.Minigames.Blackjack;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
-import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.javacord.api.entity.channel.TextChannel;

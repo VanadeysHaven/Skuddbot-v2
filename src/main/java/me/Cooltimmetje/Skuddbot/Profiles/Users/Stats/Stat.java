@@ -1,11 +1,11 @@
-package me.Cooltimmetje.Skuddbot.Enums;
+package me.Cooltimmetje.Skuddbot.Profiles.Users.Stats;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
+import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -71,7 +71,6 @@ public enum Stat {
 
     public static void saveToDatabase(){
         QueryExecutor qe = null;
-        ResultSet rs;
         ArrayList<String> stats = new ArrayList<>();
         try {
             qe = new QueryExecutor(Query.SELECT_ALL_STATS);

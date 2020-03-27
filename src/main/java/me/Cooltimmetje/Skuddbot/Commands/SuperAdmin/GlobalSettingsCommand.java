@@ -2,9 +2,9 @@ package me.Cooltimmetje.Skuddbot.Commands.SuperAdmin;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
-import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
 import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;

@@ -2,8 +2,6 @@ package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Enums.LevelUpNotification;
-import me.Cooltimmetje.Skuddbot.Enums.UserSetting;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;

@@ -1,13 +1,13 @@
 package me.Cooltimmetje.Skuddbot.Listeners;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
-import me.Cooltimmetje.Skuddbot.Enums.LevelUpNotification;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
-import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.LevelUpNotification;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.javacord.api.entity.channel.ChannelType;

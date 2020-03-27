@@ -2,7 +2,6 @@ package me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings;
 
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;

@@ -1,9 +1,9 @@
 package me.Cooltimmetje.Skuddbot.Listeners;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
-import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;

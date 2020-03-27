@@ -2,12 +2,12 @@ package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
-import me.Cooltimmetje.Skuddbot.Enums.Stat;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
 import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableDrawer;
@@ -96,11 +96,10 @@ public class LeaderboardCommand extends Command {
             lastValue = sortedMap.get(id);
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("**").append(stat.getCategory().getName()).append(": ").append(stat.getName()).append(" leaderboard** | **").append(server.getName()).append("**\n```\n");
-        sb.append(new TableDrawer(tag).drawTable());
-        sb.append("```").append("\n").append("Generated in `").append(System.currentTimeMillis() - startTime).append("ms`");
-        MessagesUtils.sendPlain(message.getChannel(), sb.toString().trim());
+        String sb = "**" + stat.getCategory().getName() + ": " + stat.getName() + " leaderboard** | **" + server.getName() + "**\n```\n" +
+                new TableDrawer(tag).drawTable() +
+                "```" + "\n" + "Generated in `" + (System.currentTimeMillis() - startTime) + "ms`";
+        MessagesUtils.sendPlain(message.getChannel(), sb.trim());
     }
 
     private String getName(Identifier id, Server server){

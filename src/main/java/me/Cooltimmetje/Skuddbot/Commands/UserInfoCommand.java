@@ -1,9 +1,9 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
-import me.Cooltimmetje.Skuddbot.Enums.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.PermissionManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.Constants;
@@ -15,7 +15,6 @@ import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 import java.awt.*;
-import java.util.Iterator;
 
 /**
  * Used for viewing info about users.
@@ -80,9 +79,8 @@ public class UserInfoCommand extends Command {
             }
             eb.addInlineField("__Server Nickname:__", nick);
             StringBuilder sbRoles = new StringBuilder();
-            Iterator<Role> roleIt = user.getRoles(server).iterator();
-            while (roleIt.hasNext()) {
-                sbRoles.append(", ").append(roleIt.next().getName());
+            for (Role role : user.getRoles(server)) {
+                sbRoles.append(", ").append(role.getName());
             }
             eb.addField("__Server Roles:__", MiscUtils.stripEveryone(sbRoles.toString().substring(2).trim()));
         }

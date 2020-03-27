@@ -2,6 +2,8 @@ package me.Cooltimmetje.Skuddbot.Profiles.Users;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.CurrenciesContainer;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.CurrenciesSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.StatsContainer;
@@ -23,12 +25,14 @@ public class SkuddUser {
     @Getter private Identifier id;
     @Getter private StatsContainer stats;
     @Getter private UserSettingsContainer settings;
+    @Getter private CurrenciesContainer currencies;
     @Getter @Setter boolean active;
 
-    public SkuddUser(Identifier id, StatsSapling stats, UserSettingsSapling settings) {
+    public SkuddUser(Identifier id, StatsSapling stats, UserSettingsSapling settings, CurrenciesSapling currencies) {
         this.id = id;
         this.stats = stats.grow();
         this.settings = settings.grow();
+        this.currencies = currencies.grow();
         active = true;
     }
 

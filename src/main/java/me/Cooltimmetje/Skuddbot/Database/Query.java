@@ -40,6 +40,14 @@ public enum Query {
     UPDATE_STAT_VALUE("insert into user_has_stats(stat_id, user_id, stat_value) value ((select get_stat_id(?)),?,?) on duplicate key update stat_value=?;"),
     SELECT_ALL_STAT_VALUES("select id.discord_id, id.twitch_username, id.mixer_username, uhs.stat_value from user_has_stats uhs join identifier id on uhs.user_id = id.id join stats s on uhs.stat_id = s.id where id.server_id=? and s.stat_name=?;"),
 
+    //CURRENCIES
+    INSERT_CURRENCY("insert ignore into currencies (currency_name) value (?);"),
+    SELECT_ALL_CURRENCIES("select currency_name from currencies;"),
+    SELECT_CURRENCIES("select c.currency_name, uhc.currency_value from user_has_currencies uhc join currencies c on uhc.currency_id = c.id where uhc.user_id=?;"),
+    DELETE_CURRENCY_VALUE("delete uhc from user_has_currencies uhc join currencies c on uhc.currency_id = c.id where uhc.user_id=? and c.currency_name=?;\n"),
+    UPDATE_CURRENCY_VALUE("insert into user_has_currencies(currency_id, user_id, currency_value) value ((select get_currency_id(?)),?,?) on duplicate key update currency_value=?;"),
+    SELECT_ALL_CURRENCY_VALUES("select id.discord_id, id.twitch_username, id.mixer_username, uhc.currency_value from user_has_currencies uhc join identifier id on uhc.user_id = id.id join currencies c on uhc.currency_id = c.id where id.server_id=? and c.currency_name=?;"),
+
     //DONATORS
     LOAD_ALL_DONATORS("select * from donators;"),
     LOAD_ALL_MESSAGES("select data_name, discord_id, data_value from donator_has_data dhd join donator_data dd on dhd.data_id = dd.id;"),

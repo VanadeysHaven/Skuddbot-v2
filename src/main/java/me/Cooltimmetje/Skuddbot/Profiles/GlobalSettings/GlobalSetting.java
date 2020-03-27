@@ -1,6 +1,7 @@
-package me.Cooltimmetje.Skuddbot.Enums;
+package me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 
 /**
  * Settings that apply to the bot globally.

@@ -3,7 +3,6 @@ package me.Cooltimmetje.Skuddbot.Profiles.Server;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
-import me.Cooltimmetje.Skuddbot.Enums.ServerSetting;
 
 import java.sql.SQLException;
 import java.util.HashMap;

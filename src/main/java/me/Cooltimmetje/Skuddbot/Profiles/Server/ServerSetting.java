@@ -1,9 +1,10 @@
-package me.Cooltimmetje.Skuddbot.Enums;
+package me.Cooltimmetje.Skuddbot.Profiles.Server;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
+import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

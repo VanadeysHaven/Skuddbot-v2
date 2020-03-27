@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Profiles;
 
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.CurrenciesSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -29,7 +30,7 @@ public class ProfileManager {
             logger.info("Loading from database...");
             Identifier id = new Identifier(serverId, discordId);
             id.save();
-            su = new SkuddUser(id, new StatsSapling(id), new UserSettingsSapling(id));
+            su = new SkuddUser(id, new StatsSapling(id), new UserSettingsSapling(id), new CurrenciesSapling(id));
             ss.addUser(su);
         }
 
