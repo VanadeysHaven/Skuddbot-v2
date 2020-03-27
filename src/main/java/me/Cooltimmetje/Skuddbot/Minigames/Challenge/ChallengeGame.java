@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of challenge between 2 users.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.1
  */
 public class ChallengeGame {
@@ -32,7 +32,7 @@ public class ChallengeGame {
     private static final ServerManager sm = new ServerManager();
     private static final RNGManager random = new RNGManager();
 
-    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **CHALLENGE** [beta] | {0}";
+    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **CHALLENGE** | {0}";
     private static final String NORMAL_FORMAT = HEADER + "\n\n" +
             "**{0}** has challenged **{1}** to a fight.\n\n" +
             ">>> {2}";
