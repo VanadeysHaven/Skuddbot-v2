@@ -16,8 +16,8 @@ import java.util.HashMap;
  * Container for holding currencies.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version ALPHA-2.1
+ * @since ALPHA-2.1
  */
 public class CurrenciesContainer {
 

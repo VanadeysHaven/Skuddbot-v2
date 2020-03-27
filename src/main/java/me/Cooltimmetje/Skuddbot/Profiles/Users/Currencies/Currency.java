@@ -13,8 +13,8 @@ import java.util.ArrayList;
  * Enum for all the types of currencies.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version ALPHA-2.1
+ * @since ALPHA-2.1
  */
 @Getter
 public enum Currency {
