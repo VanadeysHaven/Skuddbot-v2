@@ -33,7 +33,7 @@ public class BlackjackCommand extends Command {
         Identifier id = new Identifier(server.getId(), message.getAuthor().getId());
 
         if(manager.isOnCooldown(id)){
-            MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You are currently on cooldown, to prevent gambling addictions, you must wait 5 minutes between games.");
+            MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You are currently on cooldown, to prevent gambling addictions, you must wait 1 minute between games.");
             return;
         }
         if(manager.hasGameActive(id)){

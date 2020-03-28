@@ -34,7 +34,7 @@ public class ChallengeCommand extends Command {
         User author = message.getAuthor().asUser().orElse(null); assert author != null;
         ChallengeGameManager manager = getManager(server.getId());
         if(manager.isOnCooldown(author.getId())){
-            MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You are still wounded from the last fight! You need to wait 5 minutes between fights!");
+            MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You are still wounded from the last fight! You need to wait 1 minute between fights!");
             return;
         }
         if(args.length < 2) {
