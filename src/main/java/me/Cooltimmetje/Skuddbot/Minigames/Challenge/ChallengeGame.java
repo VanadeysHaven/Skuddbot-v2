@@ -42,8 +42,8 @@ public class ChallengeGame {
     private static final String IN_PROGRESS_FORMAT = HEADER + "\n\n" +
             "{1}";
     private static final String PLAYING_INSTRUCTION = "Click the " + Emoji.CROSSED_SWORDS.getUnicode() + " reaction to accept";
-    private static int WIN_REWARD = 100;
-    private static int STREAK_BONUS = 50;
+    private static final int WIN_REWARD = 100;
+    private static final int STREAK_BONUS = 50;
 
     private Server server;
     @Getter private User challengerOne;

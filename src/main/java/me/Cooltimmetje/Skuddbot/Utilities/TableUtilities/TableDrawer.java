@@ -129,9 +129,10 @@ public class TableDrawer {
             for(int j=0; j < data[i].length; j++) {
                 if (data[i][j] == null)
                     data[i][j] = "null";
-//                data[i][j] = EmojiParser.removeAllEmojis(data[i][j]);
+
+                if(data[i][j].matches(".*[^\\u0000-\\u024F]+.*"))
+                    data[i][j] = "[unsupported text]";
             }
     }
-
 
 }
