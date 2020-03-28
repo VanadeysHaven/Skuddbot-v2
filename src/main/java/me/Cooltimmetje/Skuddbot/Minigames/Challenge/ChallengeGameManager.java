@@ -24,7 +24,7 @@ public class ChallengeGameManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ChallengeGameManager.class);
 
-    private static final int COOLDOWN = 300;
+    private static final int COOLDOWN = 60;
 
     @Getter private long serverId;
     private ArrayList<ChallengeGame> games;

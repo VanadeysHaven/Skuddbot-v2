@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class BlackjackGameManager {
 
     private static final Logger logger = LoggerFactory.getLogger(BlackjackGameManager.class);
-    private static final int COOLDOWN = 300;
+    private static final int COOLDOWN = 60;
 
     @Getter private long serverId;
     private ArrayList<BlackjackGame> games;
