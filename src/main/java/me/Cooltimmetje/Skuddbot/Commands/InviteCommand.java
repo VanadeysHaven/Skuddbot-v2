@@ -13,7 +13,7 @@ import org.javacord.api.entity.message.Message;
 public class InviteCommand extends Command {
 
     public InviteCommand() {
-        super(new String[]{"invte"}, "Command used to get the invite link.", Location.BOTH);
+        super(new String[]{"invite"}, "Command used to get the invite link.", Location.BOTH);
     }
 
     @Override
