@@ -27,7 +27,6 @@ public class Main {
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
     private static Timer timer = new Timer();
 
-
     @Getter private static Skuddbot skuddbot;
 
     public static void main(String[] args){

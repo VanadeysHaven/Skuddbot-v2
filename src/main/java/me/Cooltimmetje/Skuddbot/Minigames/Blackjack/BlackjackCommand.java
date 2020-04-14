@@ -25,7 +25,7 @@ public class BlackjackCommand extends Command {
         super(new String[]{"blackjack", "bj", "21", "deal"}, "Play a game of blackjack against the dealer.", Location.SERVER);
         managers = new ArrayList<>();
     }
-
+    
     @Override
     public void run(Message message, String content) {
         Server server = message.getServer().orElse(null); assert server != null;

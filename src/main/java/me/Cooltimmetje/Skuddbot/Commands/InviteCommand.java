@@ -1,0 +1,24 @@
+package me.Cooltimmetje.Skuddbot.Commands;
+
+import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
+import org.javacord.api.entity.message.Message;
+
+/**
+ * Command used to get the invite link for the bot.
+ *
+ * @author Tim (Cooltimmetje)
+ * @version ALPHA-2.1
+ * @since ALPHA-2.1
+ */
+public class InviteCommand extends Command {
+
+    public InviteCommand() {
+        super(new String[]{"help"}, "Command used to get the invite link.", Location.BOTH);
+    }
+
+    @Override
+    public void run(Message message, String content) {
+        message.getChannel().sendMessage("You can use this link to invite the bot to your server: <https://discordapp.com/oauth2/authorize?client_id=209779487309692929&scope=bot&permissions=8>\n" +
+                "You can use this link to join the Skuddbot Test server: <https://discord.gg/GmrwEka>");
+    }
+}

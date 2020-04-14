@@ -54,17 +54,18 @@ public class ChallengeCommand extends Command {
 
             manager.process(author, message.getMentionedUsers().get(0), message);
         } else if(args[1].equalsIgnoreCase("open")) {
-            if(manager.hasOutstandingGame(author)){
+            if(manager.hasOutstandingGame(author))
                 MessagesUtils.addReaction(message, Emoji.X, "You have a outstanding challenge, you can cancel it with `!challenge cancel`");
-            } else {
+            else
                 manager.process(author, message);
-            }
         } else if(args[1].equalsIgnoreCase("cancel")) {
             if(manager.hasOutstandingGame(author)) {
                 manager.cancelGame(author);
                 MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Challenge cancelled.");
             } else
                 MessagesUtils.addReaction(message, Emoji.X, "You have no outstanding challenge. Start one with `!challenge <mention/open>`");
+        } else {
+            MessagesUtils.addReaction(message, Emoji.X, "Invalid arguments. - Usage: `!challenge <mention/open/cancel>`");
         }
     }
 
