@@ -40,10 +40,10 @@ public class SkuddUser {
         return new PermissionManager(id);
     }
 
-
     public void save() {
         logger.info("Saving user " + id.toString());
         getStats().save();
         getSettings().save();
+        getCurrencies().save();
     }
 }

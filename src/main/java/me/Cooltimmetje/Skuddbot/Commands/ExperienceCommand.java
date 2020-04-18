@@ -47,7 +47,7 @@ public class ExperienceCommand extends Command {
             su = pm.getUser(server.getId(), user.getId());
         }
 
-        if(user.getId() != message.getAuthor().getId() && su.getSettings().getBoolean(UserSetting.STATS_PRIVATE) && !authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)){
+        if(user.getId() != message.getAuthor().getId() && su.getSettings().getBoolean(UserSetting.PROFILE_PRIVATE) && !authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)){
             MessagesUtils.addReaction(message, Emoji.X, "This user has set their stats to private.");
             return;
         }

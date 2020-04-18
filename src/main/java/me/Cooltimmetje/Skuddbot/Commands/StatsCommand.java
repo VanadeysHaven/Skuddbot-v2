@@ -42,7 +42,7 @@ public class StatsCommand extends Command {
         if(!message.getMentionedUsers().isEmpty()) {
             user = message.getMentionedUsers().get(0);
         }
-        if(args.length >= 2) if(MiscUtils.isLong(args[1])) {
+        if(args.length >= 2 && MiscUtils.isLong(args[1])) {
             try {
                 user = Main.getSkuddbot().getApi().getUserById(Long.parseLong(args[1])).get();
             } catch (InterruptedException | ExecutionException e) {
@@ -52,14 +52,13 @@ public class StatsCommand extends Command {
         Server server = message.getServer().orElse(null); assert server != null;
         PermissionManager authorPermissions = pm.getUser(server.getId(), author.getId()).getPermissions();
         SkuddUser su = pm.getUser(server.getId(), user.getId());
-        if(args.length >= 5) {
-            boolean hasPermission = authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN);
-            if(hasPermission) {
+        if(args.length >= 5)
+            if(authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)) {
                 editValue(message, content, su, user, server);
                 return;
             }
-        }
-        if(user.getId() != author.getId() && su.getSettings().getBoolean(UserSetting.STATS_PRIVATE) && !authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)) {
+
+        if(user.getId() != author.getId() && su.getSettings().getBoolean(UserSetting.PROFILE_PRIVATE) && !authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)) {
             MessagesUtils.addReaction(message, Emoji.X, "This user has set their stats to private.");
             return;
         }
@@ -116,7 +115,7 @@ public class StatsCommand extends Command {
                 MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Set stat `" + stat + "` to `" + mutationAmount + "` for user `" + user.getDisplayName(server) + "`");
                 break;
             default:
-                MessagesUtils.addReaction(message, Emoji.X, args[3] + "is not an valid operation.");
+                MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not an valid operation.");
                 break;
         }
     }

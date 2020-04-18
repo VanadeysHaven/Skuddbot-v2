@@ -4,7 +4,7 @@ package me.Cooltimmetje.Skuddbot.Utilities.TableUtilities;
  * This is a class to draw neatly looking tables easily.
  *
  * @author Tim (Cooltimmetje)
- * @version v0.4.62-ALPHA
+ * @version ALPHA-2.1.1
  * @since v0.4.62-ALPHA
  */
 public class TableDrawer {
@@ -130,7 +130,9 @@ public class TableDrawer {
                 if (data[i][j] == null)
                     data[i][j] = "null";
 
-                if(data[i][j].matches(".*[^\\u0000-\\u024F]+.*"))
+
+
+                if(data[i][j].matches(".*[^\\u0000-\\u024F]+.*")) //TODO: Make less lazy
                     data[i][j] = "[unsupported text]";
             }
     }

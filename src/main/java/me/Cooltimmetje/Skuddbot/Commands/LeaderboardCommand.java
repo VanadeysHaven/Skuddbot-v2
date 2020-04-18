@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
  * Command for stat leaderboards.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class LeaderboardCommand extends Command {
@@ -34,7 +34,7 @@ public class LeaderboardCommand extends Command {
     private static final int LEADERBOARD_LIMIT = 10;
 
     public LeaderboardCommand(){
-        super(new String[]{"leaderboard", "lb", "statlb"}, "Used to view the leaderboards of stats.");
+        super(new String[]{"statleaderboard", "slb", "statlb"}, "Used to view the leaderboards of stats.");
     }
 
     @Override

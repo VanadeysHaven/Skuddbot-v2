@@ -8,6 +8,9 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
+import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableDrawer;
+import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableRow;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -16,8 +19,8 @@ import java.util.HashMap;
  * Container for holding currencies.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1
- * @since ALPHA-2.1
+ * @version ALPHA-2.1.1
+ * @since ALPHA-2.1.1
  */
 public class CurrenciesContainer {
 
@@ -108,6 +111,15 @@ public class CurrenciesContainer {
         }
 
         return type == ValueType.STRING;
+    }
+
+    @Override
+    public String toString(){
+        TableArrayGenerator tag = new TableArrayGenerator(new TableRow("Currency", "Amount"));
+        for(Currency currency : Currency.values())
+            tag.addRow(new TableRow(currency.toString(), getString(currency)));
+
+        return new TableDrawer(tag).drawTable();
     }
 
 

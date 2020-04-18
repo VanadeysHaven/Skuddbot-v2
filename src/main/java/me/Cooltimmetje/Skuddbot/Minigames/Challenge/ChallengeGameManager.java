@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Manager for managing challenge games on a server level.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.1
  */
 public class ChallengeGameManager {

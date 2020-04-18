@@ -55,12 +55,11 @@ public class PermissionManager {
 
         if(serverId != -1) {
             User user = Main.getSkuddbot().getApi().getUserById(userId).join();
-            Server server = Main.getSkuddbot().getApi().getServerById(serverId).orElse(null);
+            Server server = Main.getSkuddbot().getApi().getServerById(serverId).orElse(null); assert server != null;
             if(server.getOwner().getId() == user.getId())
                 list.add(PermissionLevel.SERVER_ADMIN);
             else {
                 SkuddServer ss = sm.getServer(serverId);
-                assert server != null;
 
                 List<Role> roles = server.getRolesByName(ss.getSettings().getString(ServerSetting.ADMIN_ROLE));
                 if (roles.size() > 0) {
