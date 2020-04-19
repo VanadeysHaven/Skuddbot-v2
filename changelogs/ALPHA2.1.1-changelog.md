@@ -1,9 +1,9 @@
 # ALPHA-2.1.1 changelog
 ## Added
-- Currencies!
-  - Command: `!bux`.
-    - View others currencies: `!bux <mention/userId>`.
-    - Edit currencies: `!bux <mention/userId> <currency> <add/remove/set> <amount>`.
+- [Currencies!](https://wiki.skuddbot.xyz/features/currencies)
+  - Command: `!currency`.
+    - View others currencies: `!currency <mention/userId>`.
+    - Edit currencies: `!currency <mention/userId> <currency> <add/remove/set> <amount>`.
       - Requires `SERVER_ADMIN` permission.
   - ***NOTE:** There's only one currency type for now, but there will be more in the future!*
 - Command: `!invte`
