@@ -46,7 +46,7 @@ import java.util.Iterator;
  * This class represents the bot, and is used to register commands and listeners.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
+ * @since ALPHA-2.1.1
  * @version ALPHA-2.0
  */
 public class Skuddbot {
@@ -78,7 +78,7 @@ public class Skuddbot {
                 new BaconCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(), new LogoutCommand(),
                 new ExperienceCommand(), new StatsLeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand(),
                 new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand(), new UserInfoCommand(), new AboutCommand(), new ServerInfoCommand(), new BlackjackCommand(), new ChallengeCommand(),
-                new InviteCommand(), new CurrenciesCommand(), new CurrenciesLeaderboardCommand());
+                new InviteCommand(), new CurrenciesCommand(), new CurrenciesLeaderboardCommand(), new DailyBonusCommand());
     }
 
     void registerListeners() {

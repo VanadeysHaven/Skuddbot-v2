@@ -4,7 +4,6 @@ import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
-import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.PermissionManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -23,12 +22,10 @@ import java.util.concurrent.ExecutionException;
  * Used to view and edit stats.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
-public class StatsCommand extends Command {
-
-    private ProfileManager pm = new ProfileManager();
+public class StatsCommand extends Command { //TODO: Make compatible with longs
 
     public StatsCommand(){
         super(new String[]{"stats"}, "View stats from users with this command.");

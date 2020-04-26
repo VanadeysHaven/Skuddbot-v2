@@ -18,7 +18,7 @@ import java.util.HashMap;
  * This class holds the stats for users.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
+ * @since ALPHA-2.1.1
  * @version ALPHA-2.0
  */
 public class StatsContainer {
@@ -82,6 +82,15 @@ public class StatsContainer {
         setInt(stat, getInt(stat) + incrementBy);
     }
 
+    public long getLong(Stat stat){
+        if(stat.getType() != ValueType.LONG) throw new IllegalArgumentException("Stat is not of type LONG");
+        return Long.parseLong(getString(stat));
+    }
+
+    public void setLong(Stat stat, long value){
+        setString(stat, value+"");
+    }
+
     public String getFavouriteTeammate(){
         //TODO
         return "hi";
@@ -124,6 +133,9 @@ public class StatsContainer {
         if(type == ValueType.JSON){
             //TODO
             return input.equals("{}");
+        }
+        if(type == ValueType.LONG){
+            return MiscUtils.isLong(input);
         }
 
         return type == ValueType.STRING;
