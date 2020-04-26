@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
@@ -18,7 +19,7 @@ import java.util.*;
  * This class represents a guild, and it's settings and user profiles.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
+ * @since ALPHA-2.1.1
  * @version ALPHA-2.0
  */
 public class SkuddServer {
@@ -110,6 +111,8 @@ public class SkuddServer {
             QueryResult qr = qe.executeQuery();
             while (qr.nextResult()){
                 statValues.put(new Identifier(serverId, qr.getLong("discord_id"), qr.getString("twitch_username")), qr.getInt("stat_value"));
+                if(statValues.size() >= limit)
+                    break;
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -119,6 +122,29 @@ public class SkuddServer {
         }
 
         return sortMap(statValues);
+    }
+
+    public LinkedHashMap<Identifier, Integer> getTopCurrencies(int limit, Currency currency) {
+        if(!currency.isHasLeaderboard()) throw new UnsupportedOperationException("This currency does not have a leaderboard!");
+
+        HashMap<Identifier, Integer> currencyValues = new HashMap<>();
+        QueryExecutor qe = null;
+        try {
+            qe = new QueryExecutor(Query.SELECT_ALL_CURRENCY_VALUES).setLong(1, serverId).setString(2, currency.getDbReference());
+            QueryResult qr = qe.executeQuery();
+            while (qr.nextResult()){
+                currencyValues.put(new Identifier(serverId, qr.getLong("discord_id"), qr.getString("twitch_username")), qr.getInt("currency_value"));
+                if(currencyValues.size() >= limit)
+                    break;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            assert qe != null;
+            qe.close();
+        }
+
+        return sortMap(currencyValues);
     }
 
     private LinkedHashMap<Identifier, Integer> sortMap(HashMap<Identifier,Integer> unsortedMap){
@@ -140,10 +166,6 @@ public class SkuddServer {
                     break;
                 }
             }
-
-            if(sortedMap.size() == 10){
-                return sortedMap;
-            }
         }
 
         return sortedMap;
@@ -156,5 +178,4 @@ public class SkuddServer {
         }
         getSettings().save();
     }
-
 }

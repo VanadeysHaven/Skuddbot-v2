@@ -62,7 +62,7 @@ public class ChallengeGame {
         if(challengerTwo == null){
             initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(OPEN_FORMAT, challengerOne.getDisplayName(server), PLAYING_INSTRUCTION));
         } else {
-            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION));
+            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION));
         }
 
         initialMessage.addReaction(Emoji.CROSSED_SWORDS.getUnicode());
@@ -147,7 +147,7 @@ public class ChallengeGame {
     }
 
     private String getMessage(){
-        return MessageFormat.format(IN_PROGRESS_FORMAT, challengerOne.getDisplayName(server), log);
+        return MessageFormat.format(IN_PROGRESS_FORMAT, challengerOne.getDisplayName(server) + " vs" + challengerTwo.getDisplayName(server), log);
     }
 
     public void setChallengerTwo(User challengerTwo){
