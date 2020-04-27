@@ -52,4 +52,12 @@ public class ReactionButton {
         return false;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReactionButton button = (ReactionButton) o;
+        return emoji == button.emoji && message.getId() == button.getMessage().getId();
+    }
+
 }

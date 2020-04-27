@@ -41,10 +41,17 @@ public class ReactionUtils {
         }
     }
 
-    public static void registerButton(Message message, Emoji emoji, ReactionButtonCallback callback, long... userLocks){
+    public static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonCallback callback, long... userLocks){
         logger.info("Registering new button on message id " + message.getId() + " with emoji " +  emoji + " locked to users " + Arrays.toString(userLocks));
         message.addReaction(emoji.getUnicode());
-        buttons.add(new ReactionButton(message, emoji, callback, userLocks));
+        ReactionButton button = new ReactionButton(message, emoji, callback, userLocks);
+        buttons.add(button);
+        return button;
+    }
+
+    public static void unregisterButton(ReactionButton button){
+        logger.info("Unregistering button on message id " + button.getMessage().getId() + " with emoji " +  button.getEmoji());
+        buttons.removeIf(but -> but.equals(button));
     }
 
     public static void runButtons(ReactionAddEvent event) {
