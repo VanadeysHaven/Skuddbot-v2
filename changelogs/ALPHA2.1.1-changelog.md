@@ -1,6 +1,6 @@
 # ALPHA-2.1.1 changelog
 ## Added
-- [Currencies!](https://wiki.skuddbot.xyz/features/currencies)
+- [**Currencies!**](https://wiki.skuddbot.xyz/features/currencies)
   - Command: `!currency`.
     - View others currencies: `!currency <mention/userId>`.
     - Edit currencies: `!currency <mention/userId> <currency> <add/remove/set> <amount>`.
@@ -11,15 +11,17 @@
         - List available currencies: `!currencyleaderboard list`.
         - View currency leaderboard: `!currencyleaderboard <currencyName>`.
           - Defaults to `SKUDDBUX`.
-- Command: `!invite`
-  - Prints a link to invite Skuddbot to your server and a link to join the test server!
-- [Daily bonuses!](https://wiki.skuddbot.xyz/systems/daily-bonus)
+- [**Daily bonuses!**](https://wiki.skuddbot.xyz/systems/daily-bonus)
   - Command: `!dailybonus`.
   - Users can now claim a daily bonus!
   - Bonuses scale up if a user claims multiple days in a row.
   - New stats:
     - `DAILY_CURRENT_STREAK`
     - `DAILY_LONGEST_STREAK`
+
+- Command: `!invite`
+  - Prints a link to invite Skuddbot to your server and a link to join the test server!
+- New reaction "button" system in the backend.
 
 ## Changed
 - User setting `STATS_PRIVATE` renamed.

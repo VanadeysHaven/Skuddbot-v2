@@ -49,7 +49,8 @@ public enum Emoji {
     HEART                   ("❤️", "heart"),
     BLACK_JOKER             ("\uD83C\uDCCF", "black_joker"),
     SOON                    ("\uD83D\uDD1C", "soon"),
-    MONEYBAG                ("\uD83D\uDCB0", "moneybag");
+    MONEYBAG                ("\uD83D\uDCB0", "moneybag"),
+    WASTEBASKET             ("🗑️", "wastebasket");
 
     private String unicode;
     private String alias;
