@@ -3,6 +3,7 @@ package me.Cooltimmetje.Skuddbot.Commands;
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
+import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.PermissionManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
@@ -45,6 +46,10 @@ public class StatsCommand extends Command { //TODO: Make compatible with longs
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
+        }
+        if(user.isBot()){
+            MessagesUtils.addReaction(message, Emoji.X, "You can't view/edit profiles of bots.");
+            return;
         }
         Server server = message.getServer().orElse(null); assert server != null;
         PermissionManager authorPermissions = pm.getUser(server.getId(), author.getId()).getPermissions();
@@ -92,28 +97,60 @@ public class StatsCommand extends Command { //TODO: Make compatible with longs
             MessagesUtils.addReaction(message, Emoji.X, "`" + stat + "` cannot be edited.");
             return;
         }
-        if(!MiscUtils.isInt(args[4])){
-            MessagesUtils.addReaction(message, Emoji.X, "`" + args[4] + "` is not an number.");
-            return;
-        }
-        int mutationAmount = Integer.parseInt(args[4]);
 
-        switch (args[3].toLowerCase()) {
-            case "add":
-                su.getStats().incrementInt(stat, mutationAmount);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + mutationAmount + "` to stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
-                break;
-            case "remove":
-                su.getStats().incrementInt(stat, mutationAmount * -1);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Removed `" + mutationAmount + "` from stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
-                break;
-            case "set":
-                su.getStats().setInt(stat, mutationAmount);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Set stat `" + stat + "` to `" + mutationAmount + "` for user `" + user.getDisplayName(server) + "`");
-                break;
-            default:
-                MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not an valid operation.");
-                break;
+        if(args[3].equalsIgnoreCase("set")){
+            try {
+                su.getStats().setString(stat, args[4]);
+                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Set stat `" + stat + "` to `" + args[4] + "` for user `" + user.getDisplayName(server) + "`");
+                return;
+            } catch (IllegalArgumentException e){
+                MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
+            }
+        }
+
+
+        if(stat.getType() == ValueType.INTEGER) {
+            if(!MiscUtils.isInt(args[4])){
+                MessagesUtils.addReaction(message, Emoji.X, "`" + args[4] + "` is not an valid number for stat `" + stat + "`");
+                return;
+            }
+            int mutationAmount = Integer.parseInt(args[4]);
+
+            switch (args[3].toLowerCase()) {
+                case "add":
+                    su.getStats().incrementInt(stat, mutationAmount);
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + mutationAmount + "` to stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
+                    break;
+                case "remove":
+                    su.getStats().incrementInt(stat, mutationAmount * -1);
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Removed `" + mutationAmount + "` from stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
+                    break;
+                default:
+                    MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not an valid operation.");
+                    break;
+            }
+        } else if (stat.getType() == ValueType.LONG){
+            if(!MiscUtils.isLong(args[4])){
+                MessagesUtils.addReaction(message, Emoji.X, "`" + args[4] + "` is not an number.");
+                return;
+            }
+            long mutationAmount = Long.parseLong(args[4]);
+
+            switch (args[3].toLowerCase()) {
+                case "add":
+                    su.getStats().incrementLong(stat, mutationAmount);
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + mutationAmount + "` to stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
+                    break;
+                case "remove":
+                    su.getStats().incrementLong(stat, mutationAmount * -1);
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Removed `" + mutationAmount + "` from stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
+                    break;
+                default:
+                    MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not an valid operation.");
+                    break;
+            }
+        } else {
+            MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not a valid operation for type " + stat.getType());
         }
     }
 }

@@ -42,7 +42,7 @@ public enum Stat {
     TD_TEAMMATES                ("td_teammates",            ValueType.JSON,    "Favourite Teammate",         "",           "{}", Category.TEAM_DEATHMATCH,   false, false, true ),
     DAILY_LAST_CLAIM            ("daily_last_claim",        ValueType.LONG,    "daily_last_claim",           "",           "-1", Category.DAILY_BONUS,       false, true,  false),
     DAILY_CURRENT_STREAK        ("daily_current_streak",    ValueType.INTEGER, "Current claim streak",       "days",       "0",  Category.DAILY_BONUS,       true,  true,  true ),
-    DAILY_LONGEST_CLAIM_STREAK  ("daily_longest_streak",    ValueType.INTEGER, "Longest claim steak",        "days",       "0",  Category.DAILY_BONUS,       true,  true,  true ),
+    DAILY_LONGEST_STREAK        ("daily_longest_streak",    ValueType.INTEGER, "Longest claim steak",        "days",       "0",  Category.DAILY_BONUS,       true,  true,  true ),
     DON_WINS                    ("don_wins",                ValueType.INTEGER, "Wins",                       "wins",       "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
     DON_LOSSES                  ("don_losses",              ValueType.INTEGER, "Losses",                     "losses",     "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
     DON_LONGEST_STREAK          ("don_longest_streak",      ValueType.INTEGER, "Longest streak",             "times",      "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true );

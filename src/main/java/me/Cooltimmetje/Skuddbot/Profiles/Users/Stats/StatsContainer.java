@@ -73,13 +73,21 @@ public class StatsContainer {
     }
 
     public void incrementInt(Stat stat){
-        if(stat.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
         incrementInt(stat, 1);
     }
 
     public void incrementInt(Stat stat, int incrementBy) {
         if(stat.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
         setInt(stat, getInt(stat) + incrementBy);
+    }
+
+    public void incrementLong(Stat stat){
+        incrementLong(stat, 1);
+    }
+
+    public void incrementLong(Stat stat, long incrementBy){
+        if(stat.getType() != ValueType.LONG) throw new IllegalArgumentException("Stat is not of type LONG");
+        setLong(stat, getLong(stat) + incrementBy);
     }
 
     public long getLong(Stat stat){

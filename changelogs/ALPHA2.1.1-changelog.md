@@ -17,6 +17,9 @@
   - Command: `!dailybonus`.
   - Users can now claim a daily bonus!
   - Bonuses scale up if a user claims multiple days in a row.
+  - New stats:
+    - `DAILY_CURRENT_STREAK`
+    - `DAILY_LONGEST_STREAK`
 
 ## Changed
 - User setting `STATS_PRIVATE` renamed.
@@ -24,6 +27,7 @@
 - Commands `!leaderboard` and `!lb` renamed.
   - Renamed to `!statsleaderboard` and `!slb`.
 - Changed the layout of challenge.
+- Reworked `!stats` command in the backend to support larger numbers.
 
 ## Fixed
 - Fixed a bug with permissions where the server owner did not automatically get the `SERVER_ADMIN` permission.
