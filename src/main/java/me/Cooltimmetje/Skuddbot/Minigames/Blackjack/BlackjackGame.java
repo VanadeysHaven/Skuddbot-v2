@@ -174,6 +174,7 @@ public class BlackjackGame {
     }
 
     private void wrapUpGame(){
+        message.removeAllReactions();
         SkuddUser su = pm.getUser(id);
         int xpReward = 0;
         if(dealerHand.getHandSize() == 1)

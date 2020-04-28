@@ -40,6 +40,7 @@
   - Renamed to `!statsleaderboard` and `!slb`.
 - Changed the layout of challenge.
 - Reworked `!stats` command in the backend to support larger numbers.
+- Reactions now get removed on Blackjack game end.
 
 ## Fixed
 - Fixed a bug with permissions where the server owner did not automatically get the `SERVER_ADMIN` permission.

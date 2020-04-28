@@ -147,7 +147,7 @@ public class ChallengeGame {
     }
 
     private String getMessage(){
-        return MessageFormat.format(IN_PROGRESS_FORMAT, challengerOne.getDisplayName(server) + " vs" + challengerTwo.getDisplayName(server), log);
+        return MessageFormat.format(IN_PROGRESS_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), log);
     }
 
     public void setChallengerTwo(User challengerTwo){
