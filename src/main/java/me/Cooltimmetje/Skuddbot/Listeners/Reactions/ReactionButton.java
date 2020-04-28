@@ -22,7 +22,6 @@ public class ReactionButton {
 
     @Getter private Emoji emoji;
     @Getter private Message message;
-    private Reaction reaction;
     private ReactionButtonCallback callback;
     @Getter private long[] userLocks;
     @Getter @Setter private boolean enabled;
@@ -32,7 +31,6 @@ public class ReactionButton {
         this.emoji = emoji;
         message.addReaction(emoji.getUnicode());
         Reaction reaction = message.getReactionByEmoji(emoji.getUnicode()).orElse(null); assert reaction != null;
-        this.reaction = reaction;
         this.callback = callback;
         this.userLocks = userLocks;
 
@@ -41,7 +39,7 @@ public class ReactionButton {
 
     public void runButton(User user){
         logger.info("Running callback for user " + user.getIdAsString() + " on message id " + message.getId());
-        callback.buttonClicked(new ReactionButtonClickedEvent(message, emoji, reaction, user));
+        callback.buttonClicked(new ReactionButtonClickedEvent(message, emoji, user));
     }
 
     public boolean userIsAllowedToRun(long userId){

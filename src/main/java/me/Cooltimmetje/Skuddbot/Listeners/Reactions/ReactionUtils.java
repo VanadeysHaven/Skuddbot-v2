@@ -56,6 +56,12 @@ public class ReactionUtils {
 
     public static void runButtons(ReactionAddEvent event) {
         for (ReactionButton button : buttons) {
+            if(!button.isEnabled()){
+                Reaction reaction = event.getReaction().orElse(null);
+                if(reaction == null) continue;
+                reaction.removeUser(event.getUser());
+                continue;
+            }
             Reaction reactionObject = event.getReaction().orElse(null);
             assert reactionObject != null;
             String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null);

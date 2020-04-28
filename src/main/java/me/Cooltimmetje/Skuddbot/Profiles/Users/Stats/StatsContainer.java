@@ -23,8 +23,8 @@ import java.util.HashMap;
  */
 public class StatsContainer {
 
-    private static final ServerManager sm = new ServerManager();
-    private static final ProfileManager pm = new ProfileManager();
+    private static final ServerManager sm = ServerManager.getInstance();
+    private static final ProfileManager pm = ProfileManager.getInstance();
 
     private Identifier id;
     private HashMap<Stat,String> stats;

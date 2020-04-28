@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
  * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
-public class StatsCommand extends Command { //TODO: Make compatible with longs
+public class StatsCommand extends Command {
 
     public StatsCommand(){
         super(new String[]{"stats"}, "View stats from users with this command.");
@@ -70,8 +70,10 @@ public class StatsCommand extends Command { //TODO: Make compatible with longs
         eb.setTitle("__Server:__ " + server.getName());
 
         for(Stat.Category category : Stat.Category.values()){
+            if(!category.isShow()) continue;
             if(category != Stat.Category.NO_CATEGORY) eb.addField("\u200B", "__" + category.getName() + ":__");
             for(Stat stat : Stat.values()) {
+                if(!stat.isShow()) continue;
                 if (stat.getCategory() != category) continue;
                 if (stat == Stat.EXPERIENCE) {
                     eb.addInlineField("__" + stat.getName() + ":__", su.getStats().formatLevel());

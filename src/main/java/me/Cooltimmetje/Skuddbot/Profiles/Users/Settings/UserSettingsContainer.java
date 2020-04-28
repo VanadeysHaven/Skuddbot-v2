@@ -13,7 +13,7 @@ import java.util.HashMap;
  * This holds all user settings.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
+ * @since ALPHA-2.1.1
  * @version ALPHA-2.0
  */
 public class UserSettingsContainer {
@@ -53,7 +53,6 @@ public class UserSettingsContainer {
     }
 
     public void setBoolean(UserSetting setting, boolean value){
-        if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting " + setting + " is not of type BOOLEAN");
         setString(setting, value+"");
     }
 
@@ -65,6 +64,15 @@ public class UserSettingsContainer {
     public void toggleBoolean(UserSetting setting){
         if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting " + setting + " is not of type BOOLEAN");
         setBoolean(setting, !getBoolean(setting));
+    }
+
+    public int getInt(UserSetting setting){
+        if(setting.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Setting " + setting + " is not of type INTEGER");
+        return Integer.parseInt(getString(setting));
+    }
+
+    public void setInt(UserSetting setting, int value){
+        setString(setting, value+"");
     }
 
     public void setLevelUpNotify(LevelUpNotification notification){
@@ -82,6 +90,9 @@ public class UserSettingsContainer {
         }
         if(setting == UserSetting.LEVEL_UP_NOTIFY){
             return LevelUpNotification.exists(input);
+        }
+        if(type == ValueType.INTEGER){
+            return MiscUtils.isInt(input);
         }
 
         return type == ValueType.STRING;

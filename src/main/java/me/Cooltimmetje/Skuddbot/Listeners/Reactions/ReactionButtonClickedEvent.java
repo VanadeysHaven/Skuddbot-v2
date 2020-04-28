@@ -17,17 +17,16 @@ public class ReactionButtonClickedEvent {
 
     @Getter private Message message;
     @Getter private Emoji emoji;
-    @Getter private Reaction reaction;
     @Getter private User user;
 
-    public ReactionButtonClickedEvent(Message message, Emoji emoji, Reaction reaction, User user){
+    public ReactionButtonClickedEvent(Message message, Emoji emoji, User user){
         this.message = message;
         this.emoji = emoji;
-        this.reaction = reaction;
         this.user = user;
     }
 
     public void undoReaction(){
+        Reaction reaction = message.getReactionByEmoji(emoji.getUnicode()).orElse(null); assert reaction != null;
         reaction.removeUser(user);
     }
 

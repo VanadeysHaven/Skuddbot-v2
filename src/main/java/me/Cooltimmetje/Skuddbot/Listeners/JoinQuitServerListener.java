@@ -16,12 +16,12 @@ import org.javacord.api.event.server.member.ServerMemberLeaveEvent;
  * Stuff for when users join or leave a server.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class JoinQuitServerListener {
 
-    private static final ServerManager sm = new ServerManager();
+    private static final ServerManager sm = ServerManager.getInstance();
 
     public static void join(ServerMemberJoinEvent event){
         User user = event.getUser();

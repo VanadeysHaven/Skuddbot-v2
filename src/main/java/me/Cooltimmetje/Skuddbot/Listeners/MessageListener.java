@@ -21,7 +21,7 @@ import java.text.MessageFormat;
  * Listens for messages and awards XP.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class MessageListener {
@@ -29,8 +29,8 @@ public class MessageListener {
     private static final String MESSAGE_FORMAT = "**{0}** has leveled up to **level {1}**.";
     private static final String DM_MESSAGE_FORMAT = "You have leveled up in **{0}**, you are now **level {1}**.";
 
-    private static final ServerManager sm = new ServerManager();
-    private static final ProfileManager pm = new ProfileManager();
+    private static final ServerManager sm = ServerManager.getInstance();
+    private static final ProfileManager pm = ProfileManager.getInstance();
     private static final RNGManager random = new RNGManager();
 
     public static void run(Message message){

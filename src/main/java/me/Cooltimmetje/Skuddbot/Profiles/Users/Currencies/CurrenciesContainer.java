@@ -8,9 +8,6 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
-import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
-import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableDrawer;
-import me.Cooltimmetje.Skuddbot.Utilities.TableUtilities.TableRow;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -24,8 +21,8 @@ import java.util.HashMap;
  */
 public class CurrenciesContainer {
 
-    private static final ServerManager sm = new ServerManager();
-    private static final ProfileManager pm = new ProfileManager();
+    private static final ServerManager sm = ServerManager.getInstance();
+    private static final ProfileManager pm =ProfileManager.getInstance();
 
     private Identifier id;
     private HashMap<Currency,String> currencies;
@@ -58,6 +55,7 @@ public class CurrenciesContainer {
     }
 
     public void setInt(Currency currency, int value){
+        if(value < 0) throw new IllegalArgumentException("Balance may not be less than 0.");
         setString(currency, value+"");
     }
 
@@ -67,13 +65,15 @@ public class CurrenciesContainer {
     }
 
     public void incrementInt(Currency currency){
-        if(currency.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
         incrementInt(currency, 1);
     }
 
     public void incrementInt(Currency currency, int incrementBy){
         if(currency.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
-        setInt(currency, getInt(currency) + incrementBy);
+        int newBalance = getInt(currency) + incrementBy;
+        if(newBalance < 0) throw new IllegalArgumentException("Not enough balance to pay for this transaction.");
+
+        setInt(currency, newBalance);
     }
 
     public void save(){
@@ -113,14 +113,18 @@ public class CurrenciesContainer {
         return type == ValueType.STRING;
     }
 
-    @Override
-    public String toString(){
-        TableArrayGenerator tag = new TableArrayGenerator(new TableRow("Currency", "Amount"));
-        for(Currency currency : Currency.values())
-            tag.addRow(new TableRow(currency.toString(), getString(currency)));
-
-        return new TableDrawer(tag).drawTable();
+    public boolean hasEnoughBalance(Currency currency, int amount){
+        return getInt(currency) >= amount;
     }
+
+//    @Override
+//    public String toString(){
+//        TableArrayGenerator tag = new TableArrayGenerator(new TableRow("Currency", "Amount"));
+//        for(Currency currency : Currency.values())
+//            tag.addRow(new TableRow(currency.toString(), getString(currency)));
+//
+//        return new TableDrawer(tag).drawTable();
+//    }
 
 
 

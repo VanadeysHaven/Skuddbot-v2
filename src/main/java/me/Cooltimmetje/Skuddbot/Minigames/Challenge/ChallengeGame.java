@@ -28,8 +28,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class ChallengeGame {
 
-    private static final ProfileManager pm = new ProfileManager();
-    private static final ServerManager sm = new ServerManager();
+    private static final ProfileManager pm = ProfileManager.getInstance();
+    private static final ServerManager sm = ServerManager.getInstance();
     private static final RNGManager random = new RNGManager();
 
     private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **CHALLENGE** | *{0}*";

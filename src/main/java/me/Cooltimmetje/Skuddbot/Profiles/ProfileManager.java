@@ -13,13 +13,24 @@ import org.slf4j.LoggerFactory;
  * This class is used to recall profiles.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class ProfileManager {
 
-    private ServerManager sm = new ServerManager();
+    private static ProfileManager instance;
+
+    public static ProfileManager getInstance(){
+        if(instance == null)
+            instance = new ProfileManager();
+
+        return instance;
+    }
+
+    private ServerManager sm = ServerManager.getInstance();
     private static final Logger logger = LoggerFactory.getLogger(ProfileManager.class);
+
+    private ProfileManager(){}
 
     public SkuddUser getUser(long serverId, long discordId){
         logger.info("Requested user profile for user id " + discordId + " on server id " + serverId);

@@ -26,11 +26,11 @@ import java.util.Date;
  */
 public class DailyBonusCommand extends Command {
 
-    public static String MESSAGE_FORMAT = Emoji.MONEYBAG.getUnicode() + " **DAILY BONUS** | *{0}*\n\n" +
+    public static String MESSAGE_FORMAT = Emoji.GIFT.getUnicode() + " **DAILY BONUS** | *{0}*\n\n" +
             "Daily bonus claimed:\n" +
 
-            "+ {1} Skuddbux\n" +
-            "+ {2} <:xp_icon:458325613015466004>\n" +
+            "+{1} Skuddbux\n" +
+            "+{2} <:xp_icon:458325613015466004>\n" +
             "{3}";
 
     public DailyBonusCommand() {
@@ -57,7 +57,6 @@ public class DailyBonusCommand extends Command {
             sc.setInt(Stat.DAILY_CURRENT_STREAK, 0);
         }
 
-
         sc.incrementInt(Stat.DAILY_CURRENT_STREAK);
         int currentStreak = sc.getInt(Stat.DAILY_CURRENT_STREAK);
         int longestStreak = sc.getInt(Stat.DAILY_LONGEST_STREAK);
@@ -66,9 +65,7 @@ public class DailyBonusCommand extends Command {
         if(currentStreak > longestStreak){
             newLongest = true;
             sc.setInt(Stat.DAILY_LONGEST_STREAK, currentStreak);
-            longestStreak = currentStreak;
         }
-
 
         int currencyBonusBase = ssc.getInt(ServerSetting.DAILY_CURRENCY_BONUS);
         int xpBonusBase = ssc.getInt(ServerSetting.DAILY_XP_BONUS);
@@ -104,6 +101,7 @@ public class DailyBonusCommand extends Command {
         Calendar lastClaimDate = Calendar.getInstance();
         Calendar currentDate = Calendar.getInstance();
         lastClaimDate.setTime(new Date(lastClaim));
+        if(currentDate.get(Calendar.YEAR) - lastClaimDate.get(Calendar.YEAR) >= 1) return true;
         int lastClaimDay = lastClaimDate.get(Calendar.DAY_OF_YEAR);
         int currentDay = currentDate.get(Calendar.DAY_OF_YEAR);
 

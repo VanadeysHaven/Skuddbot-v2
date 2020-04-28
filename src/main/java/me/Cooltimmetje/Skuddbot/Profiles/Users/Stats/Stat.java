@@ -45,7 +45,7 @@ public enum Stat {
     DAILY_LONGEST_STREAK        ("daily_longest_streak",    ValueType.INTEGER, "Longest claim steak",        "days",       "0",  Category.DAILY_BONUS,       true,  true,  true ),
     DON_WINS                    ("don_wins",                ValueType.INTEGER, "Wins",                       "wins",       "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
     DON_LOSSES                  ("don_losses",              ValueType.INTEGER, "Losses",                     "losses",     "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
-    DON_LONGEST_STREAK          ("don_longest_streak",      ValueType.INTEGER, "Longest streak",             "times",      "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true );
+    DON_LONGEST_STREAK          ("don_longest_streak",      ValueType.INTEGER, "Longest double up streak",   "times",      "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true );
 
     private String dbReference;
     private ValueType type;

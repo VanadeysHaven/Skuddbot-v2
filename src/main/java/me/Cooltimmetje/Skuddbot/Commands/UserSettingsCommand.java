@@ -25,13 +25,13 @@ import java.util.Arrays;
  * Used for viewing and changing usersettings
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class UserSettingsCommand extends Command {
 
-    private static final ProfileManager pm = new ProfileManager();
-    private static final ServerManager sm = new ServerManager();
+    private static final ProfileManager pm = ProfileManager.getInstance();
+    private static final ServerManager sm = ServerManager.getInstance();
     private static Logger logger = LoggerFactory.getLogger(UserSettingsCommand.class);
 
 

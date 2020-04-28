@@ -24,6 +24,7 @@ import me.Cooltimmetje.Skuddbot.Listeners.MessageListener;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.BlackjackCommand;
 import me.Cooltimmetje.Skuddbot.Minigames.Challenge.ChallengeCommand;
+import me.Cooltimmetje.Skuddbot.Minigames.DoubleOrNothing.DonCommand;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
@@ -52,7 +53,7 @@ import java.util.Iterator;
 public class Skuddbot {
 
     private static final Logger logger = LoggerFactory.getLogger(Skuddbot.class);
-    private static final ServerManager sm = new ServerManager();
+    private static final ServerManager sm = ServerManager.getInstance();
 
     @Getter private DiscordApi api;
     private String token;
@@ -78,7 +79,7 @@ public class Skuddbot {
                 new BaconCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(), new LogoutCommand(),
                 new ExperienceCommand(), new StatsLeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand(),
                 new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand(), new UserInfoCommand(), new AboutCommand(), new ServerInfoCommand(), new BlackjackCommand(), new ChallengeCommand(),
-                new InviteCommand(), new CurrenciesCommand(), new CurrenciesLeaderboardCommand(), new DailyBonusCommand(), new TestCommand());
+                new InviteCommand(), new CurrenciesCommand(), new CurrenciesLeaderboardCommand(), new DailyBonusCommand(), new DonCommand());
     }
 
     void registerListeners() {

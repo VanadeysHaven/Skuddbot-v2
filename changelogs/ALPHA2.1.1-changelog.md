@@ -18,10 +18,20 @@
   - New stats:
     - `DAILY_CURRENT_STREAK`
     - `DAILY_LONGEST_STREAK`
+- [**NEW MINIGAME:** Double or Nothing!](https://wiki.skuddbot.xyz/minigames/double-or-nothing)
+  - Play a game of double or nothing, you have a 50% to double you bet.
+    - Double up as much as you dare, but do not get greedy, because you could lose everything!
+  - Start a new game: `!doubleornothing <bet/all>`.
+  - New stats:
+    - `DON_WINS`
+    - `DON_LOSSES`
+    - `DON_LONGEST_STREAK`
 
 - Command: `!invite`
   - Prints a link to invite Skuddbot to your server and a link to join the test server!
 - New reaction "button" system in the backend.
+- New user setting: `DEFAULT_BET`.
+  - Defines your default bet in minigames.
 
 ## Changed
 - User setting `STATS_PRIVATE` renamed.
