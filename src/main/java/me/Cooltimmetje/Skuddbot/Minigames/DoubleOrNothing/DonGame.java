@@ -149,6 +149,7 @@ public class DonGame {
 
     private void endGame(){
         unregisterButtons();
+        message.removeAllReactions();
         manager.endGame(this);
     }
 
