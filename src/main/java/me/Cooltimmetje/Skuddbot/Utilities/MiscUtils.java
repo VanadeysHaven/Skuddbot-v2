@@ -6,7 +6,7 @@ import java.util.Random;
  * Some useful utilities I can use throughout the code.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
+ * @since ALPHA-2.2
  * @version ALPHA-2.0
  */
 public class MiscUtils {
@@ -76,6 +76,14 @@ public class MiscUtils {
 
     public static String stripEveryone(String input){
         return input.replace("@everyone", "@\u200Beveryone").replace("@here", "@\u200Bhere");
+    }
+
+    public static String enumify(String input){
+        return input.toUpperCase().replace("-", "_");
+    }
+
+    public static String unEnumify(String input){
+        return input.toLowerCase().replace("_", "-");
     }
 
 }

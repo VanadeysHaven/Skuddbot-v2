@@ -5,6 +5,7 @@ import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * Constants for user stats.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.1.1
+ * @since ALPHA-2.2
  * @version ALPHA-2.0
  */
 @Getter
@@ -109,12 +110,12 @@ public enum Stat {
 
         for(Category category : Category.values()){
             if(!category.isShow()) continue;
-            if(category != Category.NO_CATEGORY) sb.append("**").append(category.getName().toUpperCase()).append(": **");
+            sb.append("`").append(MiscUtils.unEnumify(category.toString())).append("`: ");
             StringBuilder sb1 = new StringBuilder();
             for(Stat stat : values()){
                 if(!stat.isShow()) continue;
                 if(stat.getCategory() == category && stat.isHasLeaderboard()){
-                    sb1.append(" | `").append(stat.toString().toLowerCase().replace("_", "-")).append("`");
+                    sb1.append(" | `").append(MiscUtils.unEnumify(stat.toString())).append("`");
                 }
             }
             sb.append(sb1.append("\n").toString().substring(3));
@@ -127,7 +128,7 @@ public enum Stat {
     public enum Category {
         NO_CATEGORY       ("",                    true ),
         CHALLENGE         ("Challenge",           true ),
-        FREE_FOR_ALL      ("Free For All",        false),
+        FREE_FOR_ALL      ("Free for All",        true ),
         BLACKJACK         ("Blackjack",           true ),
         TEAM_DEATHMATCH   ("Team Deathmatch",     false),
         DAILY_BONUS       ("Daily Bonus",         true ),

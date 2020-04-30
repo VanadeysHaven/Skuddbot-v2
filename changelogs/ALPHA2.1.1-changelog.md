@@ -19,7 +19,7 @@
     - `DAILY_CURRENT_STREAK`
     - `DAILY_LONGEST_STREAK`
 - [**NEW MINIGAME:** Double or Nothing!](https://wiki.skuddbot.xyz/minigames/double-or-nothing)
-  - Play a game of double or nothing, you have a 50% to double you bet.
+  - Play a game of double or nothing, you have a 50% chance to double you bet.
     - Double up as much as you dare, but do not get greedy, because you could lose everything!
   - Start a new game: `!doubleornothing <bet/all>`.
   - New stats:
