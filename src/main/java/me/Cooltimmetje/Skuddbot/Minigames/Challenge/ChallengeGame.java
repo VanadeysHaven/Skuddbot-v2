@@ -34,8 +34,8 @@ public class ChallengeGame {
 
     private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **CHALLENGE** | *{0}*";
     private static final String NORMAL_FORMAT = HEADER + "\n\n" +
-            "**{0}** has challenged **{1}** to a fight.\n\n" +
-            ">>> {2}";
+            "**{1}** has challenged **{2}** to a fight.\n\n" +
+            ">>> {3}";
     private static final String OPEN_FORMAT = HEADER + "\n\n" +
             "**{0}** has put down an open fight! Anyone can accept it!\n\n" +
             ">>> {1}";
@@ -62,7 +62,7 @@ public class ChallengeGame {
         if(challengerTwo == null){
             initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(OPEN_FORMAT, challengerOne.getDisplayName(server), PLAYING_INSTRUCTION));
         } else {
-            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION));
+            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), challengerOne.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION));
         }
 
         initialMessage.addReaction(Emoji.CROSSED_SWORDS.getUnicode());
