@@ -2,6 +2,7 @@ package me.Cooltimmetje.Skuddbot.Profiles.Users;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.CurrenciesContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.CurrenciesSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSettingsContainer;
@@ -15,8 +16,8 @@ import org.slf4j.LoggerFactory;
  * This class represents a user and their data and statistics.
  *
  * @author Tim (Cooltimmetje)
+ * @version ALPHA-2.2
  * @since ALPHA-2.0
- * @version ALPHA-2.1
  */
 public class SkuddUser {
 
@@ -46,4 +47,9 @@ public class SkuddUser {
         getSettings().save();
         getCurrencies().save();
     }
+
+    public ServerMember asMember(){
+        return new ServerMember(id);
+    }
+
 }
