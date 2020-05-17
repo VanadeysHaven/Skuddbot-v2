@@ -39,7 +39,7 @@ public class FfaGameManager {
     public void enterGame(TextChannel channel, ServerMember player, int bet){
         if(!gameIsActive()) {
             createNewGame(channel, player);
-            if(bet == -1) return;
+            if(bet == 0) return;
         }
 
         currentGame.enterGame(player, bet);

@@ -53,7 +53,8 @@ public enum Emoji {
     MONEYBAG                ("\uD83D\uDCB0", "moneybag"),
     WASTEBASKET             ("🗑️", "wastebasket"),
     GAME_DIE                ("\uD83C\uDFB2", "game_die"),
-    GIFT                    ("\uD83C\uDF81", "gift");
+    GIFT                    ("\uD83C\uDF81", "gift"),
+    DAGGER                  ("\uD83D\uDDE1", "dagger");
 
     private String unicode;
     private String alias;

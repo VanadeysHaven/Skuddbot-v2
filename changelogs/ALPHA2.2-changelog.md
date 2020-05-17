@@ -6,6 +6,7 @@
     - Any other amount will result in a immediate error.
   - Viewing: `!stats <category> [mention/id]`
   - Editing `!stats <mention/id> <stat> <add/remove/set> <amount>`
+- Icon of challenge has been changed to :dagger:.
 
 ## Fixed
 - A text bug in challenge.

@@ -32,7 +32,7 @@ public class ChallengeGame {
     private static final ServerManager sm = ServerManager.getInstance();
     private static final RNGManager random = new RNGManager();
 
-    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **CHALLENGE** | *{0}*";
+    private static final String HEADER = Emoji.DAGGER.getUnicode() + " **CHALLENGE** | *{0}*";
     private static final String NORMAL_FORMAT = HEADER + "\n\n" +
             "**{1}** has challenged **{2}** to a fight.\n\n" +
             ">>> {3}";
@@ -41,7 +41,7 @@ public class ChallengeGame {
             ">>> {1}";
     private static final String IN_PROGRESS_FORMAT = HEADER + "\n\n" +
             "{1}";
-    private static final String PLAYING_INSTRUCTION = "Click the " + Emoji.CROSSED_SWORDS.getUnicode() + " reaction to accept";
+    private static final String PLAYING_INSTRUCTION = "Click the " + Emoji.DAGGER.getUnicode() + " reaction to accept";
     private static final int WIN_REWARD = 100;
     private static final int STREAK_BONUS = 50;
 
@@ -65,7 +65,7 @@ public class ChallengeGame {
             initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), challengerOne.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION));
         }
 
-        initialMessage.addReaction(Emoji.CROSSED_SWORDS.getUnicode());
+        initialMessage.addReaction(Emoji.DAGGER.getUnicode());
 
         messages = new ArrayList<>();
         messages.add(message);
