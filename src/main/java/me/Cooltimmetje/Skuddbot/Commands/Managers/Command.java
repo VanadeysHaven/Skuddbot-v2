@@ -13,13 +13,13 @@ import java.text.MessageFormat;
  * This class is a command, can be extended to other classes to make for a flexible command system.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
+ * @since ALPHA-2.1.1
  * @version ALPHA-2.0
  */
 public abstract class Command {
 
-    protected static final ServerManager sm = new ServerManager();
-    protected static final ProfileManager pm = new ProfileManager();
+    protected static final ServerManager sm = ServerManager.getInstance();
+    protected static final ProfileManager pm = ProfileManager.getInstance();
     protected static final DonatorManager dm = new DonatorManager();
 
     private static final String HELP_FORMAT =  "- {0}\n*{1}*";

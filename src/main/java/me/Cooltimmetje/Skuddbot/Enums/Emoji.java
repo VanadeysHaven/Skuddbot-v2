@@ -6,7 +6,7 @@ import lombok.Getter;
  * Emoji's for easy recalling throughout the code.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 @Getter
@@ -40,6 +40,7 @@ public enum Emoji {
     H                       ("\uD83C\uDDED", "regional_indicator_symbol_h"),
     J                       ("\uD83C\uDDEF", "regional_indicator_symbol_j"),
     K                       ("\uD83C\uDDF0", "regional_indicator_symbol_k"),
+    P                       ("\uD83C\uDDF5", "regional_indicator_symbol_p"),
     Q                       ("\uD83C\uDDF6", "regional_indicator_symbol_q"),
     S                       ("\uD83C\uDDF8", "regional_indicator_symbol_s"),
     BACON                   ("\uD83E\uDD53", "bacon"),
@@ -48,7 +49,11 @@ public enum Emoji {
     CAKE                    ("\uD83C\uDF70", "cake"),
     HEART                   ("❤️", "heart"),
     BLACK_JOKER             ("\uD83C\uDCCF", "black_joker"),
-    SOON                    ("\uD83D\uDD1C", "soon");
+    SOON                    ("\uD83D\uDD1C", "soon"),
+    MONEYBAG                ("\uD83D\uDCB0", "moneybag"),
+    WASTEBASKET             ("🗑️", "wastebasket"),
+    GAME_DIE                ("\uD83C\uDFB2", "game_die"),
+    GIFT                    ("\uD83C\uDF81", "gift");
 
     private String unicode;
     private String alias;

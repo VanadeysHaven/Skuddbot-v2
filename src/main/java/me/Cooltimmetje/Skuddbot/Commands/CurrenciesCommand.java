@@ -88,21 +88,25 @@ public class CurrenciesCommand extends Command {
         }
         int mutationAmount = Integer.parseInt(args[4]);
 
-        switch (args[3].toLowerCase()) {
-            case "add":
-                su.getCurrencies().incrementInt(currency, mutationAmount);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + mutationAmount + "` to currency `" + currency + "` for user `" + user.getDisplayName(server) + "`");
-                break;
-            case "remove":
-                su.getCurrencies().incrementInt(currency, mutationAmount * -1);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Removed `" + mutationAmount + "` from currency `" + currency + "` for user `" + user.getDisplayName(server) + "`");
-                break;
-            case "set":
-                su.getCurrencies().setInt(currency, mutationAmount);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Set currency `" + currency + "` to `" + mutationAmount + "` for user `" + user.getDisplayName(server) + "`");
-            default:
-                MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not a valid operation.");
-                break;
+        try {
+            switch (args[3].toLowerCase()) {
+                case "add":
+                    su.getCurrencies().incrementInt(currency, mutationAmount);
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + mutationAmount + "` to currency `" + currency + "` for user `" + user.getDisplayName(server) + "`");
+                    break;
+                case "remove":
+                    su.getCurrencies().incrementInt(currency, mutationAmount * -1);
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Removed `" + mutationAmount + "` from currency `" + currency + "` for user `" + user.getDisplayName(server) + "`");
+                    break;
+                case "set":
+                    su.getCurrencies().setInt(currency, mutationAmount);
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Set currency `" + currency + "` to `" + mutationAmount + "` for user `" + user.getDisplayName(server) + "`");
+                default:
+                    MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not a valid operation.");
+                    break;
+            }
+        } catch (IllegalArgumentException e){
+            MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
         }
     }
 }

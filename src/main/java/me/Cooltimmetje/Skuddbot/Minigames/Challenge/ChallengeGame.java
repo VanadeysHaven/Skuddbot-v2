@@ -28,11 +28,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class ChallengeGame {
 
-    private static final ProfileManager pm = new ProfileManager();
-    private static final ServerManager sm = new ServerManager();
+    private static final ProfileManager pm = ProfileManager.getInstance();
+    private static final ServerManager sm = ServerManager.getInstance();
     private static final RNGManager random = new RNGManager();
 
-    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **CHALLENGE** | {0}";
+    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **CHALLENGE** | *{0}*";
     private static final String NORMAL_FORMAT = HEADER + "\n\n" +
             "**{0}** has challenged **{1}** to a fight.\n\n" +
             ">>> {2}";
@@ -62,7 +62,7 @@ public class ChallengeGame {
         if(challengerTwo == null){
             initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(OPEN_FORMAT, challengerOne.getDisplayName(server), PLAYING_INSTRUCTION));
         } else {
-            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION));
+            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION));
         }
 
         initialMessage.addReaction(Emoji.CROSSED_SWORDS.getUnicode());
@@ -147,7 +147,7 @@ public class ChallengeGame {
     }
 
     private String getMessage(){
-        return MessageFormat.format(IN_PROGRESS_FORMAT, challengerOne.getDisplayName(server), log);
+        return MessageFormat.format(IN_PROGRESS_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), log);
     }
 
     public void setChallengerTwo(User challengerTwo){

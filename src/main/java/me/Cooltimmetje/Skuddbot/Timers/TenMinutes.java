@@ -13,13 +13,13 @@ import java.util.TimerTask;
  * Timer that runs every 10 minutes.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class TenMinutes extends TimerTask {
 
     private static final Logger logger = LoggerFactory.getLogger(TenMinutes.class);
-    private static final ServerManager sm = new ServerManager();
+    private static final ServerManager sm = ServerManager.getInstance();
     private static final AppearanceManager am = new AppearanceManager();
 
     @Override

@@ -17,16 +17,15 @@ import org.javacord.api.entity.server.Server;
  * Command for viewing and altering server settings.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class ServerSettingsCommand extends Command {
 
-    private ServerManager sm;
+    private static final ServerManager sm = ServerManager.getInstance();
 
     public ServerSettingsCommand(){
         super(new String[]{"serversettings", "ssettings"}, "Change and view server settings.", PermissionLevel.SERVER_ADMIN, Location.SERVER);
-        sm = new ServerManager();
     }
 
     @Override

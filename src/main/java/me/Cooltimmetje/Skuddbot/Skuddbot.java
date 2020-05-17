@@ -21,9 +21,10 @@ import me.Cooltimmetje.Skuddbot.Commands.Useless.RiotCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.SaluteCommand;
 import me.Cooltimmetje.Skuddbot.Listeners.JoinQuitServerListener;
 import me.Cooltimmetje.Skuddbot.Listeners.MessageListener;
-import me.Cooltimmetje.Skuddbot.Listeners.ReactionAddListener;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.BlackjackCommand;
 import me.Cooltimmetje.Skuddbot.Minigames.Challenge.ChallengeCommand;
+import me.Cooltimmetje.Skuddbot.Minigames.DoubleOrNothing.DonCommand;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.GlobalSettings.GlobalSettingsSapling;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
@@ -46,13 +47,13 @@ import java.util.Iterator;
  * This class represents the bot, and is used to register commands and listeners.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
+ * @since ALPHA-2.1.1
  * @version ALPHA-2.0
  */
 public class Skuddbot {
 
     private static final Logger logger = LoggerFactory.getLogger(Skuddbot.class);
-    private static final ServerManager sm = new ServerManager();
+    private static final ServerManager sm = ServerManager.getInstance();
 
     @Getter private DiscordApi api;
     private String token;
@@ -76,9 +77,9 @@ public class Skuddbot {
         logger.info("Registering global commands...");
         commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
                 new BaconCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(), new LogoutCommand(),
-                new ExperienceCommand(), new LeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand(),
+                new ExperienceCommand(), new StatsLeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand(),
                 new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand(), new UserInfoCommand(), new AboutCommand(), new ServerInfoCommand(), new BlackjackCommand(), new ChallengeCommand(),
-                new InviteCommand(), new CurrenciesCommand());
+                new InviteCommand(), new CurrenciesCommand(), new CurrenciesLeaderboardCommand(), new DailyBonusCommand(), new DonCommand());
     }
 
     void registerListeners() {
@@ -86,7 +87,8 @@ public class Skuddbot {
         api.addMessageCreateListener(event -> this.commandManager.process(event.getMessage()));
         api.addMessageCreateListener(event -> MessageListener.run(event.getMessage()));
         logger.info("Registering ReactionAddListener...");
-        api.addReactionAddListener(ReactionAddListener::run);
+        api.addReactionAddListener(ReactionUtils::run);
+        api.addReactionAddListener(ReactionUtils::runButtons);
         api.addReactionAddListener(BlackjackCommand::onReaction);
         api.addReactionAddListener(ChallengeCommand::onReaction);
         logger.info("Registering ServerMemberJoinListener...");

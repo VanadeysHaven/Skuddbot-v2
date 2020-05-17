@@ -18,13 +18,13 @@ import java.util.HashMap;
  * This class holds the stats for users.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
+ * @since ALPHA-2.1.1
  * @version ALPHA-2.0
  */
 public class StatsContainer {
 
-    private static final ServerManager sm = new ServerManager();
-    private static final ProfileManager pm = new ProfileManager();
+    private static final ServerManager sm = ServerManager.getInstance();
+    private static final ProfileManager pm = ProfileManager.getInstance();
 
     private Identifier id;
     private HashMap<Stat,String> stats;
@@ -73,13 +73,30 @@ public class StatsContainer {
     }
 
     public void incrementInt(Stat stat){
-        if(stat.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
         incrementInt(stat, 1);
     }
 
     public void incrementInt(Stat stat, int incrementBy) {
         if(stat.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Stat is not of type INTEGER");
         setInt(stat, getInt(stat) + incrementBy);
+    }
+
+    public void incrementLong(Stat stat){
+        incrementLong(stat, 1);
+    }
+
+    public void incrementLong(Stat stat, long incrementBy){
+        if(stat.getType() != ValueType.LONG) throw new IllegalArgumentException("Stat is not of type LONG");
+        setLong(stat, getLong(stat) + incrementBy);
+    }
+
+    public long getLong(Stat stat){
+        if(stat.getType() != ValueType.LONG) throw new IllegalArgumentException("Stat is not of type LONG");
+        return Long.parseLong(getString(stat));
+    }
+
+    public void setLong(Stat stat, long value){
+        setString(stat, value+"");
     }
 
     public String getFavouriteTeammate(){
@@ -124,6 +141,9 @@ public class StatsContainer {
         if(type == ValueType.JSON){
             //TODO
             return input.equals("{}");
+        }
+        if(type == ValueType.LONG){
+            return MiscUtils.isLong(input);
         }
 
         return type == ValueType.STRING;

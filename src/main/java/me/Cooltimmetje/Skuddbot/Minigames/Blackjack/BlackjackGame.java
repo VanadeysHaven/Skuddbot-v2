@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of blackjack.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class BlackjackGame {
@@ -42,7 +42,7 @@ public class BlackjackGame {
                     ">>> {5}";
     private static final String DEFAULT_PLAYING_INSTRUCTION = "*Press " + Emoji.H.getUnicode() + " to hit, press " + Emoji.S.getUnicode() + " to stand.*";
     private static final String DOUBLE_INSTRUCTION = "*Press " + Emoji.D.getUnicode() + " to double down.*";
-    private static final ProfileManager pm = new ProfileManager();
+    private static final ProfileManager pm = ProfileManager.getInstance();
     private static final int BASE_REWARD = 50;
     private static final int WIN_REWARD = 75;
     private static final int TWENTY_ONE_BONUS = 100;
@@ -174,6 +174,7 @@ public class BlackjackGame {
     }
 
     private void wrapUpGame(){
+        message.removeAllReactions();
         SkuddUser su = pm.getUser(id);
         int xpReward = 0;
         if(dealerHand.getHandSize() == 1)

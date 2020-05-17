@@ -166,6 +166,12 @@ begin
     return (select id from stats where stat_name=statReference);
 end //
 
+create function get_currency_id(currencyReference text)
+returns int
+begin
+    return (select id from currencies where currency_name=currencyReference);
+end //
+
 delimiter ;
 
 insert into donators (id) value (123);
@@ -454,6 +460,7 @@ update identifier set twitch_username='cooltimmetje', mixer_username='yo_mama' w
 insert ignore into server_settings (setting_name) value ('xp_min');
 insert ignore into user_settings (setting_name) value ('lvl_up_notify');
 insert ignore into stats (stat_name) value ('xp');
+insert ignore into currencies (currency_name) value ('skuddbux');
 insert into server_has_settings (setting_id, server_id, setting_value) value ((select get_server_setting_id('xp_min')), 123, '5') on duplicate key update setting_value='7';
 insert into user_has_settings (setting_id, user_id, setting_value) values ((select get_user_setting_id('lvl_up_notify')), 1, 'MESSAGE') on duplicate key update setting_value='DM';
 insert into user_has_stats(stat_id, user_id, stat_value) value ((select get_stat_id('xp')), 1, '5') on duplicate key update stat_value='7';
@@ -493,4 +500,9 @@ select * from global_settings;
 insert into global_settings(setting, value) value ('commit', 'def456') on duplicate key update value='bye';
 delete from global_settings where setting='hi';
 
-
+insert ignore into currencies (currency_name) value (?);
+select currency_name from currencies;
+select c.currency_name, uhc.currency_value from user_has_currencies uhc join currencies c on uhc.currency_id = c.id where uhc.user_id=?;
+delete uhc from user_has_currencies uhc join currencies c on uhc.currency_id = c.id where uhc.user_id=? and c.currency_name=?;
+insert into user_has_currencies(currency_id, user_id, currency_value) value ((select get_currency_id(?)),?,?) on duplicate key update currency_value=?;
+select id.discord_id, id.twitch_username, id.mixer_username, uhc.currency_value from user_has_currencies uhc join identifier id on uhc.user_id = id.id join currencies c on uhc.currency_id = c.id where id.server_id=? and c.currency_name=?;

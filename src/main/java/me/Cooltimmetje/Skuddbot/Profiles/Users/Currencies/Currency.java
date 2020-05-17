@@ -13,13 +13,13 @@ import java.util.ArrayList;
  * Enum for all the types of currencies.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1
- * @since ALPHA-2.1
+ * @version ALPHA-2.1.1
+ * @since ALPHA-2.1.1
  */
 @Getter
 public enum Currency {
 
-    SKUDDBUX ("skuddbux", ValueType.INTEGER, "Skuddbux", "", "0", true, true, true);
+    SKUDDBUX ("skuddbux", ValueType.INTEGER, "Skuddbux", "skuddbux", "0", true, true, true);
 
     private String dbReference;
     private ValueType type;
@@ -74,6 +74,14 @@ public enum Currency {
                 if(qe != null) qe.close();
             }
         }
+    }
+
+    public static String formatCurrencies(){
+        StringBuilder sb = new StringBuilder();
+        for(Currency currency : values())
+            sb.append(" | `").append(currency.toString()).append("`");
+
+        return sb.toString().substring(3);
     }
 
 }

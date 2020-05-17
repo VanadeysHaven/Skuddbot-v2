@@ -21,14 +21,14 @@ import java.util.ArrayList;
  * This class is responsible for registering commands and process incoming requests for commands.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
+ * @since ALPHA-2.1.1
  * @version ALPHA-2.0
  */
 public class CommandManager implements HelpGenerator {
 
     private static final Logger logger = LoggerFactory.getLogger(CommandManager.class);
-    private static final ServerManager sm = new ServerManager();
-    private static final ProfileManager pm = new ProfileManager();
+    private static final ServerManager sm = ServerManager.getInstance();
+    private static final ProfileManager pm = ProfileManager.getInstance();
 
     private ArrayList<Command> commands;
     private ArrayList<NoPrefixCommand> noPrefixCommands;

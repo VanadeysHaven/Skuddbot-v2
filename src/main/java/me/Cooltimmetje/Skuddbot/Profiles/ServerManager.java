@@ -17,13 +17,24 @@ import java.util.Iterator;
  * This class is used for managing server profiles.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class ServerManager {
 
+    private static ServerManager instance;
+
+    public static ServerManager getInstance(){
+        if(instance == null)
+            instance = new ServerManager();
+
+        return instance;
+    }
+
     private static ArrayList<SkuddServer> servers = new ArrayList<>();
     private final static Logger logger = LoggerFactory.getLogger(ServerManager.class);
+
+    private ServerManager(){}
 
     public SkuddServer getServer(long id){
         logger.info("Requested server profile for id " + id);

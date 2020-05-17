@@ -4,7 +4,6 @@ import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Main;
-import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.PermissionManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -18,12 +17,10 @@ import org.javacord.api.entity.user.User;
  * Used for viewing experience.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.1.1
  * @since ALPHA-2.0
  */
 public class ExperienceCommand extends Command {
-
-    private static final ProfileManager pm = new ProfileManager();
 
     public ExperienceCommand() {
         super(new String[]{"experience", "xp"}, "View your and other's experience and level.");
