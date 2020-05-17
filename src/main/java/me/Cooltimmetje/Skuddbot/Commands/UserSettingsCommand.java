@@ -43,9 +43,7 @@ public class UserSettingsCommand extends Command {
     public void run(Message message, String content) {
         String[] args = content.split(" ");
         MessageAuthor user = message.getAuthor();
-        Server server = message.getServer().orElse(null);
-        assert server != null;
-        logger.info("getting user");
+        Server server = message.getServer().orElse(null); assert server != null;
         SkuddUser su = pm.getUser(server.getId(), user.getId());
         UserSetting setting = null;
         String newValue = "";
