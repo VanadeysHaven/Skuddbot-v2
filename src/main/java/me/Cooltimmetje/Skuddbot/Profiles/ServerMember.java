@@ -1,5 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Profiles;
 
+import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -15,7 +16,7 @@ import org.javacord.api.entity.user.User;
  */
 public class ServerMember {
 
-    private Identifier id;
+    @Getter private Identifier id;
     private Server server;
     private User user;
 
@@ -44,4 +45,13 @@ public class ServerMember {
     public SkuddUser asSkuddUser(){
         return ProfileManager.getInstance().getUser(id);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ServerMember member = (ServerMember) o;
+        return id.equals(member.getId());
+    }
+
 }

@@ -7,12 +7,12 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
  * Represents a player in FFA
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1
- * @since ALPHA-2.1
+ * @version ALPHA-2.2
+ * @since ALPHA-2.2
  */
 public class FfaPlayer {
 
-    private ServerMember player;
+    @Getter private ServerMember player;
     @Getter private int bet;
     @Getter private int kills;
     private boolean isAlive;

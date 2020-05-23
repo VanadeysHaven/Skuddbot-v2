@@ -64,6 +64,14 @@ public class FfaCommand extends Command {
             return;
         }
 
+        if(manager.isInGame(member)){
+            MessagesUtils.addReaction(message, Emoji.X, "You are already entered into this game.");
+            return;
+        }
+
+        if(manager.gameIsActive()){
+            message.delete();
+        }
         manager.enterGame(channel, member, bet);
     }
 

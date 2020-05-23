@@ -16,7 +16,7 @@ import java.util.Arrays;
  * Listens to reactions being added to messages.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
+ * @version ALPHA-2.2
  * @since ALPHA-2.0
  */
 public class ReactionUtils {
@@ -55,6 +55,7 @@ public class ReactionUtils {
     }
 
     public static void runButtons(ReactionAddEvent event) {
+        if(event.getUser().isBot()) return;
         for (ReactionButton button : buttons) {
             if(!button.isEnabled()){
                 Reaction reaction = event.getReaction().orElse(null);

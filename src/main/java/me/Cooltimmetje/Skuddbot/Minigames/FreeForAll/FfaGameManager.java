@@ -45,6 +45,13 @@ public class FfaGameManager {
         currentGame.enterGame(player, bet);
     }
 
+    public boolean isInGame(ServerMember member){
+        if(!gameIsActive())
+            return false;
+
+        return currentGame.isInGame(member);
+    }
+
     public boolean isOnCooldown(long userId){
         if(gameIsActive()){
             return false;

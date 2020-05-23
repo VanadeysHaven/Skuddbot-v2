@@ -1,5 +1,5 @@
 # TODO
-##### updated 14-02-2020
+##### updated 23-05-2020
 > Items listed are in no particular order!
 
 ## Planned before launch
@@ -26,12 +26,12 @@
 - [x] Server setup
 
 ## Planned after launch
-- Memory cleanups
-- Currencies
-- Custom commands
-- Twitch integration
-- Challenge
-- Free for All
-- Team Deathmatch
-- Managing of donator messages
-- Use of the new types of playing statuses!
+- [ ] Memory cleanups
+- [x] Currencies
+- [ ] Custom commands
+- [ ] Twitch integration
+- [x] Challenge
+- [-] Free for All
+- [ ] Team Deathmatch
+- [ ] Managing of donator messages
+- [ ] Use of the new types of playing statuses!

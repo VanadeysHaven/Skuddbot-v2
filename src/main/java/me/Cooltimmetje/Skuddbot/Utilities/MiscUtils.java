@@ -86,4 +86,21 @@ public class MiscUtils {
         return input.toLowerCase().replace("_", "-");
     }
 
+    public static String glueStrings(String prefix, String glue, String lastGlue, String suffix, String[] strings){
+        if(strings.length == 0)
+            return prefix + suffix;
+        if(strings.length == 1)
+            return prefix + strings[0] + suffix;
+
+        StringBuilder sb = new StringBuilder();
+
+        for(int i=0; i < strings.length; i++)
+            if(i == strings.length-1)
+                sb.append(lastGlue).append(strings[i]);
+            else
+                sb.append(glue).append(strings[i]);
+
+        return prefix + sb.toString().substring(glue.length()) + suffix;
+    }
+
 }

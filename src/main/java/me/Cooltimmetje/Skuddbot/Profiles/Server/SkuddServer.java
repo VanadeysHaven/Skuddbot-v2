@@ -4,11 +4,13 @@ import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
+import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
+import org.javacord.api.entity.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -177,5 +179,10 @@ public class SkuddServer {
             user.save();
         }
         getSettings().save();
+    }
+
+    public String getName(){
+        Server server = Main.getSkuddbot().getApi().getServerById(serverId).orElse(null); assert server != null;
+        return server.getName();
     }
 }
