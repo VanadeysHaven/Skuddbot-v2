@@ -27,7 +27,7 @@ public class ReactionUtils {
 
     public static void run(ReactionAddEvent event) {
         for(DebugReaction reaction : MessagesUtils.reactions){
-            if(event.getUser() != reaction.getMessage().getAuthor().asUser().orElse(null)) continue;
+            if(event.getUser() != reaction.getMessage().getAuthor().asUser().orElse(null) && !reaction.isIgnoreUser()) continue;
 
             Reaction reactionObject = event.getReaction().orElse(null); assert reactionObject != null;
             String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;

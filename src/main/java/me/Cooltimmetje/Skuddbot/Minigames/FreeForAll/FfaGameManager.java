@@ -5,6 +5,8 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
 import org.javacord.api.entity.channel.TextChannel;
 
+import java.util.Iterator;
+
 /**
  * Game manager, for managing data that needs to persist between games.
  *
@@ -29,7 +31,7 @@ public class FfaGameManager {
     }
 
     private void createNewGame(TextChannel channel, ServerMember host){
-        currentGame = new FfaGame(channel, host);
+        currentGame = new FfaGame(channel, host, this);
     }
 
     public void enterGame(TextChannel channel, ServerMember player){
@@ -60,5 +62,17 @@ public class FfaGameManager {
         return cooldownManager.isOnCooldown(userId);
     }
 
+    public void startCooldown(long userId){
+        cooldownManager.startCooldown(userId);
+    }
 
+
+    public void finishGame() {
+        Iterator<FfaPlayer> it = currentGame.getPlayers();
+        while(it.hasNext()){
+            startCooldown(it.next().getPlayer().getId().getDiscordId());
+        }
+
+        currentGame = null;
+    }
 }

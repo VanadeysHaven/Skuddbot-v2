@@ -32,6 +32,10 @@ public class FfaPlayer {
         isAlive = false;
     }
 
+    public void incrementKills(){
+        kills++;
+    }
+
     public boolean isAlive(){
         return isAlive;
     }
@@ -49,4 +53,11 @@ public class FfaPlayer {
         return player.getDisplayName();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FfaPlayer player1 = (FfaPlayer) o;
+        return player.equals(player1.player);
+    }
 }

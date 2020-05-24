@@ -20,14 +20,16 @@ public class DebugReaction {
     private TextChannel channel;
     @Getter private long validUntil;
     @Getter private boolean posted;
+    @Getter private boolean ignoreUser;
 
-    DebugReaction(String output, Emoji emoji, Message message, TextChannel channel, long validUntil){
+    DebugReaction(String output, Emoji emoji, Message message, TextChannel channel, long validUntil, boolean ignoreUser){
         this.output = output;
         this.emoji = emoji;
         this.message = message;
         this.channel = channel;
         this.validUntil = validUntil;
         posted = false;
+        this.ignoreUser = ignoreUser;
     }
 
     public void post(){

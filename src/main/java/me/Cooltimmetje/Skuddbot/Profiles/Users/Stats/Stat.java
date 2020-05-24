@@ -29,6 +29,8 @@ public enum Stat {
     FFA_LOSSES                  ("ffa_losses",              ValueType.INTEGER, "Losses",                     "losses",     "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
     FFA_HIGHEST_WIN             ("ffa_highest_win",         ValueType.INTEGER, "Most entrants win",          "entrants",   "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
     FFA_KILLS                   ("ffa_kills",               ValueType.INTEGER, "Kills",                      "kills",      "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
+    FFA_BETS_WON                ("ffa_bets_won",            ValueType.INTEGER, "Bets won",                   "bets",       "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
+    FFA_BETS_LOST               ("ffa_bets_lost",           ValueType.INTEGER, "Bets lost",                  "bets",       "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
     BJ_WINS                     ("bj_wins",                 ValueType.INTEGER, "Wins",                       "wins",       "0",  Category.BLACKJACK,         true,  true,  true ),
     BJ_LOSSES                   ("bj_losses",               ValueType.INTEGER, "Losses",                     "losses",     "0",  Category.BLACKJACK,         true,  true,  true ),
     BJ_PUSHES                   ("bj_pushes",               ValueType.INTEGER, "Pushes",                     "pushes",     "0",  Category.BLACKJACK,         true,  true,  true ),

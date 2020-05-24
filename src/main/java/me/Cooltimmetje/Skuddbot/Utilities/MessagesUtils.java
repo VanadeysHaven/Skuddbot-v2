@@ -18,13 +18,13 @@ public class MessagesUtils {
 
     public static ArrayList<DebugReaction> reactions = new ArrayList<>(); //TODO: CLEANUP
 
-    public static void addReaction(Message message, Emoji emoji, String output, long expireTime){
+    public static void addReaction(Message message, Emoji emoji, String output, long expireTime, boolean ignoreUser){
         message.addReaction(emoji.getUnicode());
-        reactions.add(new DebugReaction(output, emoji, message, message.getChannel(), System.currentTimeMillis() + expireTime));
+        reactions.add(new DebugReaction(output, emoji, message, message.getChannel(), System.currentTimeMillis() + expireTime, ignoreUser));
     }
 
     public static void addReaction(Message message, Emoji emoji, String output){
-        addReaction(message, emoji, output, 30*60*1000);
+        addReaction(message, emoji, output, 30*60*1000, false);
     }
 
     public static Message sendPlain(TextChannel channel, String text){
