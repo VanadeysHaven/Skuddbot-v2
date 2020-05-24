@@ -1,4 +1,12 @@
 # ALPHA-2.2 changelog
+
+## Added
+- **FREE FOR ALL**
+  - You've been asking for it, you've been begging for it. It's back!
+  - Details can be found on the wiki: [https://wiki.skuddbot.xyz/minigames/free-for-all](https://wiki.skuddbot.xyz/minigames/free-for-all)
+- Weekly bonuses!
+  - After hitting your cap on your daily bonus, you will gain a additional bonus every week!
+
 ## Changed
 - `!stats` command
   - The stats command now has a strict arguments policy.

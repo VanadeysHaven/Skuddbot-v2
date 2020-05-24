@@ -24,11 +24,10 @@ import java.util.ArrayList;
  */
 public class FfaCommand extends Command {
 
-    private final ArrayList<FfaGameManager> managers;
+    private static final ArrayList<FfaGameManager> managers = new ArrayList<>();
 
     public FfaCommand() {
         super(new String[]{"freeforall", "ffa"}, "Play a game of Free for All!");
-        managers = new ArrayList<>();
     }
 
     @Override
@@ -69,9 +68,7 @@ public class FfaCommand extends Command {
             return;
         }
 
-        if(manager.gameIsActive()){
-            message.delete();
-        }
+        message.delete();
         manager.enterGame(channel, member, bet);
     }
 
@@ -83,6 +80,12 @@ public class FfaCommand extends Command {
         FfaGameManager manager = new FfaGameManager(serverId);
         managers.add(manager);
         return manager;
+    }
+
+    public static void runReminders(){
+        for(FfaGameManager manager : managers){
+            manager.runReminder();
+        }
     }
 
 }

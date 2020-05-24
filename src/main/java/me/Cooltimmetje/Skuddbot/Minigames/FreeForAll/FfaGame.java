@@ -4,7 +4,6 @@ import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
-import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
@@ -36,12 +35,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class FfaGame {
 
-    private static final ProfileManager pm = ProfileManager.getInstance();
     private static final ServerManager sm = ServerManager.getInstance();
     private static final RNGManager random = new RNGManager();
     private static final Logger logger = LoggerFactory.getLogger(FfaGame.class);
 
-    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **FREE FOR ALL** | *{0}*\n";
+    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " [beta] **FREE FOR ALL** | *{0}*\n";
     private static final String OUTSTANDING_FORMAT = HEADER + "\n" +
             "{1} is opened for a Free for all fight! " +
             "\n\n**CURRENT ENTRANTS:**\n" +
@@ -50,15 +48,17 @@ public class FfaGame {
     private static final String IN_PROGRESS_FORMAT = HEADER + "\n" +
             "{1}";
     private static final String ENTER_INSTRUCTION_REACTION = "*Press the " + Emoji.CROSSED_SWORDS.getUnicode() + " reaction to enter without a bet, press the " + Emoji.MONEYBAG.getUnicode() + " reaction to enter with your default bet.*";
-    private static final String ENTER_INSTRUCTION_COMMAND = "*Use `{0}ffa <bet>` to enter with a bet, use `{0}ffa all` to go all-in.*";
+    private static final String ENTER_INSTRUCTION_COMMAND = "*Use `{0}freeforall <bet>` to enter with a bet, use `{0}freeforall all` to go all-in.*";
     private static final String START_INSTRUCTION = "*{0} can start the fight using the " + Emoji.WHITE_CHECK_MARK.getUnicode() + " reaction.*";
     private static final String FIGHT_STARTED_FORMAT = "{0} step into {1} for a EPIC free for all battle. Who will win? *3*... *2*... *1*... **FIGHT!**";
-    private static final String FIGHT_ENDED_FORMAT = "The crowd witnessed a furious battle in {0}, many combatants have fallen and {1} the last man standing!";
+    private static final String FIGHT_ENDED_FORMAT = "The crowd witnessed a furious battle in {0}, many combatants have fallen and **{1}** the last man standing!";
+    private static final String REMINDER_FORMAT = "Hey, you still got a free for all with **{0} entrants** pending in {1} (**{2}**).\n(**PRO-TIP:** You can use search to quickly find it!)";
 
     private static final int XP_KILL_REWARD = 50;
     private static final int SB_KILL_REWARD = 10;
     private static final int XP_WIN_REWARD = 100;
     private static final int SB_WIN_REWARD = 50;
+    private static final int REMINDER_DELAY = 6; //in hours
 
     private ArrayList<FfaPlayer> entrants;
     private TextChannel channel;
@@ -72,6 +72,10 @@ public class FfaGame {
     private String log;
     private String killFeed;
 
+    private long lastReminder;
+    private long timeStarted;
+    private int entrantsAtLastReminder;
+
     public FfaGame(TextChannel channel, ServerMember host, FfaGameManager manager){
         entrants = new ArrayList<>();
         buttons = new ArrayList<>();
@@ -80,6 +84,11 @@ public class FfaGame {
         this.manager = manager;
         server = sm.getServer(host.getServer().getId());
         state = State.OUTSTANDING;
+        log = "";
+        killFeed = "";
+        lastReminder = System.currentTimeMillis();
+        timeStarted = System.currentTimeMillis();
+        entrantsAtLastReminder = 0;
 
         sendMessage();
         buttons.add(ReactionUtils.registerButton(message, Emoji.CROSSED_SWORDS, e -> enterGame(e.getUserAsMember())));
@@ -144,9 +153,9 @@ public class FfaGame {
         message.delete();
         message = null;
         state = State.IN_PROGRESS;
-        log += MessageFormat.format(FIGHT_STARTED_FORMAT, formatEntrants(false), server.getSettings().getString(ServerSetting.ARENA_NAME));
+        appendToLog(MessageFormat.format(FIGHT_STARTED_FORMAT, formatEntrants(false), server.getSettings().getString(ServerSetting.ARENA_NAME)));
         sendMessage();
-        channel.typeContinuouslyAfter(5, TimeUnit.SECONDS);
+        channel.type();
         FfaPlayer winner = simulateFight();
         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
         exec.schedule(() -> {
@@ -162,7 +171,7 @@ public class FfaGame {
         appendToLog("> Click the " + Emoji.GIFT.getUnicode() + " reaction to view the rewards.");
         sendMessage();
         MessagesUtils.addReaction(message, Emoji.NOTEPAD_SPIRAL, "**Free for all kill feed:** \n" + killFeed, 6*60*60*1000, true);
-        MessagesUtils.addReaction(message, Emoji.GIFT, "**Free for all kill rewards:** \n" + rewards, 6*60*60*1000, true);
+        MessagesUtils.addReaction(message, Emoji.GIFT, "**Free for all rewards:** \n" + rewards, 6*60*60*1000, true);
         manager.finishGame();
     }
 
@@ -197,7 +206,7 @@ public class FfaGame {
             sb.append(" | **NEW HIGHEST ENTRANTS WIN**");
             suWinner.getStats().setInt(Stat.FFA_HIGHEST_WIN, entrants.size());
         }
-        sb.append("| +" + xpWinnerReward + " , +" + sbWinnerReward + " Skuddbux").append("\n");
+        sb.append(" | +" + xpWinnerReward + " <:xp_icon:458325613015466004>, +" + sbWinnerReward + " Skuddbux").append("\n");
         suWinner.getStats().incrementInt(Stat.EXPERIENCE, xpWinnerReward);
         suWinner.getCurrencies().incrementInt(Currency.SKUDDBUX, sbWinnerReward);
 
@@ -208,7 +217,7 @@ public class FfaGame {
             if(player.hasBetted())
                 su.getStats().incrementInt(Stat.FFA_BETS_LOST);
             if(player.getKills() > 0) {
-                sb.append(player.getName()).append(" | ").append(player.getKills()).append(" kills | +").append(XP_KILL_REWARD * player.getKills()).append(", +").append(SB_KILL_REWARD * player.getKills()).append(" Skuddbux").append("\n");
+                sb.append(player.getName()).append(" | ").append(player.getKills()).append(" kills | +").append(XP_KILL_REWARD * player.getKills()).append(" <:xp_icon:458325613015466004>, +").append(SB_KILL_REWARD * player.getKills()).append(" Skuddbux").append("\n");
                 su.getStats().incrementInt(Stat.EXPERIENCE, XP_KILL_REWARD * player.getKills());
                 su.getCurrencies().incrementInt(Currency.SKUDDBUX, SB_KILL_REWARD * player.getKills());
             }
@@ -235,7 +244,7 @@ public class FfaGame {
     public FfaPlayer getRandomAlivePlayer(){
         FfaPlayer randomPlayer;
         do {
-            randomPlayer = entrants.get(random.integer(0, entrants.size()));
+            randomPlayer = entrants.get(random.integer(0, entrants.size() - 1));
         } while (!randomPlayer.isAlive());
 
         return randomPlayer;
@@ -270,7 +279,7 @@ public class FfaGame {
                 entrantNames[i] = entrants.get(i).getName();
         }
 
-        return MiscUtils.glueStrings("**", "**, **", "** and **", "**", entrantNames);
+        return MiscUtils.glueStrings("**", "**, **", "** and **", "**", 5, "other combatants", entrantNames);
     }
 
     private void unregisterButtons(){
@@ -286,6 +295,25 @@ public class FfaGame {
 
     private enum State {
         OUTSTANDING, IN_PROGRESS
+    }
+
+    public void runReminder(){
+        long curTime = System.currentTimeMillis();
+        if(entrants.size() < 3) return;
+        if((curTime - lastReminder) < (REMINDER_DELAY * 60 * 60 * 1000)) return;
+
+        if(entrantsAtLastReminder != entrants.size()){
+            host.getUser().sendMessage(MessageFormat.format(REMINDER_FORMAT, entrants.size(), "<#" + channel.getId() + ">", server.getName()));
+        } else {
+            if((curTime - timeStarted) > (12 * 60 * 60 * 1000)) {
+                appendToLog("*(Game was auto-started by the bot)*");
+                startGame();
+                return;
+            }
+        }
+
+        lastReminder = System.currentTimeMillis();
+        entrantsAtLastReminder = entrants.size();
     }
 
 }

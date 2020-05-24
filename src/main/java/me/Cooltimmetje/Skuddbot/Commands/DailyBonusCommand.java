@@ -27,11 +27,11 @@ import java.util.Date;
 public class DailyBonusCommand extends Command {
 
     public static String MESSAGE_FORMAT = Emoji.GIFT.getUnicode() + " **DAILY BONUS** | *{0}*\n\n" +
-            "Daily bonus claimed:\n" +
+            "Daily bonus claimed: {1}\n" +
 
-            "+{1} Skuddbux\n" +
-            "+{2} <:xp_icon:458325613015466004>\n" +
-            "{3}";
+            "+{2} Skuddbux\n" +
+            "+{3} <:xp_icon:458325613015466004>\n" +
+            "{4}";
 
     public DailyBonusCommand() {
         super(new String[]{"dailybonus", "claim", "db"}, "Claim your daily bonus.");
@@ -50,6 +50,7 @@ public class DailyBonusCommand extends Command {
             return;
         }
         boolean lostStreak = false;
+        boolean applyWeekly = false;
         int lastClaimStreak = -1;
         if(!isInTimeFrame(su)) {
             if (sc.getLong(Stat.DAILY_LAST_CLAIM) != -1) lostStreak = true;
@@ -73,6 +74,13 @@ public class DailyBonusCommand extends Command {
         double multiplier = Math.pow(ssc.getDouble(ServerSetting.DAILY_BONUS_MULTIPLIER), Math.min(currentStreak, cap) - 1);
         int currencyBonus = (int) (currencyBonusBase * multiplier);
         int xpBonus = (int) (xpBonusBase * multiplier);
+        applyWeekly = currentStreak > cap && (currentStreak - cap) % 7 == 0;
+
+        if(applyWeekly){
+            xpBonus *= 2;
+            currencyBonus *= 2;
+        }
+
 
         su.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyBonus);
         sc.incrementInt(Stat.EXPERIENCE, xpBonus);
@@ -88,7 +96,7 @@ public class DailyBonusCommand extends Command {
         if(newLongest && currentStreak >= 2)
             streakString += " | **New longest streak!**";
 
-        String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), currencyBonus, xpBonus, streakString);
+        String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), applyWeekly ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "",currencyBonus, xpBonus, streakString);
 
         MessagesUtils.sendPlain(message.getChannel(), msg);
         sc.setLong(Stat.DAILY_LAST_CLAIM, System.currentTimeMillis());
