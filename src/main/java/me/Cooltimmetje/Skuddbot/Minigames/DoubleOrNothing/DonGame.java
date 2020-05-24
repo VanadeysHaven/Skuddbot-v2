@@ -44,7 +44,6 @@ public class DonGame {
     private static final String PLAYING_INSTRUCTION = "Press the " + Emoji.D.getUnicode() + " reaction to double up, press the " + Emoji.MONEYBAG.getUnicode() + " reaction to take the money.";
     private static final int XP_REWARD = 50;
 
-
     @Getter private User user;
     private int bet;
     private int moves;

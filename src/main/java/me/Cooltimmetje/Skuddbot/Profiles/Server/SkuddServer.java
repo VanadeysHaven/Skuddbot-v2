@@ -15,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * This class represents a guild, and it's settings and user profiles.
@@ -106,7 +108,7 @@ public class SkuddServer {
     public LinkedHashMap<Identifier, Integer> getTopStats(int limit, Stat stat){
         if(!stat.isHasLeaderboard()) throw new UnsupportedOperationException("This stat does not have a leaderboard!");
 
-        HashMap<Identifier, Integer> statValues = new HashMap<>();
+        LinkedHashMap<Identifier, Integer> statValues = new LinkedHashMap<>();
         QueryExecutor qe = null;
         try {
             qe = new QueryExecutor(Query.SELECT_ALL_STAT_VALUES).setLong(1, serverId).setString(2, stat.getDbReference());
@@ -123,13 +125,13 @@ public class SkuddServer {
             qe.close();
         }
 
-        return sortMap(statValues);
+        return statValues;
     }
 
     public LinkedHashMap<Identifier, Integer> getTopCurrencies(int limit, Currency currency) {
         if(!currency.isHasLeaderboard()) throw new UnsupportedOperationException("This currency does not have a leaderboard!");
 
-        HashMap<Identifier, Integer> currencyValues = new HashMap<>();
+        LinkedHashMap<Identifier, Integer> currencyValues = new LinkedHashMap<>();
         QueryExecutor qe = null;
         try {
             qe = new QueryExecutor(Query.SELECT_ALL_CURRENCY_VALUES).setLong(1, serverId).setString(2, currency.getDbReference());
@@ -146,31 +148,7 @@ public class SkuddServer {
             qe.close();
         }
 
-        return sortMap(currencyValues);
-    }
-
-    private LinkedHashMap<Identifier, Integer> sortMap(HashMap<Identifier,Integer> unsortedMap){
-        List<Identifier> mapKeys = new ArrayList<>(unsortedMap.keySet());
-        List<Integer> mapValues = new ArrayList<>(unsortedMap.values());
-        mapValues.sort(Collections.reverseOrder());
-
-        LinkedHashMap<Identifier,Integer> sortedMap = new LinkedHashMap<>();
-        for(int mapValue : mapValues){
-            Iterator<Identifier> keyIt = mapKeys.iterator();
-
-            while(keyIt.hasNext()){
-                Identifier key = keyIt.next();
-                int comp = unsortedMap.get(key);
-
-                if(comp == mapValue){
-                    keyIt.remove();
-                    sortedMap.put(key, mapValue);
-                    break;
-                }
-            }
-        }
-
-        return sortedMap;
+        return currencyValues;
     }
 
     public void save(){
