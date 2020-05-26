@@ -18,3 +18,6 @@
 
 ## Fixed
 - A text bug in challenge.
+- A null pointer exception in reactions being added.
+- Fixed the TenMinuteTimer stopping after a exception.
+  - I'm not sure what is causing the exception to be thrown, but I'll figure it out soon.

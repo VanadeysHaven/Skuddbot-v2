@@ -82,10 +82,10 @@ public class FfaCommand extends Command {
         return manager;
     }
 
-    public static void runReminders(){
-        for(FfaGameManager manager : managers){
+    public static void runReminders() {
+        for (FfaGameManager manager : managers)
             manager.runReminder();
-        }
     }
+
 
 }

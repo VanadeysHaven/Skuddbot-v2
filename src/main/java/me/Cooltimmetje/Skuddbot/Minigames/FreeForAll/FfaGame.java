@@ -303,7 +303,8 @@ public class FfaGame {
         if((curTime - lastReminder) < (REMINDER_DELAY * 60 * 60 * 1000)) return;
 
         if(entrantsAtLastReminder != entrants.size()){
-            host.getUser().sendMessage(MessageFormat.format(REMINDER_FORMAT, entrants.size(), "<#" + channel.getId() + ">", server.getName()));
+            if(host.asSkuddUser().getSettings().getBoolean(UserSetting.MINIGAME_REMINDERS))
+                host.getUser().sendMessage(MessageFormat.format(REMINDER_FORMAT, entrants.size(), "<#" + channel.getId() + ">", server.getName()));
         } else {
             if((curTime - timeStarted) > (12 * 60 * 60 * 1000)) {
                 appendToLog("*(Game was auto-started by the bot)*");

@@ -28,14 +28,14 @@ public class ReactionUtils {
     public static void run(ReactionAddEvent event) {
         for(DebugReaction reaction : MessagesUtils.reactions){
             if(event.getUser().isBot()) return;
+            Message message = event.getMessage().orElse(null); assert message != null;
+            if(message.getId() != reaction.getMessage().getId()) continue;
             if(event.getUser() != reaction.getMessage().getAuthor().asUser().orElse(null) && !reaction.isIgnoreUser()) continue;
 
             Reaction reactionObject = event.getReaction().orElse(null); assert reactionObject != null;
             String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
             if(!unicode.equals(reaction.getEmoji().getUnicode())) continue;
 
-            Message message = event.getMessage().orElse(null); assert message != null;
-            if(message.getId() != reaction.getMessage().getId()) continue;
 
             reaction.post();
             return;
@@ -58,21 +58,19 @@ public class ReactionUtils {
     public static void runButtons(ReactionAddEvent event) {
         if(event.getUser().isBot()) return;
         for (ReactionButton button : buttons) {
+            Message message = event.getMessage().orElse(null); assert message != null;
+            if (message.getId() != button.getMessage().getId()) continue;
+
             if(!button.isEnabled()){
                 Reaction reaction = event.getReaction().orElse(null);
                 if(reaction == null) continue;
                 reaction.removeUser(event.getUser());
                 continue;
             }
-            Reaction reactionObject = event.getReaction().orElse(null);
-            assert reactionObject != null;
-            String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null);
-            assert unicode != null;
+            Reaction reactionObject = event.getReaction().orElse(null); assert reactionObject != null;
+            String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
             if (!button.getEmoji().getUnicode().equals(unicode)) continue;
 
-            Message message = event.getMessage().orElse(null);
-            assert message != null;
-            if (message.getId() != button.getMessage().getId()) continue;
 
             if(!button.userIsAllowedToRun(event.getUser().getId())) continue;
 

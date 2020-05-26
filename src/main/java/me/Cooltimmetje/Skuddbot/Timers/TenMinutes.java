@@ -4,9 +4,12 @@ import me.Cooltimmetje.Skuddbot.Minigames.FreeForAll.FfaCommand;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
+import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.TimerTask;
 
@@ -25,12 +28,20 @@ public class TenMinutes extends TimerTask {
 
     @Override
     public void run() {
-        logger.info("Ten minute timer running...");
-        Iterator<SkuddServer> iterator = sm.getServers();
-        while(iterator.hasNext()) iterator.next().runActivity();
+        try {
+            logger.info("Ten minute timer running...");
+            Iterator<SkuddServer> iterator = sm.getServers();
+            while (iterator.hasNext()) iterator.next().runActivity();
 
-        am.tickAppearance();
-        FfaCommand.runReminders();
+            am.tickAppearance();
+            FfaCommand.runReminders();
+        } catch (Exception e){
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+
+            MessagesUtils.log("```\n" + sw.toString() + "\n```");
+        }
     }
 
 }
