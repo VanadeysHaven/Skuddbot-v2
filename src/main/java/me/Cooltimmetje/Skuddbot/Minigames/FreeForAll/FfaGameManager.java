@@ -77,6 +77,7 @@ public class FfaGameManager {
     }
 
     public void runReminder() {
-        currentGame.runReminder();
+        if(currentGame != null)
+            currentGame.runReminder();
     }
 }
