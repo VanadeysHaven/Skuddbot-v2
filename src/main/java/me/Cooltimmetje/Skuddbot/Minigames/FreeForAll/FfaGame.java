@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Minigames.FreeForAll;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
@@ -9,6 +10,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.PermissionManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
@@ -93,6 +95,7 @@ public class FfaGame {
         sendMessage();
         buttons.add(ReactionUtils.registerButton(message, Emoji.CROSSED_SWORDS, e -> enterGame(e.getUserAsMember())));
         buttons.add(ReactionUtils.registerButton(message, Emoji.MONEYBAG, this::enterGameWithDefaultBet));
+        buttons.add(ReactionUtils.registerButton(message, Emoji.EYES, this::startForcefully, true));
         startButton = ReactionUtils.registerButton(message, Emoji.WHITE_CHECK_MARK, e -> startGame(), host.getId().getDiscordId());
         startButton.setEnabled(false);
     }
@@ -146,6 +149,14 @@ public class FfaGame {
 
         if(entrants.size() >= 3)
             startButton.setEnabled(true);
+    }
+
+    private void startForcefully(ReactionButtonClickedEvent e) {
+        PermissionManager perms = e.getUserAsMember().asSkuddUser().getPermissions();
+        if(perms.hasPermission(PermissionLevel.SERVER_ADMIN) && entrants.size() >= 2)
+            startGame();
+        else
+            e.undoReaction();
     }
 
     private void startGame(){

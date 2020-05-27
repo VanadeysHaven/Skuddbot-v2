@@ -43,8 +43,13 @@ public class ReactionUtils {
     }
 
     public static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonCallback callback, long... userLocks){
+        return registerButton(message, emoji, callback, false, userLocks);
+    }
+
+    public static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonCallback callback, boolean invisibleReaction, long... userLocks){
         logger.info("Registering new button on message id " + message.getId() + " with emoji " +  emoji + " locked to users " + Arrays.toString(userLocks));
-        message.addReaction(emoji.getUnicode());
+        if(!invisibleReaction)
+            message.addReaction(emoji.getUnicode());
         ReactionButton button = new ReactionButton(message, emoji, callback, userLocks);
         buttons.add(button);
         return button;
@@ -70,7 +75,6 @@ public class ReactionUtils {
             Reaction reactionObject = event.getReaction().orElse(null); assert reactionObject != null;
             String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
             if (!button.getEmoji().getUnicode().equals(unicode)) continue;
-
 
             if(!button.userIsAllowedToRun(event.getUser().getId())) continue;
 

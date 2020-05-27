@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +28,6 @@ public class ReactionButton {
     public ReactionButton(Message message, Emoji emoji, ReactionButtonCallback callback, long... userLocks){
         this.message = message;
         this.emoji = emoji;
-        message.addReaction(emoji.getUnicode());
-        Reaction reaction = message.getReactionByEmoji(emoji.getUnicode()).orElse(null); assert reaction != null;
         this.callback = callback;
         this.userLocks = userLocks;
 
