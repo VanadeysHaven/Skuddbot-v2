@@ -41,7 +41,7 @@ public class FfaGame {
     private static final RNGManager random = new RNGManager();
     private static final Logger logger = LoggerFactory.getLogger(FfaGame.class);
 
-    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " [beta] **FREE FOR ALL** | *{0}*\n";
+    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **FREE FOR ALL** | *{0}*\n";
     private static final String OUTSTANDING_FORMAT = HEADER + "\n" +
             "{1} is opened for a Free for all fight! " +
             "\n\n**CURRENT ENTRANTS:**\n" +
@@ -153,9 +153,10 @@ public class FfaGame {
 
     private void startForcefully(ReactionButtonClickedEvent e) {
         PermissionManager perms = e.getUserAsMember().asSkuddUser().getPermissions();
-        if(perms.hasPermission(PermissionLevel.SERVER_ADMIN) && entrants.size() >= 2)
+        if(perms.hasPermission(PermissionLevel.SERVER_ADMIN) && entrants.size() >= 2) {
             startGame();
-        else
+            appendToLog("*(Game was force-started by server admin)*");
+        } else
             e.undoReaction();
     }
 
