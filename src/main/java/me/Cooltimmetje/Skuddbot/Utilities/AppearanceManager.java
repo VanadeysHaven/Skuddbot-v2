@@ -50,10 +50,10 @@ public class AppearanceManager {
     @Getter
     private enum CalendarEvent {
 
-        NEW_YEAR       (1,  1,   DonatorMessage.Type.PLAYING_NEW_YEAR                                             ),
+        NEW_YEAR       (1,  1,   DonatorMessage.Type.PLAYING_NEW_YEAR                                           ),
         RAY            (18, 3,  "HAPPY BIRTHDAY RAY!",                              Avatar.BIRTHDAY ),
         EMBERS         (21, 3,  "HAPPY BIRTHDAY EMBERS!",                           Avatar.BIRTHDAY ),
-        BATTLEKILLER   (21, 6,  "HAPPY BIRTHDAY BATTLEKILLER!",                     Avatar.BIRTHDAY ),
+        BARON          (2,  6,  "HAPPY BIRTHDAY BARON!",                             Avatar.BIRTHDAY ),
         LIZ            (18, 7,  "HAPPY BIRTHDAY LIZ!",                              Avatar.BIRTHDAY ),
         FIDDY          (27, 7,  "HAPPY BIRTHDAY FIDDY!",                            Avatar.BIRTHDAY ),
         MELSH          (30, 7,  "HAPPY BIRTHDAY MELSH!",                            Avatar.BIRTHDAY ),
@@ -66,7 +66,7 @@ public class AppearanceManager {
         TIMMY          (21, 10, "HAPPY BIRTHDAY TIMMY!",                            Avatar.BIRTHDAY ),
         LAM            (4,  11, "HAPPY BIRTHDAY LAM!",                              Avatar.BIRTHDAY ),
         SCROOGE        (28, 11, "HAPPY BIRTHDAY SCROOGE!",                          Avatar.BIRTHDAY ),
-        CHRISTMAS_HAT1 (1,  12, DonatorMessage.Type.PLAYING,                                      Avatar.CHRISTMAS),
+        CHRISTMAS_HAT1 (1,  12, DonatorMessage.Type.PLAYING,                                     Avatar.CHRISTMAS),
         LOCKSTAR       (2,  12, "HAPPY BIRTHDAY LOCKSTAR!",                         Avatar.BIRTHDAY ),
         MEERY          (3,  12, "HAPPY BIRTHDAY MEERY!",                            Avatar.BIRTHDAY ),
         CHRISTMAS_HAT2 (4,  12, 23, 12, DonatorMessage.Type.PLAYING,           Avatar.CHRISTMAS),
