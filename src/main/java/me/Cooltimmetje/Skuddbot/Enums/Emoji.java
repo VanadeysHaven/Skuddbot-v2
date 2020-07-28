@@ -6,7 +6,7 @@ import lombok.Getter;
  * Emoji's for easy recalling throughout the code.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.0
  */
 @Getter
@@ -14,6 +14,9 @@ public enum Emoji {
 
     WHITE_CHECK_MARK        ("✅", "white_check_mark"),
     ARROW_UP                ("⬆", "arrow_up"),
+    ARROW_LEFT              ("⬅️", "arrow_left"),
+    ARROW_RIGHT             ("➡️", "arrow_right"),
+    ARROWS_CC               ("\uD83D\uDD04", "arrows_counterclockwise"),
     WARNING                 ("⚠", "warning"),
     X                       ("❌", "x"),
     HOURGLASS_FLOWING_SAND  ("⏳", "hourglass_flowing_sand"),

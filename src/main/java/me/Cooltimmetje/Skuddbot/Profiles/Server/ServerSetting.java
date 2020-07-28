@@ -6,7 +6,6 @@ import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -14,7 +13,7 @@ import java.util.ArrayList;
  * Settings for servers.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.0
  */
 @Getter
@@ -65,9 +64,31 @@ public enum ServerSetting {
         return null;
     }
 
+    public static ServerSetting[] grab(int length, int offset){
+        int arrLength = Math.min(length, values().length - offset);
+        if(arrLength < 1)
+            throw new IndexOutOfBoundsException("There are no server settings available for length " + length + " and offset " + offset);
+
+        ServerSetting[] arr = new ServerSetting[arrLength];
+
+        for(int i=0; i < length; i++){
+            if(i + offset >= values().length)
+                break;
+
+            arr[i] = (values()[i + offset]);
+        }
+
+        return arr;
+    }
+
+    public static int getPagesAmount(int length){
+        int settingsAmount = values().length;
+
+        return settingsAmount / length;
+    }
+
     public static void saveToDatabase(){
         QueryExecutor qe = null;
-        ResultSet rs;
         ArrayList<String> settings = new ArrayList<>();
         try {
             qe = new QueryExecutor(Query.SELECT_ALL_SERVER_SETTINGS);

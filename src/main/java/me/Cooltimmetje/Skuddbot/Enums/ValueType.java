@@ -1,7 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Enums;
 
 /**
- * <class discription>
+ * Enumerator for different types of values.
  *
  * @author Tim (Cooltimmetje)
  * @since ALPHA-2.0
