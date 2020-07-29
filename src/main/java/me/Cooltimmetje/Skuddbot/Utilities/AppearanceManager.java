@@ -70,8 +70,8 @@ public class AppearanceManager {
         CHRISTMAS_HAT1 (1,  12, DonatorMessage.Type.PLAYING,                                     Avatar.CHRISTMAS),
         LOCKSTAR       (2,  12, "HAPPY BIRTHDAY LOCKSTAR!",                         Avatar.BIRTHDAY ),
         MEERY          (3,  12, "HAPPY BIRTHDAY MEERY!",                            Avatar.BIRTHDAY ),
-        CHRISTMAS_HAT2 (4,  12, 23, 12, DonatorMessage.Type.PLAYING,           Avatar.CHRISTMAS),
-        CHRISTMAS      (24, 12, 26, 12, DonatorMessage.Type.PLAYING_CHRISTMAS, Avatar.CHRISTMAS);
+        CHRISTMAS_HAT2 (4,  12, 23, 12, DonatorMessage.Type.PLAYING,            Avatar.CHRISTMAS),
+        CHRISTMAS      (24, 12, 26, 12, DonatorMessage.Type.PLAYING_CHRISTMAS,  Avatar.CHRISTMAS);
 
         private int startDate;
         private int startMonth;
