@@ -48,7 +48,7 @@ import java.util.Iterator;
  * This class represents the bot, and is used to register commands and listeners.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.2
+ * @since ALPHA-2.2.1
  * @version ALPHA-2.0
  */
 public class Skuddbot {
@@ -89,9 +89,11 @@ public class Skuddbot {
         api.addMessageCreateListener(event -> MessageListener.run(event.getMessage()));
         logger.info("Registering ReactionAddListener...");
         api.addReactionAddListener(ReactionUtils::run);
-        api.addReactionAddListener(ReactionUtils::runButtons);
+        api.addReactionAddListener(ReactionUtils::runClicked);
         api.addReactionAddListener(BlackjackCommand::onReaction);
         api.addReactionAddListener(ChallengeCommand::onReaction);
+        logger.info("Registering ReactionRemoveListener...");
+        api.addReactionRemoveListener(ReactionUtils::runRemoved);
         logger.info("Registering ServerMemberJoinListener...");
         api.addServerMemberJoinListener(JoinQuitServerListener::join);
         logger.info("Registering ServerMemberLeaveListener...");

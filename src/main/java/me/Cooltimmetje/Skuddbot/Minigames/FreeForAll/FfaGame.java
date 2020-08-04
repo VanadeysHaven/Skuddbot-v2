@@ -2,8 +2,8 @@ package me.Cooltimmetje.Skuddbot.Minigames.FreeForAll;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
-import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of Free for All
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.2
  */
 public class FfaGame {

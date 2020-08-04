@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Utilities;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.DebugReaction;
 import me.Cooltimmetje.Skuddbot.Main;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  * Utilities to do with Messages.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.0
  */
 public class MessagesUtils {

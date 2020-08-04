@@ -2,8 +2,8 @@ package me.Cooltimmetje.Skuddbot.Minigames.DoubleOrNothing;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
-import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of double or nothing
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.1.1
  */
 public class DonGame {
