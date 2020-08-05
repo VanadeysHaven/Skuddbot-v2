@@ -24,7 +24,7 @@ public enum UserSetting {
     TRACK_ME           ("track_me",           "Defines if the bot will track your activity and stats. Turning off PAUSES progress.",                                                ValueType.BOOLEAN, "true",     false),
     PROFILE_PRIVATE    ("stats_private",      "This will define if your profile are private, others will not be able to view your profile without you using the command.",          ValueType.BOOLEAN, "false",    false),
     MENTION_ME         ("mention_me",         "This will define if you will be mentioned in useless commands",                                                                      ValueType.BOOLEAN, "false",    false),
-    MINIGAME_REMINDERS ("minigame_reminders", "Defines if you want to be reminded about pending minigames.",                                                                        ValueType.BOOLEAN, "true",     false), //TODO
+    MINIGAME_REMINDERS ("minigame_reminders", "Defines if you want to be reminded about pending minigames.",                                                                        ValueType.BOOLEAN, "true",     false),
     DEFAULT_BET        ("default_bet",        "Defines your default bet used in various minigames",                                                                                 ValueType.INTEGER, "50",       false);
 
     private String dbReference;
