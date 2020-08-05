@@ -151,11 +151,22 @@ public class FfaGame {
             startButton.setEnabled(true);
     }
 
+    public void leaveGame(ServerMember member){
+        FfaPlayer player = getPlayer(member);
+        if(player == null)
+            return;
+
+        SkuddUser su = member.asSkuddUser();
+        su.getCurrencies().incrementInt(Currency.SKUDDBUX, player.getBet());
+        entrants.remove(player);
+        sendMessage();
+    }
+
     private void startForcefully(ReactionButtonClickedEvent e) {
         PermissionManager perms = e.getUserAsMember().asSkuddUser().getPermissions();
         if(perms.hasPermission(PermissionLevel.SERVER_ADMIN) && entrants.size() >= 2) {
-            startGame();
             appendToLog("*(Game was force-started by server admin)*");
+            startGame();
         } else
             e.undoReaction();
     }
@@ -198,7 +209,7 @@ public class FfaGame {
     public String award(FfaPlayer winner){
         int xpWinnerReward = 0, sbWinnerReward = 0;
         StringBuilder sb = new StringBuilder();
-        SkuddUser suWinner = winner.getPlayer().asSkuddUser();
+        SkuddUser suWinner = winner.getMember().asSkuddUser();
         sb.append("**WINNER:** ").append(winner.getName()).append(" | ").append(winner.getKills()).append(" kills");
         xpWinnerReward += XP_WIN_REWARD + (XP_KILL_REWARD * winner.getKills());
         sbWinnerReward += SB_WIN_REWARD + (SB_KILL_REWARD * winner.getKills());
@@ -224,7 +235,7 @@ public class FfaGame {
 
         for(FfaPlayer player : entrants) {
             if (player.equals(winner)) continue;
-            SkuddUser su = player.getPlayer().asSkuddUser();
+            SkuddUser su = player.getMember().asSkuddUser();
             su.getStats().incrementInt(Stat.FFA_LOSSES);
             if(player.hasBetted())
                 su.getStats().incrementInt(Stat.FFA_BETS_LOST);
@@ -273,10 +284,21 @@ public class FfaGame {
 
     public boolean isInGame(ServerMember member){
         for(FfaPlayer player : entrants)
-            if(player.getPlayer().equals(member))
+            if(player.getMember().equals(member))
                 return true;
 
         return false;
+    }
+
+    public FfaPlayer getPlayer(ServerMember member){
+        Iterator<FfaPlayer> it = getPlayers();
+        while(it.hasNext()) {
+            FfaPlayer player = it.next();
+            if (player.getMember().equals(member))
+                return player;
+        }
+
+        return null;
     }
 
     private String formatEntrants(boolean withBet){

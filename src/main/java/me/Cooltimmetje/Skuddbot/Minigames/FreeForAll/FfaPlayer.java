@@ -7,18 +7,18 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
  * Represents a player in FFA
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.2
  */
 public class FfaPlayer {
 
-    @Getter private ServerMember player;
+    @Getter private ServerMember member;
     @Getter private int bet;
     @Getter private int kills;
     private boolean isAlive;
 
-    public FfaPlayer(ServerMember player, int bet){
-        this.player = player;
+    public FfaPlayer(ServerMember member, int bet){
+        this.member = member;
         this.bet = bet;
         kills = 0;
         isAlive = true;
@@ -41,7 +41,7 @@ public class FfaPlayer {
     }
 
     public String getNameAndBet(){
-        String ret = player.getDisplayName();
+        String ret = member.getDisplayName();
         if(hasBetted()){
             ret += " (" + bet + ")";
         }
@@ -50,7 +50,7 @@ public class FfaPlayer {
     }
 
     public String getName(){
-        return player.getDisplayName();
+        return member.getDisplayName();
     }
 
     @Override
@@ -58,6 +58,6 @@ public class FfaPlayer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FfaPlayer player1 = (FfaPlayer) o;
-        return player.equals(player1.player);
+        return member.equals(player1.member);
     }
 }

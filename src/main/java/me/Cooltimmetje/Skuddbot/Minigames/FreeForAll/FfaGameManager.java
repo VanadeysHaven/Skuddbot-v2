@@ -11,7 +11,7 @@ import java.util.Iterator;
  * Game manager, for managing data that needs to persist between games.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.2
  */
 public class FfaGameManager {
@@ -70,7 +70,7 @@ public class FfaGameManager {
     public void finishGame() {
         Iterator<FfaPlayer> it = currentGame.getPlayers();
         while(it.hasNext()){
-            startCooldown(it.next().getPlayer().getId().getDiscordId());
+            startCooldown(it.next().getMember().getId().getDiscordId());
         }
 
         currentGame = null;
