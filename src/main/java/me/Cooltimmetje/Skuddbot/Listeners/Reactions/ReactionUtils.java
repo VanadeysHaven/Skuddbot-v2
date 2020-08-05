@@ -4,6 +4,7 @@ import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.Reaction;
+import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.reaction.ReactionAddEvent;
 import org.javacord.api.event.message.reaction.ReactionRemoveEvent;
 import org.slf4j.Logger;
@@ -41,15 +42,23 @@ public class ReactionUtils {
         }
     }
 
-    public static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonClickedCallback callback, long... userLocks){
-        return registerButton(message, emoji, callback, false, userLocks);
+    public static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonClickedCallback clickedCallback, long... userLocks){
+        return registerButton(message, emoji, clickedCallback, null,false, userLocks);
     }
 
-    public static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonClickedCallback callback, boolean invisibleReaction, long... userLocks){
+    public static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonClickedCallback clickedCallback, ReactionButtonRemovedCallback removedCallback, long... userLocks){
+        return registerButton(message, emoji, clickedCallback, removedCallback, false, userLocks);
+    }
+
+    public static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonClickedCallback clickedCallback, boolean invisibleReaction, long... userLocks){
+        return registerButton(message, emoji, clickedCallback, null, invisibleReaction, userLocks);
+    }
+
+    private static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonClickedCallback clickedCallback, ReactionButtonRemovedCallback removedCallback, boolean invisibleReaction, long... userLocks){
         logger.info("Registering new button on message id " + message.getId() + " with emoji " +  emoji + " locked to users " + Arrays.toString(userLocks));
         if(!invisibleReaction)
             message.addReaction(emoji.getUnicode());
-        ReactionButton button = new ReactionButton(message, emoji, callback, userLocks);
+        ReactionButton button = new ReactionButton(message, emoji, clickedCallback, removedCallback, userLocks);
         buttons.add(button);
         return button;
     }
@@ -61,49 +70,44 @@ public class ReactionUtils {
 
     public static void runClicked(ReactionAddEvent event) {
         if(event.getUser().isBot()) return;
-        for (ReactionButton button : buttons) {
-            Message message = event.getMessage().orElse(null); assert message != null;
-            if (message.getId() != button.getMessage().getId()) continue;
 
-            if(!button.isEnabled()){
-                Reaction reaction = event.getReaction().orElse(null);
-                if(reaction == null) continue;
-                reaction.removeUser(event.getUser());
-                continue;
-            }
-            Reaction reactionObject = event.getReaction().orElse(null); assert reactionObject != null;
-            String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
-            if (!button.getEmoji().getUnicode().equals(unicode)) continue;
+        User user = event.getUser();
+        Message message = event.getMessage().orElse(null); assert message != null;
+        Reaction reaction = event.getReaction().orElse(null); assert reaction != null;
+        ReactionButton button = getButton(user, message, reaction);
 
-            if(!button.userIsAllowedToRun(event.getUser().getId())) continue;
-
-            button.runClicked(event.getUser());
-            return;
-        }
+        if(button != null) button.runClicked(user);
     }
 
     public static void runRemoved(ReactionRemoveEvent event){
-        //TODO: This function
-//        if(event.getUser().isBot()) return;
-//        for (ReactionButton button : buttons) {
-//            Message message = event.getMessage().orElse(null); assert message != null;
-//            if (message.getId() != button.getMessage().getId()) continue;
-//
-//            if(!button.isEnabled()){
-//                Reaction reaction = event.getReaction().orElse(null);
-//                if(reaction == null) continue;
-//                reaction.removeUser(event.getUser());
-//                continue;
-//            }
-//            Reaction reactionObject = event.getReaction().orElse(null); assert reactionObject != null;
-//            String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
-//            if (!button.getEmoji().getUnicode().equals(unicode)) continue;
-//
-//            if(!button.userIsAllowedToRun(event.getUser().getId())) continue;
-//
-//            button.runClicked(event.getUser());
-//            return;
-//        }
+        if(event.getUser().isBot()) return;
+
+        User user = event.getUser();
+        Message message = event.getMessage().orElse(null); assert message != null;
+        Reaction reaction = event.getReaction().orElse(null); assert reaction != null;
+        ReactionButton button = getButton(user, message, reaction);
+
+        if(button != null) button.runRemoved(user);
+    }
+
+    private static ReactionButton getButton(User user, Message message, Reaction reaction){
+        for(ReactionButton button : buttons) {
+            if(message.getId() != button.getMessage().getId()) continue;
+
+            if(!button.isEnabled()){
+                if(reaction == null) continue;
+                reaction.removeUser(user);
+                continue;
+            }
+
+            String unicode = reaction.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
+            if(!button.getEmoji().getUnicode().equals(unicode)) continue;
+            if(!button.userIsAllowedToRun(user.getId())) continue;
+
+            return button;
+        }
+
+        return null;
     }
 
 

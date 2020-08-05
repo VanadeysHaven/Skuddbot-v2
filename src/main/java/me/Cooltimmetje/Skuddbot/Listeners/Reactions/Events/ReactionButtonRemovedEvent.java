@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.user.User;
 
@@ -13,8 +14,8 @@ import org.javacord.api.entity.user.User;
  */
 public class ReactionButtonRemovedEvent extends ReactionButtonEvent {
 
-    public ReactionButtonRemovedEvent(Message message, Emoji emoji, User user){
-        super(message, emoji, user);
+    public ReactionButtonRemovedEvent(Message message, Emoji emoji, User user, ReactionButton button){
+        super(message, emoji, user, button);
     }
 
 }

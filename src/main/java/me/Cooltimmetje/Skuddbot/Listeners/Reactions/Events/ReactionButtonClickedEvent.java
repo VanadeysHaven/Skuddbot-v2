@@ -1,8 +1,8 @@
 package me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
 import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.user.User;
 
 /**
@@ -14,13 +14,12 @@ import org.javacord.api.entity.user.User;
  */
 public class ReactionButtonClickedEvent extends ReactionButtonEvent {
 
-    public ReactionButtonClickedEvent(Message message, Emoji emoji, User user){
-        super(message, emoji, user);
+    public ReactionButtonClickedEvent(Message message, Emoji emoji, User user, ReactionButton button){
+        super(message, emoji, user, button);
     }
 
     public void undoReaction(){
-        Reaction reaction = getMessage().getReactionByEmoji(getEmoji().getUnicode()).orElse(null); assert reaction != null; //TODO: move this operation into the ReactionButton class
-        reaction.removeUser(getUser());
+        getButton().removeReaction(getUser());
     }
 
 }

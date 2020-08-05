@@ -6,6 +6,7 @@ import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonRemovedEvent;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,16 +45,24 @@ public class ReactionButton {
 
     public void runClicked(User user){
         logger.info("Running clicked callback for user " + user.getIdAsString() + " on message id " + message.getId());
-        clickedCallback.run(new ReactionButtonClickedEvent(message, emoji, user));
+        clickedCallback.run(new ReactionButtonClickedEvent(message, emoji, user, this));
     }
 
     public void runRemoved(User user){
+        if(removedCallback == null) {
+            logger.info("Removed callback triggered for user " + user.getIdAsString() + " on message id " + message.getId() + " but there's no removed callback present.");
+            return;
+        }
+
         logger.info("Running removed callback for user " + user.getIdAsString() + " on message id " + message.getId());
-        removedCallback.run(new ReactionButtonRemovedEvent(message, emoji, user));
+        removedCallback.run(new ReactionButtonRemovedEvent(message, emoji, user, this));
     }
 
     public void removeReaction(User user){
-        //TODO: This function, this function should not run when there's a removed callback present
+        if(removedCallback != null) throw new UnsupportedOperationException("You can not remove reactions from a button that has a removed callback associated with it.");
+
+        Reaction reaction = getMessage().getReactionByEmoji(getEmoji().getUnicode()).orElse(null); assert reaction != null;
+        reaction.removeUser(user);
     }
 
     public boolean userIsAllowedToRun(long userId){

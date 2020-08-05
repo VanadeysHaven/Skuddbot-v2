@@ -2,6 +2,7 @@ package me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import org.javacord.api.entity.message.Message;
@@ -20,11 +21,13 @@ public abstract class ReactionButtonEvent {
     @Getter private Message message;
     @Getter private Emoji emoji;
     @Getter private User user;
+    @Getter private ReactionButton button;
 
-    public ReactionButtonEvent(Message message, Emoji emoji, User user){
+    public ReactionButtonEvent(Message message, Emoji emoji, User user, ReactionButton button){
         this.message = message;
         this.emoji = emoji;
         this.user = user;
+        this.button = button;
     }
 
     public ServerMember getUserAsMember(){
