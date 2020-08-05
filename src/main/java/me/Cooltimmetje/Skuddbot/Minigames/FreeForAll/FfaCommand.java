@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * The command for Free for All
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.2
  */
 public class FfaCommand extends Command {
@@ -48,12 +48,20 @@ public class FfaCommand extends Command {
         if(args.length > 1){
             if(args[1].equalsIgnoreCase("bet")){
                 bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
-            } else if (args[1].equalsIgnoreCase("all")){
+            } else if (args[1].equalsIgnoreCase("all")) {
                 bet = su.getCurrencies().getInt(Currency.SKUDDBUX);
             } else if (MiscUtils.isLong(args[1])){
                 bet = Integer.parseInt(args[1]);
+            } else if (args[1].equalsIgnoreCase("leave")){
+                if(getManager(server.getId()).isInGame(member)){
+                    getManager(server.getId()).leaveGame(member);
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Game left!");
+                } else {
+                    MessagesUtils.addReaction(message, Emoji.X, "You are not in a game of free for all, or there's no game active.");
+                }
+                return;
             } else {
-                MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!ffa [bet/all/betAmount]`");
+                MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!ffa [bet/all/betAmount/leave]`");
                 return;
             }
         }

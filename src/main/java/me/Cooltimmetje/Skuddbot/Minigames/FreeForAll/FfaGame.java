@@ -93,8 +93,8 @@ public class FfaGame {
         entrantsAtLastReminder = 0;
 
         sendMessage();
-        buttons.add(ReactionUtils.registerButton(message, Emoji.CROSSED_SWORDS, e -> enterGame(e.getUserAsMember())));
-        buttons.add(ReactionUtils.registerButton(message, Emoji.MONEYBAG, this::enterGameWithDefaultBet));
+        buttons.add(ReactionUtils.registerButton(message, Emoji.CROSSED_SWORDS, e -> enterGame(e.getUserAsMember()), e -> leaveGame(e.getUserAsMember())));
+        buttons.add(ReactionUtils.registerButton(message, Emoji.MONEYBAG, this::enterGameWithDefaultBet, e -> leaveGame(e.getUserAsMember())));
         buttons.add(ReactionUtils.registerButton(message, Emoji.EYES, this::startForcefully, true));
         startButton = ReactionUtils.registerButton(message, Emoji.WHITE_CHECK_MARK, e -> startGame(), host.getId().getDiscordId());
         startButton.setEnabled(false);
@@ -128,7 +128,6 @@ public class FfaGame {
         SkuddUser su = member.asSkuddUser();
         int bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
         if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bet)) {
-            event.undoReaction();
             return;
         }
 

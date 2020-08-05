@@ -2,6 +2,8 @@
 
 ## Added
 - [Purge command!](https://wiki.skuddbot.xyz/moderation-tools/purge)
+- [FFA leaving](https://wiki.skuddbot.xyz/minigames/free-for-all#leaving-the-game)
+  - You can now leave a game of Free for All by removing your reaction or typing `!ffa leave`.
 
 ## Changed
 - `!serversettings` now has pages!

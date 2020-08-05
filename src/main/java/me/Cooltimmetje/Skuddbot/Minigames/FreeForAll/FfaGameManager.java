@@ -47,6 +47,10 @@ public class FfaGameManager {
         currentGame.enterGame(player, bet);
     }
 
+    public void leaveGame(ServerMember member){
+        currentGame.leaveGame(member);
+    }
+
     public boolean isInGame(ServerMember member){
         if(!gameIsActive())
             return false;
