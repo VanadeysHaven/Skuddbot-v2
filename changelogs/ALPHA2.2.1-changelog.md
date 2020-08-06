@@ -8,6 +8,8 @@
 ## Changed
 - `!serversettings` now has pages!
 - Reworked the Reaction Buttons system to add support for reaction removals.
+- When you now don't specify a bet in FFA, you will bet with your `DEFAULT_BET` value.
+  - To enter without a bet you can specify 0 as your bet or use the :crossed_swords: reaction.
 
 ## Fixed
 - The "game was started by admin" notice being out of place in Free for All's.

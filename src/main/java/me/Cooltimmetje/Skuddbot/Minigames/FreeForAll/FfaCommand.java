@@ -46,11 +46,9 @@ public class FfaCommand extends Command {
 
         int bet = 0;
         if(args.length > 1){
-            if(args[1].equalsIgnoreCase("bet")){
-                bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
-            } else if (args[1].equalsIgnoreCase("all")) {
+            if (args[1].equalsIgnoreCase("all")) {
                 bet = su.getCurrencies().getInt(Currency.SKUDDBUX);
-            } else if (MiscUtils.isLong(args[1])){
+            } else if (MiscUtils.isInt(args[1])){
                 bet = Integer.parseInt(args[1]);
             } else if (args[1].equalsIgnoreCase("leave")){
                 if(getManager(server.getId()).isInGame(member)){
@@ -61,9 +59,11 @@ public class FfaCommand extends Command {
                 }
                 return;
             } else {
-                MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!ffa [bet/all/betAmount/leave]`");
+                MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!ffa [all/betAmount/leave]`");
                 return;
             }
+        } else {
+            bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
         }
 
         if(bet != 0 && !su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bet)){

@@ -20,10 +20,11 @@ public class FfaGameManager {
 
     @Getter private long serverId;
     private FfaGame currentGame;
-    private CooldownManager cooldownManager = new CooldownManager(COOLDOWN);
+    private CooldownManager cooldownManager;
 
     public FfaGameManager(long serverId){
         this.serverId = serverId;
+        cooldownManager = new CooldownManager(COOLDOWN);
     }
 
     public boolean gameIsActive(){
@@ -39,10 +40,8 @@ public class FfaGameManager {
     }
 
     public void enterGame(TextChannel channel, ServerMember player, int bet){
-        if(!gameIsActive()) {
+        if(!gameIsActive())
             createNewGame(channel, player);
-            if(bet == 0) return;
-        }
 
         currentGame.enterGame(player, bet);
     }
