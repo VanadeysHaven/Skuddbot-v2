@@ -11,6 +11,7 @@
 - When you now don't specify a bet in FFA, you will bet with your `DEFAULT_BET` value.
   - To enter without a bet you can specify 0 as your bet or use the :crossed_swords: reaction.
 - Moved the buttons of Challenge and Blackjack over to the new reaction button system.
+- Made it a bit clearer that the player is standing in blackjack.
 
 ## Fixed
 - The "game was started by admin" notice being out of place in Free for All's.

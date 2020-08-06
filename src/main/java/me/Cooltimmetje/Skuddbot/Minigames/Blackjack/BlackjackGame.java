@@ -2,6 +2,9 @@ package me.Cooltimmetje.Skuddbot.Minigames.Blackjack;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Main;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
@@ -24,22 +27,22 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of blackjack.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.0
  */
 public class BlackjackGame {
 
     private enum GameState {
-        PLAYER_PLAYING, DEALER_PLAYING, GAME_ENDED
+        PLAYER_PLAYING, STAND_BUTTON_CLICKED, DEALER_PLAYING, GAME_ENDED
     }
 
     private static final Logger logger = LoggerFactory.getLogger(BlackjackGame.class);
     private static final String MESSAGE_FORMAT = Emoji.BLACK_JOKER.getUnicode() + " **BLACKJACK** | *{0}*\n\n" +
-                    "**DEALER HAND:** (hand value: {1}) *Dealer draws to 16, stands on 17.*\n" +
-                    "{2}\n\n" +
-                    "**YOUR HAND:** (hand value: {3})\n" +
-                    "{4}\n\n" +
-                    ">>> {5}";
+            "**DEALER HAND:** (hand value: {1}) *Dealer draws to 16, stands on 17.*\n" +
+            "{2}\n\n" +
+            "**YOUR HAND:** (hand value: {3})\n" +
+            "{4}\n\n" +
+            ">>> {5}";
     private static final String DEFAULT_PLAYING_INSTRUCTION = "*Press " + Emoji.H.getUnicode() + " to hit, press " + Emoji.S.getUnicode() + " to stand.*";
     private static final String DOUBLE_INSTRUCTION = "*Press " + Emoji.D.getUnicode() + " to double down.*";
     private static final ProfileManager pm = ProfileManager.getInstance();
@@ -48,10 +51,7 @@ public class BlackjackGame {
     private static final int TWENTY_ONE_BONUS = 100;
     private static final int BLACKJACK_BONUS = 150;
 
-
-    @Getter
-    private Identifier id;
-
+    @Getter private Identifier id;
     private User user;
     private Server server;
     private TextChannel channel;
@@ -64,6 +64,10 @@ public class BlackjackGame {
     private BlackjackHand playerHand;
     private String playingInstruction;
     private boolean doubledDown;
+
+    private ReactionButton hitButton;
+    private ReactionButton standButton;
+    private ReactionButton doubleButton;
 
     public BlackjackGame(Identifier id, TextChannel channel) {
         logger.info("Creating new BlackjackGame for user " + id.toString());
@@ -82,10 +86,10 @@ public class BlackjackGame {
 
         message = MessagesUtils.sendPlain(channel, formatMessage());
 
-        message.addReaction(Emoji.H.getUnicode());
-        message.addReaction(Emoji.S.getUnicode());
+        hitButton = ReactionUtils.registerButton(message, Emoji.H, this::hitButton, user.getId());
+        standButton = ReactionUtils.registerButton(message, Emoji.S, this::standButton, user.getId());
         if(playerHand.getHandValue() <= 10)
-            message.addReaction(Emoji.D.getUnicode());
+            doubleButton = ReactionUtils.registerButton(message, Emoji.D, this::doubleButton, user.getId());
     }
 
     private void setupHands() {
@@ -118,6 +122,11 @@ public class BlackjackGame {
         message.edit(formatMessage());
     }
 
+    public void hitButton(ReactionButtonClickedEvent e){
+        e.undoReaction();
+        hit();
+    }
+
     public void hit(){
         if(gameState != GameState.PLAYER_PLAYING)
             return;
@@ -125,22 +134,40 @@ public class BlackjackGame {
         playerHand.addCard(getNewCard());
         updateMessage();
 
-        if(playerHand.getHandValue() > 21)
+        if(playerHand.getHandValue() > 21) {
             endGame(false);
+            return;
+        }
 
         if(playerHand.getHandValue() == 21){
             playingInstruction = "**You got 21! Dealer playing...**";
             updateMessage();
             stand();
+            return;
         }
 
-        message.removeReactionByEmoji(user, Emoji.H.getUnicode());
-        message.removeReactionByEmoji(Emoji.D.getUnicode());
+        if(doubleButton != null) {
+            doubleButton.unregister();
+            doubleButton = null;
+            message.removeReactionByEmoji(Emoji.D.getUnicode());
+        }
+    }
+
+    public void standButton(ReactionButtonClickedEvent e){
+        gameState = GameState.STAND_BUTTON_CLICKED;
+        playingInstruction = "**Standing. Dealer playing...**";
+        updateMessage();
+        stand();
     }
 
     public void stand(){
         gameState = GameState.DEALER_PLAYING;
+        toggleButtons(false);
         dealerPlays();
+    }
+
+    public void doubleButton(ReactionButtonClickedEvent e){
+        doubleDown();
     }
 
     public void doubleDown(){
@@ -174,6 +201,7 @@ public class BlackjackGame {
     }
 
     private void wrapUpGame(){
+        unregisterButtons();
         message.removeAllReactions();
         SkuddUser su = pm.getUser(id);
         int xpReward = 0;
@@ -246,5 +274,19 @@ public class BlackjackGame {
             if (holeCard.equals(card)) return true;
 
         return dealerHand.containsCard(card) || playerHand.containsCard(card);
+    }
+
+    private void toggleButtons(boolean enabled){
+        hitButton.setEnabled(enabled);
+        standButton.setEnabled(enabled);
+        if(doubleButton != null)
+            doubleButton.setEnabled(enabled);
+    }
+
+    private void unregisterButtons(){
+        hitButton.unregister();
+        standButton.unregister();
+        if(doubleButton != null)
+            doubleButton.unregister();
     }
 }
