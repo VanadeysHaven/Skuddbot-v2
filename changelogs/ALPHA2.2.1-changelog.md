@@ -15,6 +15,7 @@
 
 ## Fixed
 - The "game was started by admin" notice being out of place in Free for All's.
+- Bets not being refunded and cooldowns being started in DON when the game has been cancelled.
 
 ## Updated
 Javacord version: `3.0.5` -> `3.0.6`

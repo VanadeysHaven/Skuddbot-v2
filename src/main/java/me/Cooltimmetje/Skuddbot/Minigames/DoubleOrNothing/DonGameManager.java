@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Class for managing Double or Nothing games on a server level.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.1.1
  */
 public class DonGameManager {
@@ -52,9 +52,15 @@ public class DonGameManager {
         return server;
     }
 
+
     public void endGame(DonGame game){
+        endGame(game, true);
+    }
+
+    public void endGame(DonGame game, boolean startCooldown){
         games.remove(game);
-        cooldownManager.startCooldown(game.getUser().getId());
+        if(startCooldown)
+            cooldownManager.startCooldown(game.getUser().getId());
     }
 
 }

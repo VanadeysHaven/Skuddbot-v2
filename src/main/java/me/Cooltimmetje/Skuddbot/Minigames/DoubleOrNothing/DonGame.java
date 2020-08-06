@@ -120,11 +120,12 @@ public class DonGame {
 
         if(moves == 0){
             sendEndedFormat("*Game cancelled, amount is refunded.*");
+            pm.getUser(server.getId(), user.getId()).getCurrencies().incrementInt(Currency.SKUDDBUX, bet);
+            endGame(false);
         } else {
             sendEndedFormat(award());
+            endGame();
         }
-
-        endGame();
     }
 
     private String award(){
@@ -147,9 +148,13 @@ public class DonGame {
     }
 
     private void endGame(){
+        endGame(true);
+    }
+
+    private void endGame(boolean startCooldown){
         unregisterButtons();
         message.removeAllReactions();
-        manager.endGame(this);
+        manager.endGame(this, startCooldown);
     }
 
     private void setButtonsEnabled(boolean enabled) {
