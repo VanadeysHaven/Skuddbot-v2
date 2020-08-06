@@ -2,6 +2,9 @@ package me.Cooltimmetje.Skuddbot.Minigames.Challenge;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
@@ -23,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of challenge between 2 users.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.1
  */
 public class ChallengeGame {
@@ -53,20 +56,25 @@ public class ChallengeGame {
     TextChannel channel;
     private ArrayList<Message> messages;
     private String log;
+    private ReactionButton button;
 
     public ChallengeGame(User challengerOne, User challengerTwo, Message message, Server server){
         this.server = server;
         this.challengerOne = challengerOne;
         this.challengerTwo = challengerTwo;
 
-        if(challengerTwo == null){
+        if(isOpen()){
             initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(OPEN_FORMAT, challengerOne.getDisplayName(server), PLAYING_INSTRUCTION));
         } else {
             initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), challengerOne.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION));
         }
 
-        initialMessage.addReaction(Emoji.DAGGER.getUnicode());
-
+        if(isOpen()) {
+            button = ReactionUtils.registerButton(initialMessage, Emoji.DAGGER, this::reactionClicked);
+        } else {
+            assert challengerTwo != null;
+            button = ReactionUtils.registerButton(initialMessage, Emoji.DAGGER, this::reactionClicked, challengerTwo.getId());
+        }
         messages = new ArrayList<>();
         messages.add(message);
         channel = message.getChannel();
@@ -78,12 +86,23 @@ public class ChallengeGame {
         this(challengerOne, null, message, server);
     }
 
+    public void reactionClicked(ReactionButtonClickedEvent event){
+        if(event.getUser().getId() == challengerOne.getId()) {
+            event.undoReaction();
+            return;
+        }
+
+        if(isOpen()) setChallengerTwo(event.getUser());
+        fight();
+    }
+
+
     public void fight(){
         if(isOpen()) throw new IllegalStateException("Challenge is still open, must add user before fight can be started.");
+        button.unregister();
         ChallengeCommand.startCooldown(this);
         TextChannel channel = initialMessage.getChannel();
         deleteMessages();
-        
 
         log += "**" + challengerOne.getDisplayName(server) + "** and **" + challengerTwo.getDisplayName(server) + "** go head to head in " + sm.getServer(server.getId()).getSettings().getString(ServerSetting.ARENA_NAME)
         + "! Who will win? *3*... *2*... *1*... **FIGHT!**";

@@ -7,7 +7,6 @@ import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
-import org.javacord.api.event.message.reaction.ReactionAddEvent;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,7 @@ import java.util.ArrayList;
  * Command for controlling challenges.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.1
  */
 public class ChallengeCommand extends Command {
@@ -87,11 +86,4 @@ public class ChallengeCommand extends Command {
         getManager(game.getServerId()).startCooldown(game);
     }
 
-    public static void onReaction(ReactionAddEvent event){
-        if(event.getUser().isBot()) return;
-        Server server = event.getServer().orElse(null); assert server != null;
-        Message message = event.getMessage().orElse(null); assert message != null;
-        getManager(server.getId()).processReaction(message, event.getUser());
-
-    }
 }

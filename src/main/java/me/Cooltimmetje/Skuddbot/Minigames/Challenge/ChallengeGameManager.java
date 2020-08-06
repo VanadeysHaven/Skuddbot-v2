@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Manager for managing challenge games on a server level.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
+ * @version ALPHA-2.2.1
  * @since ALPHA-2.1
  */
 public class ChallengeGameManager {
@@ -56,15 +56,6 @@ public class ChallengeGameManager {
 
     public void process(User user1, Message message){
         addGame(user1, null, message);
-    }
-
-    public void processReaction(Message message, User user2){
-        for(ChallengeGame game : games){
-            if(game.isMatch(message, user2)){
-                if(game.isOpen()) game.setChallengerTwo(user2);
-                game.fight();
-            }
-        }
     }
 
     public void addGame(User user1, User user2, Message message){

@@ -90,8 +90,6 @@ public class Skuddbot {
         logger.info("Registering ReactionAddListener...");
         api.addReactionAddListener(ReactionUtils::run);
         api.addReactionAddListener(ReactionUtils::runClicked);
-        api.addReactionAddListener(BlackjackCommand::onReaction);
-        api.addReactionAddListener(ChallengeCommand::onReaction);
         logger.info("Registering ReactionRemoveListener...");
         api.addReactionRemoveListener(ReactionUtils::runRemoved);
         logger.info("Registering ServerMemberJoinListener...");
