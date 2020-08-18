@@ -4,8 +4,8 @@ package me.Cooltimmetje.Skuddbot.Utilities.TableUtilities;
  * This class is used to store and easily recall table drawing characters.
  *
  * @author Tim (Cooltimmetje)
- * @version v0.4.62-ALPHA
- * @since v0.4.62-ALPHA
+ * @version 1.4.62
+ * @since 1.4.62
  */
 public enum TableDividers {
 

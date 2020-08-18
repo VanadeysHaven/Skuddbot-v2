@@ -17,8 +17,8 @@ import java.util.concurrent.ExecutionException;
  * Command used to purge messages.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.2.1
+ * @version 2.2.1
+ * @since 2.2.1
  */
 public class PurgeCommand extends Command {
 

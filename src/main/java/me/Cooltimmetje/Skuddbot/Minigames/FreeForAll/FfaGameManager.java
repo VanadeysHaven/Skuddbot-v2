@@ -11,8 +11,8 @@ import java.util.Iterator;
  * Game manager, for managing data that needs to persist between games.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.2
+ * @version 2.2.1
+ * @since 2.2
  */
 public class FfaGameManager {
 

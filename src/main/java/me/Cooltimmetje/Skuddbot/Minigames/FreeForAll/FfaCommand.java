@@ -19,8 +19,8 @@ import java.util.ArrayList;
  * The command for Free for All
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.2
+ * @version 2.2.1
+ * @since 2.2
  */
 public class FfaCommand extends Command {
 

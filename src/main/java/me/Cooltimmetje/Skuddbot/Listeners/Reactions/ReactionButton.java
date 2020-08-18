@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
  * Information about a reaction button.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.1.1
+ * @version 2.2.1
+ * @since 2.1.1
  */
 public class ReactionButton {
 

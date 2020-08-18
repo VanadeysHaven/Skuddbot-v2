@@ -48,8 +48,8 @@ import java.util.Iterator;
  * This class represents the bot, and is used to register commands and listeners.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.2.1
- * @version ALPHA-2.0
+ * @since 2.2.1
+ * @version 2.0
  */
 public class Skuddbot {
 

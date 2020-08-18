@@ -17,8 +17,8 @@ import java.util.Date;
  * Managing the playing status and avatar.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.0
+ * @since 2.0
  */
 public class AppearanceManager {
 

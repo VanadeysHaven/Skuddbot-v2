@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
  * This class represents a user and their data and statistics.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
- * @since ALPHA-2.0
+ * @version 2.2
+ * @since 2.0
  */
 public class SkuddUser {
 

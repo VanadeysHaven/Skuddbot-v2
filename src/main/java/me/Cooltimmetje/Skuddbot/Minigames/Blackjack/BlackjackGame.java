@@ -27,8 +27,8 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of blackjack.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class BlackjackGame {
 

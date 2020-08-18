@@ -7,8 +7,8 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
  * Represents a player in FFA
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.2
+ * @version 2.2.1
+ * @since 2.2
  */
 public class FfaPlayer {
 

@@ -14,8 +14,8 @@ import java.util.ArrayList;
  * Constants for user stats.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.2
- * @version ALPHA-2.0
+ * @since 2.2
+ * @version 2.0
  */
 @Getter
 public enum Stat {

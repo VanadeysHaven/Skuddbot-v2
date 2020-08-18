@@ -26,8 +26,8 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of challenge between 2 users.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.1
+ * @version 2.2.1
+ * @since 2.1
  */
 public class ChallengeGame {
 

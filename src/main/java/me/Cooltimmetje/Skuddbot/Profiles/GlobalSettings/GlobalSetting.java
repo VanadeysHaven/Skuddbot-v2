@@ -7,8 +7,8 @@ import me.Cooltimmetje.Skuddbot.Enums.ValueType;
  * Settings that apply to the bot globally.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.0
+ * @since 2.0
  */
 @Getter
 public enum GlobalSetting {
@@ -19,7 +19,7 @@ public enum GlobalSetting {
     BUILD_TIME     ("build_time",      "Built at",        ValueType.STRING,  "02/02/2020 20:02 (GMT)",     true ),
     BRANCH         ("branch",          "Branch",          ValueType.STRING,  "master",                     false),
     CURRENT_AVATAR ("current_avatar",  "Current avatar",  ValueType.STRING,  "DEFAULT",                    false),
-    VERSION        ("version",         "Version",         ValueType.STRING,  "ALPHA-2.0",                  false),
+    VERSION        ("version",         "Version",         ValueType.STRING,  "2.0",                        false),
     SALUTE_COOLDOWN("salute_cooldown", "Salute Cooldown", ValueType.BOOLEAN, "false",                      false);
 
     private String dbReference;

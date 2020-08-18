@@ -9,8 +9,8 @@ import org.javacord.api.entity.user.User;
  * Event information about the reaction button removed.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.2.1
+ * @version 2.2.1
+ * @since 2.2.1
  */
 public class ReactionButtonRemovedEvent extends ReactionButtonEvent {
 

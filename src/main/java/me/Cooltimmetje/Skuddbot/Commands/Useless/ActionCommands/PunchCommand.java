@@ -4,8 +4,8 @@ package me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands;
  * Punch punch punch!!!
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.0
+ * @since 2.0
  */
 public class PunchCommand extends ActionCommand {
 

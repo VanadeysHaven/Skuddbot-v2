@@ -14,8 +14,8 @@ import java.util.ArrayList;
  * Settings for users.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.1.1
- * @version ALPHA-2.0
+ * @since 2.1.1
+ * @version 2.0
  */
 @Getter
 public enum UserSetting {

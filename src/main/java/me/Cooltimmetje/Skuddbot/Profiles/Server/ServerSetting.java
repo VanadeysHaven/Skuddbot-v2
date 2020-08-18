@@ -13,8 +13,8 @@ import java.util.ArrayList;
  * Settings for servers.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 @Getter
 public enum ServerSetting {

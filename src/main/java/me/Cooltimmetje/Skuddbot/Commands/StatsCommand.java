@@ -23,8 +23,8 @@ import java.util.concurrent.ExecutionException;
  * Used to view and edit stats.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
- * @since ALPHA-2.0
+ * @version 2.2
+ * @since 2.0
  */
 public class StatsCommand extends Command {
 

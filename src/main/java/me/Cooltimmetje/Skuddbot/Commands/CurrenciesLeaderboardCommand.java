@@ -21,8 +21,8 @@ import java.util.LinkedHashMap;
  * Command for currency leaderboards.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.1.1
+ * @version 2.1.1
+ * @since 2.1.1
  */
 public class CurrenciesLeaderboardCommand extends Command {
 

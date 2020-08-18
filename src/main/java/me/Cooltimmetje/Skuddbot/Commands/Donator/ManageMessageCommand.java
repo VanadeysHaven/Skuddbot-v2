@@ -11,8 +11,8 @@ import org.javacord.api.entity.message.Message;
  * Commands for donators so they can add messages to the donator pool.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.0
+ * @since 2.0
  */
 public class ManageMessageCommand extends Command {
 

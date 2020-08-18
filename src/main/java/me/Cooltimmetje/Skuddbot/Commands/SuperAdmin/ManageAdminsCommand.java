@@ -21,8 +21,8 @@ import java.sql.SQLException;
  * Command used to add admins.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.0
+ * @since 2.0
  */
 public class ManageAdminsCommand extends Command {
 

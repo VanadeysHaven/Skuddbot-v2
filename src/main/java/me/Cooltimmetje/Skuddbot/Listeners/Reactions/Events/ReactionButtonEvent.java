@@ -13,8 +13,8 @@ import org.javacord.api.entity.user.User;
  * Base abstract event class for reaction button events.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.2.1
+ * @version 2.2.1
+ * @since 2.2.1
  */
 public abstract class ReactionButtonEvent {
 

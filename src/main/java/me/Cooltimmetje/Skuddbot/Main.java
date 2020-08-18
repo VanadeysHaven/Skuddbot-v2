@@ -19,8 +19,8 @@ import java.util.Timer;
  * Main class, this is where the bot starts up from.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
- * @version ALPHA-2.1
+ * @since 2.0
+ * @versio 2.1
  */
 public class Main {
 

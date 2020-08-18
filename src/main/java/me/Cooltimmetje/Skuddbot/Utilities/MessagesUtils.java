@@ -12,8 +12,8 @@ import java.util.ArrayList;
  * Utilities to do with Messages.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class MessagesUtils {
 

@@ -6,8 +6,8 @@ import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
  * Command without a prefix
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.0
+ * @since 2.0
  */
 public abstract class NoPrefixCommand extends Command {
 

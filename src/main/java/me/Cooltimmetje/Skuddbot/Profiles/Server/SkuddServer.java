@@ -23,8 +23,8 @@ import java.util.LinkedHashMap;
  * This class represents a guild, and it's settings and user profiles.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.1.1
- * @version ALPHA-2.0
+ * @since 2.1.1
+ * @version 2.0
  */
 public class SkuddServer {
 

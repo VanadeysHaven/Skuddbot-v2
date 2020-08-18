@@ -8,8 +8,8 @@ import java.util.Iterator;
  * This class is used for more automated generation of arrays to use in the TableDrawer.
  *
  * @author Tim (Cooltimmetje)
- * @version v0.4.62-ALPHA
- * @since v0.4.62-ALPHA
+ * @version 1.4.62
+ * @since 1.4.62
  */
 public class TableArrayGenerator {
 

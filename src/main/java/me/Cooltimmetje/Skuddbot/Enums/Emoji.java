@@ -6,8 +6,8 @@ import lombok.Getter;
  * Emoji's for easy recalling throughout the code.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2.1
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 @Getter
 public enum Emoji {

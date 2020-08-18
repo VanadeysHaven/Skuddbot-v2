@@ -11,8 +11,8 @@ import org.javacord.api.entity.user.User;
  * Represents a member of a server.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
- * @since ALPHA-2.2
+ * @version 2.2
+ * @since 2.2
  */
 public class ServerMember {
 

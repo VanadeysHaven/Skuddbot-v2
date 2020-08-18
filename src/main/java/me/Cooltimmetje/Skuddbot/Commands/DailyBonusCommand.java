@@ -21,8 +21,8 @@ import java.util.Date;
  * Command used to claim daily bonuses.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.1.1
+ * @version 2.1.1
+ * @since 2.1.1
  */
 public class DailyBonusCommand extends Command {
 

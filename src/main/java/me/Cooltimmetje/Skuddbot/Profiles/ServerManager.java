@@ -17,8 +17,8 @@ import java.util.Iterator;
  * This class is used for managing server profiles.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.0
+ * @version 2.1.1
+ * @since 2.0
  */
 public class ServerManager {
 

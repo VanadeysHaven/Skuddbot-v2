@@ -13,8 +13,8 @@ import java.util.HashMap;
  * This holds all user settings.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.1.1
- * @version ALPHA-2.0
+ * @since 2.1.1
+ * @version 2.0
  */
 public class UserSettingsContainer {
 

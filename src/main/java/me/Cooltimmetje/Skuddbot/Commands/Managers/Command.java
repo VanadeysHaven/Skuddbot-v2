@@ -13,8 +13,8 @@ import java.text.MessageFormat;
  * This class is a command, can be extended to other classes to make for a flexible command system.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.1.1
- * @version ALPHA-2.0
+ * @since 2.1.1
+ * @version 2.0
  */
 public abstract class Command {
 

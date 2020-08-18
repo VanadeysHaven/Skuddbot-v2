@@ -18,8 +18,8 @@ import java.util.TimerTask;
  * Timer that runs every 10 minutes.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
- * @since ALPHA-2.0
+ * @version 2.2
+ * @since 2.0
  */
 public class TenMinutes extends TimerTask {
 
