@@ -1,7 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands;
 
-import javafx.util.Pair;
-
 /**
  * Punch punch punch!!!
  *
@@ -18,15 +16,15 @@ public class PunchCommand extends ActionCommand {
     }
 
     @Override
-    protected Pair<String, Boolean> getActionString(long userId) {
+    protected ActionProperties getActionProperties(long userId) {
         if(userId == 148376320726794240L){
-            return new Pair<>("*{0} lights {1} on fire* :fire:", false);
+            return new ActionProperties("*{0} lights {1} on fire* :fire:", false);
         } else if (userId == 131382094457733120L) {
-            return new Pair<>("*{0} unleashes his lightning punch on {1}* :zap:", false);
+            return new ActionProperties("*{0} unleashes his lightning punch on {1}* :zap:", false);
         } else if (userId == 76593288865394688L) {
-            return new Pair<>("*{0} banhammers {1}* :hammer:", false);
+            return new ActionProperties("*{0} banhammers {1}* :hammer:", false);
         } else {
-            return new Pair<>(DEFAULT_ACTION_STRING, false);
+            return new ActionProperties(DEFAULT_ACTION_STRING, false);
         }
     }
 

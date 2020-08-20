@@ -1,7 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands;
 
-import javafx.util.Pair;
-
 /**
  * Hug hug hug!!!
  *
@@ -18,13 +16,13 @@ public class HugCommand extends ActionCommand {
     }
 
     @Override
-    protected Pair<String, Boolean> getActionString(long userId) {
+    protected ActionProperties getActionProperties(long userId) {
         if(userId == 148376320726794240L){
-            return new Pair<>("FUCK YOU {1}", true);
+            return new ActionProperties("FUCK YOU {1}", true);
         } else if (userId == 76593288865394688L) {
-            return new Pair<>("Task failed successfully.", false);
+            return new ActionProperties("Task failed successfully.", false);
         } else {
-            return new Pair<>(DEFAULT_ACTION_STRING, false);
+            return new ActionProperties(DEFAULT_ACTION_STRING, false);
         }
     }
 

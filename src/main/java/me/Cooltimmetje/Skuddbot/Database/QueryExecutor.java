@@ -4,6 +4,7 @@ import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,7 @@ public class QueryExecutor {
         id = MiscUtils.randomString(10); //ID is only used for differentiating queries in the logs, it's fine if there are duplicates.
         logger.info("Making new query of type " + query + " with id " + id);
         c = HikariManager.getConnection();
-        ps = c.prepareStatement(query.getQuery());
+        ps = c.prepareStatement(query.getQuery(), ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
         usedPositions = new ArrayList<>();
     }
 

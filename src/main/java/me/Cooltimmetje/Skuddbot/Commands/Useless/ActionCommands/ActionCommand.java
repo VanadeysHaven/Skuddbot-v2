@@ -1,6 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands;
 
-import javafx.util.Pair;
+import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Main;
@@ -43,9 +43,9 @@ public abstract class ActionCommand extends Command {
         SkuddUser su = pm.getUser(server.getId(), selectedUser.getId());
         boolean allowPing = su.getSettings().getBoolean(UserSetting.MENTION_ME);
 
-        Pair<String, Boolean> pair = getActionString(user.getId());
-        String actionString = pair.getKey();
-        boolean shouldCapitalize = pair.getValue();
+        ActionProperties ap = getActionProperties(user.getId());
+        String actionString = ap.getActionString();
+        boolean shouldCapitalize = ap.shouldCapitalize();
         actionString = MessageFormat.format(actionString, user.getDisplayName(server), allowPing ? selectedUser.getMentionTag() : selectedUser.getDisplayName(server));
 
         if(shouldCapitalize)
@@ -64,6 +64,25 @@ public abstract class ActionCommand extends Command {
         return Main.getSkuddbot().getApi().getUserById(id).join();
     }
 
-    protected abstract Pair<String, Boolean> getActionString(long userId);
+    protected abstract ActionProperties getActionProperties(long userId);
+
+    public class ActionProperties {
+
+        String actionString;
+        boolean shouldCapitalize;
+
+        public ActionProperties(String actionString, boolean shouldCapitalize){
+            this.actionString = actionString;
+            this.shouldCapitalize = shouldCapitalize;
+        }
+
+        public String getActionString(){
+            return actionString;
+        }
+
+        public boolean shouldCapitalize(){
+            return shouldCapitalize;
+        }
+    }
 
 }
