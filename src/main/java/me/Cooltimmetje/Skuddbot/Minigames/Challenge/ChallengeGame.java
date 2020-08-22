@@ -44,11 +44,12 @@ public class ChallengeGame {
             ">>> {1}";
     private static final String IN_PROGRESS_FORMAT = HEADER + "\n\n" +
             "{1}";
-    private static final String PLAYING_INSTRUCTION = "Click the " + Emoji.DAGGER.getUnicode() + " reaction to accept";
+    private static final String PLAYING_INSTRUCTION = "Click the " + Emoji.DAGGER.getUnicode() + " reaction to accept, click the " + Emoji.X.getUnicode() + " reaction to decline/cancel.";
     private static final int WIN_REWARD = 100;
     private static final int STREAK_BONUS = 50;
 
     private Server server;
+    private ChallengeGameManager manager;
     @Getter private User challengerOne;
     @Getter private User challengerTwo;
     @Getter private Message initialMessage;
@@ -56,10 +57,12 @@ public class ChallengeGame {
     TextChannel channel;
     private ArrayList<Message> messages;
     private String log;
-    private ReactionButton button;
+    private ReactionButton acceptButton;
+    private ReactionButton delcineButton;
 
-    public ChallengeGame(User challengerOne, User challengerTwo, Message message, Server server){
+    public ChallengeGame(User challengerOne, User challengerTwo, Message message, Server server, ChallengeGameManager manager){
         this.server = server;
+        this.manager = manager;
         this.challengerOne = challengerOne;
         this.challengerTwo = challengerTwo;
 
@@ -70,23 +73,25 @@ public class ChallengeGame {
         }
 
         if(isOpen()) {
-            button = ReactionUtils.registerButton(initialMessage, Emoji.DAGGER, this::reactionClicked);
+            acceptButton = ReactionUtils.registerButton(initialMessage, Emoji.DAGGER, this::acceptReactionClicked);
+            delcineButton = ReactionUtils.registerButton(initialMessage, Emoji.X, this::cancelReactionClicked, challengerOne.getId());
         } else {
             assert challengerTwo != null;
-            button = ReactionUtils.registerButton(initialMessage, Emoji.DAGGER, this::reactionClicked, challengerTwo.getId());
+            acceptButton = ReactionUtils.registerButton(initialMessage, Emoji.DAGGER, this::acceptReactionClicked, challengerTwo.getId());
+            delcineButton = ReactionUtils.registerButton(initialMessage, Emoji.X, this::cancelReactionClicked, challengerOne.getId(), challengerTwo.getId());
         }
         messages = new ArrayList<>();
-        messages.add(message);
+        addMessage(message);
         channel = message.getChannel();
         messages.add(initialMessage);
         log = "";
     }
 
-    public ChallengeGame(User challengerOne, Message message, Server server){
-        this(challengerOne, null, message, server);
+    public ChallengeGame(User challengerOne, Message message, Server server, ChallengeGameManager manager){
+        this(challengerOne, null, message, server, manager);
     }
 
-    public void reactionClicked(ReactionButtonClickedEvent event){
+    public void acceptReactionClicked(ReactionButtonClickedEvent event){
         if(event.getUser().getId() == challengerOne.getId()) {
             event.undoReaction();
             return;
@@ -96,16 +101,23 @@ public class ChallengeGame {
         fight();
     }
 
+    public void cancelReactionClicked(ReactionButtonClickedEvent event) {
+        if(event.getUser().getId() == challengerOne.getId()){
+            cancel();
+        } else {
+            decline();
+        }
+    }
 
     public void fight(){
         if(isOpen()) throw new IllegalStateException("Challenge is still open, must add user before fight can be started.");
-        button.unregister();
-        ChallengeCommand.startCooldown(this);
+        unregisterButtons();
+        manager.startCooldown(this);
         TextChannel channel = initialMessage.getChannel();
         deleteMessages();
 
         log += "**" + challengerOne.getDisplayName(server) + "** and **" + challengerTwo.getDisplayName(server) + "** go head to head in " + sm.getServer(server.getId()).getSettings().getString(ServerSetting.ARENA_NAME)
-        + "! Who will win? *3*... *2*... *1*... **FIGHT!**";
+                + "! Who will win? *3*... *2*... *1*... **FIGHT!**";
 
         sendMessage(channel);
         channel.type();
@@ -119,11 +131,32 @@ public class ChallengeGame {
             log += "\n" + award(winner, loser);
 
             sendMessage(channel);
-            ChallengeCommand.cleanUp(this);
+            manager.removeGame(this);
         }, 5, TimeUnit.SECONDS);
     }
 
-    public void deleteMessages() {
+    public void decline(){
+        if(isOpen()) throw new IllegalStateException("Open challenges cannot be declined.");
+        deleteMessages(false);
+        unregisterButtons();
+        initialMessage.edit(MessageFormat.format(HEADER, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server)) + "\n\n*" +
+                challengerTwo.getNickname(server) + " has declined the fight.*");
+    }
+
+    public void cancel(){
+        deleteMessages();
+        unregisterButtons();
+        manager.removeGame(this);
+    }
+
+    public void deleteMessages(){
+        deleteMessages(true);
+    }
+
+    public void deleteMessages(boolean deleteInitial) {
+        if(!deleteInitial)
+            messages.remove(initialMessage);
+
         channel.deleteMessages(messages);
         messages.clear();
     }
@@ -180,13 +213,6 @@ public class ChallengeGame {
         return (user2.getId() == challengerOne.getId()) && (user1.getId() == challengerTwo.getId());
     }
 
-    public boolean isMatch(Message message, User user2){
-        if(user2.getId() == challengerOne.getId()) return false;
-        boolean messageMatches = message.getId() == initialMessage.getId();
-        if(messageMatches && isOpen()) return true;
-        return messageMatches && user2.getId() == challengerTwo.getId();
-    }
-
     public boolean isOpen(){
         return challengerTwo == null;
     }
@@ -197,5 +223,10 @@ public class ChallengeGame {
 
     public long getServerId(){
         return server.getId();
+    }
+
+    private void unregisterButtons(){
+        acceptButton.unregister();
+        delcineButton.unregister();
     }
 }
