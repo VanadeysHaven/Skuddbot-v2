@@ -59,7 +59,7 @@ public class ChallengeGameManager {
     }
 
     public void addGame(User user1, User user2, Message message){
-        ChallengeGame game = new ChallengeGame(user1, user2, message, getServer());
+        ChallengeGame game = new ChallengeGame(user1, user2, message, getServer(), this);
         games.add(game);
     }
 
@@ -69,15 +69,13 @@ public class ChallengeGameManager {
     }
 
     public void cancelGame(User user1){
-        ChallengeGame toRemove = null;
+        ChallengeGame toCancel = null;
         for(ChallengeGame game : games)
             if(game.getChallengerOne().getId() == user1.getId())
-                toRemove = game;
+                toCancel = game;
 
-        if(toRemove == null)
-            return;
-
-        removeGame(toRemove);
+        if(toCancel != null)
+            toCancel.cancel();
     }
 
     public boolean hasOutstandingGame(User user1){

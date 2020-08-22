@@ -78,12 +78,4 @@ public class ChallengeCommand extends Command {
         return manager;
     }
 
-    public static void cleanUp(ChallengeGame game){
-        getManager(game.getServerId()).removeGame(game);
-    }
-
-    public static void startCooldown(ChallengeGame game) {
-        getManager(game.getServerId()).startCooldown(game);
-    }
-
 }
