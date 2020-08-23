@@ -3,7 +3,11 @@ package me.Cooltimmetje.Skuddbot.Minigames.Challenge;
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
@@ -51,22 +55,40 @@ public class ChallengeCommand extends Command {
                 return;
             }
 
+            SkuddUser su = pm.getUser(server.getId(), author.getId());
+            int placedBet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
             if(args.length > 2){
                 if(args[2].equalsIgnoreCase("decline")){
                     manager.processDecline(author, message.getMentionedUsers().get(0), message);
                     return;
+                } else if(args[2].equalsIgnoreCase("all")) {
+                    placedBet = su.getCurrencies().getInt(Currency.SKUDDBUX);
+                } else if(MiscUtils.isInt(args[2])) {
+                    placedBet = Integer.parseInt(args[2]);
                 }
             }
-            manager.processAccept(author, message.getMentionedUsers().get(0), message);
+
+            if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, placedBet)){
+                MessagesUtils.addReaction(message, Emoji.X, "You do not have enough Skuddbux to make this bet: " + placedBet);
+                return;
+            }
+
+            manager.processAccept(author, message.getMentionedUsers().get(0), message, placedBet);
         } else if(args[1].equalsIgnoreCase("open")) {
-            if(manager.hasOutstandingGame(author))
-                MessagesUtils.addReaction(message, Emoji.X, "You have a outstanding challenge, you can cancel it with `!challenge cancel`");
-            else
-                manager.processAccept(author, message);
+            SkuddUser su = pm.getUser(server.getId(), author.getId());
+            int placedBet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
+            if(args.length > 2) {
+                if (args[2].equalsIgnoreCase("all"))
+                    placedBet = su.getCurrencies().getInt(Currency.SKUDDBUX);
+                else if (MiscUtils.isInt(args[2]))
+                    placedBet = Integer.parseInt(args[2]);
+            }
+
+            manager.processAccept(author, message, placedBet);
         } else if(args[1].equalsIgnoreCase("cancel")) {
             if(manager.hasOutstandingGame(author)) {
                 manager.cancelGame(author);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Challenge cancelled.");
+                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Challenge cancelled, bet refunded.");
             } else
                 MessagesUtils.addReaction(message, Emoji.X, "You have no outstanding challenge. Start one with `!challenge <mention/open> [bet]`");
         } else {

@@ -3,6 +3,9 @@ package me.Cooltimmetje.Skuddbot.Minigames.Challenge;
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 public class ChallengeGameManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ChallengeGameManager.class);
+    private static final ProfileManager pm = ProfileManager.getInstance();
 
     private static final int COOLDOWN = 60;
 
@@ -38,9 +42,15 @@ public class ChallengeGameManager {
         cooldownManager = new CooldownManager(COOLDOWN);
     }
 
-    public void processAccept(User user1, User user2, Message message){
+    public void processAccept(User user1, User user2, Message message, int placedBet){
         for(ChallengeGame game : games)
             if(game.isMatch(user1, user2)) {
+                SkuddUser su = pm.getUser(serverId, user1.getId());
+                if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, game.getChallengerOne().getBet())){
+                    MessagesUtils.addReaction(message, Emoji.X, "You do not have enough Skuddbux to make this bet: " + game.getChallengerOne().getBet());
+                    return;
+                }
+
                 if(game.isOpen()) game.setChallengerTwo(new ChallengePlayer(serverId, user1.getId()));
                 game.addMessage(message);
                 game.fight();
@@ -49,13 +59,14 @@ public class ChallengeGameManager {
 
         if(hasOutstandingGame(user1)){
             MessagesUtils.addReaction(message, Emoji.X, "You have an outstanding challenge, you can cancel it with `!challenge cancel`.");
-        } else {
-            addGame(user1, user2, message);
+            return;
         }
+
+        addGame(user1, user2, message, placedBet);
     }
 
-    public void processAccept(User user1, Message message){
-        addGame(user1, null, message);
+    public void processAccept(User user1, Message message, int placedBet){
+        addGame(user1, null, message, placedBet);
     }
 
     public void processDecline(User user1, User user2, Message message) {
@@ -74,11 +85,22 @@ public class ChallengeGameManager {
         MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Challenge declined.");
     }
 
-    public void addGame(User user1, User user2, Message message){
-        ChallengePlayer challengerOne = new ChallengePlayer(serverId, user1.getId());
+    public void addGame(User user1, User user2, Message message, int placedBet){
+        SkuddUser su1 = pm.getUser(serverId, user1.getId());
+
+        if(user2 != null) {
+            SkuddUser su2 = pm.getUser(serverId, user2.getId());
+            int user2bal = su2.getCurrencies().getInt(Currency.SKUDDBUX);
+            placedBet = Math.min(placedBet, user2bal);
+        }
+
+        ChallengePlayer challengerOne = new ChallengePlayer(serverId, user1.getId(), placedBet);
+        su1.getCurrencies().incrementInt(Currency.SKUDDBUX, placedBet * -1);
+
         ChallengePlayer challengerTwo = null;
         if(user2 != null)
             challengerTwo = new ChallengePlayer(serverId, user2.getId());
+
         ChallengeGame game = new ChallengeGame(challengerOne, challengerTwo, message, getServer(), this);
         games.add(game);
     }

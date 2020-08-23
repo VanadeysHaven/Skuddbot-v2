@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Constants for user stats.
  *
  * @author Tim (Cooltimmetje)
- * @since 2.2
+ * @since 2.2.1
  * @version 2.0
  */
 @Getter
@@ -25,6 +25,8 @@ public enum Stat {
     CHALLENGE_LOSSES            ("chlng_losses",            ValueType.INTEGER, "Losses",                     "Losses",     "0",  Category.CHALLENGE,         true,  true,  true ),
     CHALLENGE_WINSTREAK         ("chlng_winstreak",         ValueType.INTEGER, "Winstreak",                  "wins",       "0",  Category.CHALLENGE,         true,  true,  true ),
     CHALLENGE_LONGEST_WINSTREAK ("chlng_longest_winstreak", ValueType.INTEGER, "Longest winstreak",          "wins",       "0",  Category.CHALLENGE,         true,  true,  true ),
+    CHALLENGE_BETS_WON          ("chlng_bets_won",          ValueType.INTEGER, "Bets won",                   "bets",       "0",  Category.CHALLENGE,         true,  true,  true ),
+    CHALLENGE_BETS_LOST         ("chlng_bets_lost",         ValueType.INTEGER, "Bets lost",                  "bets",       "0",  Category.CHALLENGE,         true,  true,  true ),
     FFA_WINS                    ("ffa_wins",                ValueType.INTEGER, "Wins",                       "wins",       "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
     FFA_LOSSES                  ("ffa_losses",              ValueType.INTEGER, "Losses",                     "losses",     "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
     FFA_HIGHEST_WIN             ("ffa_highest_win",         ValueType.INTEGER, "Most entrants win",          "entrants",   "0",  Category.FREE_FOR_ALL,      true,  true,  true ),

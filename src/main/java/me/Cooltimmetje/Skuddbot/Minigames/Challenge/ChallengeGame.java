@@ -8,6 +8,9 @@ import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.CurrenciesContainer;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.StatsContainer;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
@@ -16,7 +19,6 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
-import org.javacord.api.util.auth.Challenge;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -39,19 +41,32 @@ public class ChallengeGame {
     private static final String HEADER = Emoji.DAGGER.getUnicode() + " **CHALLENGE** | ";
     private static final String OPEN_HEADER = HEADER + "*{0}*";
     private static final String NORMAL_HEADER = HEADER + "*{0} vs {1}*";
-    private static final String NORMAL_FORMAT = NORMAL_HEADER + "\n\n" +
+
+    private static final String NORMAL_FORMAT_BET = NORMAL_HEADER + "\n\n" +
+            "**{0}** has challenged **{1}** to a fight.\n" +
+            "**{0}** has placed a bet of **{2}** Skuddbux!\n\n" +
+            ">>> *Cost to play: {2} Skuddbux*{3}\n{4}";
+    private static final String NORMAL_FORMAT_NO_BET = NORMAL_HEADER + "\n\n" +
             "**{0}** has challenged **{1}** to a fight.\n\n" +
             ">>> {2}";
-    private static final String OPEN_FORMAT = OPEN_HEADER + "\n\n" +
+
+    private static final String OPEN_FORMAT_BET = OPEN_HEADER + "\n\n" +
+            "**{0}** has put down an open fight! Anyone can accept it!\n" +
+            "**{0}** has placed a bet of **{1}** Skuddbux.\n\n" +
+            ">>> *Cost to play: {1} Skuddbux*\n{2}";
+    private static final String OPEN_FORMAT_NO_BET = OPEN_HEADER + "\n\n" +
             "**{0}** has put down an open fight! Anyone can accept it!\n\n" +
             ">>> {1}";
+
     private static final String IN_PROGRESS_FORMAT = NORMAL_HEADER + "\n\n" +
             "{2}";
     private static final String PLAYING_INSTRUCTION = "Click the " + Emoji.DAGGER.getUnicode() + " reaction to accept, ";
     private static final String ADDITIONAL_CLOSED_PLAYING_INSTRUCTION = "click the " + Emoji.X.getUnicode() + " reaction to decline/cancel.";
     private static final String ADDITIONAL_OPEN_PLAYING_INSTRUCTION = "click the " + Emoji.X.getUnicode() + " reaction to cancel.";
-    private static final int WIN_REWARD = 100;
-    private static final int STREAK_BONUS = 50;
+    private static final int XP_WIN_REWARD = 100;
+    private static final int SB_WIN_REWARD = 50;
+    private static final int XP_STREAK_BONUS = 50;
+    private static final int SB_STREAK_BONUS = 25;
 
     private Server server;
     private ChallengeGameManager manager;
@@ -71,11 +86,20 @@ public class ChallengeGame {
         this.challengerOne = challengerOne;
         this.challengerTwo = challengerTwo;
 
-        if(isOpen()){
-            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(OPEN_FORMAT, challengerOne.getName(), PLAYING_INSTRUCTION + ADDITIONAL_OPEN_PLAYING_INSTRUCTION));
-        } else {
-            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getName(), challengerTwo.getName(), PLAYING_INSTRUCTION + ADDITIONAL_CLOSED_PLAYING_INSTRUCTION));
+        if(isOpen()) {
+            if (challengerOne.hasBetted())
+                initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(OPEN_FORMAT_BET, challengerOne.getName(), challengerOne.getBet(), PLAYING_INSTRUCTION + ADDITIONAL_OPEN_PLAYING_INSTRUCTION));
+            else
+                initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(OPEN_FORMAT_NO_BET, challengerOne.getName(), PLAYING_INSTRUCTION + ADDITIONAL_OPEN_PLAYING_INSTRUCTION));
+        } else{
+            if (challengerOne.hasBetted()) {
+                String allInText = (challengerOne.getBet() == challengerTwo.getMember().asSkuddUser().getCurrencies().getInt(Currency.SKUDDBUX)) ? (" | " + Emoji.WARNING.getUnicode() + " " + challengerTwo.getMember().getDisplayName() + ": this bet is **all-in**!") : ("");
+                initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT_BET, challengerOne.getMember().getDisplayName(), challengerTwo.getMember().getDisplayName(), challengerOne.getBet(), allInText, PLAYING_INSTRUCTION + ADDITIONAL_CLOSED_PLAYING_INSTRUCTION));
+            } else
+                initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT_NO_BET, challengerOne.getName(), challengerTwo.getName(), PLAYING_INSTRUCTION + ADDITIONAL_CLOSED_PLAYING_INSTRUCTION));
         }
+
+
 
         if(isOpen()) {
             acceptButton = ReactionUtils.registerButton(initialMessage, Emoji.DAGGER, this::acceptReactionClicked);
@@ -102,6 +126,12 @@ public class ChallengeGame {
             return;
         }
 
+        SkuddUser su = pm.getUser(server.getId(), event.getUser().getId());
+        if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, getChallengerOne().getBet())){
+            event.undoReaction();
+            return;
+        }
+
         if(isOpen()) setChallengerTwo(new ChallengePlayer(server.getId(), event.getUserId().getDiscordId()));
         fight();
     }
@@ -116,6 +146,10 @@ public class ChallengeGame {
 
     public void fight(){
         if(isOpen()) throw new IllegalStateException("Challenge is still open, must add user before fight can be started.");
+        SkuddUser su = pm.getUser(server.getId(), challengerTwo.getMember().getId().getDiscordId());
+        su.getCurrencies().incrementInt(Currency.SKUDDBUX, challengerOne.getBet() * -1);
+        challengerTwo.setBet(challengerOne.getBet());
+
         unregisterButtons();
         manager.startCooldown(this);
         TextChannel channel = initialMessage.getChannel();
@@ -144,10 +178,15 @@ public class ChallengeGame {
         if(isOpen()) throw new IllegalStateException("Open challenges cannot be declined.");
         deleteMessages(false);
         unregisterButtons();
-        initialMessage.edit(MessageFormat.format(OPEN_HEADER, challengerOne.getName() + " vs " + challengerTwo.getName()) + "\n*" +
-                challengerTwo.getName() + " has declined the fight.*");
+        StringBuilder sb = new StringBuilder();
+        sb.append("*").append(challengerTwo.getName()).append(" has declined the fight.* ");
+        if(challengerOne.hasBetted())
+            sb.append(challengerOne.getMember().getDisplayName()).append(", your bet has been refunded.");
+
+        initialMessage.edit(MessageFormat.format(IN_PROGRESS_FORMAT, challengerOne.getName(), challengerTwo.getName(), sb.toString().trim()));
         initialMessage.removeAllReactions();
 
+        refund(challengerOne);
         manager.removeGame(this);
     }
 
@@ -155,7 +194,13 @@ public class ChallengeGame {
         deleteMessages();
         unregisterButtons();
 
+        refund(challengerOne);
         manager.removeGame(this);
+    }
+
+    public void refund(ChallengePlayer player){
+        SkuddUser su = player.getMember().asSkuddUser();
+        su.getCurrencies().incrementInt(Currency.SKUDDBUX, player.getBet());
     }
 
     public void deleteMessages(){
@@ -173,29 +218,48 @@ public class ChallengeGame {
     private String award(ChallengePlayer winner, ChallengePlayer loser){
         StringBuilder sb = new StringBuilder();
         StatsContainer winnerStats = pm.getUser(server.getId(), winner.getMember().getId().getDiscordId()).getStats();
+        CurrenciesContainer winnerCurrencies = pm.getUser(server.getId(), winner.getMember().getId().getDiscordId()).getCurrencies();
         StatsContainer loserStats = pm.getUser(server.getId(), loser.getMember().getId().getDiscordId()).getStats();
+
+        int sbWinnings = SB_WIN_REWARD;
 
         loserStats.incrementInt(Stat.CHALLENGE_LOSSES);
         loserStats.setInt(Stat.CHALLENGE_WINSTREAK, 0);
+        if(loser.hasBetted())
+            loserStats.incrementInt(Stat.CHALLENGE_BETS_LOST);
 
-        sb.append("**").append(winner.getName()).append(":** ").append("*+").append(WIN_REWARD).append("* <:xp_icon:458325613015466004>");
+        sb.append("**").append(winner.getName()).append(":** ").append("*+").append(XP_WIN_REWARD).append("* <:xp_icon:458325613015466004>, *+").append(SB_WIN_REWARD).append(" Skuddbux*");
 
         winnerStats.incrementInt(Stat.CHALLENGE_WINS);
         winnerStats.incrementInt(Stat.CHALLENGE_WINSTREAK);
 
         int winStreak = winnerStats.getInt(Stat.CHALLENGE_WINSTREAK);
-        int bonusXp = winStreak * STREAK_BONUS;
-        winnerStats.incrementInt(Stat.EXPERIENCE, WIN_REWARD + bonusXp);
-        if(winStreak == 2){
-            sb.append(" | **Winstreak started:** *").append(winnerStats.getInt(Stat.CHALLENGE_WINSTREAK)).append( " wins* (+").append(bonusXp).append(" <:xp_icon:458325613015466004>)");
-        } else if(winStreak > 2) {
-            sb.append(" | **Winstreak continued:** *").append(winnerStats.getInt(Stat.CHALLENGE_WINSTREAK)).append( " wins* (+").append(bonusXp).append(" <:xp_icon:458325613015466004>)");
+        int bonusXp = (winStreak - 1) * XP_STREAK_BONUS;
+        int bonusSb = (winStreak - 1) * SB_STREAK_BONUS;
+        sbWinnings += bonusSb;
+        winnerStats.incrementInt(Stat.EXPERIENCE, XP_WIN_REWARD + bonusXp);
+        if(winStreak > 1) {
+            sb.append(" | **Winstreak ");
+            if (winStreak == 2) {
+                sb.append("started");
+            } else {
+                sb.append("continued");
+            }
+            sb.append(":** *").append(winnerStats.getInt(Stat.CHALLENGE_WINSTREAK)).append(" wins* (+").append(bonusXp).append("<:xp_icon:458325613015466004>, +").append(bonusSb).append(" Skuddbux)");
         }
+
 
         if(winStreak > winnerStats.getInt(Stat.CHALLENGE_LONGEST_WINSTREAK) && winStreak > 1){
             winnerStats.setInt(Stat.CHALLENGE_LONGEST_WINSTREAK, winStreak);
             sb.append(" | **New longest winstreak!**");
         }
+
+        if(winner.hasBetted()){
+            winnerStats.incrementInt(Stat.CHALLENGE_BETS_WON);
+            sb.append(" | **Bet won:** *+").append(winner.getBet() * 2).append(" Skuddbux*");
+            sbWinnings += (winner.getBet() * 2);
+        }
+        winnerCurrencies.incrementInt(Currency.SKUDDBUX, sbWinnings);
 
         return sb.toString().trim();
     }
