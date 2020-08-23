@@ -3,7 +3,6 @@ package me.Cooltimmetje.Skuddbot.Minigames.Challenge;
 import lombok.Getter;
 import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
-import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 
 /**
  * represents a player of challenge
@@ -39,7 +38,14 @@ public class ChallengePlayer {
     }
 
     public String getNameAndBet(){
-        return getMember().getDisplayName() + " (" + getBet() + ")";
+        String ret = getMember().getDisplayName();
+        if(hasBetted())
+            ret += " (" + getBet() + ")";
+
+        return ret;
     }
 
+    public boolean hasBetted() {
+        return bet > 0;
+    }
 }
