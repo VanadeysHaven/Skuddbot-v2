@@ -44,7 +44,9 @@ public class ChallengeGame {
             ">>> {1}";
     private static final String IN_PROGRESS_FORMAT = HEADER + "\n\n" +
             "{1}";
-    private static final String PLAYING_INSTRUCTION = "Click the " + Emoji.DAGGER.getUnicode() + " reaction to accept, click the " + Emoji.X.getUnicode() + " reaction to decline/cancel.";
+    private static final String PLAYING_INSTRUCTION = "Click the " + Emoji.DAGGER.getUnicode() + " reaction to accept, ";
+    private static final String ADDITIONAL_CLOSED_PLAYING_INSTRUCTION = "click the " + Emoji.X.getUnicode() + " reaction to decline/cancel.";
+    private static final String ADDITIONAL_OPEN_PLAYING_INSTRUCTION = "click the " + Emoji.X.getUnicode() + " reaction to cancel.";
     private static final int WIN_REWARD = 100;
     private static final int STREAK_BONUS = 50;
 
@@ -54,7 +56,7 @@ public class ChallengeGame {
     @Getter private User challengerTwo;
     @Getter private Message initialMessage;
     private Message gameMessage;
-    TextChannel channel;
+    private TextChannel channel;
     private ArrayList<Message> messages;
     private String log;
     private ReactionButton acceptButton;
@@ -67,9 +69,9 @@ public class ChallengeGame {
         this.challengerTwo = challengerTwo;
 
         if(isOpen()){
-            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(OPEN_FORMAT, challengerOne.getDisplayName(server), PLAYING_INSTRUCTION));
+            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(OPEN_FORMAT, challengerOne.getDisplayName(server), PLAYING_INSTRUCTION + ADDITIONAL_OPEN_PLAYING_INSTRUCTION));
         } else {
-            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), challengerOne.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION));
+            initialMessage = MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(NORMAL_FORMAT, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server), challengerOne.getDisplayName(server), challengerTwo.getDisplayName(server), PLAYING_INSTRUCTION + ADDITIONAL_CLOSED_PLAYING_INSTRUCTION));
         }
 
         if(isOpen()) {
