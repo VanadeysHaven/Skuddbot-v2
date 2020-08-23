@@ -11,7 +11,7 @@ import org.javacord.api.entity.user.User;
  * Represents a member of a server.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2
+ * @version 2.2.1
  * @since 2.2
  */
 public class ServerMember {
@@ -22,6 +22,10 @@ public class ServerMember {
 
     public ServerMember(Identifier id){
         this.id = id;
+    }
+
+    public ServerMember(long serverId, long userId){
+        this(new Identifier(serverId, userId));
     }
 
     public Server getServer() {

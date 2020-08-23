@@ -41,7 +41,7 @@ public class ChallengeGameManager {
     public void processAccept(User user1, User user2, Message message){
         for(ChallengeGame game : games)
             if(game.isMatch(user1, user2)) {
-                if(game.isOpen()) game.setChallengerTwo(user1);
+                if(game.isOpen()) game.setChallengerTwo(new ChallengePlayer(serverId, user1.getId()));
                 game.addMessage(message);
                 game.fight();
                 return;
@@ -75,7 +75,11 @@ public class ChallengeGameManager {
     }
 
     public void addGame(User user1, User user2, Message message){
-        ChallengeGame game = new ChallengeGame(user1, user2, message, getServer(), this);
+        ChallengePlayer challengerOne = new ChallengePlayer(serverId, user1.getId());
+        ChallengePlayer challengerTwo = null;
+        if(user2 != null)
+            challengerTwo = new ChallengePlayer(serverId, user2.getId());
+        ChallengeGame game = new ChallengeGame(challengerOne, challengerTwo, message, getServer(), this);
         games.add(game);
     }
 
@@ -87,7 +91,7 @@ public class ChallengeGameManager {
     public void cancelGame(User user1){
         ChallengeGame toCancel = null;
         for(ChallengeGame game : games)
-            if(game.getChallengerOne().getId() == user1.getId())
+            if(game.getChallengerOne().getMember().getId().getDiscordId() == user1.getId())
                 toCancel = game;
 
         if(toCancel != null)
@@ -96,7 +100,7 @@ public class ChallengeGameManager {
 
     public boolean hasOutstandingGame(User user1){
         for(ChallengeGame game : games)
-            if(game.getChallengerOne().getId() == user1.getId())
+            if(game.getChallengerOne().getMember().getId().getDiscordId() == user1.getId())
                 return true;
 
         return false;
@@ -112,7 +116,7 @@ public class ChallengeGameManager {
     }
 
     public void startCooldown(ChallengeGame game) {
-        cooldownManager.startCooldown(game.getChallengerOne().getId());
-        cooldownManager.startCooldown(game.getChallengerTwo().getId());
+        cooldownManager.startCooldown(game.getChallengerOne().getMember().getId().getDiscordId());
+        cooldownManager.startCooldown(game.getChallengerTwo().getMember().getId().getDiscordId());
     }
 }
