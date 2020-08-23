@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutionException;
  * Command used to see and edit user currencies.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.1.1
+ * @version 2.2.1
  * @since 2.1.1
  */
 public class CurrenciesCommand extends Command {
