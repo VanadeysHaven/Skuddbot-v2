@@ -139,13 +139,17 @@ public class ChallengeGame {
         if(isOpen()) throw new IllegalStateException("Open challenges cannot be declined.");
         deleteMessages(false);
         unregisterButtons();
-        initialMessage.edit(MessageFormat.format(HEADER, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server)) + "\n\n*" +
-                challengerTwo.getNickname(server) + " has declined the fight.*");
+        initialMessage.edit(MessageFormat.format(HEADER, challengerOne.getDisplayName(server) + " vs " + challengerTwo.getDisplayName(server)) + "\n*" +
+                challengerTwo.getDisplayName(server) + " has declined the fight.*");
+        initialMessage.removeAllReactions();
+
+        manager.removeGame(this);
     }
 
     public void cancel(){
         deleteMessages();
         unregisterButtons();
+
         manager.removeGame(this);
     }
 
@@ -207,10 +211,15 @@ public class ChallengeGame {
         this.challengerTwo = challengerTwo;
     }
 
-    public boolean isMatch(User user1, User user2){
+    public boolean isMatch(User user1, User user2, boolean ignoreOpen){
+        if(ignoreOpen && isOpen()) return false;
         if(user1.getId() == user2.getId()) return false;
         if(isOpen() && user2.getId() == challengerOne.getId()) return true;
         return (user2.getId() == challengerOne.getId()) && (user1.getId() == challengerTwo.getId());
+    }
+
+    public boolean isMatch(User user1, User user2){
+        return isMatch(user1, user2, false);
     }
 
     public boolean isOpen(){

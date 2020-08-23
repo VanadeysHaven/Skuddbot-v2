@@ -37,7 +37,7 @@ public class ChallengeCommand extends Command {
             return;
         }
         if(args.length < 2) {
-            MessagesUtils.addReaction(message, Emoji.X, "Not enough arguments! - Usage: `!challenge <mention/open/cancel>`");
+            MessagesUtils.addReaction(message, Emoji.X, "Not enough arguments! - Usage: `!challenge <mention/open/cancel> [decline/bet]`");
             return;
         }
         if(!message.getMentionedUsers().isEmpty()){
@@ -51,20 +51,26 @@ public class ChallengeCommand extends Command {
                 return;
             }
 
-            manager.process(author, message.getMentionedUsers().get(0), message);
+            if(args.length > 2){
+                if(args[2].equalsIgnoreCase("decline")){
+                    manager.processDecline(author, message.getMentionedUsers().get(0), message);
+                    return;
+                }
+            }
+            manager.processAccept(author, message.getMentionedUsers().get(0), message);
         } else if(args[1].equalsIgnoreCase("open")) {
             if(manager.hasOutstandingGame(author))
                 MessagesUtils.addReaction(message, Emoji.X, "You have a outstanding challenge, you can cancel it with `!challenge cancel`");
             else
-                manager.process(author, message);
+                manager.processAccept(author, message);
         } else if(args[1].equalsIgnoreCase("cancel")) {
             if(manager.hasOutstandingGame(author)) {
                 manager.cancelGame(author);
                 MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Challenge cancelled.");
             } else
-                MessagesUtils.addReaction(message, Emoji.X, "You have no outstanding challenge. Start one with `!challenge <mention/open>`");
+                MessagesUtils.addReaction(message, Emoji.X, "You have no outstanding challenge. Start one with `!challenge <mention/open> [bet]`");
         } else {
-            MessagesUtils.addReaction(message, Emoji.X, "Invalid arguments. - Usage: `!challenge <mention/open/cancel>`");
+            MessagesUtils.addReaction(message, Emoji.X, "Invalid arguments. - Usage: `!challenge <mention/open/cancel> [decline/bet]`");
         }
     }
 

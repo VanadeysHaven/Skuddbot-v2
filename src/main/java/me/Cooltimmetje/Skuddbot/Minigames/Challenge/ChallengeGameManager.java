@@ -38,7 +38,7 @@ public class ChallengeGameManager {
         cooldownManager = new CooldownManager(COOLDOWN);
     }
 
-    public void process(User user1, User user2, Message message){
+    public void processAccept(User user1, User user2, Message message){
         for(ChallengeGame game : games)
             if(game.isMatch(user1, user2)) {
                 if(game.isOpen()) game.setChallengerTwo(user1);
@@ -54,8 +54,24 @@ public class ChallengeGameManager {
         }
     }
 
-    public void process(User user1, Message message){
+    public void processAccept(User user1, Message message){
         addGame(user1, null, message);
+    }
+
+    public void processDecline(User user1, User user2, Message message) {
+        ChallengeGame toDecline = null;
+        for(ChallengeGame game : games)
+            if (game.isMatch(user1, user2, true))
+                toDecline = game;
+
+        if(toDecline != null)
+            toDecline.decline();
+        else {
+            MessagesUtils.addReaction(message, Emoji.X, "No fight found with user " + user2.getDisplayName(getServer()) + " that can be declined.");
+            return;
+        }
+
+        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Challenge declined.");
     }
 
     public void addGame(User user1, User user2, Message message){
@@ -99,5 +115,4 @@ public class ChallengeGameManager {
         cooldownManager.startCooldown(game.getChallengerOne().getId());
         cooldownManager.startCooldown(game.getChallengerTwo().getId());
     }
-
 }
