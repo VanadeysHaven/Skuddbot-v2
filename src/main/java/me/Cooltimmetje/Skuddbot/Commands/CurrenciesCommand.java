@@ -101,6 +101,7 @@ public class CurrenciesCommand extends Command {
                 case "set":
                     su.getCurrencies().setInt(currency, mutationAmount);
                     MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Set currency `" + currency + "` to `" + mutationAmount + "` for user `" + user.getDisplayName(server) + "`");
+                    break;
                 default:
                     MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not a valid operation.");
                     break;
