@@ -245,7 +245,7 @@ public class ChallengeGame {
             } else {
                 sb.append("continued");
             }
-            sb.append(":** *").append(winnerStats.getInt(Stat.CHALLENGE_WINSTREAK)).append(" wins* (+").append(bonusXp).append("<:xp_icon:458325613015466004>, +").append(bonusSb).append(" Skuddbux)");
+            sb.append(":** *").append(winnerStats.getInt(Stat.CHALLENGE_WINSTREAK)).append(" wins* (+").append(bonusXp).append(" <:xp_icon:458325613015466004>, +").append(bonusSb).append(" Skuddbux)");
         }
 
 
