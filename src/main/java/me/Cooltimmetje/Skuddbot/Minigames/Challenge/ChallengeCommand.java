@@ -84,6 +84,11 @@ public class ChallengeCommand extends Command {
                     placedBet = Integer.parseInt(args[2]);
             }
 
+            if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, placedBet)){
+                MessagesUtils.addReaction(message, Emoji.X, "You do not have enough Skuddbux to make this bet: " + placedBet);
+                return;
+            }
+
             manager.processAccept(author, message, placedBet);
         } else if(args[1].equalsIgnoreCase("cancel")) {
             if(manager.hasOutstandingGame(author)) {
