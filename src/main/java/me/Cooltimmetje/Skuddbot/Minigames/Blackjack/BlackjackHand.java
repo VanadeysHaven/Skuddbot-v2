@@ -69,6 +69,6 @@ public class BlackjackHand {
         if(cards.size() == 1)
             sb.append(" | ").append(Emoji.QUESTION.getUnicode()).append(Emoji.QUESTION.getUnicode());
 
-        return sb.toString().substring(3);
+        return sb.substring(3);
     }
 }
