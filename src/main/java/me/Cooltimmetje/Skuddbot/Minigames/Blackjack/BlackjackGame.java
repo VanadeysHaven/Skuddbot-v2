@@ -45,6 +45,7 @@ public class BlackjackGame {
             ">>> {5}";
     private static final String DEFAULT_PLAYING_INSTRUCTION = "*Press " + Emoji.H.getUnicode() + " to hit, press " + Emoji.S.getUnicode() + " to stand.*";
     private static final String DOUBLE_INSTRUCTION = "*Press " + Emoji.D.getUnicode() + " to double down.*";
+    private static final String SPLIT_INSTRUCTION = "*Press " + Emoji.ARROWS_LR.getUnicode() + " to split.*";
     private static final ProfileManager pm = ProfileManager.getInstance();
     private static final int BASE_REWARD = 50;
     private static final int WIN_REWARD = 75;
@@ -190,6 +191,9 @@ public class BlackjackGame {
 
     private void endGame(boolean delay){
         gameState = GameState.GAME_ENDED;
+        unregisterButtons();
+        message.removeAllReactions();
+
         if(delay) {
             ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
             message.getChannel().type();
@@ -200,9 +204,7 @@ public class BlackjackGame {
         BlackjackCommand.cleanUp(id);
     }
 
-    private void wrapUpGame(){
-        unregisterButtons();
-        message.removeAllReactions();
+    private void wrapUpGame(){ //TODO: This needs to be cleaner
         SkuddUser su = pm.getUser(id);
         int xpReward = 0;
         if(dealerHand.getHandSize() == 1)
