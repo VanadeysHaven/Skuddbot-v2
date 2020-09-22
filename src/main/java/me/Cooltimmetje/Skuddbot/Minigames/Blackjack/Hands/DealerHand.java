@@ -15,7 +15,11 @@ public class DealerHand extends BlackjackHand {
     @Setter private Card holeCard;
 
     public void revealHoleCard(){
-        addCard(ONE, holeCard);
+        if(holeCard == null) throw new IllegalStateException("There is no hole card.");
+
+        Card card = holeCard;
+        holeCard = null;
+        addCard(ONE, card);
     }
 
 }
