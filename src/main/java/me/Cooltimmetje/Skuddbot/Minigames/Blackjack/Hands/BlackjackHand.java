@@ -1,6 +1,7 @@
-package me.Cooltimmetje.Skuddbot.Minigames.Blackjack;
+package me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Card;
 
 import java.util.ArrayList;
 
@@ -11,20 +12,14 @@ import java.util.ArrayList;
  * @version 2.2.1
  * @since 2.0
  */
-public class BlackjackHand {
+public abstract class BlackjackHand {
 
     public static final int ONE = 1;
 
     protected ArrayList<Card> handOne;
-    protected int betOne;
-
-    public BlackjackHand(int bet){
-        handOne = new ArrayList<>();
-        betOne = bet;
-    }
 
     protected BlackjackHand(){
-
+        handOne = new ArrayList<>();
     }
 
     public int getHandValue(int hand){
@@ -76,9 +71,9 @@ public class BlackjackHand {
         return sb.substring(3);
     }
 
-    public SplitBlackjackHand splitHand(){
-        if (this instanceof SplitBlackjackHand) throw new IllegalStateException("You cannot split an already splitted hand");
-        return new SplitBlackjackHand(this);
+    public SplitPlayerHand splitHand(){
+        if (this instanceof SplitPlayerHand) throw new IllegalStateException("You cannot split an already splitted hand");
+        return new SplitPlayerHand(this);
     }
 
     protected ArrayList<Card> getHand(int hand){

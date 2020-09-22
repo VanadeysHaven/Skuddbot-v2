@@ -1,4 +1,6 @@
-package me.Cooltimmetje.Skuddbot.Minigames.Blackjack;
+package me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands;
+
+import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Card;
 
 import java.util.ArrayList;
 
@@ -9,14 +11,15 @@ import java.util.ArrayList;
  * @version 2.2.1
  * @since 2.2.1
  */
-public class SplitBlackjackHand extends BlackjackHand {
+public class SplitPlayerHand extends PlayerHand {
 
     public static final int TWO = 2;
 
     protected ArrayList<Card> handTwo;
     protected int betTwo;
 
-    public SplitBlackjackHand(BlackjackHand hand) {
+    public SplitPlayerHand(PlayerHand hand) {
+        super(hand.betOne);
         handTwo = new ArrayList<>();
         ArrayList<Card> initialHand = hand.handOne;
         int bet = hand.betOne;
@@ -24,7 +27,6 @@ public class SplitBlackjackHand extends BlackjackHand {
         Card secondCard = initialHand.get(1);
         initialHand.remove(secondCard);
         handOne = initialHand;
-        betOne = bet;
 
         handTwo.add(secondCard);
         betTwo = bet;
