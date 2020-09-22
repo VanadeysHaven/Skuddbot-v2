@@ -4,7 +4,7 @@ import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Card;
 
 /**
- * [class description]
+ * Represents the hand of the dealer.
  *
  * @author Tim (Cooltimmetje)
  * @version 2.2.1
