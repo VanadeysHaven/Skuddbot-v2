@@ -71,11 +71,6 @@ public abstract class BlackjackHand {
         return sb.substring(3);
     }
 
-    public SplitPlayerHand splitHand(){
-        if (this instanceof SplitPlayerHand) throw new IllegalStateException("You cannot split an already splitted hand");
-        return new SplitPlayerHand(this);
-    }
-
     protected ArrayList<Card> getHand(int hand){
         if(hand == 1)
             return handOne;

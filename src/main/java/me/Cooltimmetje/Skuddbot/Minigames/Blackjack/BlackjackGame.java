@@ -2,7 +2,9 @@ package me.Cooltimmetje.Skuddbot.Minigames.Blackjack;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.BlackjackHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.DealerHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.PlayerHand;
@@ -30,13 +32,13 @@ public class BlackjackGame {
 
     //Format pieces
     private static final String HEADER = Emoji.BLACK_JOKER.getUnicode() + " **BLACKJACK** | *{0}*";
-    private static final String DEALER_FORMAT = "**DEALER HAND:** ({1}) *Dealer draws to 16, stands on 17.*" +
+    private static final String DEALER_FORMAT = "**DEALER HAND:** ({1}) *Dealer draws to 16, stands on 17.*\n" +
             "{2}";
     private static final String ONE_HANDED_PLAYER_FORMAT = "**PLAYER HAND:** ({2})\n" +
             "{3}";
     private static final String TWO_HANDED_PLAYER_FORMAT = "**PLAYER HANDS:** ({2}/{3})\n" +
             "{4} {5}\n" +
-            "{6} {7}\n";
+            "{6} {7}";
 
     //Complete formats
     private static final String NORMAL_FORMAT = HEADER + "\n\n" +
@@ -49,9 +51,25 @@ public class BlackjackGame {
             ">>> {8}";
 
     //Playing instructions
-    private static final String HIT_STAND = "Press the " + Emoji.H.getUnicode() + " reaction to hit, press the " + Emoji.S.getUnicode() + " reaction to stand.";
-    private static final String DOUBLE_DOWN = "Press the " + Emoji.D.getUnicode() + " reaction to double down.";
-    private static final String SPLIT = "Press the " + Emoji.ARROWS_LR.getUnicode() + " reaction to split.";
+    private enum PlayingInstruction {
+
+        PLAYER_PLAYING("[playing instructions here]"),
+        PLAYER_GOT_21("**You got 21! Dealer playing...**"),
+        PLAYER_GOT_BJ("**BLACKJACK! You win!**"),
+        PLAYER_STANDING("**Standing. Dealer playing...**"),
+        PLAYER_BUSTED("You busted, better luck next time.");
+
+        @Getter private String instruction;
+
+        PlayingInstruction(String instruction){
+            this.instruction = instruction;
+        }
+
+    }
+
+    private static final String HIT_STAND = "*Press the " + Emoji.H.getUnicode() + " reaction to hit, press the " + Emoji.S.getUnicode() + " reaction to stand.*";
+    private static final String DOUBLE_DOWN = "*Press the " + Emoji.D.getUnicode() + " reaction to double down.*";
+    private static final String SPLIT = "*Press the " + Emoji.ARROWS_LR.getUnicode() + " reaction to split.*";
 
     @Getter private ServerMember player;
     private int initialBet;
@@ -67,6 +85,10 @@ public class BlackjackGame {
     private ReactionButton splitButton;
     private ArrayList<ReactionButton> buttons;
 
+    private PlayingInstruction playingInstruction;
+    private boolean doubleDownAllowed;
+    private boolean splitAllowed;
+
     public BlackjackGame(ServerMember player, int initialBet, BlackjackGameManager manager, TextChannel channel){
         this.player = player;
         this.initialBet = initialBet;
@@ -75,6 +97,11 @@ public class BlackjackGame {
         setupHands();
         preGameChecks();
         sendMessage(channel);
+
+        if(gameState == GameState.GAME_ENDED)
+            return;
+
+        setupButtons();
     }
 
     private void setupHands(){
@@ -88,7 +115,19 @@ public class BlackjackGame {
     }
 
     private void preGameChecks(){
+        if(playerHand.isBlackjack(BlackjackHand.ONE)){
+            playingInstruction = PlayingInstruction.PLAYER_GOT_BJ;
+            endGame();
+            return;
+        }
+        if(playerHand.getHandValue(BlackjackHand.ONE) == 21) {
+            playingInstruction = PlayingInstruction.PLAYER_GOT_21;
+            stand();
+            return;
+        }
 
+        doubleDownAllowed = playerHand.isDoubleDownAllowed(BlackjackHand.ONE);
+        splitAllowed = playerHand.isSplitAllowed();
     }
 
     private void sendMessage(){
@@ -135,10 +174,42 @@ public class BlackjackGame {
     }
 
     private String formatPlayingInstructions(){
-        return "TODO"; //TODO
+        if(playingInstruction == PlayingInstruction.PLAYER_PLAYING){
+            StringBuilder sb = new StringBuilder(HIT_STAND);
+            if(doubleDownAllowed)
+                sb.append("\n").append(DOUBLE_DOWN).append(" ");
+            if(splitAllowed)
+                sb.append(SPLIT);
+
+            return sb.toString().trim();
+        }
+
+        return playingInstruction.getInstruction();
     }
 
-    private void setupButtons(){
+    private void setupButtons(){ //TODO: Button order
+        ReactionButton hitButton = ReactionUtils.registerButton(message, Emoji.H, this::hitButton, player.getId().getDiscordId());
+        this.hitButton = hitButton;
+        buttons.add(hitButton);
+
+        ReactionButton standButton = ReactionUtils.registerButton(message, Emoji.S, this::standButton, player.getId().getDiscordId());
+        this.standButton = standButton;
+        buttons.add(standButton);
+
+        if(doubleDownAllowed) {
+            ReactionButton doubleDownButton = ReactionUtils.registerButton(message, Emoji.D, this::doubleDownButton, player.getId().getDiscordId());
+            this.doubleDownButton = doubleDownButton;
+            buttons.add(doubleDownButton);
+        }
+
+        if(splitAllowed) {
+            ReactionButton splitButton = ReactionUtils.registerButton(message, Emoji.ARROWS_LR, this::splitButton, player.getId().getDiscordId());
+            this.splitButton = splitButton;
+            buttons.add(splitButton);
+        }
+    }
+
+    private void hitButton(ReactionButtonClickedEvent event){
 
     }
 
@@ -146,11 +217,23 @@ public class BlackjackGame {
 
     }
 
+    private void standButton(ReactionButtonClickedEvent event){
+
+    }
+
     private void stand(){
 
     }
 
+
+        private void doubleDownButton(ReactionButtonClickedEvent event){
+    }
+
     private void doubleDown(){
+
+    }
+
+    private void splitButton(ReactionButtonClickedEvent event){
 
     }
 
@@ -162,6 +245,14 @@ public class BlackjackGame {
 
     }
 
+    private void endGame(){
+        gameState = GameState.GAME_ENDED;
+    }
+
+    private void nextHand(){
+
+    }
+
     private SplitPlayerHand getSplitHand(){
         if(!isHandSplit()) throw new IllegalStateException("The hand of the player is not split.");
         return (SplitPlayerHand) playerHand;
@@ -169,6 +260,18 @@ public class BlackjackGame {
 
     private boolean isHandSplit(){
         return playerHand instanceof SplitPlayerHand;
+    }
+
+    private void setButtonStates(){
+        if(gameState == GameState.DEALER_PLAYING || gameState == GameState.GAME_ENDED) {
+            for (ReactionButton button : buttons)
+                button.unregister();
+        } else {
+            hitButton.setEnabled(true);
+            standButton.setEnabled(true);
+            doubleDownButton.setEnabled(doubleDownAllowed);
+            splitButton.setEnabled(splitAllowed);
+        }
     }
 
 }

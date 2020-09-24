@@ -39,4 +39,9 @@ public class SplitPlayerHand extends PlayerHand {
         return super.getHand(hand);
     }
 
+    @Override
+    public boolean isSplitAllowed() {
+        return false;
+    }
+
 }
