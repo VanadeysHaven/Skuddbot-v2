@@ -22,7 +22,7 @@ import java.util.ArrayList;
  */
 public class BlackjackCommand extends Command {
 
-    private static ArrayList<BlackjackGameManager> managers;
+    private static ArrayList<BlackjackGameManager> managers = new ArrayList<>();
 
     public BlackjackCommand() {
         super(new String[]{"blackjack", "bj", "21", "deal"}, "Play a game of blackjack against the dealer.", Location.SERVER);
@@ -63,7 +63,7 @@ public class BlackjackCommand extends Command {
             return;
         }
 
-        manager.startNewGame(su.asMember(), bet);
+        manager.startNewGame(su.asMember(), bet, message.getChannel());
     }
 
     private BlackjackGameManager getManager(long serverId){

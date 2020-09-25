@@ -34,17 +34,17 @@ public class BlackjackGame {
     private static final String HEADER = Emoji.BLACK_JOKER.getUnicode() + " **BLACKJACK** | *{0}*";
     private static final String DEALER_FORMAT = "**DEALER HAND:** ({1}) *Dealer draws to 16, stands on 17.*\n" +
             "{2}";
-    private static final String ONE_HANDED_PLAYER_FORMAT = "**PLAYER HAND:** ({2})\n" +
-            "{3}";
-    private static final String TWO_HANDED_PLAYER_FORMAT = "**PLAYER HANDS:** ({2}/{3})\n" +
-            "{4} {5}\n" +
-            "{6} {7}";
+    private static final String ONE_HANDED_PLAYER_FORMAT = "**PLAYER HAND:** ({3})\n" +
+            "{4}";
+    private static final String TWO_HANDED_PLAYER_FORMAT = "**PLAYER HANDS:** ({3}/{4})\n" +
+            "{5} {6}\n" +
+            "{7} {8}";
 
     //Complete formats
     private static final String NORMAL_FORMAT = HEADER + "\n\n" +
             DEALER_FORMAT + "\n\n" +
             ONE_HANDED_PLAYER_FORMAT + "\n\n" +
-            ">>> {4}";
+            ">>> {5}";
     private static final String SPLIT_FORMAT = HEADER + "\n\n" +
             DEALER_FORMAT + "\n\n" +
             TWO_HANDED_PLAYER_FORMAT + "\n\n" +
@@ -94,6 +94,8 @@ public class BlackjackGame {
         this.initialBet = initialBet;
         this.manager = manager;
         gameState = GameState.NORMAL_HAND_PLAYING;
+        playingInstruction = PlayingInstruction.PLAYER_PLAYING;
+        buttons = new ArrayList<>();
         setupHands();
         preGameChecks();
         sendMessage(channel);
@@ -187,7 +189,7 @@ public class BlackjackGame {
         return playingInstruction.getInstruction();
     }
 
-    private void setupButtons(){ //TODO: Button order
+    private void setupButtons(){
         ReactionButton hitButton = ReactionUtils.registerButton(message, Emoji.H, this::hitButton, player.getId().getDiscordId());
         this.hitButton = hitButton;
         buttons.add(hitButton);
@@ -196,7 +198,7 @@ public class BlackjackGame {
         this.standButton = standButton;
         buttons.add(standButton);
 
-        if(doubleDownAllowed) {
+        if(doubleDownAllowed || splitAllowed) { //The reason why we check for split here too is to make sure the buttons always appear in the same order. - When double down is not allowed this button is disabled anyway.
             ReactionButton doubleDownButton = ReactionUtils.registerButton(message, Emoji.D, this::doubleDownButton, player.getId().getDiscordId());
             this.doubleDownButton = doubleDownButton;
             buttons.add(doubleDownButton);
@@ -207,6 +209,8 @@ public class BlackjackGame {
             this.splitButton = splitButton;
             buttons.add(splitButton);
         }
+
+        setButtonStates();
     }
 
     private void hitButton(ReactionButtonClickedEvent event){
@@ -226,7 +230,7 @@ public class BlackjackGame {
     }
 
 
-        private void doubleDownButton(ReactionButtonClickedEvent event){
+    private void doubleDownButton(ReactionButtonClickedEvent event){
     }
 
     private void doubleDown(){
@@ -269,8 +273,11 @@ public class BlackjackGame {
         } else {
             hitButton.setEnabled(true);
             standButton.setEnabled(true);
-            doubleDownButton.setEnabled(doubleDownAllowed);
-            splitButton.setEnabled(splitAllowed);
+
+            if(doubleDownButton != null)
+                doubleDownButton.setEnabled(doubleDownAllowed);
+            if(splitButton != null)
+                splitButton.setEnabled(splitAllowed);
         }
     }
 

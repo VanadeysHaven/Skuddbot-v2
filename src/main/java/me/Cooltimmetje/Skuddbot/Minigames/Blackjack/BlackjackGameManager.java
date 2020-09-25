@@ -5,6 +5,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
 import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
+import org.javacord.api.entity.channel.TextChannel;
 
 import java.util.ArrayList;
 
@@ -45,10 +46,6 @@ public class BlackjackGameManager {
         return cooldownManager.isOnCooldown(userId);
     }
 
-    public void startNewGame(ServerMember member, int bet) {
-
-    }
-
     public boolean hasGameActive(ServerMember member){
         return hasGameActive(member.getId());
     }
@@ -63,6 +60,11 @@ public class BlackjackGameManager {
                 return true;
 
         return false;
+    }
+
+    public void startNewGame(ServerMember member, int bet, TextChannel channel) {
+        BlackjackGame game = new BlackjackGame(member, bet, this, channel);
+        games.add(game);
     }
 
     public Card drawCard(){
