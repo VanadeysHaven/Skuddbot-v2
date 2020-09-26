@@ -2,6 +2,7 @@ package me.Cooltimmetje.Skuddbot.Minigames.Blackjack;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
 import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
@@ -62,7 +63,13 @@ public class BlackjackGameManager {
         return false;
     }
 
+    public void startNewGame(ServerMember member, TextChannel channel, String handInstruction){
+       BlackjackGame game = new BlackjackGame(member, 1, this, channel, handInstruction);
+       games.add(game);
+    }
+
     public void startNewGame(ServerMember member, int bet, TextChannel channel) {
+        member.asSkuddUser().getCurrencies().incrementInt(Currency.SKUDDBUX, bet * -1);
         BlackjackGame game = new BlackjackGame(member, bet, this, channel);
         games.add(game);
     }

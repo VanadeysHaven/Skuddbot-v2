@@ -56,6 +56,9 @@ public class BlackjackGame {
         PLAYER_PLAYING("[playing instructions here]"),
         PLAYER_GOT_21("**You got 21! Dealer playing...**"),
         PLAYER_GOT_BJ("**BLACKJACK! You win!**"),
+        PLAYER_HIGHER_THAN_DEALER("**You win! Your hand has a higher value than that of the dealer."),
+        PLAYER_LOWER_THAN_DEALER("**You lose! Your hand has a lower value than that of the dealer."),
+        PLAYER_TIED_WITH_DEALER("**PUSH! You tied with the dealer."),
         PLAYER_STANDING("**Standing. Dealer playing...**"),
         PLAYER_BUSTED("You busted, better luck next time.");
 
@@ -90,13 +93,17 @@ public class BlackjackGame {
     private boolean splitAllowed;
 
     public BlackjackGame(ServerMember player, int initialBet, BlackjackGameManager manager, TextChannel channel){
+        this(player, initialBet, manager, channel, null);
+    }
+
+    public BlackjackGame(ServerMember player, int initialBet, BlackjackGameManager manager, TextChannel channel, String handInstruction){
         this.player = player;
         this.initialBet = initialBet;
         this.manager = manager;
         gameState = GameState.NORMAL_HAND_PLAYING;
         playingInstruction = PlayingInstruction.PLAYER_PLAYING;
         buttons = new ArrayList<>();
-        setupHands();
+        setupHands(handInstruction);
         preGameChecks();
         sendMessage(channel);
 
@@ -106,13 +113,25 @@ public class BlackjackGame {
         setupButtons();
     }
 
-    private void setupHands(){
+    private void setupHands(String handInstruction) {
         playerHand = new PlayerHand(initialBet);
         dealerHand = new DealerHand();
 
-        playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+        if (handInstruction == null) {
+            playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+            dealerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+            playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+            dealerHand.setHoleCard(manager.drawCard());
+            return;
+        } else if (handInstruction.equalsIgnoreCase("double")) {
+            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.FOUR, Card.Suit.HEARTS));
+            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.SIX, Card.Suit.CLUBS));
+        } else if (handInstruction.equalsIgnoreCase("split")) {
+            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.ACE, Card.Suit.HEARTS));
+            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.ACE, Card.Suit.CLUBS));
+        }
+
         dealerHand.addCard(BlackjackHand.ONE, manager.drawCard());
-        playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
         dealerHand.setHoleCard(manager.drawCard());
     }
 
