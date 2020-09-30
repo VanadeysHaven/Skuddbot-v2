@@ -8,7 +8,6 @@ import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.BlackjackHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.DealerHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.PlayerHand;
-import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.SplitPlayerHand;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -39,11 +38,11 @@ public class BlackjackGame {
     private static final String HEADER = Emoji.BLACK_JOKER.getUnicode() + " **BLACKJACK** | *{0}*";
     private static final String DEALER_FORMAT = "**DEALER HAND:** ({1}) *Dealer draws to 16, stands on 17.*\n" +
             "{2}";
-    private static final String ONE_HANDED_PLAYER_FORMAT = "**PLAYER HAND:** ({3})\n" +
-            "{4}";
-    private static final String TWO_HANDED_PLAYER_FORMAT = "**PLAYER HANDS:** ({3}/{4})\n" +
-            "{5} {6}\n" +
-            "{7} {8}";
+    private static final String ONE_HANDED_PLAYER_FORMAT = "**PLAYER HAND:** ({3}) | **BET:** {4}\n" +
+            "{5}";
+    private static final String TWO_HANDED_PLAYER_FORMAT = "**PLAYER HANDS:** ({3}/{4}) | **BET:** {5}/{6}\n" +
+            "{7} {8}\n" +
+            "{9} {10}";
     private static final String XP_ICON = "<:xp_icon:458325613015466004>";
     private static final String REWARDS_FORMAT = "{0} | *+{1}* " + XP_ICON + " | *+{2} Skuddbux*";
 
@@ -51,11 +50,11 @@ public class BlackjackGame {
     private static final String NORMAL_FORMAT = HEADER + "\n\n" +
             DEALER_FORMAT + "\n\n" +
             ONE_HANDED_PLAYER_FORMAT + "\n\n" +
-            ">>> {5}";
+            ">>> {6}";
     private static final String SPLIT_FORMAT = HEADER + "\n\n" +
             DEALER_FORMAT + "\n\n" +
             TWO_HANDED_PLAYER_FORMAT + "\n\n" +
-            ">>> {8}";
+            ">>> {11}";
 
     //Playing instructions
     private enum PlayingInstruction {
@@ -186,10 +185,11 @@ public class BlackjackGame {
         int dealerHandValue = dealerHand.getHandValue(BlackjackHand.ONE);
         String dealerHandStr = dealerHand.formatHand(BlackjackHand.ONE);
         int playerHandValue = playerHand.getHandValue(BlackjackHand.ONE);
+        int playerBet = playerHand.getBet(BlackjackHand.ONE);
         String playerHandStr = playerHand.formatHand(BlackjackHand.ONE);
         String playingInstruction = formatPlayingInstructions();
 
-        return MessageFormat.format(NORMAL_FORMAT, playerName, dealerHandValue, dealerHandStr, playerHandValue, playerHandStr, playingInstruction);
+        return MessageFormat.format(NORMAL_FORMAT, playerName, dealerHandValue, dealerHandStr, playerHandValue, playerBet, playerHandStr, playingInstruction);
     }
 
     private String formatSplitHand(){
@@ -197,14 +197,16 @@ public class BlackjackGame {
         int dealerHandValue = dealerHand.getHandValue(BlackjackHand.ONE);
         String dealerHandStr = dealerHand.formatHand(BlackjackHand.ONE);
         int firstPlayerHandValue = playerHand.getHandValue(BlackjackHand.ONE);
-        int secondPlayerHandValue = getSplitHand().getHandValue(BlackjackHand.TWO);
+        int secondPlayerHandValue = playerHand.getHandValue(BlackjackHand.TWO);
+        int firstBet = playerHand.getBet(BlackjackHand.ONE);
+        int secondBet = playerHand.getBet(BlackjackHand.TWO);
         String firstPlayerHandStr = playerHand.formatHand(BlackjackHand.ONE);
         String firstPlayerHandState = getCurrentHand() == BlackjackHand.ONE ? Emoji.ARROW_LEFT.getUnicode() : (getCurrentHand() == -1 ? playerHand.getRewardString(BlackjackHand.ONE) : "");
-        String secondPlayerHandStr = getSplitHand().formatHand(BlackjackHand.TWO);
+        String secondPlayerHandStr = playerHand.formatHand(BlackjackHand.TWO);
         String secondPlayerHandState = getCurrentHand() == BlackjackHand.TWO ? Emoji.ARROW_LEFT.getUnicode() : (getCurrentHand() == -1 ? playerHand.getRewardString(BlackjackHand.TWO) : "");
         String playingInstruction = formatPlayingInstructions();
 
-        return MessageFormat.format(SPLIT_FORMAT, playerName, dealerHandValue, dealerHandStr, firstPlayerHandValue, secondPlayerHandValue, firstPlayerHandStr, firstPlayerHandState, secondPlayerHandStr, secondPlayerHandState, playingInstruction);
+        return MessageFormat.format(SPLIT_FORMAT, playerName, dealerHandValue, dealerHandStr, firstPlayerHandValue, secondPlayerHandValue, firstBet, secondBet, firstPlayerHandStr, firstPlayerHandState, secondPlayerHandStr, secondPlayerHandState, playingInstruction);
     }
 
     private String formatPlayingInstructions(){
@@ -433,11 +435,6 @@ public class BlackjackGame {
         gameState = GameState.SECOND_SPLIT_HAND_PLAYING;
         sendMessage();
         setButtonStates();
-    }
-
-    private SplitPlayerHand getSplitHand(){
-        if(!playerHand.isHandSplitted()) throw new IllegalStateException("The hand of the player is not split.");
-        return (SplitPlayerHand) playerHand;
     }
 
     private void setButtonStates() {
