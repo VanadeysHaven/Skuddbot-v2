@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands;
 
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Card;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 
 import java.util.ArrayList;
 
@@ -13,10 +14,15 @@ import java.util.ArrayList;
  */
 public class PlayerHand extends BlackjackHand {
 
-    protected int betOne;
+    protected int oneBet;
+    protected boolean oneIsDoubled;
+    protected String oneRewardString;
+    protected int oneXpReward;
+    protected int oneSbReward;
+    protected Stat[] oneIncrementStats;
 
     public PlayerHand(int bet){
-        betOne = bet;
+        oneBet = bet;
     }
 
     public boolean isDoubleDownAllowed(int hand){
@@ -35,9 +41,86 @@ public class PlayerHand extends BlackjackHand {
         return cardOne.getSuit() == cardTwo.getSuit();
     }
 
+    public int getBet(int hand){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        return oneBet;
+    }
+
+    public void doubleBet(int hand){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        oneBet *= 2;
+    }
+
+    public boolean isDoubled(int hand){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        return oneIsDoubled;
+    }
+
+    public void setDoubled(int hand, boolean isDoubled){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+
+        oneIsDoubled = isDoubled;
+    }
+
+    public String getRewardString(int hand){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        return oneRewardString;
+    }
+
+    public void setRewardString(int hand, String rewardString){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        oneRewardString = rewardString;
+    }
+
+    public int getXpReward(int hand){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        return oneXpReward;
+    }
+
+    public void setXpReward(int hand, int xpReward){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        oneXpReward = xpReward;
+    }
+
+    public int getSbReward(int hand){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        return oneSbReward;
+    }
+
+    public void setSbReward(int hand, int sbReward){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        oneSbReward = sbReward;
+    }
+
+    public Stat[] getIncrementStats(int hand){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        return oneIncrementStats;
+    }
+
+    public void setIncrementStats(int hand, Stat[] incrementStats){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        oneIncrementStats = incrementStats;
+    }
+
     public SplitPlayerHand splitHand(){
-        if (this instanceof SplitPlayerHand) throw new IllegalStateException("You cannot split an already splitted hand");
+        if (isHandSplitted()) throw new IllegalStateException("You cannot split an already splitted hand");
         return new SplitPlayerHand(this);
+    }
+
+    public boolean isHandSplitted(){
+        return this instanceof SplitPlayerHand;
     }
 
 }

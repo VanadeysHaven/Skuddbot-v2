@@ -110,6 +110,7 @@ public class ReactionUtils {
         return null;
     }
 
-
-
+    public static boolean isRegistered(ReactionButton button) {
+        return buttons.contains(button);
+    }
 }

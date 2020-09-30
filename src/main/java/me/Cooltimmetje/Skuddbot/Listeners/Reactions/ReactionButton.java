@@ -77,6 +77,10 @@ public class ReactionButton {
         ReactionUtils.unregisterButton(this);
     }
 
+    public boolean isRegistered(){
+        return ReactionUtils.isRegistered(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

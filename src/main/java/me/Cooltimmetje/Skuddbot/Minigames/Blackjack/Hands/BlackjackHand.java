@@ -15,11 +15,12 @@ import java.util.ArrayList;
 public abstract class BlackjackHand {
 
     public static final int ONE = 1;
+    public static final int TWO = 2;
 
-    protected ArrayList<Card> handOne;
+    protected ArrayList<Card> oneHand;
 
     protected BlackjackHand(){
-        handOne = new ArrayList<>();
+        oneHand = new ArrayList<>();
     }
 
     public int getHandValue(int hand){
@@ -72,10 +73,8 @@ public abstract class BlackjackHand {
     }
 
     protected ArrayList<Card> getHand(int hand){
-        if(hand == 1)
-            return handOne;
-
-        return null;
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        return oneHand;
     }
 
 }

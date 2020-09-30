@@ -22,4 +22,8 @@ public class DealerHand extends BlackjackHand {
         addCard(ONE, card);
     }
 
+    public boolean isHoleCardRevealed(){
+        return holeCard == null;
+    }
+
 }

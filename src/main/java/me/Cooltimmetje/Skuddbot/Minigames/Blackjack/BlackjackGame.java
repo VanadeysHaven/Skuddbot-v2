@@ -10,12 +10,17 @@ import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.DealerHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.PlayerHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.SplitPlayerHand;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Represents a game of blackjack.
@@ -39,6 +44,8 @@ public class BlackjackGame {
     private static final String TWO_HANDED_PLAYER_FORMAT = "**PLAYER HANDS:** ({3}/{4})\n" +
             "{5} {6}\n" +
             "{7} {8}";
+    private static final String XP_ICON = "<:xp_icon:458325613015466004>";
+    private static final String REWARDS_FORMAT = "{0} | *+{1}* " + XP_ICON + " | *+{2} Skuddbux*";
 
     //Complete formats
     private static final String NORMAL_FORMAT = HEADER + "\n\n" +
@@ -56,11 +63,15 @@ public class BlackjackGame {
         PLAYER_PLAYING("[playing instructions here]"),
         PLAYER_GOT_21("**You got 21! Dealer playing...**"),
         PLAYER_GOT_BJ("**BLACKJACK! You win!**"),
-        PLAYER_HIGHER_THAN_DEALER("**You win! Your hand has a higher value than that of the dealer."),
-        PLAYER_LOWER_THAN_DEALER("**You lose! Your hand has a lower value than that of the dealer."),
-        PLAYER_TIED_WITH_DEALER("**PUSH! You tied with the dealer."),
+        PLAYER_HIGHER_THAN_DEALER("**You win! Your hand has a higher value than that of the dealer.**"),
+        PLAYER_WIN_DEALER_BUSTED("**You win! The dealer busted.**"),
+        PLAYER_WIN_21("**You got 21! You win!**"),
+        PLAYER_LOWER_THAN_DEALER("**You lose! Your hand has a lower value than that of the dealer.**"),
+        PLAYER_TIED_WITH_DEALER_21("**You got 21, but tied with the dealer.**"),
+        PLAYER_TIED_WITH_DEALER("**PUSH! You tied with the dealer.**"),
         PLAYER_STANDING("**Standing. Dealer playing...**"),
-        PLAYER_BUSTED("You busted, better luck next time.");
+        PLAYER_BUSTED("**You busted, better luck next time.**"),
+        GAME_ENDED("*Game ended, see outcomes and rewards above.*");
 
         @Getter private String instruction;
 
@@ -138,7 +149,7 @@ public class BlackjackGame {
     private void preGameChecks(){
         if(playerHand.isBlackjack(BlackjackHand.ONE)){
             playingInstruction = PlayingInstruction.PLAYER_GOT_BJ;
-            endGame();
+            endGame(true);
             return;
         }
         if(playerHand.getHandValue(BlackjackHand.ONE) == 21) {
@@ -164,7 +175,7 @@ public class BlackjackGame {
     }
 
     private String formatMessage(){
-        if(isHandSplit())
+        if(playerHand.isHandSplitted())
             return formatSplitHand();
         else
             return formatSingleHand();
@@ -186,26 +197,32 @@ public class BlackjackGame {
         int dealerHandValue = dealerHand.getHandValue(BlackjackHand.ONE);
         String dealerHandStr = dealerHand.formatHand(BlackjackHand.ONE);
         int firstPlayerHandValue = playerHand.getHandValue(BlackjackHand.ONE);
-        int secondPlayerHandValue = getSplitHand().getHandValue(SplitPlayerHand.TWO);
+        int secondPlayerHandValue = getSplitHand().getHandValue(BlackjackHand.TWO);
         String firstPlayerHandStr = playerHand.formatHand(BlackjackHand.ONE);
-        String secondPlayerHandStr = getSplitHand().formatHand(SplitPlayerHand.TWO);
+        String firstPlayerHandState = getCurrentHand() == BlackjackHand.ONE ? Emoji.ARROW_LEFT.getUnicode() : (getCurrentHand() == -1 ? playerHand.getRewardString(BlackjackHand.ONE) : "");
+        String secondPlayerHandStr = getSplitHand().formatHand(BlackjackHand.TWO);
+        String secondPlayerHandState = getCurrentHand() == BlackjackHand.TWO ? Emoji.ARROW_LEFT.getUnicode() : (getCurrentHand() == -1 ? playerHand.getRewardString(BlackjackHand.TWO) : "");
         String playingInstruction = formatPlayingInstructions();
 
-        return MessageFormat.format(SPLIT_FORMAT, playerName, dealerHandValue, dealerHandStr, firstPlayerHandValue, secondPlayerHandValue, firstPlayerHandStr, secondPlayerHandStr, playingInstruction);
+        return MessageFormat.format(SPLIT_FORMAT, playerName, dealerHandValue, dealerHandStr, firstPlayerHandValue, secondPlayerHandValue, firstPlayerHandStr, firstPlayerHandState, secondPlayerHandStr, secondPlayerHandState, playingInstruction);
     }
 
     private String formatPlayingInstructions(){
         if(playingInstruction == PlayingInstruction.PLAYER_PLAYING){
             StringBuilder sb = new StringBuilder(HIT_STAND);
+            sb.append("\n");
             if(doubleDownAllowed)
-                sb.append("\n").append(DOUBLE_DOWN).append(" ");
+                sb.append(DOUBLE_DOWN).append(" ");
             if(splitAllowed)
                 sb.append(SPLIT);
 
             return sb.toString().trim();
         }
 
-        return playingInstruction.getInstruction();
+        if(gameState == GameState.GAME_ENDED && !playerHand.isHandSplitted())
+            return playerHand.getRewardString(BlackjackHand.ONE);
+        else
+            return playingInstruction.getInstruction();
     }
 
     private void setupButtons(){
@@ -233,19 +250,34 @@ public class BlackjackGame {
     }
 
     private void hitButton(ReactionButtonClickedEvent event){
-
+        event.undoReaction();
+        hit();
     }
 
     private void hit(){
+        playerHand.addCard(getCurrentHand(), manager.drawCard());
 
+        postMoveChecks();
+        sendMessage();
     }
 
     private void standButton(ReactionButtonClickedEvent event){
+        playingInstruction = PlayingInstruction.PLAYER_STANDING;
+        event.undoReaction();
 
+        stand();
     }
 
     private void stand(){
-
+        if(gameState == GameState.NORMAL_HAND_PLAYING || gameState == GameState.SECOND_SPLIT_HAND_PLAYING) {
+            gameState = GameState.DEALER_PLAYING;
+            sendMessage();
+            setButtonStates();
+            playDealer();
+            endGame(false);
+        } else if (gameState == GameState.FIRST_SPLIT_HAND_PLAYING) {
+            nextHand();
+        } else throw new IllegalStateException("Not allowed to call this function now, player is not playing");
     }
 
 
@@ -265,30 +297,152 @@ public class BlackjackGame {
     }
 
     private void postMoveChecks(){
+        doubleDownAllowed = playerHand.isDoubleDownAllowed(getCurrentHand());
+        splitAllowed = playerHand.isSplitAllowed();
+
+        if(playerHand.getHandValue(getCurrentHand()) == 21) {
+            playingInstruction = PlayingInstruction.PLAYER_GOT_21;
+            stand();
+        } else if (playerHand.getHandValue(getCurrentHand()) > 21){
+            if(!playerHand.isHandSplitted()) {
+                playingInstruction = PlayingInstruction.PLAYER_BUSTED;
+                endGame(true);
+            } else {
+                stand();
+            }
+        }
+    }
+
+    private void playDealer(){
+        dealerHand.revealHoleCard();
+        while(dealerHand.getHandValue(BlackjackHand.ONE) < 17)
+            dealerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+    }
+
+    private void endGame(boolean instantReveal) {
+        gameState = GameState.GAME_ENDED;
+        setButtonStates();
+        message.removeAllReactions();
+        calculateResult(BlackjackHand.ONE);
+        if (playerHand.isHandSplitted())
+            calculateResult(BlackjackHand.TWO);
+
+        if (!dealerHand.isHoleCardRevealed())
+            dealerHand.revealHoleCard();
+
+        if (!instantReveal || playerHand.isHandSplitted()) {
+            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+            message.getChannel().type();
+            exec.schedule(this::showAndReward, 5, TimeUnit.SECONDS);
+        } else {
+            showAndReward();
+        }
+
+        manager.wrapUp(player);
+    }
+
+    private void showAndReward(){
+        sendMessage();
+        SkuddUser su = player.asSkuddUser();
+
+        su.getCurrencies().incrementInt(Currency.SKUDDBUX, playerHand.getSbReward(BlackjackHand.ONE));
+        su.getStats().incrementInt(Stat.EXPERIENCE, playerHand.getXpReward(BlackjackHand.ONE));
+        for(Stat stat : playerHand.getIncrementStats(BlackjackHand.ONE))
+            su.getStats().incrementInt(stat);
+
+        if(playerHand.isHandSplitted()){
+            su.getCurrencies().incrementInt(Currency.SKUDDBUX, playerHand.getSbReward(BlackjackHand.TWO));
+            su.getStats().incrementInt(Stat.EXPERIENCE, playerHand.getXpReward(BlackjackHand.TWO));
+            for(Stat stat : playerHand.getIncrementStats(BlackjackHand.TWO))
+                su.getStats().incrementInt(stat);
+        }
+    }
+
+
+    @Getter
+    private enum Outcome {
+
+        BLACKJACK       (375, 2.5, PlayingInstruction.PLAYER_GOT_BJ,              Stat.BJ_BLACKJACKS,  Stat.BJ_TWENTY_ONES, Stat.BJ_WINS),
+        PLAYER_WINS_21  (225, 2,   PlayingInstruction.PLAYER_WIN_21,              Stat.BJ_TWENTY_ONES, Stat.BJ_WINS                     ),
+        PLAYER_WINS     (150, 2,   PlayingInstruction.PLAYER_HIGHER_THAN_DEALER,  Stat.BJ_WINS                                          ),
+        DEALER_BUSTS    (150, 2,   PlayingInstruction.PLAYER_WIN_DEALER_BUSTED,   Stat.BJ_WINS                                          ),
+        PUSH_21         (100, 1,   PlayingInstruction.PLAYER_TIED_WITH_DEALER_21, Stat.BJ_PUSHES,      Stat.BJ_TWENTY_ONES              ),
+        PUSH            (50,  1,   PlayingInstruction.PLAYER_TIED_WITH_DEALER,    Stat.BJ_PUSHES                                        ),
+        PLAYER_BUSTS    (0,   0,   PlayingInstruction.PLAYER_BUSTED,              Stat.BJ_LOSSES                                        ),
+        PLAYER_LOSES    (0,   0,   PlayingInstruction.PLAYER_LOWER_THAN_DEALER,   Stat.BJ_LOSSES                                        );
+
+        private int xpReward;
+        private double payoutModifier;
+        private PlayingInstruction playingInstruction;
+        private Stat[] incrementStats;
+
+        Outcome(int xpReward, double payoutModifier, PlayingInstruction playingInstruction, Stat... incrementStats) {
+            this.xpReward = xpReward;
+            this.payoutModifier = payoutModifier;
+            this.playingInstruction = playingInstruction;
+            this.incrementStats = incrementStats;
+        }
 
     }
 
-    private void endGame(){
-        gameState = GameState.GAME_ENDED;
+    private void calculateResult(int hand) {
+        Outcome outcome = Outcome.PLAYER_LOSES;
+        if(playerHand.getHandValue(hand) == 21){
+            if(playerHand.isBlackjack(hand)) {
+                outcome = Outcome.BLACKJACK;
+            } else {
+                if(dealerHand.getHandValue(BlackjackHand.ONE) == playerHand.getHandValue(hand)) {
+                    outcome = Outcome.PUSH_21;
+                } else {
+                    outcome = Outcome.PLAYER_WINS_21;
+                }
+            }
+        } else if (playerHand.getHandValue(hand) > 21){
+            outcome = Outcome.PLAYER_BUSTS;
+        } else if (playerHand.getHandValue(hand) < 21) {
+            if(dealerHand.getHandValue(BlackjackHand.ONE) > playerHand.getHandValue(hand)) {
+                if(dealerHand.getHandValue(BlackjackHand.ONE) <= 21) {
+                    outcome = Outcome.PLAYER_LOSES;
+                } else {
+                    outcome = Outcome.DEALER_BUSTS;
+                }
+            } else if (dealerHand.getHandValue(BlackjackHand.ONE) == playerHand.getHandValue(hand)){
+                outcome = Outcome.PUSH;
+            } else if (dealerHand.getHandValue(BlackjackHand.ONE) < playerHand.getHandValue(hand)) {
+                outcome = Outcome.PLAYER_WINS;
+            }
+        }
+
+        playerHand.setIncrementStats(hand, outcome.getIncrementStats());
+        if(playerHand.isDoubled(hand)) {
+            playerHand.setXpReward(hand, outcome.getXpReward() * 2);
+        } else {
+            playerHand.setXpReward(hand, outcome.getXpReward());
+        }
+        int betPayout = (int) (outcome.getPayoutModifier() * playerHand.getBet(hand));
+        playerHand.setSbReward(hand, betPayout);
+        if(outcome != Outcome.PLAYER_BUSTS && outcome != Outcome.PLAYER_LOSES)
+            playerHand.setRewardString(hand, MessageFormat.format(REWARDS_FORMAT, outcome.playingInstruction.getInstruction(), outcome.getXpReward(), betPayout));
+        else
+            playerHand.setRewardString(hand, outcome.playingInstruction.getInstruction());
+
     }
 
     private void nextHand(){
-
+        if(gameState != GameState.FIRST_SPLIT_HAND_PLAYING) throw new IllegalStateException("Cannot cycle to next hand now");
+        gameState = GameState.SECOND_SPLIT_HAND_PLAYING;
+        sendMessage();
+        setButtonStates();
     }
 
     private SplitPlayerHand getSplitHand(){
-        if(!isHandSplit()) throw new IllegalStateException("The hand of the player is not split.");
+        if(!playerHand.isHandSplitted()) throw new IllegalStateException("The hand of the player is not split.");
         return (SplitPlayerHand) playerHand;
     }
 
-    private boolean isHandSplit(){
-        return playerHand instanceof SplitPlayerHand;
-    }
-
-    private void setButtonStates(){
-        if(gameState == GameState.DEALER_PLAYING || gameState == GameState.GAME_ENDED) {
-            for (ReactionButton button : buttons)
-                button.unregister();
+    private void setButtonStates() {
+        if (gameState == GameState.DEALER_PLAYING || gameState == GameState.GAME_ENDED) {
+            for (ReactionButton button : buttons) if (button.isRegistered()) button.unregister();
         } else {
             hitButton.setEnabled(true);
             standButton.setEnabled(true);
@@ -298,6 +452,15 @@ public class BlackjackGame {
             if(splitButton != null)
                 splitButton.setEnabled(splitAllowed);
         }
+    }
+
+    private int getCurrentHand() {
+        if (gameState == GameState.NORMAL_HAND_PLAYING || gameState == GameState.FIRST_SPLIT_HAND_PLAYING)
+            return 1;
+        else if (gameState == GameState.SECOND_SPLIT_HAND_PLAYING)
+            return 2;
+        else
+            return -1;
     }
 
 }

@@ -74,6 +74,24 @@ public class BlackjackGameManager {
         games.add(game);
     }
 
+    public void wrapUp(ServerMember member){
+        wrapUp(member.getId());
+    }
+
+    public void wrapUp(Identifier id){
+        wrapUp(id.getDiscordId());
+    }
+
+    public void wrapUp(long userId){
+        cooldownManager.startCooldown(userId);
+        removeGame(userId);
+    }
+
+    private void removeGame(long userId){
+        games.removeIf(game -> game.getPlayer().getId().getId() == userId);
+    }
+
+
     public Card drawCard(){
         return cardStack.nextCard();
     }

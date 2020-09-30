@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands;
 
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Card;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 
 import java.util.ArrayList;
 
@@ -13,30 +14,131 @@ import java.util.ArrayList;
  */
 public class SplitPlayerHand extends PlayerHand {
 
-    public static final int TWO = 2;
+    protected ArrayList<Card> twoHand;
+    protected int twoBet;
+    protected boolean twoIsDoubled;
+    protected String twoRewardString;
+    protected int twoXpReward;
+    protected int twoSbReward;
+    protected Stat[] twoIncrementStats;
 
-    protected ArrayList<Card> handTwo;
-    protected int betTwo;
 
     public SplitPlayerHand(PlayerHand hand) {
-        super(hand.betOne);
-        handTwo = new ArrayList<>();
-        ArrayList<Card> initialHand = hand.handOne;
-        int bet = hand.betOne;
+        super(hand.oneBet);
+        twoHand = new ArrayList<>();
+        ArrayList<Card> initialHand = hand.oneHand;
+        int bet = hand.oneBet;
 
         Card secondCard = initialHand.get(1);
         initialHand.remove(secondCard);
-        handOne = initialHand;
+        oneHand = initialHand;
 
-        handTwo.add(secondCard);
-        betTwo = bet;
+        twoHand.add(secondCard);
+        twoBet = bet;
     }
 
+    @Override
     protected ArrayList<Card> getHand(int hand){
         if(hand == 2)
-            return handTwo;
+            return twoHand;
 
         return super.getHand(hand);
+    }
+
+    @Override
+    public int getBet(int hand) {
+        if(hand == 2)
+            return twoBet;
+
+        return super.getBet(hand);
+    }
+
+    @Override
+    public void doubleBet(int hand) {
+        if(hand == 2)
+            twoBet *= 2;
+
+        super.doubleBet(hand);
+    }
+
+    @Override
+    public boolean isDoubled(int hand) {
+        if(hand == 2)
+            return twoIsDoubled;
+
+        return super.isDoubled(hand);
+    }
+
+    @Override
+    public void setDoubled(int hand, boolean isDoubled) {
+        if(hand == 2)
+            twoIsDoubled = isDoubled;
+
+        super.setDoubled(hand, isDoubled);
+    }
+
+    @Override
+    public String getRewardString(int hand) {
+        if(hand == 2)
+            return twoRewardString;
+
+        return super.getRewardString(hand);
+    }
+
+    @Override
+    public void setRewardString(int hand, String rewardString) {
+        if(hand == 2)
+            twoRewardString = rewardString;
+
+        super.setRewardString(hand, rewardString);
+    }
+
+    @Override
+    public int getXpReward(int hand) {
+        if(hand == 2)
+            return twoXpReward;
+
+        return super.getXpReward(hand);
+    }
+
+    @Override
+    public void setXpReward(int hand, int xpReward) {
+        if(hand == 2)
+            twoXpReward = xpReward;
+
+        super.setXpReward(hand, xpReward);
+    }
+
+    @Override
+    public int getSbReward(int hand) {
+        if(hand == 2)
+            return twoSbReward;
+
+        return super.getSbReward(hand);
+    }
+
+    @Override
+    public void setSbReward(int hand, int sbReward) {
+        if(hand == 2)
+            twoSbReward = sbReward;
+
+        super.setSbReward(hand, sbReward);
+    }
+
+    @Override
+    public Stat[] getIncrementStats(int hand) {
+        if(hand == 2)
+            return twoIncrementStats;
+
+        return super.getIncrementStats(hand);
+    }
+
+    @Override
+    public void setIncrementStats(int hand, Stat[] incrementStats) {
+        if(hand == 2)
+            twoIncrementStats = incrementStats;
+
+        super.setIncrementStats(hand, incrementStats);
     }
 
     @Override
