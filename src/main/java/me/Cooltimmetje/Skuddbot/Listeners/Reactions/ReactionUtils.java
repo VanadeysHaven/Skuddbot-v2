@@ -27,11 +27,12 @@ public class ReactionUtils {
     private static ArrayList<ReactionButton> buttons = new ArrayList<>();
 
     public static void run(ReactionAddEvent event) {
+        User user = event.getUser().orElse(null); assert user != null;
         for(DebugReaction reaction : MessagesUtils.reactions){
-            if(event.getUser().isBot()) return;
+            if(user.isBot()) return;
             Message message = event.getMessage().orElse(null); assert message != null;
             if(message.getId() != reaction.getMessage().getId()) continue;
-            if(event.getUser() != reaction.getMessage().getAuthor().asUser().orElse(null) && !reaction.isIgnoreUser()) continue;
+            if(user != reaction.getMessage().getAuthor().asUser().orElse(null) && !reaction.isIgnoreUser()) continue;
 
             Reaction reactionObject = event.getReaction().orElse(null); assert reactionObject != null;
             String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
@@ -69,9 +70,9 @@ public class ReactionUtils {
     }
 
     public static void runClicked(ReactionAddEvent event) {
-        if(event.getUser().isBot()) return;
+        User user = event.getUser().orElse(null); assert user != null;
+        if(user.isBot()) return;
 
-        User user = event.getUser();
         Message message = event.getMessage().orElse(null); assert message != null;
         Reaction reaction = event.getReaction().orElse(null); assert reaction != null;
         ReactionButton button = getButton(user, message, reaction);
@@ -80,9 +81,9 @@ public class ReactionUtils {
     }
 
     public static void runRemoved(ReactionRemoveEvent event){
-        if(event.getUser().isBot()) return;
+        User user = event.getUser().orElse(null); assert user != null;
 
-        User user = event.getUser();
+        if(user.isBot()) return;
         Message message = event.getMessage().orElse(null); assert message != null;
         Reaction reaction = event.getReaction().orElse(null); assert reaction != null;
         ReactionButton button = getButton(user, message, reaction);

@@ -71,7 +71,7 @@ public class Skuddbot {
 
     void buildAndLogin(){
         logger.info("Building client and logging in...");
-        this.api = new DiscordApiBuilder().setToken(token).login().join();
+        this.api = new DiscordApiBuilder().setToken(token).setAllIntents().login().join();
     }
 
     void registerCommands() {

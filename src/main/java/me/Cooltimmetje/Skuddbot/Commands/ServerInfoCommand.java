@@ -8,6 +8,7 @@ import org.javacord.api.entity.channel.ServerVoiceChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 
 import java.util.Optional;
 
@@ -28,12 +29,13 @@ public class ServerInfoCommand extends Command {
     public void run(Message message, String content) {
         Server server = message.getServer().orElse(null); assert server != null;
         EmbedBuilder eb = new EmbedBuilder();
+        User owner = server.getOwner().orElse(null); assert owner != null;
 
         eb.setAuthor(server.getName(), null, server.getIcon().orElse(null));
         eb.setThumbnail(server.getIcon().orElse(null));
         eb.setFooter("Skuddbot " + Main.getSkuddbot().getGlobalSettings().getString(GlobalSetting.VERSION));
         eb.addField("__Server ID:__", server.getId()+"");
-        eb.addInlineField("__Owner:__", server.getOwner().getDiscriminatedName());
+        eb.addInlineField("__Owner:__", owner.getDiscriminatedName());
         eb.addInlineField("__Member count:__", server.getMemberCount()+"");
         eb.addInlineField("__Role count:__", server.getRoles().size()+"");
         eb.addInlineField("__Region:__", server.getRegion().getName());
