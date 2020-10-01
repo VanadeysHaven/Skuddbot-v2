@@ -18,6 +18,8 @@ import org.javacord.api.entity.message.Message;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -421,6 +423,10 @@ public class BlackjackGame {
             this.incrementStats = incrementStats;
         }
 
+        public List<Stat> getIncrementStatsAsList(){
+            return Arrays.asList(incrementStats.clone());
+        }
+
     }
 
     private void calculateResult(int hand) {
@@ -451,7 +457,20 @@ public class BlackjackGame {
             }
         }
 
-        playerHand.setIncrementStats(hand, outcome.getIncrementStats());
+        if(playerHand.isDoubled(hand)){
+            List<Stat> stats = outcome.getIncrementStatsAsList();
+            if(outcome == Outcome.BLACKJACK || outcome == Outcome.PLAYER_WINS_21 || outcome == Outcome.DEALER_BUSTS)
+                stats.add(Stat.BJ_DD_WINS);
+            if(outcome == Outcome.PUSH || outcome == Outcome.PUSH_21)
+                stats.add(Stat.BJ_DD_PUSHES);
+            if(outcome == Outcome.PLAYER_BUSTS || outcome == Outcome.PLAYER_LOSES)
+                stats.add(Stat.BJ_DD_LOSSES);
+
+            playerHand.setIncrementStats(hand, (Stat[]) stats.toArray());
+        } else {
+            playerHand.setIncrementStats(hand, outcome.getIncrementStats());
+        }
+
         if(playerHand.isDoubled(hand)) {
             playerHand.setXpReward(hand, outcome.getXpReward() * 2);
         } else {
