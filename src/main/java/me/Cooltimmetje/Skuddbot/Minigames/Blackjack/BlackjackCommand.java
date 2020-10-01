@@ -47,6 +47,10 @@ public class BlackjackCommand extends Command {
 
         int bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
         if(args.length > 1) {
+//            if((args[1].equalsIgnoreCase("double") || args[1].equalsIgnoreCase("split")) && su.getPermissions().hasPermission(PermissionLevel.BOT_ADMIN)) {
+//                manager.startNewGame(su.asMember(), message.getChannel(), args[1].toLowerCase()); //Just for testing purposes, it's NOT rigged.
+//                return;
+//            }
             String betStr = args[1];
             if(betStr.equalsIgnoreCase("all"))
                 bet = su.getCurrencies().getInt(Currency.SKUDDBUX);

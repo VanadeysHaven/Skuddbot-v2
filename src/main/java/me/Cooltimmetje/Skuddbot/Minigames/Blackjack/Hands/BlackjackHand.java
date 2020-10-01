@@ -49,15 +49,7 @@ public abstract class BlackjackHand {
     }
 
     public boolean isBlackjack(int hand){
-        ArrayList<Card> handList = getHand(hand);
-        if(handList.size() != 2) return false;
-        Card cardOne = handList.get(0);
-        Card cardTwo = handList.get(1);
-
-        if(cardOne.getRank() != Card.Rank.ACE && cardOne.getRank().getValue() != 10) return false;
-        if(cardTwo.getRank() != Card.Rank.ACE && cardTwo.getRank().getValue() != 10) return false;
-
-        return cardOne.getRank() != cardTwo.getRank();
+        return getHand(hand).size() == 2 && getHandValue(hand) == 21;
     }
 
     public String formatHand(int hand){

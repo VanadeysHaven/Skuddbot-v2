@@ -35,7 +35,7 @@ public class BlackjackGame {
     }
 
     //Format pieces
-    private static final String HEADER = Emoji.BLACK_JOKER.getUnicode() + " **BLACKJACK** | *{0}*";
+    private static final String HEADER = Emoji.BLACK_JOKER.getUnicode() + " **BLACKJACK** [beta] | *{0}*";
     private static final String DEALER_FORMAT = "**DEALER HAND:** ({1}) *Dealer draws to 16, stands on 17.*\n" +
             "{2}";
     private static final String ONE_HANDED_PLAYER_FORMAT = "**PLAYER HAND:** ({3}) | **BET:** {4}\n" +
@@ -69,6 +69,7 @@ public class BlackjackGame {
         PLAYER_TIED_WITH_DEALER_21("**You got 21, but tied with the dealer.**"),
         PLAYER_TIED_WITH_DEALER("**PUSH! You tied with the dealer.**"),
         PLAYER_STANDING("**Standing. Dealer playing...**"),
+        PLAYER_DOUBLED_DOWN("**Doubled down... Dealer playing.**"),
         PLAYER_BUSTED("**You busted, better luck next time.**"),
         GAME_ENDED("*Game ended, see outcomes and rewards above.*");
 
@@ -127,28 +128,33 @@ public class BlackjackGame {
         playerHand = new PlayerHand(initialBet);
         dealerHand = new DealerHand();
 
-        if (handInstruction == null) {
-            playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
-            dealerHand.addCard(BlackjackHand.ONE, manager.drawCard());
-            playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
-            dealerHand.setHoleCard(manager.drawCard());
-            return;
-        } else if (handInstruction.equalsIgnoreCase("double")) {
-            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.FOUR, Card.Suit.HEARTS));
-            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.SIX, Card.Suit.CLUBS));
-        } else if (handInstruction.equalsIgnoreCase("split")) {
-            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.ACE, Card.Suit.HEARTS));
-            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.ACE, Card.Suit.CLUBS));
-        }
-
+        playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
         dealerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+        playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
         dealerHand.setHoleCard(manager.drawCard());
+
+//        if (handInstruction == null) {
+//        playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+//        dealerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+//        playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+//        dealerHand.setHoleCard(manager.drawCard());
+//            return;
+//        } else if (handInstruction.equalsIgnoreCase("double")) {
+//            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.FOUR, Card.Suit.HEARTS));
+//            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.SIX, Card.Suit.CLUBS));
+//        } else if (handInstruction.equalsIgnoreCase("split")) {
+//            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.TWO, Card.Suit.HEARTS));
+//            playerHand.addCard(BlackjackHand.ONE, new Card(Card.Rank.TWO, Card.Suit.CLUBS));
+//        }
+//
+//        dealerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+//        dealerHand.setHoleCard(manager.drawCard());
     }
 
     private void preGameChecks(){
         if(playerHand.isBlackjack(BlackjackHand.ONE)){
             playingInstruction = PlayingInstruction.PLAYER_GOT_BJ;
-            endGame(true);
+            endGame();
             return;
         }
         if(playerHand.getHandValue(BlackjackHand.ONE) == 21) {
@@ -201,9 +207,9 @@ public class BlackjackGame {
         int firstBet = playerHand.getBet(BlackjackHand.ONE);
         int secondBet = playerHand.getBet(BlackjackHand.TWO);
         String firstPlayerHandStr = playerHand.formatHand(BlackjackHand.ONE);
-        String firstPlayerHandState = getCurrentHand() == BlackjackHand.ONE ? Emoji.ARROW_LEFT.getUnicode() : (getCurrentHand() == -1 ? playerHand.getRewardString(BlackjackHand.ONE) : "");
+        String firstPlayerHandState = currentHand() == BlackjackHand.ONE ? Emoji.ARROW_LEFT.getUnicode() : (gameState == GameState.GAME_ENDED ? playerHand.getRewardString(BlackjackHand.ONE) : "");
         String secondPlayerHandStr = playerHand.formatHand(BlackjackHand.TWO);
-        String secondPlayerHandState = getCurrentHand() == BlackjackHand.TWO ? Emoji.ARROW_LEFT.getUnicode() : (getCurrentHand() == -1 ? playerHand.getRewardString(BlackjackHand.TWO) : "");
+        String secondPlayerHandState = currentHand() == BlackjackHand.TWO ? Emoji.ARROW_LEFT.getUnicode() : (gameState == GameState.GAME_ENDED ? playerHand.getRewardString(BlackjackHand.TWO) : "");
         String playingInstruction = formatPlayingInstructions();
 
         return MessageFormat.format(SPLIT_FORMAT, playerName, dealerHandValue, dealerHandStr, firstPlayerHandValue, secondPlayerHandValue, firstBet, secondBet, firstPlayerHandStr, firstPlayerHandState, secondPlayerHandStr, secondPlayerHandState, playingInstruction);
@@ -257,10 +263,12 @@ public class BlackjackGame {
     }
 
     private void hit(){
-        playerHand.addCard(getCurrentHand(), manager.drawCard());
+        playerHand.addCard(currentHand(), manager.drawCard());
 
         postMoveChecks();
-        sendMessage();
+
+        if(playerHand.getHandValue(currentHand()) < 20)
+            sendMessage();
     }
 
     private void standButton(ReactionButtonClickedEvent event){
@@ -276,40 +284,62 @@ public class BlackjackGame {
             sendMessage();
             setButtonStates();
             playDealer();
-            endGame(false);
+            endGame();
         } else if (gameState == GameState.FIRST_SPLIT_HAND_PLAYING) {
             nextHand();
+            postMoveChecks();
         } else throw new IllegalStateException("Not allowed to call this function now, player is not playing");
     }
 
 
     private void doubleDownButton(ReactionButtonClickedEvent event){
+        event.undoReaction();
+        SkuddUser su = player.asSkuddUser();
+
+        if(su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, playerHand.getBet(currentHand())))
+            su.getCurrencies().incrementInt(Currency.SKUDDBUX, playerHand.getBet(currentHand()) * -1);
+        else
+            return;
+
+        playingInstruction = PlayingInstruction.PLAYER_DOUBLED_DOWN;
+
+        doubleDown();
     }
 
     private void doubleDown(){
-
+        playerHand.doubleDown(currentHand(), manager.drawCard());
+        stand();
     }
 
     private void splitButton(ReactionButtonClickedEvent event){
-
+        split();
     }
 
     private void split(){
-
+        playerHand = playerHand.splitHand();
+        playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
+        playerHand.addCard(BlackjackHand.TWO, manager.drawCard());
+        gameState = GameState.FIRST_SPLIT_HAND_PLAYING;
+        postMoveChecks();
+        sendMessage();
     }
 
     private void postMoveChecks(){
-        doubleDownAllowed = playerHand.isDoubleDownAllowed(getCurrentHand());
+        doubleDownAllowed = playerHand.isDoubleDownAllowed(currentHand());
         splitAllowed = playerHand.isSplitAllowed();
 
-        if(playerHand.getHandValue(getCurrentHand()) == 21) {
+        setButtonStates();
+
+        if(playerHand.getHandValue(currentHand()) == 21) {
             playingInstruction = PlayingInstruction.PLAYER_GOT_21;
             stand();
-        } else if (playerHand.getHandValue(getCurrentHand()) > 21){
+        } else if (playerHand.getHandValue(currentHand()) > 21){
             if(!playerHand.isHandSplitted()) {
                 playingInstruction = PlayingInstruction.PLAYER_BUSTED;
-                endGame(true);
+                endGame();
             } else {
+                if(gameState == GameState.SECOND_SPLIT_HAND_PLAYING)
+                    playingInstruction = PlayingInstruction.PLAYER_STANDING;
                 stand();
             }
         }
@@ -321,10 +351,11 @@ public class BlackjackGame {
             dealerHand.addCard(BlackjackHand.ONE, manager.drawCard());
     }
 
-    private void endGame(boolean instantReveal) {
+    private void endGame() {
         gameState = GameState.GAME_ENDED;
         setButtonStates();
-        message.removeAllReactions();
+        if(message != null)
+            message.removeAllReactions();
         calculateResult(BlackjackHand.ONE);
         if (playerHand.isHandSplitted())
             calculateResult(BlackjackHand.TWO);
@@ -332,18 +363,21 @@ public class BlackjackGame {
         if (!dealerHand.isHoleCardRevealed())
             dealerHand.revealHoleCard();
 
-        if (!instantReveal || playerHand.isHandSplitted()) {
+        int handValue = playerHand.getHandValue(BlackjackHand.ONE);
+        boolean delayReveal = playerHand.isHandSplitted() || (handValue <= 21 && !playerHand.isBlackjack(BlackjackHand.ONE));
+
+        if (delayReveal) {
             ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
             message.getChannel().type();
             exec.schedule(this::showAndReward, 5, TimeUnit.SECONDS);
         } else {
             showAndReward();
         }
-
-        manager.wrapUp(player);
     }
 
     private void showAndReward(){
+        if(playerHand.isHandSplitted())
+            playingInstruction = PlayingInstruction.GAME_ENDED;
         sendMessage();
         SkuddUser su = player.asSkuddUser();
 
@@ -358,6 +392,8 @@ public class BlackjackGame {
             for(Stat stat : playerHand.getIncrementStats(BlackjackHand.TWO))
                 su.getStats().incrementInt(stat);
         }
+
+        manager.wrapUp(player);
     }
 
 
@@ -424,7 +460,7 @@ public class BlackjackGame {
         int betPayout = (int) (outcome.getPayoutModifier() * playerHand.getBet(hand));
         playerHand.setSbReward(hand, betPayout);
         if(outcome != Outcome.PLAYER_BUSTS && outcome != Outcome.PLAYER_LOSES)
-            playerHand.setRewardString(hand, MessageFormat.format(REWARDS_FORMAT, outcome.playingInstruction.getInstruction(), outcome.getXpReward(), betPayout));
+            playerHand.setRewardString(hand, MessageFormat.format(REWARDS_FORMAT, outcome.playingInstruction.getInstruction(), playerHand.isDoubled(hand) ? outcome.getXpReward() * 2 : outcome.getXpReward(), betPayout));
         else
             playerHand.setRewardString(hand, outcome.playingInstruction.getInstruction());
 
@@ -433,6 +469,7 @@ public class BlackjackGame {
     private void nextHand(){
         if(gameState != GameState.FIRST_SPLIT_HAND_PLAYING) throw new IllegalStateException("Cannot cycle to next hand now");
         gameState = GameState.SECOND_SPLIT_HAND_PLAYING;
+        playingInstruction = PlayingInstruction.PLAYER_PLAYING;
         sendMessage();
         setButtonStates();
     }
@@ -451,7 +488,7 @@ public class BlackjackGame {
         }
     }
 
-    private int getCurrentHand() {
+    private int currentHand() {
         if (gameState == GameState.NORMAL_HAND_PLAYING || gameState == GameState.FIRST_SPLIT_HAND_PLAYING)
             return 1;
         else if (gameState == GameState.SECOND_SPLIT_HAND_PLAYING)

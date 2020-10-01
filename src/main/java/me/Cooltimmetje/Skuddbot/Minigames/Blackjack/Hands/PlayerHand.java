@@ -35,10 +35,11 @@ public class PlayerHand extends BlackjackHand {
     public boolean isSplitAllowed(){
         if(this instanceof SplitPlayerHand) return false;
         ArrayList<Card> handList = getHand(ONE);
+        if(handList.size() != 2) return false;
         Card cardOne = handList.get(0);
         Card cardTwo = handList.get(1);
 
-        return cardOne.getSuit() == cardTwo.getSuit();
+        return cardOne.getRank() == cardTwo.getRank();
     }
 
     public int getBet(int hand){
@@ -47,23 +48,19 @@ public class PlayerHand extends BlackjackHand {
         return oneBet;
     }
 
-    public void doubleBet(int hand){
+    public void doubleDown(int hand, Card card){
         if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
         if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+
         oneBet *= 2;
+        oneIsDoubled = true;
+        addCard(1, card);
     }
 
     public boolean isDoubled(int hand){
         if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
         if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
         return oneIsDoubled;
-    }
-
-    public void setDoubled(int hand, boolean isDoubled){
-        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
-        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
-
-        oneIsDoubled = isDoubled;
     }
 
     public String getRewardString(int hand){
