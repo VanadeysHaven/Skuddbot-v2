@@ -54,11 +54,15 @@ public class SplitPlayerHand extends PlayerHand {
     }
 
     @Override
-    public void doubleBet(int hand) {
-        if(hand == 2)
+    public void doubleDown(int hand, Card card) {
+        if(hand == 2) {
             twoBet *= 2;
+            twoIsDoubled = true;
+            addCard(2, card);
+            return;
+        }
 
-        super.doubleBet(hand);
+        super.doubleDown(hand, card);
     }
 
     @Override
@@ -67,14 +71,6 @@ public class SplitPlayerHand extends PlayerHand {
             return twoIsDoubled;
 
         return super.isDoubled(hand);
-    }
-
-    @Override
-    public void setDoubled(int hand, boolean isDoubled) {
-        if(hand == 2)
-            twoIsDoubled = isDoubled;
-
-        super.setDoubled(hand, isDoubled);
     }
 
     @Override
@@ -87,8 +83,10 @@ public class SplitPlayerHand extends PlayerHand {
 
     @Override
     public void setRewardString(int hand, String rewardString) {
-        if(hand == 2)
+        if(hand == 2) {
             twoRewardString = rewardString;
+            return;
+        }
 
         super.setRewardString(hand, rewardString);
     }
@@ -103,8 +101,10 @@ public class SplitPlayerHand extends PlayerHand {
 
     @Override
     public void setXpReward(int hand, int xpReward) {
-        if(hand == 2)
+        if(hand == 2) {
             twoXpReward = xpReward;
+            return;
+        }
 
         super.setXpReward(hand, xpReward);
     }
@@ -119,8 +119,11 @@ public class SplitPlayerHand extends PlayerHand {
 
     @Override
     public void setSbReward(int hand, int sbReward) {
-        if(hand == 2)
+        if(hand == 2) {
             twoSbReward = sbReward;
+            return;
+        }
+
 
         super.setSbReward(hand, sbReward);
     }
@@ -135,8 +138,10 @@ public class SplitPlayerHand extends PlayerHand {
 
     @Override
     public void setIncrementStats(int hand, Stat[] incrementStats) {
-        if(hand == 2)
+        if(hand == 2) {
             twoIncrementStats = incrementStats;
+            return;
+        }
 
         super.setIncrementStats(hand, incrementStats);
     }
