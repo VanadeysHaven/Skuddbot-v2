@@ -19,7 +19,6 @@ import org.javacord.api.entity.message.Message;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -423,8 +422,8 @@ public class BlackjackGame {
             this.incrementStats = incrementStats;
         }
 
-        public List<Stat> getIncrementStatsAsList(){
-            return Arrays.asList(incrementStats.clone());
+        public ArrayList<Stat> getIncrementStatsAsList(){
+            return new ArrayList<>(Arrays.asList(incrementStats.clone()));
         }
 
     }
@@ -458,7 +457,7 @@ public class BlackjackGame {
         }
 
         if(playerHand.isDoubled(hand)){
-            List<Stat> stats = outcome.getIncrementStatsAsList();
+            ArrayList<Stat> stats = outcome.getIncrementStatsAsList();
             if(outcome == Outcome.BLACKJACK || outcome == Outcome.PLAYER_WINS_21 || outcome == Outcome.DEALER_BUSTS)
                 stats.add(Stat.BJ_DD_WINS);
             if(outcome == Outcome.PUSH || outcome == Outcome.PUSH_21)
@@ -466,7 +465,9 @@ public class BlackjackGame {
             if(outcome == Outcome.PLAYER_BUSTS || outcome == Outcome.PLAYER_LOSES)
                 stats.add(Stat.BJ_DD_LOSSES);
 
-            playerHand.setIncrementStats(hand, (Stat[]) stats.toArray());
+            Stat[] arr = new Stat[stats.size()];
+            arr = stats.toArray(arr);
+            playerHand.setIncrementStats(hand, arr);
         } else {
             playerHand.setIncrementStats(hand, outcome.getIncrementStats());
         }
