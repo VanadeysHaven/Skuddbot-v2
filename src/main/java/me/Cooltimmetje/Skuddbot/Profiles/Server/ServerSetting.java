@@ -84,8 +84,12 @@ public enum ServerSetting {
 
     public static int getPagesAmount(int length){
         int settingsAmount = values().length;
+        int pageAmount = settingsAmount / length;
 
-        return settingsAmount / length;
+        if(settingsAmount % length == 0)
+            return pageAmount;
+        else
+            return pageAmount + 1;
     }
 
     public static void saveToDatabase(){
