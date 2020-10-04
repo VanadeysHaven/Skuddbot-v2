@@ -272,8 +272,10 @@ public class BlackjackGame {
 
         postMoveChecks();
 
-        if(playerHand.getHandValue(currentHand()) < 20)
-            sendMessage();
+        int currentHand = currentHand();
+        if(currentHand == 1 || currentHand == 2)
+            if(playerHand.getHandValue(currentHand) < 20)
+                sendMessage();
     }
 
     private void standButton(ReactionButtonClickedEvent event){
