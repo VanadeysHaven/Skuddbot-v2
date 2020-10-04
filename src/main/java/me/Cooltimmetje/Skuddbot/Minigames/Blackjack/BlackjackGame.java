@@ -19,6 +19,7 @@ import org.javacord.api.entity.message.Message;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -382,21 +383,39 @@ public class BlackjackGame {
         sendMessage();
         SkuddUser su = player.asSkuddUser();
 
-        su.getCurrencies().incrementInt(Currency.SKUDDBUX, playerHand.getSbReward(BlackjackHand.ONE));
-        su.getStats().incrementInt(Stat.EXPERIENCE, playerHand.getXpReward(BlackjackHand.ONE));
-        for(Stat stat : playerHand.getIncrementStats(BlackjackHand.ONE))
-            su.getStats().incrementInt(stat);
+        int sbReward = 0;
+        int xpReward = 0;
+        HashMap<Stat,Integer> statAmounts = new HashMap<>();
+
+        sbReward += playerHand.getSbReward(BlackjackHand.ONE);
+        xpReward += playerHand.getXpReward(BlackjackHand.ONE);
+        for(Stat stat : playerHand.getIncrementStats(BlackjackHand.ONE)) {
+            if(statAmounts.containsKey(stat))
+                statAmounts.put(stat, statAmounts.get(stat) + 1);
+            else
+                statAmounts.put(stat, 1);
+        }
 
         if(playerHand.isHandSplitted()){
-            su.getCurrencies().incrementInt(Currency.SKUDDBUX, playerHand.getSbReward(BlackjackHand.TWO));
-            su.getStats().incrementInt(Stat.EXPERIENCE, playerHand.getXpReward(BlackjackHand.TWO));
-            for(Stat stat : playerHand.getIncrementStats(BlackjackHand.TWO))
-                su.getStats().incrementInt(stat);
+            sbReward += playerHand.getSbReward(BlackjackHand.TWO);
+            xpReward += playerHand.getXpReward(BlackjackHand.TWO);
+            for(Stat stat : playerHand.getIncrementStats(BlackjackHand.TWO)) {
+                if(statAmounts.containsKey(stat))
+                    statAmounts.put(stat, statAmounts.get(stat) + 1);
+                else
+                    statAmounts.put(stat, 1);
+            }
         }
+
+        if(sbReward > 0)
+            su.getCurrencies().incrementInt(Currency.SKUDDBUX, sbReward);
+        if(xpReward > 0)
+            su.getStats().incrementInt(Stat.EXPERIENCE, xpReward);
+        for(Stat stat : statAmounts.keySet())
+            su.getStats().incrementInt(stat, statAmounts.get(stat));
 
         manager.wrapUp(player);
     }
-
 
     @Getter
     private enum Outcome {
