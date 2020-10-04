@@ -9,7 +9,6 @@ import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.BlackjackHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.DealerHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.PlayerHand;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
-import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSettingsContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
@@ -428,8 +427,7 @@ public class BlackjackGame {
         if(xpReward > 0)
             su.getStats().incrementInt(Stat.EXPERIENCE, xpReward);
         if(jackpot > 0) {
-            ServerSettingsContainer ss = ServerManager.getInstance().getServer(su.getId().getServerId()).getSettings();
-            ss.setInt(ServerSetting.JACKPOT, ss.getInt(ServerSetting.JACKPOT) + jackpot);
+            ServerManager.getInstance().getServer(su.getId().getServerId()).getSettings().incrementInt(ServerSetting.JACKPOT, jackpot);
         }
         for(Stat stat : statAmounts.keySet())
             su.getStats().incrementInt(stat, statAmounts.get(stat));
