@@ -318,6 +318,15 @@ public class BlackjackGame {
     }
 
     private void splitButton(ReactionButtonClickedEvent event){
+        SkuddUser su = player.asSkuddUser();
+
+        if(su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, playerHand.getBet(currentHand())))
+            su.getCurrencies().incrementInt(Currency.SKUDDBUX, playerHand.getBet(currentHand()) * -1);
+        else {
+            event.undoReaction();
+            return;
+        }
+
         split();
     }
 
