@@ -19,7 +19,7 @@ public enum GlobalSetting {
     BUILD_TIME     ("build_time",      "Built at",        ValueType.STRING,  "02/02/2020 20:02 (GMT)",     true ),
     BRANCH         ("branch",          "Branch",          ValueType.STRING,  "master",                     false),
     CURRENT_AVATAR ("current_avatar",  "Current avatar",  ValueType.STRING,  "DEFAULT",                    false),
-    VERSION        ("version",         "Version",         ValueType.STRING,  "2.0",                        false),
+    VERSION        ("version",         "Version",         ValueType.STRING,  "2.0",                        true ),
     SALUTE_COOLDOWN("salute_cooldown", "Salute Cooldown", ValueType.BOOLEAN, "false",                      false);
 
     private String dbReference;
