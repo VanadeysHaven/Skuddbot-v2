@@ -19,6 +19,7 @@ public class PlayerHand extends BlackjackHand {
     protected String oneRewardString;
     protected int oneXpReward;
     protected int oneSbReward;
+    protected int oneJackpot;
     protected Stat[] oneIncrementStats;
 
     public PlayerHand(int bet){
@@ -97,6 +98,18 @@ public class PlayerHand extends BlackjackHand {
         if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
         if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
         oneSbReward = sbReward;
+    }
+
+    public int getJackpot(int hand){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        return oneJackpot;
+    }
+
+    public void setJackpot(int hand, int jackpot){
+        if(hand != 1 && hand != 2) throw new IllegalArgumentException("Hand must be either 1 or 2.");
+        if(hand == 2 && !isHandSplitted()) throw new IllegalArgumentException("Hand must be 1 on non-splitted hands");
+        oneJackpot = jackpot;
     }
 
     public Stat[] getIncrementStats(int hand){

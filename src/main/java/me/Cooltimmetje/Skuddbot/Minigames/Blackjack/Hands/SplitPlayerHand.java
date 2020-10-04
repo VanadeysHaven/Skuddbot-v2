@@ -20,6 +20,7 @@ public class SplitPlayerHand extends PlayerHand {
     protected String twoRewardString;
     protected int twoXpReward;
     protected int twoSbReward;
+    protected int twoJackpot;
     protected Stat[] twoIncrementStats;
 
 
@@ -126,6 +127,22 @@ public class SplitPlayerHand extends PlayerHand {
 
 
         super.setSbReward(hand, sbReward);
+    }
+
+    @Override
+    public int getJackpot(int hand) {
+        if(hand == 2)
+            return twoJackpot;
+
+        return super.getJackpot(hand);
+    }
+
+    @Override
+    public void setJackpot(int hand, int jackpot) {
+        if(hand == 2){
+            twoJackpot = jackpot;
+        }
+        super.setJackpot(hand, jackpot);
     }
 
     @Override

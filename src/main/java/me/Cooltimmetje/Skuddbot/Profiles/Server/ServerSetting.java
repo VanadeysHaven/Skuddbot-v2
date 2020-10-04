@@ -33,6 +33,7 @@ public enum ServerSetting {
     ROLE_ON_JOIN            ("role_on_join",            "This role will be granted to new users when they join the server.",            ValueType.STRING,  null,                   Category.DISCORD,         true ),
     ALLOW_MSG_LVL_UP_NOTIFY ("allow_msg_lvl_up_notify", "When set to false, users will not be notified by message when they level up.", ValueType.BOOLEAN, "true",                 Category.DISCORD,         false),
     ARENA_NAME              ("arena_name",              "This is the name of the arena used in various minigames.",                     ValueType.STRING,  "Skuddbot's Colosseum", Category.MINIGAMES,       true ),
+    JACKPOT                 ("jackpot",                 "Defines the Jackpot amount. (Value updates automatically)",                    ValueType.INTEGER, "0",                    Category.MINIGAMES,       false),
     COMMAND_PREFIX          ("command_prefix",          "The command prefix you can change this to avoid confilcts with other bots.",   ValueType.STRING,  "!",                    Category.COMMANDS,        false),
     ALLOW_MULTI_IMG         ("allow_multi_img",         "Enables the use of multi images in commands like !puppy and !kitty.",          ValueType.BOOLEAN, "true",                 Category.COMMANDS,        false),
     DAILY_CURRENCY_BONUS    ("daily_currency_bonus",    "Defines the base amount of currency a user gets per daily bonus claim.",       ValueType.INTEGER, "100",                  Category.DAILY_BONUS,     false),

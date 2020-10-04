@@ -8,6 +8,9 @@ import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.BlackjackHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.DealerHand;
 import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Hands.PlayerHand;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSettingsContainer;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -47,6 +50,7 @@ public class BlackjackGame {
             "{9} {10}";
     private static final String XP_ICON = "<:xp_icon:458325613015466004>";
     private static final String REWARDS_FORMAT = "{0} | *+{1}* " + XP_ICON + " | *+{2} Skuddbux*";
+    private static final String LOST_FORMAT = "{0} | **ADDED TO JACKPOT:** *{1} Skuddbux*";
 
     //Complete formats
     private static final String NORMAL_FORMAT = HEADER + "\n\n" +
@@ -385,10 +389,12 @@ public class BlackjackGame {
 
         int sbReward = 0;
         int xpReward = 0;
+        int jackpot = 0;
         HashMap<Stat,Integer> statAmounts = new HashMap<>();
 
         sbReward += playerHand.getSbReward(BlackjackHand.ONE);
         xpReward += playerHand.getXpReward(BlackjackHand.ONE);
+        jackpot += playerHand.getJackpot(BlackjackHand.ONE);
         for(Stat stat : playerHand.getIncrementStats(BlackjackHand.ONE)) {
             if(statAmounts.containsKey(stat))
                 statAmounts.put(stat, statAmounts.get(stat) + 1);
@@ -399,6 +405,7 @@ public class BlackjackGame {
         if(playerHand.isHandSplitted()){
             sbReward += playerHand.getSbReward(BlackjackHand.TWO);
             xpReward += playerHand.getXpReward(BlackjackHand.TWO);
+            jackpot += playerHand.getJackpot(BlackjackHand.TWO);
             for(Stat stat : playerHand.getIncrementStats(BlackjackHand.TWO)) {
                 if(statAmounts.containsKey(stat))
                     statAmounts.put(stat, statAmounts.get(stat) + 1);
@@ -411,6 +418,10 @@ public class BlackjackGame {
             su.getCurrencies().incrementInt(Currency.SKUDDBUX, sbReward);
         if(xpReward > 0)
             su.getStats().incrementInt(Stat.EXPERIENCE, xpReward);
+        if(jackpot > 0) {
+            ServerSettingsContainer ss = ServerManager.getInstance().getServer(su.getId().getServerId()).getSettings();
+            ss.setInt(ServerSetting.JACKPOT, ss.getInt(ServerSetting.JACKPOT) + jackpot);
+        }
         for(Stat stat : statAmounts.keySet())
             su.getStats().incrementInt(stat, statAmounts.get(stat));
 
@@ -500,8 +511,10 @@ public class BlackjackGame {
         playerHand.setSbReward(hand, betPayout);
         if(outcome != Outcome.PLAYER_BUSTS && outcome != Outcome.PLAYER_LOSES)
             playerHand.setRewardString(hand, MessageFormat.format(REWARDS_FORMAT, outcome.playingInstruction.getInstruction(), playerHand.isDoubled(hand) ? outcome.getXpReward() * 2 : outcome.getXpReward(), betPayout));
-        else
-            playerHand.setRewardString(hand, outcome.playingInstruction.getInstruction());
+        else {
+            playerHand.setJackpot(hand, playerHand.getBet(hand));
+            playerHand.setRewardString(hand, MessageFormat.format(LOST_FORMAT, outcome.playingInstruction.getInstruction(), playerHand.getBet(hand)));
+        }
 
     }
 
