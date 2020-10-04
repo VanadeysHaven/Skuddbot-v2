@@ -245,6 +245,18 @@ public class FfaGame {
             }
         }
 
+
+        if(!winner.hasBetted()) {
+            int totalAmountOfBets = 0;
+            for (FfaPlayer player : entrants)
+                totalAmountOfBets += player.getBet();
+
+            if (totalAmountOfBets > 0) {
+                sb.append("**ADDED TO JACKPOT:** *").append(totalAmountOfBets).append(" Skuddbux*");
+                server.getSettings().incrementInt(ServerSetting.JACKPOT, totalAmountOfBets);
+            }
+        }
+
         return sb.toString().trim();
     }
 
