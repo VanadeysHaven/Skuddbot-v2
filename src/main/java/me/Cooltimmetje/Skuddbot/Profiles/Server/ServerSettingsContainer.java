@@ -62,6 +62,14 @@ public class ServerSettingsContainer {
         return Integer.parseInt(getString(setting));
     }
 
+    public void incrementInt(ServerSetting setting){
+        incrementInt(setting, 1);
+    }
+
+    public void incrementInt(ServerSetting setting, int incrementBy){
+        setInt(setting, getInt(setting) + incrementBy);
+    }
+
     public void setDouble(ServerSetting setting, double value){
         if(setting.getType() != ValueType.DOUBLE) throw new IllegalArgumentException("Setting " + setting + " is not of type DOUBLE");
         setString(setting, value+"");

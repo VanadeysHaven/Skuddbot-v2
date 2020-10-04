@@ -6,6 +6,7 @@ import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClicked
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
+import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
@@ -46,6 +47,7 @@ public class DonGame {
 
     @Getter private User user;
     private int bet;
+    private int initialBet;
     private int moves;
     private TextChannel channel;
     private Server server;
@@ -57,6 +59,7 @@ public class DonGame {
     public DonGame(User user, int bet, TextChannel channel, Server server, DonGameManager manager){
         this.user = user;
         this.bet = bet;
+        initialBet = bet;
         moves = 0;
         this.channel = channel;
         this.server = server;
@@ -108,9 +111,10 @@ public class DonGame {
     }
 
     private void nothing(){
-        sendEndedFormat("**NOTHING!** You lost!");
+        sendEndedFormat("**NOTHING!** You lost! | **ADDED TO JACKPOT:** *" + initialBet + " Skuddbux*");
 
         getProfile().getStats().incrementInt(Stat.DON_LOSSES);
+        sm.getServer(server.getId()).getSettings().incrementInt(ServerSetting.JACKPOT, initialBet);
 
         endGame();
     }
