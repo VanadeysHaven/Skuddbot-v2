@@ -40,7 +40,7 @@ public class PlayerHand extends BlackjackHand {
         Card cardOne = handList.get(0);
         Card cardTwo = handList.get(1);
 
-        return cardOne.getRank() == cardTwo.getRank();
+        return cardOne.getRank() == cardTwo.getRank() || (cardOne.getRank().isFaceCard() && cardTwo.getRank().isFaceCard());
     }
 
     public int getBet(int hand){
