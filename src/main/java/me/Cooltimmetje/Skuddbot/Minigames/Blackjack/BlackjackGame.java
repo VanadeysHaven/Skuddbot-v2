@@ -274,7 +274,7 @@ public class BlackjackGame {
 
         int currentHand = currentHand();
         if(currentHand == 1 || currentHand == 2)
-            if(playerHand.getHandValue(currentHand) < 20)
+            if(playerHand.getHandValue(currentHand) <= 20)
                 sendMessage();
     }
 
