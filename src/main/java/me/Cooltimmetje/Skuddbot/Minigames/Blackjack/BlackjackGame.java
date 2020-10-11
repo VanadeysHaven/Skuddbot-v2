@@ -394,7 +394,8 @@ public class BlackjackGame {
     private void showAndReward(){
         if(playerHand.isHandSplitted())
             playingInstruction = PlayingInstruction.GAME_ENDED;
-        sendMessage();
+        if (message != null)
+            sendMessage();
         SkuddUser su = player.asSkuddUser();
 
         int sbReward = 0;
