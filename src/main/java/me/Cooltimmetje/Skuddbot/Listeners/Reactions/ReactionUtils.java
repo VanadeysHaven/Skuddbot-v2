@@ -32,7 +32,7 @@ public class ReactionUtils {
             if(user.isBot()) return;
             Message message = event.getMessage().orElse(null); assert message != null;
             if(message.getId() != reaction.getMessage().getId()) continue;
-            if(user != reaction.getMessage().getAuthor().asUser().orElse(null) && !reaction.isIgnoreUser()) continue;
+            if(user.getId() != reaction.getMessage().getAuthor().getId() && !reaction.isIgnoreUser()) continue;
 
             Reaction reactionObject = event.getReaction().orElse(null); assert reactionObject != null;
             String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
