@@ -149,10 +149,10 @@ public class ServerSettingsCommand extends Command {
             Overview overview = it.next();
 
             long expireTimeMillis = OVERVIEW_EXPIRE_TIME * 60 * 1000;
-            if(expireTimeMillis < overview.getTimeSinceInitiation())
+            if(expireTimeMillis < overview.getTimeSinceInitiation()) {
                 overview.unregisterButtons(true);
-
-            overviews.remove(overview);
+                overviews.remove(overview);
+            }
         }
     }
 
