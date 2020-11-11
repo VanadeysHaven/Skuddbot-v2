@@ -39,7 +39,7 @@ public class BlackjackGame {
     }
 
     //Format pieces
-    private static final String HEADER = Emoji.BLACK_JOKER.getUnicode() + " **BLACKJACK** [beta] | *{0}*";
+    private static final String HEADER = Emoji.BLACK_JOKER.getUnicode() + " **BLACKJACK** | *{0}*";
     private static final String DEALER_FORMAT = "**DEALER HAND:** ({1}) *Dealer draws to 16, stands on 17.*\n" +
             "{2}";
     private static final String ONE_HANDED_PLAYER_FORMAT = "**PLAYER HAND:** ({3}) | **BET:** {4}\n" +
