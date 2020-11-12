@@ -85,7 +85,22 @@ public enum Stat {
         return null;
     }
 
-    public static void saveToDatabase(){
+    public static ArrayList<Stat> getByCategory(Category category){
+        ArrayList<Stat> stats = new ArrayList<>();
+
+        for(Stat stat : values())
+            if(stat.getCategory() == category)
+                stats.add(stat);
+
+        return stats;
+    }
+
+    public static void setup(){
+        saveToDatabase();
+        StatPageManager.getInstance().calculate();
+    }
+
+    private static void saveToDatabase(){
         QueryExecutor qe = null;
         ArrayList<String> stats = new ArrayList<>();
         try {
@@ -133,7 +148,7 @@ public enum Stat {
 
     @Getter
     public enum Category {
-        NO_CATEGORY       ("",                    true ),
+        NO_CATEGORY       ("Not categorized",     true ),
         CHALLENGE         ("Challenge",           true ),
         FREE_FOR_ALL      ("Free for All",        true ),
         BLACKJACK         ("Blackjack",           true ),
@@ -148,6 +163,11 @@ public enum Stat {
             this.name = name;
             this.show = show;
         }
+
+        public ArrayList<Stat> getAll(){
+            return getByCategory(this);
+        }
+
     }
 
 }

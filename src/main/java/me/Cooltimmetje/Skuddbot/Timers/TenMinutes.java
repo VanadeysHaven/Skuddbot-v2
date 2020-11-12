@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Timers;
 
 import me.Cooltimmetje.Skuddbot.Commands.ServerSettingsCommand;
+import me.Cooltimmetje.Skuddbot.Commands.StatsCommand;
 import me.Cooltimmetje.Skuddbot.Minigames.FreeForAll.FfaCommand;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
@@ -37,6 +38,7 @@ public class TenMinutes extends TimerTask {
             am.tickAppearance();
             FfaCommand.runReminders();
             ServerSettingsCommand.clearOverviews();
+            StatsCommand.clearOverviews();
         } catch (Exception e){
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);

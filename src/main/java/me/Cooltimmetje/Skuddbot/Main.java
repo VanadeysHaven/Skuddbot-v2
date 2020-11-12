@@ -42,7 +42,7 @@ public class Main {
         HikariManager.setup(args[1], mysqlPass);
         ServerSetting.saveToDatabase();
         UserSetting.saveToDatabase();
-        Stat.saveToDatabase();
+        Stat.setup();
         Currency.saveToDatabase();
 
         String token = args[0];

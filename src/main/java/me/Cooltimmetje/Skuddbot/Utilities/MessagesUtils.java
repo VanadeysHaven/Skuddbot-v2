@@ -5,6 +5,7 @@ import me.Cooltimmetje.Skuddbot.Listeners.Reactions.DebugReaction;
 import me.Cooltimmetje.Skuddbot.Main;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.util.ArrayList;
 
@@ -43,6 +44,10 @@ public class MessagesUtils {
 
     public static void sendEmoji(TextChannel channel, Emoji emoji, String text, boolean allowEveryone){
         sendPlain(channel, emoji.getUnicode() + " " + text, allowEveryone);
+    }
+
+    public static Message sendEmbed(TextChannel channel, EmbedBuilder eb){
+        return channel.sendMessage(eb).join();
     }
 
     public static void log(String text){
