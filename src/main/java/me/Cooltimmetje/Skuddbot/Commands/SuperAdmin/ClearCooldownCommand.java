@@ -11,7 +11,7 @@ import org.javacord.api.entity.message.Message;
  * Command for clearing cooldowns.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class ClearCooldownCommand extends Command {
@@ -22,8 +22,15 @@ public class ClearCooldownCommand extends Command {
 
     @Override
     public void run(Message message, String content) {
-        CooldownManager.clearAll();
-        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "All cooldowns cleared!");
+        String[] args = content.split(" ");
+        boolean forceClear = false;
+        if(args.length > 1) if(args[1].equalsIgnoreCase("-force")) forceClear = true;
+
+        CooldownManager.clearAll(forceClear);
+        if(forceClear)
+            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "All cooldowns cleared forcefully.");
+        else
+            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "All cooldowns cleared!");
     }
 
 }

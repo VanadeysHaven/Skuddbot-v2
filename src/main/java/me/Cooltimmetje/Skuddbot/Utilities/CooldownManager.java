@@ -7,7 +7,7 @@ import java.util.HashMap;
  * Class for easily managing cooldowns
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class CooldownManager {
@@ -16,11 +16,17 @@ public class CooldownManager {
 
     private int cooldown;
     private HashMap<String,Long> lastUsed;
+    private boolean requiresForceClear;
 
     public CooldownManager(int cooldown){
+        this(cooldown, false);
+    }
+
+    public CooldownManager(int cooldown, boolean requiresForceClear){
         this.cooldown = cooldown;
         lastUsed = new HashMap<>();
         managers.add(this);
+        this.requiresForceClear = requiresForceClear;
     }
 
     public void startCooldown(String identifier){
@@ -41,14 +47,15 @@ public class CooldownManager {
         return isOnCooldown(identifier+"");
     }
 
-    public void clear(){
+    public void clear(boolean clearForcefully){
+        if(requiresForceClear) if(!clearForcefully) return;
+
         lastUsed.clear();
     }
 
-    public static void clearAll(){
-        for(CooldownManager manager : managers){
-            manager.clear();
-        }
+    public static void clearAll(boolean clearForcefully){
+        for(CooldownManager manager : managers)
+            manager.clear(clearForcefully);
     }
 
 }
