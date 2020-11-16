@@ -16,17 +16,17 @@ public class CooldownManager {
 
     private int cooldown;
     private HashMap<String,Long> lastUsed;
-    private boolean requiresForceClear;
+    private boolean locked;
 
     public CooldownManager(int cooldown){
         this(cooldown, false);
     }
 
-    public CooldownManager(int cooldown, boolean requiresForceClear){
+    public CooldownManager(int cooldown, boolean locked){
         this.cooldown = cooldown;
         lastUsed = new HashMap<>();
         managers.add(this);
-        this.requiresForceClear = requiresForceClear;
+        this.locked = locked;
     }
 
     public void startCooldown(String identifier){
@@ -48,7 +48,7 @@ public class CooldownManager {
     }
 
     public void clear(boolean clearForcefully){
-        if(requiresForceClear) if(!clearForcefully) return;
+        if(locked) if(!clearForcefully) return;
 
         lastUsed.clear();
     }
