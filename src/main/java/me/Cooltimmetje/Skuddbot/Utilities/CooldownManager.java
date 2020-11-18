@@ -1,9 +1,10 @@
 package me.Cooltimmetje.Skuddbot.Utilities;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.SimpleTimeZone;
 
 /**
  * Class for easily managing cooldowns
@@ -59,7 +60,7 @@ public class CooldownManager {
     }
 
     public String formatTime(long identifier){
-        return formatTime(identifier, "HH'h mm'm ss's");
+        return formatTime(identifier, "HH'h' mm'm' ss's'");
     }
 
     public String formatTime(long identifier, String timeFormat){
@@ -69,9 +70,9 @@ public class CooldownManager {
 
         String formattedTime = "";
         if(secondsInDayRemaining > 0) {
-            LocalTime time = LocalTime.ofSecondOfDay(secondsInDayRemaining);
-            DateTimeFormatter format = DateTimeFormatter.ofPattern(timeFormat);
-            formattedTime = time.format(format);
+            SimpleDateFormat formatter = new SimpleDateFormat(timeFormat);
+            formatter.setTimeZone(SimpleTimeZone.getTimeZone("GMT"));
+            formattedTime = formatter.format(new Date(secondsInDayRemaining*1000));
         }
 
         String ret = (daysRemaining == 0 ? "" : daysRemaining + "d") + " " + formattedTime;
