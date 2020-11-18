@@ -1,5 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Utilities;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,6 +47,39 @@ public class CooldownManager {
 
     public boolean isOnCooldown(long identifier){
         return isOnCooldown(identifier+"");
+    }
+
+    public long getTimeRemaining(long identifier){
+        if(!lastUsed.containsKey(identifier+"")) throw new IllegalStateException("User is not on cooldown");
+        long timeSinceCooldownStarted = (System.currentTimeMillis() - lastUsed.get(identifier+"")) / 1000;
+        long ret = cooldown - timeSinceCooldownStarted;
+
+        if(ret < 0) throw new IllegalStateException("User is not on cooldown");
+        return ret;
+    }
+
+    public String formatTime(long identifier){
+        return formatTime(identifier, "HH'h mm'm ss's");
+    }
+
+    public String formatTime(long identifier, String timeFormat){
+        long secondsRemaining = getTimeRemaining(identifier);
+        long secondsInDayRemaining = secondsRemaining % 86400;
+        long daysRemaining = (secondsRemaining - secondsInDayRemaining) / 86400;
+
+        String formattedTime = "";
+        if(secondsInDayRemaining > 0) {
+            LocalTime time = LocalTime.ofSecondOfDay(secondsInDayRemaining);
+            DateTimeFormatter format = DateTimeFormatter.ofPattern(timeFormat);
+            formattedTime = time.format(format);
+        }
+
+        String ret = (daysRemaining == 0 ? "" : daysRemaining + "d") + " " + formattedTime;
+        if(ret.equalsIgnoreCase(" ")){
+            return "0s";
+        } else {
+            return ret;
+        }
     }
 
     public void clear(boolean clearForcefully){
