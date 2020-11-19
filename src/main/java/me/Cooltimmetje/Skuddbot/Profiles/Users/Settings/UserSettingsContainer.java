@@ -4,6 +4,7 @@ import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Exceptions.CooldownException;
+import me.Cooltimmetje.Skuddbot.Exceptions.SettingOutOfBoundsException;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
@@ -41,19 +42,20 @@ public class UserSettingsContainer {
                     setString(setting, setting.getDefaultValue(), false, true);
                 }
             }
-        } catch (CooldownException e){
+        } catch (CooldownException | SettingOutOfBoundsException e){
             e.printStackTrace();
             //do nothing cuz it won't be thrown here
         }
     }
 
-    public void setString(UserSetting setting, String value) throws CooldownException{
+    public void setString(UserSetting setting, String value) throws CooldownException, SettingOutOfBoundsException {
         setString(setting, value, true, false);
     }
 
-    public void setString(UserSetting setting, String value, boolean save, boolean bypassCooldown) throws CooldownException {
+    public void setString(UserSetting setting, String value, boolean save, boolean bypassCooldown) throws CooldownException, SettingOutOfBoundsException {
         if(!checkType(value, setting)) throw new IllegalArgumentException("Value " + value + " is unsuitable for setting " + setting + "; not of type " + setting.getType());
         if(isOnCooldown(setting) && !bypassCooldown) throw new CooldownException("You can't change setting `" + setting + "` currently. You can change it again in: " + getCooldownManager(setting).formatTime(id.getDiscordId()));
+        if(setting.getType() == ValueType.INTEGER) if(setting.hasBound()) if(!setting.checkBound(Integer.parseInt(value))) throw new SettingOutOfBoundsException("The value `" + value + "` is out of bounds for setting " + setting + ". (Bounds: `" + setting.getMinBound() + "` - `" + setting.getMaxBound() + "`)");
 
         this.settings.put(setting, value);
         if(!bypassCooldown) startCooldown(setting);
@@ -64,7 +66,7 @@ public class UserSettingsContainer {
         return this.settings.get(setting);
     }
 
-    public void setBoolean(UserSetting setting, boolean value) throws CooldownException{
+    public void setBoolean(UserSetting setting, boolean value) throws CooldownException, SettingOutOfBoundsException {
         setString(setting, value+"");
     }
 
@@ -73,7 +75,7 @@ public class UserSettingsContainer {
         return Boolean.parseBoolean(getString(setting));
     }
 
-    public void toggleBoolean(UserSetting setting) throws CooldownException{
+    public void toggleBoolean(UserSetting setting) throws CooldownException, SettingOutOfBoundsException {
         if(setting.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException("Setting " + setting + " is not of type BOOLEAN");
         setBoolean(setting, !getBoolean(setting));
     }
@@ -83,11 +85,11 @@ public class UserSettingsContainer {
         return Integer.parseInt(getString(setting));
     }
 
-    public void setInt(UserSetting setting, int value) throws CooldownException {
+    public void setInt(UserSetting setting, int value) throws CooldownException, SettingOutOfBoundsException {
         setString(setting, value+"");
     }
 
-    public void setLevelUpNotify(LevelUpNotification notification) throws CooldownException {
+    public void setLevelUpNotify(LevelUpNotification notification) throws CooldownException, SettingOutOfBoundsException {
         setString(UserSetting.LEVEL_UP_NOTIFY, notification.toString());
     }
 

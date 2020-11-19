@@ -3,6 +3,7 @@ package me.Cooltimmetje.Skuddbot.Commands;
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Exceptions.CooldownException;
+import me.Cooltimmetje.Skuddbot.Exceptions.SettingOutOfBoundsException;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
@@ -121,7 +122,7 @@ public class UserSettingsCommand extends Command {
         try {
             su.getSettings().setString(setting, newValue);
             MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Successfully updated setting `" + setting + "` to `" + newValue + "`!");
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException | SettingOutOfBoundsException e){
             MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
         } catch (CooldownException e){
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, e.getMessage());
@@ -137,6 +138,8 @@ public class UserSettingsCommand extends Command {
             MessagesUtils.addReaction(message, Emoji.X, "Unsuitable value; must be one of the following: " + Arrays.toString(LevelUpNotification.values()));
         } catch (CooldownException e){
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, e.getMessage());
+        } catch (SettingOutOfBoundsException e) {
+            MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
         }
     }
 
