@@ -124,7 +124,7 @@ public class UserSettingsContainer {
     private CooldownManager getCooldownManager(UserSetting setting){
         CooldownManager manager;
         if(!cooldowns.containsKey(setting)) {
-            manager = new CooldownManager(setting.getCooldown());
+            manager = new CooldownManager(setting.getCooldown(), true);
             cooldowns.put(setting, manager);
         } else manager = cooldowns.get(setting);
 

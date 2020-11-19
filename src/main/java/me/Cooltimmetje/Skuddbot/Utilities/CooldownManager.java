@@ -1,10 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Utilities;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.SimpleTimeZone;
 
 /**
  * Class for easily managing cooldowns
@@ -52,35 +49,15 @@ public class CooldownManager {
 
     public long getTimeRemaining(long identifier){
         if(!lastUsed.containsKey(identifier+"")) throw new IllegalStateException("User is not on cooldown");
-        long timeSinceCooldownStarted = (System.currentTimeMillis() - lastUsed.get(identifier+"")) / 1000;
-        long ret = cooldown - timeSinceCooldownStarted;
+        long timeSinceCooldownStarted = (System.currentTimeMillis() - lastUsed.get(identifier+""));
+        long ret = (cooldown * 1000) - timeSinceCooldownStarted;
 
         if(ret < 0) throw new IllegalStateException("User is not on cooldown");
         return ret;
     }
 
     public String formatTime(long identifier){
-        return formatTime(identifier, "HH'h' mm'm' ss's'");
-    }
-
-    public String formatTime(long identifier, String timeFormat){
-        long secondsRemaining = getTimeRemaining(identifier);
-        long secondsInDayRemaining = secondsRemaining % 86400;
-        long daysRemaining = (secondsRemaining - secondsInDayRemaining) / 86400;
-
-        String formattedTime = "";
-        if(secondsInDayRemaining > 0) {
-            SimpleDateFormat formatter = new SimpleDateFormat(timeFormat);
-            formatter.setTimeZone(SimpleTimeZone.getTimeZone("GMT"));
-            formattedTime = formatter.format(new Date(secondsInDayRemaining*1000));
-        }
-
-        String ret = (daysRemaining == 0 ? "" : daysRemaining + "d") + " " + formattedTime;
-        if(ret.equalsIgnoreCase(" ")){
-            return "0s";
-        } else {
-            return ret;
-        }
+        return TimeUtils.formatTime(getTimeRemaining(identifier));
     }
 
     public void clear(boolean clearForcefully){
