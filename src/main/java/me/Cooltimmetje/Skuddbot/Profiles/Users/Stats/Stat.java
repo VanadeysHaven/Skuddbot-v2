@@ -51,7 +51,7 @@ public enum Stat {
     DAILY_LAST_CLAIM            ("daily_last_claim",        ValueType.LONG,    "daily_last_claim",           "",             "-1", Category.DAILY_BONUS,       false, true,  false),
     DAILY_CURRENT_STREAK        ("daily_current_streak",    ValueType.INTEGER, "Current claim streak",       "days",         "0",  Category.DAILY_BONUS,       true,  true,  true ),
     DAILY_LONGEST_STREAK        ("daily_longest_streak",    ValueType.INTEGER, "Longest claim steak",        "days",         "0",  Category.DAILY_BONUS,       true,  true,  true ),
-    DAILY_DAYS_SINCE_WEEKLY     ("daily_days_since_weekly", ValueType.INTEGER, "days_since_weekly",          "",             "0",  Category.DAILY_BONUS,       false, true,  false),
+    DAILY_DAYS_SINCE_WEEKLY     ("daily_days_since_weekly", ValueType.INTEGER, "days_since_weekly",          "",             "99", Category.DAILY_BONUS,       false, true,  false),
     DON_WINS                    ("don_wins",                ValueType.INTEGER, "Wins",                       "wins",         "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
     DON_LOSSES                  ("don_losses",              ValueType.INTEGER, "Losses",                     "losses",       "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
     DON_LONGEST_STREAK          ("don_longest_streak",      ValueType.INTEGER, "Longest double up streak",   "times",        "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true );
