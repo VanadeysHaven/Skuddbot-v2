@@ -68,10 +68,11 @@ public class AppearanceManager {
         LAM                   (4,  11, "HAPPY BIRTHDAY LAM!",                              Avatar.BIRTHDAY ),
         CHRISTMAS_HAT_CORONA  (15, 11, 27, 11, DonatorMessage.Type.PLAYING,            Avatar.CHRISTMAS),
         SCROOGE               (28, 11, "HAPPY BIRTHDAY SCROOGE!",                          Avatar.BIRTHDAY ),
-        CHRISTMAS_HAT1        (29, 11, 1, 12, DonatorMessage.Type.PLAYING,             Avatar.CHRISTMAS),
+        CHRISTMAS_HAT1        (29, 11, 30, 11, DonatorMessage.Type.PLAYING,             Avatar.CHRISTMAS),
+        CHRISTMAS_HAT2        (1,  12, DonatorMessage.Type.PLAYING,             Avatar.CHRISTMAS),
         LOCKSTAR              (2,  12, "HAPPY BIRTHDAY LOCKSTAR!",                         Avatar.BIRTHDAY ),
         MEERY                 (3,  12, "HAPPY BIRTHDAY MEERY!",                            Avatar.BIRTHDAY ),
-        CHRISTMAS_HAT2        (4,  12, 23, 12, DonatorMessage.Type.PLAYING,            Avatar.CHRISTMAS),
+        CHRISTMAS_HAT3        (4,  12, 23, 12, DonatorMessage.Type.PLAYING,            Avatar.CHRISTMAS),
         CHRISTMAS             (24, 12, 26, 12, DonatorMessage.Type.PLAYING_CHRISTMAS,  Avatar.CHRISTMAS);
 
         private int startDate;
