@@ -19,7 +19,7 @@ import java.util.HashMap;
  * o7 CMDR
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class SaluteCommand extends NoPrefixCommand {
@@ -29,7 +29,7 @@ public class SaluteCommand extends NoPrefixCommand {
     private static RNGManager random = new RNGManager();
 
     public SaluteCommand() {
-        super(new String[]{"o7"}, "o7 CMDR", PermissionLevel.DEFAULT, Location.BOTH);
+        super(new String[]{"o7"}, "o7 CMDR", null, PermissionLevel.DEFAULT, Location.BOTH);
     }
 
     @Override

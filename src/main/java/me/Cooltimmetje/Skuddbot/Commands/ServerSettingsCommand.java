@@ -38,7 +38,7 @@ public class ServerSettingsCommand extends Command {
     private static ArrayList<Overview> overviews = new ArrayList<>();
 
     public ServerSettingsCommand(){
-        super(new String[]{"serversettings", "ssettings"}, "Change and view server settings.", PermissionLevel.SERVER_ADMIN, Location.SERVER);
+        super(new String[]{"serversettings", "ssettings"}, "Change and view server settings.", "https://wiki.skuddbot.xyz/features/server-settings#command", PermissionLevel.SERVER_ADMIN, Location.SERVER);
     }
 
     @Override

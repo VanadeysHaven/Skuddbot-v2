@@ -21,7 +21,7 @@ import java.util.LinkedHashMap;
  * Command for currency leaderboards.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.1.1
+ * @version 2.2.1
  * @since 2.1.1
  */
 public class CurrenciesLeaderboardCommand extends Command {
@@ -29,7 +29,7 @@ public class CurrenciesLeaderboardCommand extends Command {
     private static final int LEADERBOARD_LIMIT = 10;
 
     public CurrenciesLeaderboardCommand() {
-        super(new String[]{"currencyleaderboard", "clb", "currencylb"}, "Used to view the leaderboards of currencies.");
+        super(new String[]{"currencyleaderboard", "clb", "currencylb"}, "Used to view the leaderboards of currencies.", "https://wiki.skuddbot.xyz/features/currencies#leaderboards");
     }
 
     @Override

@@ -16,13 +16,13 @@ import java.util.Optional;
  * Command used for viewing server information.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class ServerInfoCommand extends Command {
 
     public ServerInfoCommand(){
-        super(new String[]{"serverinfo", "sinfo"}, "View the information about the current server.", Location.SERVER);
+        super(new String[]{"serverinfo", "sinfo"}, "View the information about the current server.",null, Location.SERVER);
     }
 
     @Override

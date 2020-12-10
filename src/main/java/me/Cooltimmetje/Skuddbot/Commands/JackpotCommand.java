@@ -19,7 +19,7 @@ import java.text.MessageFormat;
 public class JackpotCommand extends Command {
 
     public JackpotCommand() {
-        super(new String[]{"jackpot"}, "Shows the current Jackpot amount.");
+        super(new String[]{"jackpot"}, "Shows the current Jackpot amount.", "https://wiki.skuddbot.xyz/systems/jackpot");
     }
 
     @Override

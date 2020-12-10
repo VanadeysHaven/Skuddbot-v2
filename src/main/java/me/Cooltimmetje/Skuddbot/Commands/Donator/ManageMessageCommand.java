@@ -11,13 +11,13 @@ import org.javacord.api.entity.message.Message;
  * Commands for donators so they can add messages to the donator pool.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class ManageMessageCommand extends Command {
 
     public ManageMessageCommand() {
-        super(new String[]{"message"}, "Used to manage messages in the donator message pool.", PermissionLevel.DONATOR, Location.DM);
+        super(new String[]{"message"}, "Used to manage messages in the donator message pool.", null, PermissionLevel.DONATOR, Location.DM);
     }
 
     @Override

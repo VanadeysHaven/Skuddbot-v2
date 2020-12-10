@@ -1,6 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands;
 
-import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Main;
@@ -25,7 +24,7 @@ public abstract class ActionCommand extends Command {
 
 
     public ActionCommand(String[] invokers, String description) {
-        super(invokers, description);
+        super(invokers, description, "https://wiki.skuddbot.xyz/commands/action-commands");
     }
 
     @Override

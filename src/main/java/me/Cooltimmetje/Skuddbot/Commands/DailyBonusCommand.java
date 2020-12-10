@@ -22,7 +22,7 @@ import java.text.MessageFormat;
  * Command used to claim daily bonuses.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.1.1
+ * @version 2.2.1
  * @since 2.1.1
  */
 public class DailyBonusCommand extends Command {
@@ -39,7 +39,7 @@ public class DailyBonusCommand extends Command {
             "{4}";
 
     public DailyBonusCommand() {
-        super(new String[]{"dailybonus", "claim", "db"}, "Claim your daily bonus.");
+        super(new String[]{"dailybonus", "claim", "db"}, "Claim your daily bonus.", "https://wiki.skuddbot.xyz/systems/daily-bonus");
     }
 
     @Override

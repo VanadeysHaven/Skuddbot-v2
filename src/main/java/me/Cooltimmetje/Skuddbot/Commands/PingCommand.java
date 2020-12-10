@@ -9,13 +9,13 @@ import org.javacord.api.entity.message.Message;
  * This class is a simple ping command.
  *
  * @author Tim (Cooltimmetje)
- * @since 2.0
+ * @since 2.2.1
  * @version 2.0
  */
 public class PingCommand extends Command {
 
     public PingCommand(){
-        super(new String[] {"ping"}, "Ping command for testing bot responses.", Location.BOTH);
+        super(new String[] {"ping"}, "Ping command for testing bot responses.", null, Location.BOTH);
     }
 
     @Override

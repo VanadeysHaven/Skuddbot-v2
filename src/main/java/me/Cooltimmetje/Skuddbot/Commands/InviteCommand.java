@@ -7,13 +7,13 @@ import org.javacord.api.entity.message.Message;
  * Command used to get the invite link for the bot.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.1
+ * @version 2.2.1
  * @since 2.1
  */
 public class InviteCommand extends Command {
 
     public InviteCommand() {
-        super(new String[]{"invite"}, "Command used to get the invite link.", Location.BOTH);
+        super(new String[]{"invite"}, "Command used to get the invite link.", null, Location.BOTH);
     }
 
     @Override

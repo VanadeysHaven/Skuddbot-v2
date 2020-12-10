@@ -25,7 +25,7 @@ public class BlackjackCommand extends Command {
     private static ArrayList<BlackjackGameManager> managers = new ArrayList<>();
 
     public BlackjackCommand() {
-        super(new String[]{"blackjack", "bj", "21", "deal"}, "Play a game of blackjack against the dealer.", Location.SERVER);
+        super(new String[]{"blackjack", "bj", "21", "deal"}, "Play a game of blackjack against the dealer.", "https://wiki.skuddbot.xyz/minigames/blackjack", Location.SERVER);
     }
 
     @Override

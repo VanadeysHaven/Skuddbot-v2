@@ -17,7 +17,7 @@ import java.util.HashMap;
  * Used to manage donators.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class ManageDonatorsCommand extends Command {
@@ -31,7 +31,7 @@ public class ManageDonatorsCommand extends Command {
     private static HashMap<Long, Long> confirm = new HashMap<>();
 
     public ManageDonatorsCommand() {
-        super(new String[]{"donators"}, "Used to add and remove donators.", PermissionLevel.BOT_ADMIN, Location.BOTH);
+        super(new String[]{"donators"}, "Used to add and remove donators.", null, PermissionLevel.BOT_ADMIN, Location.BOTH);
     }
 
     @Override
