@@ -20,13 +20,13 @@ import java.awt.*;
  * Used for viewing info about users.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class UserInfoCommand extends Command {
 
     public UserInfoCommand() {
-        super(new String[]{"userinfo", "uinfo"}, "View information about your own account or the specified account.", PermissionLevel.DEFAULT, Location.BOTH);
+        super(new String[]{"userinfo", "uinfo"}, "View information about your own account or the specified account.", "https://wiki.skuddbot.xyz/commands/user-info-command", PermissionLevel.DEFAULT, Location.BOTH);
     }
 
     @Override

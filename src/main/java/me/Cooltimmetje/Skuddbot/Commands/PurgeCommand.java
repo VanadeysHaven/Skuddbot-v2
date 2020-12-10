@@ -25,7 +25,7 @@ public class PurgeCommand extends Command {
     private static int CONFIRMATION_LIMIT = 500;
 
     public PurgeCommand() {
-        super(new String[]{"purge"}, "Command used to purge messages.", PermissionLevel.SERVER_ADMIN);
+        super(new String[]{"purge"}, "Command used to purge messages.", "https://wiki.skuddbot.xyz/moderation-tools/purge", PermissionLevel.SERVER_ADMIN);
     }
 
     @Override

@@ -17,13 +17,13 @@ import org.javacord.api.entity.user.User;
  * Used for viewing experience.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.1.1
+ * @version 2.2.1
  * @since 2.0
  */
 public class ExperienceCommand extends Command {
 
     public ExperienceCommand() {
-        super(new String[]{"experience", "xp"}, "View your and other's experience and level.");
+        super(new String[]{"experience", "xp"}, "View your and other's experience and level.", "https://wiki.skuddbot.xyz/systems/experience");
     }
 
     @Override

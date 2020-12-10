@@ -46,7 +46,7 @@ public class StatsCommand extends Command {
             "Edit: `!stats <mention/userId> <stat> <add/remove/set> <amount>`";
 
     public StatsCommand(){
-        super(new String[]{"stats"}, "View/edit stats from users with this command.");
+        super(new String[]{"stats"}, "View/edit stats of users with this command.", "https://wiki.skuddbot.xyz/features/stats#view-and-edit");
     }
 
     @Override

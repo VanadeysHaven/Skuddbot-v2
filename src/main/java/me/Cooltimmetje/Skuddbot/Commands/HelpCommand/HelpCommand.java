@@ -18,7 +18,7 @@ import java.util.HashMap;
  * Help for commands
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class HelpCommand extends Command {
@@ -31,7 +31,7 @@ public class HelpCommand extends Command {
     private HashMap<Long,Long> currentServer = new HashMap<>();
 
     public HelpCommand() {
-        super(new String[]{"help"}, "Lists all commands available for use.", PermissionLevel.DEFAULT, Location.BOTH);
+        super(new String[]{"help"}, "Lists all commands available for use.", "https://wiki.skuddbot.xyz/commands/help-command",PermissionLevel.DEFAULT, Location.BOTH);
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.javacord.api.entity.server.Server;
  * Class for handling random image commands.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public abstract class ImageCommand extends Command {
@@ -24,7 +24,7 @@ public abstract class ImageCommand extends Command {
     private DonatorMessage.Type type;
 
     public ImageCommand(String[] invokers, String description, DonatorMessage.Type type) {
-        super(invokers, description, PermissionLevel.DEFAULT, Location.BOTH);
+        super(invokers, description, "https://wiki.skuddbot.xyz/commands/image-commands", PermissionLevel.DEFAULT, Location.BOTH);
         this.type = type;
     }
 

@@ -17,7 +17,7 @@ import org.javacord.api.entity.message.Message;
 public class ClearCooldownCommand extends Command {
 
     public ClearCooldownCommand(){
-        super(new String[]{"clearcooldown", "cc"}, "Used to clear cooldowns.", PermissionLevel.BOT_ADMIN, Location.BOTH);
+        super(new String[]{"clearcooldown", "cc"}, "Used to clear cooldowns.", null, PermissionLevel.BOT_ADMIN, Location.BOTH);
     }
 
     @Override

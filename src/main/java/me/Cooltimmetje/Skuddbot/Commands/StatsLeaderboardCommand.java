@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
  * Command for stat leaderboards.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.1.1
+ * @version 2.2.1
  * @since 2.0
  */
 public class StatsLeaderboardCommand extends Command {
@@ -34,7 +34,7 @@ public class StatsLeaderboardCommand extends Command {
     private static final int LEADERBOARD_LIMIT = 10;
 
     public StatsLeaderboardCommand(){
-        super(new String[]{"statleaderboard", "slb", "statlb"}, "Used to view the leaderboards of stats.");
+        super(new String[]{"statleaderboard", "slb", "statlb"}, "Used to view the leaderboards of stats.", "https://wiki.skuddbot.xyz/features/stats#leaderboards");
     }
 
     @Override

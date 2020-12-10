@@ -27,7 +27,7 @@ public class FfaCommand extends Command {
     private static final ArrayList<FfaGameManager> managers = new ArrayList<>();
 
     public FfaCommand() {
-        super(new String[]{"freeforall", "ffa"}, "Play a game of Free for All!");
+        super(new String[]{"freeforall", "ffa"}, "Play a game of Free for All!", "https://wiki.skuddbot.xyz/minigames/free-for-all");
     }
 
     @Override

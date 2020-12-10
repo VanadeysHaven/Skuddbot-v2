@@ -14,13 +14,13 @@ import java.util.Arrays;
  * Shows information about the bot.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class AboutCommand extends Command {
 
     public AboutCommand() {
-        super(new String[]{"about", "botinfo", "binfo"}, "View information about the bot.", Location.BOTH);
+        super(new String[]{"about", "botinfo", "binfo"}, "View information about the bot.", null, Location.BOTH);
     }
 
     @Override

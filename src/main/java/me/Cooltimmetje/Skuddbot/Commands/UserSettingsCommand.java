@@ -38,7 +38,7 @@ public class UserSettingsCommand extends Command {
 
 
     public UserSettingsCommand() {
-        super(new String[]{"usersettings","usettings"}, "View and change user settings with this command.");
+        super(new String[]{"usersettings","usettings"}, "View and change user settings with this command.", "https://wiki.skuddbot.xyz/features/user-settings#command");
     }
 
     @Override

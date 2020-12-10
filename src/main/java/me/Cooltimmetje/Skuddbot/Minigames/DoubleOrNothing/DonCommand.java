@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Command for starting a game of double or nothing.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.1.1
+ * @version 2.2.1
  * @since 2.1.1
  */
 public class DonCommand extends Command {
@@ -25,7 +25,7 @@ public class DonCommand extends Command {
     private final ArrayList<DonGameManager> managers;
 
     public DonCommand() {
-        super(new String[]{"doubleornothing", "don"}, "Play a game of double or nothing.");
+        super(new String[]{"doubleornothing", "don"}, "Play a game of double or nothing.", "https://wiki.skuddbot.xyz/minigames/double-or-nothing");
         managers = new ArrayList<>();
     }
 

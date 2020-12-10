@@ -26,7 +26,7 @@ public class ChallengeCommand extends Command {
     private static ArrayList<ChallengeGameManager> managers;
 
     public ChallengeCommand(){
-        super(new String[]{"challenge", "duel", "fight", "1v1"}, "Fight someone!", Location.SERVER);
+        super(new String[]{"challenge", "duel", "fight", "1v1"}, "Fight someone!", "https://wiki.skuddbot.xyz/minigames/challenge", Location.SERVER);
         managers = new ArrayList<>();
     }
 

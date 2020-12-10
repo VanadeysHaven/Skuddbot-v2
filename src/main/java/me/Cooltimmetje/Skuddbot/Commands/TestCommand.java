@@ -13,13 +13,13 @@ import org.javacord.api.entity.message.Message;
  * Command for testing purposes.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
- * @since 2.0
+ * @version [not deployed]
+ * @since [not deployed]
  */
 public class TestCommand extends Command {
 
     public TestCommand() {
-        super(new String[]{"test"}, "Testing 1 2 3", Location.BOTH);
+        super(new String[]{"test"}, "Testing 1 2 3", null, Location.BOTH);
     }
 
     @Override

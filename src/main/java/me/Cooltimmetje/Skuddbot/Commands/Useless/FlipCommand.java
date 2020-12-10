@@ -11,13 +11,13 @@ import org.javacord.api.entity.user.User;
  * (╯°□°）╯︵ n ou
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.2.1
  * @since 2.0
  */
 public class FlipCommand extends Command {
 
     public FlipCommand(){
-        super(new String[]{"flip"}, "(╯°□°）╯︵ n ou", Location.BOTH);
+        super(new String[]{"flip"}, "(╯°□°）╯︵ n ou", null, Location.BOTH);
     }
 
     @Override

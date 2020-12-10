@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 public class CurrenciesCommand extends Command {
 
     public CurrenciesCommand() {
-        super(new String[]{"currency", "currencies", "wallet", "skuddbux", "bux", "balance", "bal"}, "Shows your current currency balance.", Location.SERVER);
+        super(new String[]{"currency", "currencies", "wallet", "skuddbux", "bux", "balance", "bal"}, "Shows your current currency balance.", "https://wiki.skuddbot.xyz/features/currencies#view-and-edit",Location.SERVER);
     }
 
     @Override

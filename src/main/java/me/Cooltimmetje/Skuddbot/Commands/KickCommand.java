@@ -19,8 +19,8 @@ import org.javacord.api.entity.user.User;
  */
 public class KickCommand extends Command {
 
-    public KickCommand(String[] invokers, String description, PermissionLevel requiredPermission, Location allowedLocation) {
-        super(invokers, description, requiredPermission, allowedLocation);
+    public KickCommand(String[] invokers, String description, String wikiUrl, PermissionLevel requiredPermission, Location allowedLocation) {
+        super(invokers, description, wikiUrl, requiredPermission, allowedLocation);
     }
 
     @Override
