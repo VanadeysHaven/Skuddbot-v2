@@ -24,9 +24,10 @@ import java.util.HashMap;
 public class HelpCommand extends Command {
 
     private static final String MESSAGE_FORMAT = "Commands for **{0}** in **{1}** | `[Page {2}/{3}]`\n\n" +
-            "{4}\n" +
+            "{4}" +
             "> *View different pages using `!help [page]`.*\n> *{5}*";
     private static final int PAGE_SIZE = 5;
+    private static final HelpGenerator hg = Main.getSkuddbot().getHelpGenerator();
 
     private HashMap<Long,Long> currentServer = new HashMap<>();
 
