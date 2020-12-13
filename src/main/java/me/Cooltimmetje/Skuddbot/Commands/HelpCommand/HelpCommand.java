@@ -101,7 +101,7 @@ public class HelpCommand extends Command {
             this.user = user;
             this.server = server;
             construct();
-            setAutoExpire(300);
+            setAutoExpire(1800);
             addButton(Emoji.ARROW_LEFT_HOOK, e -> returnToDm(), e -> returnToDm());
         }
 
