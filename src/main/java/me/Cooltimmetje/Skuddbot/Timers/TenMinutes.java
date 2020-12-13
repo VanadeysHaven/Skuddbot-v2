@@ -7,6 +7,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.PagedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,7 @@ public class TenMinutes extends TimerTask {
             FfaCommand.runReminders();
             ServerSettingsCommand.clearOverviews();
             StatsCommand.clearOverviews();
+            PagedMessage.runAutoExpire();
         } catch (Exception e){
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);

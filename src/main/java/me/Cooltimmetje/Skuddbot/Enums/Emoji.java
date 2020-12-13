@@ -18,6 +18,7 @@ public enum Emoji {
     ARROW_RIGHT             ("➡️", "arrow_right"),
     ARROWS_CC               ("\uD83D\uDD04", "arrows_counterclockwise"),
     ARROWS_LR               ("↔️", "left_right_arrow"),
+    ARROW_LEFT_HOOK         ("↩️", "leftwards_arrow_with_hook"),
     WARNING                 ("⚠", "warning"),
     X                       ("❌", "x"),
     HOURGLASS_FLOWING_SAND  ("⏳", "hourglass_flowing_sand"),

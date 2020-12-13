@@ -50,6 +50,15 @@ public class MessagesUtils {
         return channel.sendMessage(eb).join();
     }
 
+    public static void edit(Message message, String newContent, boolean allowEveryone){
+        if(!allowEveryone) newContent = MiscUtils.stripEveryone(newContent);
+        message.edit(newContent);
+    }
+
+    public static void edit(Message message, String newContent){
+        edit(message, newContent, false);
+    }
+
     public static void log(String text){
         if(Main.getSkuddbot().getApi().getYourself().getId() == 209779500018434058L)
             sendPlain(Constants.getLogChannel(), text);
