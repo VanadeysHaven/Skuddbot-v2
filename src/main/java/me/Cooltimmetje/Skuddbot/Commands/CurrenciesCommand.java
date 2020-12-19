@@ -65,7 +65,7 @@ public class CurrenciesCommand extends Command {
 
         for(Currency currency : Currency.values())
             if(currency.isShowWhenZero() || su.getCurrencies().getInt(currency) > 0)
-                eb.addInlineField("__" + currency.getName() + ":__", su.getCurrencies().getString(currency));
+                eb.addInlineField("__" + currency.getName() + ":__", su.getCurrencies().getString(currency) + " " + currency.getSuffix());
 
         message.getChannel().sendMessage(eb);
     }
