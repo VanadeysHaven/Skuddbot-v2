@@ -37,9 +37,9 @@ public class DailyBonusCommand extends Command {
     @Getter
     private enum Bonus {
 
-        CHRISTMAS_1 (24, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!*"),
-        CHRISTMAS_2 (25, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!*"),
-        CHRISTMAS_3 (26, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!*");
+        CHRISTMAS_1 (24, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!* (+1 giveaway ticket)"),
+        CHRISTMAS_2 (25, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!* (+1 giveaway ticket)"),
+        CHRISTMAS_3 (26, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!* (+1 giveaway ticket)");
 
         int day;
         int month;
@@ -132,6 +132,7 @@ public class DailyBonusCommand extends Command {
         if(b != null) {
             xpBonus += b.getXpBonus();
             currencyBonus += b.getCurrencyBonus();
+            user.getCurrencies().incrementInt(Currency.GIVEAWAY_TICKETS);
         }
 
         user.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyBonus);
@@ -153,7 +154,7 @@ public class DailyBonusCommand extends Command {
             streakString += " | **New longest streak!**";
 
         String bonusStr = applyWeekly ? (isEligibleForWeekly ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "\n**WEEKLY BONUS NOT APPLIED:** *not eligible*") : "";
-        if(b != null) bonusStr += "\n**BONUS APPLIED:** " + b.getMessage();
+        if(b != null) bonusStr += "\n**SEASONAL BONUS APPLIED:** " + b.getMessage();
 
         String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), bonusStr, currencyBonus, xpBonus, streakString);
 
