@@ -1,5 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Commands;
 
+import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
@@ -17,6 +18,8 @@ import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 
 import java.text.MessageFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Command used to claim daily bonuses.
@@ -30,6 +33,37 @@ public class DailyBonusCommand extends Command {
     private static final long MILLIS_IN_DAY = 86400000;
     private static final long MILLIS_IN_HOUR = 3600000;
     private static final int PENALTY = 5;
+
+    @Getter
+    private enum Bonus {
+
+        CHRISTMAS_1 (19, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!*"),
+        CHRISTMAS_2 (25, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!*"),
+        CHRISTMAS_3 (26, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!*");
+
+        int day;
+        int month;
+        int currencyBonus;
+        int xpBonus;
+        String message;
+
+        Bonus(int day, int month, int currencyBonus, int xpBonus, String message){
+            this.day = day;
+            this.month = month;
+            this.currencyBonus = currencyBonus;
+            this.xpBonus = xpBonus;
+            this.message = message;
+        }
+
+        public static Bonus getForDay(int day, int month){
+            for(Bonus b : values())
+                if(day == b.getDay() && month == b.getMonth())
+                    return b;
+
+            return null;
+        }
+
+    }
 
     public static String MESSAGE_FORMAT = Emoji.GIFT.getUnicode() + " **DAILY BONUS** | *{0}*\n\n" +
             "Daily bonus claimed: {1}\n" +
@@ -94,6 +128,11 @@ public class DailyBonusCommand extends Command {
             currencyBonus *= 2;
             stats.setInt(Stat.DAILY_DAYS_SINCE_WEEKLY, 0);
         }
+        Bonus b = Bonus.getForDay(getDay(currentTime), getMonth(currentTime));
+        if(b != null) {
+            xpBonus += b.getXpBonus();
+            currencyBonus += b.getCurrencyBonus();
+        }
 
         user.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyBonus);
         stats.incrementInt(Stat.EXPERIENCE, xpBonus);
@@ -113,11 +152,30 @@ public class DailyBonusCommand extends Command {
         if(newLongest && currentStreak >= 2)
             streakString += " | **New longest streak!**";
 
-        String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), applyWeekly ? (isEligibleForWeekly ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "\n**WEEKLY BONUS NOT APPLIED:** *not eligible*") : "",currencyBonus, xpBonus, streakString);
+        String bonusStr = applyWeekly ? (isEligibleForWeekly ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "\n**WEEKLY BONUS NOT APPLIED:** *not eligible*") : "";
+        if(b != null) bonusStr += "\n**BONUS APPLIED:** " + b.getMessage();
+
+        String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), bonusStr, currencyBonus, xpBonus, streakString);
 
         MessagesUtils.sendPlain(message.getChannel(), msg);
         stats.setLong(Stat.DAILY_LAST_CLAIM, getCurrentDay(currentTime));
         stats.incrementInt(Stat.DAILY_DAYS_SINCE_WEEKLY);
+    }
+
+    private int getDay(long currentTime){
+        Date current = new Date(currentTime);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(current);
+
+        return cal.get(Calendar.DAY_OF_MONTH);
+    }
+
+    private int getMonth(long currentTime){
+        Date current = new Date(currentTime);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(current);
+
+        return cal.get(Calendar.MONTH) + 1;
     }
 
     private long getCurrentDay(long currentTime){
