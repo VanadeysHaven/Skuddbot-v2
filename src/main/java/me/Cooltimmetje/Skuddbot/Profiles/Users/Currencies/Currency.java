@@ -40,7 +40,7 @@ public enum Currency {
         this.defaultValue = defaultValue;
         this.hasLeaderboard = hasLeaderboard;
         this.show = show;
-        this.showWhenZero = this.showWhenZero;
+        this.showWhenZero = showWhenZero;
         this.canBeEdited = canBeEdited;
     }
 
