@@ -11,6 +11,7 @@ import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,9 +26,15 @@ public abstract class PagedMessage {
     private static List<PagedMessage> autoExpireMessages = new ArrayList<>();
 
     public static void runAutoExpire(){
-        for(PagedMessage message : autoExpireMessages)
-            if(message.getExpireAt() < System.currentTimeMillis())
+        Iterator<PagedMessage> it = autoExpireMessages.iterator();
+
+        while(it.hasNext()) {
+            PagedMessage message = it.next();
+            if (message.getExpireAt() < System.currentTimeMillis()) {
                 message.deactivate();
+                it.remove();
+            }
+        }
     }
 
     @Getter private int page;
