@@ -52,9 +52,9 @@ public class ManageMessageCommand extends Command {
         if(input.length() > type.getMaxLength()){
             MessagesUtils.addReaction(message, Emoji.WARNING, "The message exceeds the __" + type.getMaxLength() + " character limit__ set for this type. For your convenience this is the message trimmed down to the correct length: \n```" + trimmed + "```");
             return;
-        } else {
-            dm.addMessage(dm.getUser(message.getAuthor().getId()), type, trimmed).save();
-            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + trimmed + "` as a `" + type + "` message!");
         }
+
+        dm.addMessage(dm.getUser(message.getAuthor().getId()), type, trimmed).save();
+        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + trimmed + "` as a `" + type + "` message!");
     }
 }
