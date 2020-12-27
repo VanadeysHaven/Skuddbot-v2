@@ -37,9 +37,7 @@ public class DailyBonusCommand extends Command {
     @Getter
     private enum Bonus {
 
-        CHRISTMAS_1 (24, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!* (+1 giveaway ticket)"),
-        CHRISTMAS_2 (25, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!* (+1 giveaway ticket)"),
-        CHRISTMAS_3 (26, 12, 5000, 10000, "\uD83C\uDF85 *Ho ho ho! Merry christmas!* (+1 giveaway ticket)");
+        NEW_YEAR (1, 1, 20000, 30000, "\uD83E\uDD42 *HAPPY NEW YEAR!*");
 
         int day;
         int month;
@@ -132,7 +130,6 @@ public class DailyBonusCommand extends Command {
         if(b != null) {
             xpBonus += b.getXpBonus();
             currencyBonus += b.getCurrencyBonus();
-            user.getCurrencies().incrementInt(Currency.GIVEAWAY_TICKETS);
         }
 
         user.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyBonus);
