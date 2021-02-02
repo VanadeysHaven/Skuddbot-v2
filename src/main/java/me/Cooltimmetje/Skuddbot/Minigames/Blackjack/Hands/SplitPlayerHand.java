@@ -24,8 +24,8 @@ public class SplitPlayerHand extends PlayerHand {
     protected Stat[] twoIncrementStats;
 
 
-    public SplitPlayerHand(PlayerHand hand) {
-        super(hand.oneBet);
+    public SplitPlayerHand(PlayerHand hand, boolean useGenderNeutralCards) {
+        super(hand.oneBet, useGenderNeutralCards);
         twoHand = new ArrayList<>();
         ArrayList<Card> initialHand = hand.oneHand;
         int bet = hand.oneBet;

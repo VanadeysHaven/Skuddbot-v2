@@ -16,32 +16,56 @@ public class Card {
     @Getter
     public enum Rank {
 
-        ACE  (-1, "Ace",   Emoji.A,     "A",  false),
-        TWO  (2,  "Two",   Emoji.TWO,   "2",  false),
-        THREE(3,  "Three", Emoji.THREE, "3",  false),
-        FOUR (4,  "Four",  Emoji.FOUR,  "4",  false),
-        FIVE (5,  "Five",  Emoji.FIVE,  "5",  false),
-        SIX  (6,  "Six",   Emoji.SIX,   "6",  false),
-        SEVEN(7,  "Seven", Emoji.SEVEN, "7",  false),
-        EIGHT(8,  "Eight", Emoji.EIGHT, "8",  false),
-        NINE (9,  "Nine",  Emoji.NINE,  "9",  false),
-        TEN  (10, "Ten",   Emoji.TEN,   "10", false),
-        JACK (10, "Jack",  Emoji.J,     "J",  true ),
-        QUEEN(10, "Queen", Emoji.Q,     "Q",  true ),
-        KING (10, "King",  Emoji.K,     "K",  true );
+        ACE  (-1, "Ace",   Emoji.A,              "A",  false),
+        TWO  (2,  "Two",   Emoji.TWO,            "2",  false),
+        THREE(3,  "Three", Emoji.THREE,          "3",  false),
+        FOUR (4,  "Four",  Emoji.FOUR,           "4",  false),
+        FIVE (5,  "Five",  Emoji.FIVE,           "5",  false),
+        SIX  (6,  "Six",   Emoji.SIX,            "6",  false),
+        SEVEN(7,  "Seven", Emoji.SEVEN,          "7",  false),
+        EIGHT(8,  "Eight", Emoji.EIGHT,          "8",  false),
+        NINE (9,  "Nine",  Emoji.NINE,           "9",  false),
+        TEN  (10, "Ten",   Emoji.TEN,            "10", false),
+        JACK (10, "Jack",  Emoji.J,     Emoji.B, "J",  true ),
+        QUEEN(10, "Queen", Emoji.Q,     Emoji.S, "Q",  true ),
+        KING (10, "King",  Emoji.K,     Emoji.G, "K",  true );
 
         private int value;
         private String rankName;
-        private Emoji emoji;
+        private Emoji normalEmoji;
+        private Emoji gnEmoji;
         private String abbreviation;
         private boolean faceCard;
 
         Rank(int value, String rankName, Emoji emoji, String abbreviation, boolean faceCard){
             this.value = value;
             this.rankName = rankName;
-            this.emoji = emoji;
+            this.normalEmoji = emoji;
             this.abbreviation = abbreviation;
             this.faceCard = faceCard;
+        }
+
+        Rank(int value, String rankName, Emoji emoji, Emoji gnEmoji, String abbreviation, boolean faceCard){
+            this.value = value;
+            this.rankName = rankName;
+            this.normalEmoji = emoji;
+            this.gnEmoji = gnEmoji;
+            this.abbreviation = abbreviation;
+            this.faceCard = faceCard;
+        }
+
+        public Emoji getEmoji(boolean genderNeutral){
+            if(genderNeutral)
+                return getGnEmoji();
+
+            return getNormalEmoji();
+        }
+
+        public Emoji getGnEmoji(){
+            if(gnEmoji == null)
+                return getNormalEmoji();
+
+            return gnEmoji;
         }
 
         public static Rank random(RNGManager random){
@@ -96,9 +120,13 @@ public class Card {
                 suit == card.suit;
     }
 
+    public String toString(boolean genderNeutral) {
+        return rank.getEmoji(genderNeutral).getUnicode() + " " + suit.getEmoji().getUnicode();
+    }
+
     @Override
-    public String toString() {
-        return rank.getEmoji().getUnicode() + " " + suit.getEmoji().getUnicode();
+    public String toString(){
+        return toString(true);
     }
 
     public String toSimpleString() {

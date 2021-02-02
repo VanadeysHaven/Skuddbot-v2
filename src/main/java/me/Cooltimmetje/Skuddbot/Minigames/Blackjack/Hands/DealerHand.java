@@ -14,6 +14,10 @@ public class DealerHand extends BlackjackHand {
 
     @Setter private Card holeCard;
 
+    public DealerHand(boolean useGenderNeutralCards) {
+        super(useGenderNeutralCards);
+    }
+
     public void revealHoleCard(){
         if(holeCard == null) throw new IllegalStateException("There is no hole card.");
 

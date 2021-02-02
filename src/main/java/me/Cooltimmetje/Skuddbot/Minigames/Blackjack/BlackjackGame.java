@@ -12,6 +12,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
@@ -119,7 +120,7 @@ public class BlackjackGame {
         gameState = GameState.NORMAL_HAND_PLAYING;
         playingInstruction = PlayingInstruction.PLAYER_PLAYING;
         buttons = new ArrayList<>();
-        setupHands(handInstruction);
+        setupHands(handInstruction, player.asSkuddUser().getSettings().getBoolean(UserSetting.GN_PLAYING_CARDS));
         preGameChecks();
         sendMessage(channel);
 
@@ -129,9 +130,10 @@ public class BlackjackGame {
         setupButtons();
     }
 
-    private void setupHands(String handInstruction) {
-        playerHand = new PlayerHand(initialBet);
-        dealerHand = new DealerHand();
+    private void setupHands(String handInstruction, boolean useGenderNeutralCards) {
+
+        playerHand = new PlayerHand(initialBet, useGenderNeutralCards);
+        dealerHand = new DealerHand(useGenderNeutralCards);
 
         playerHand.addCard(BlackjackHand.ONE, manager.drawCard());
         dealerHand.addCard(BlackjackHand.ONE, manager.drawCard());

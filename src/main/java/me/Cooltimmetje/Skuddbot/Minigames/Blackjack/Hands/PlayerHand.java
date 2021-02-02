@@ -22,7 +22,8 @@ public class PlayerHand extends BlackjackHand {
     protected int oneJackpot;
     protected Stat[] oneIncrementStats;
 
-    public PlayerHand(int bet){
+    public PlayerHand(int bet, boolean useGenderNeutralCards){
+        super(useGenderNeutralCards);
         oneBet = bet;
     }
 
@@ -126,7 +127,7 @@ public class PlayerHand extends BlackjackHand {
 
     public SplitPlayerHand splitHand(){
         if (isHandSplitted()) throw new IllegalStateException("You cannot split an already splitted hand");
-        return new SplitPlayerHand(this);
+        return new SplitPlayerHand(this, useGenderNeutralCards);
     }
 
     public boolean isHandSplitted(){

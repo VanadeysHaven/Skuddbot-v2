@@ -18,9 +18,11 @@ public abstract class BlackjackHand {
     public static final int TWO = 2;
 
     protected ArrayList<Card> oneHand;
+    protected boolean useGenderNeutralCards;
 
-    protected BlackjackHand(){
+    protected BlackjackHand(boolean useGenderNeutralCards){
         oneHand = new ArrayList<>();
+        this.useGenderNeutralCards = useGenderNeutralCards;
     }
 
     public int getHandValue(int hand){
@@ -56,7 +58,7 @@ public abstract class BlackjackHand {
         ArrayList<Card> handList = getHand(hand);
         StringBuilder sb = new StringBuilder();
         for(Card card : handList)
-            sb.append(" | ").append(card.toString());
+            sb.append(" | ").append(card.toString(useGenderNeutralCards));
 
         if(handList.size() == 1)
             sb.append(" | ").append(Emoji.QUESTION.getUnicode()).append(Emoji.QUESTION.getUnicode());
