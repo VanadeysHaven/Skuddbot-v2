@@ -25,28 +25,31 @@ public class DonatorMessage {
 
     @Getter
     public enum Type {
-        AI_NAME           ("ai_name",           64              ),
-        BACON             ("bacon",             512, Emoji.BACON),
-        CAKE              ("cake",              512, Emoji.CAKE ),
-        KITTY             ("kitty",             512, Emoji.CAT  ),
-        PLAYING           ("playing",           128             ),
-        PLAYING_CHRISTMAS ("playing_christmas", 128             ),
-        PLAYING_NEW_YEAR  ("playing_new_year",  128             ),
-        PUPPY             ("puppy",             512, Emoji.DOG  );
+        AI_NAME           ("ai_name",           64,               false),
+        BACON             ("bacon",             512, Emoji.BACON, true ),
+        CAKE              ("cake",              512, Emoji.CAKE,  true ),
+        KITTY             ("kitty",             512, Emoji.CAT,   true ),
+        PLAYING           ("playing",           128,              false),
+        PLAYING_CHRISTMAS ("playing_christmas", 128,              false),
+        PLAYING_NEW_YEAR  ("playing_new_year",  128,              false),
+        PUPPY             ("puppy",             512, Emoji.DOG,   true );
 
         private String dbReference;
         private int maxLength;
         private Emoji emoji;
+        private boolean acceptsImages;
 
-        Type(String dbReference, int maxLength){
+        Type(String dbReference, int maxLength, boolean acceptsImages){
             this.dbReference = dbReference;
             this.maxLength = maxLength;
+            this.acceptsImages = acceptsImages;
         }
 
-        Type(String dbReference, int maxLength, Emoji emoji){
+        Type(String dbReference, int maxLength, Emoji emoji, boolean acceptsImages){
             this.dbReference = dbReference;
             this.maxLength = maxLength;
             this.emoji = emoji;
+            this.acceptsImages = acceptsImages;
         }
 
         public static Type getByDbReference(String reference){

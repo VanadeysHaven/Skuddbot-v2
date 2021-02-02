@@ -23,11 +23,6 @@ public class ManageMessageCommand extends Command {
     @Override
     public void run(Message message, String content) { //TODO managing of messages
         String[] args = content.split(" ");
-        if (args.length < 4) {
-            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content>`");
-            return;
-        }
-
         DonatorMessage.Type type;
         try {
             type = DonatorMessage.Type.valueOf(args[2].toUpperCase().replace("-", "_"));
@@ -36,6 +31,20 @@ public class ManageMessageCommand extends Command {
             return;
         }
 
+
+        addMessage(message, type, args);
+
+//        if (args.length >= 4) {
+//            addMessage(message, type, args);
+//        } else if(args.length == 3 && type.isAcceptsImages()){
+//            addImage(message, type);
+//        } else {
+//            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
+//        }
+
+    }
+
+    private void addMessage(Message message, DonatorMessage.Type type, String[] args){
         StringBuilder sb = new StringBuilder();
         for(int i=3; i < args.length; i++){
             sb.append(args[i]).append(" ");
@@ -56,5 +65,9 @@ public class ManageMessageCommand extends Command {
 
         dm.addMessage(dm.getUser(message.getAuthor().getId()), type, trimmed).save();
         MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + trimmed + "` as a `" + type + "` message!");
+    }
+
+    private void addImage(Message message, DonatorMessage.Type type){
+
     }
 }
