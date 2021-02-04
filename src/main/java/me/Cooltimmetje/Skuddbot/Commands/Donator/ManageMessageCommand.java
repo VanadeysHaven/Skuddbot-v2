@@ -6,6 +6,7 @@ import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.MessageAttachment;
 
 /**
  * Commands for donators so they can add messages to the donator pool.
@@ -24,6 +25,12 @@ public class ManageMessageCommand extends Command {
     public void run(Message message, String content) { //TODO managing of messages
         String[] args = content.split(" ");
         DonatorMessage.Type type;
+
+        if(args.length < 3){
+            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
+            return;
+        }
+
         try {
             type = DonatorMessage.Type.valueOf(args[2].toUpperCase().replace("-", "_"));
         } catch (IllegalArgumentException e) {
@@ -31,16 +38,16 @@ public class ManageMessageCommand extends Command {
             return;
         }
 
-
-        addMessage(message, type, args);
-
-//        if (args.length >= 4) {
-//            addMessage(message, type, args);
-//        } else if(args.length == 3 && type.isAcceptsImages()){
-//            addImage(message, type);
-//        } else {
-//            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
-//        }
+        if (args.length >= 4) {
+            addMessage(message, type, args);
+        } else if(type.isAcceptsImages()){
+            addImage(message, type);
+        } else {
+            if(!type.isAcceptsImages() && message.getAttachments().size() > 0){
+                MessagesUtils.addReaction(message, Emoji.X, "Type `" + type + "` does not support image uploads!");
+            }
+            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
+        }
 
     }
 
@@ -68,6 +75,25 @@ public class ManageMessageCommand extends Command {
     }
 
     private void addImage(Message message, DonatorMessage.Type type){
+        int amountAdded = 0;
 
+        if(message.getAttachments().size() <= 0){
+            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
+            return;
+        }
+
+        DonatorMessage lastAdded = null;
+        for(MessageAttachment attachment : message.getAttachments())
+            if(attachment.isImage() && !dm.doesMessageExist(type, attachment.getUrl().toString())) {
+                lastAdded = dm.addMessage(dm.getUser(message.getAuthor().getId()), type, attachment.getUrl().toString());
+                lastAdded.save();
+                amountAdded++;
+            }
+
+        if(amountAdded == 1){
+            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + lastAdded.getMessage() + "` as a `" + type + "` message!");
+        } else {
+            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + amountAdded + "` images as a `" + type + "` message!");
+        }
     }
 }
