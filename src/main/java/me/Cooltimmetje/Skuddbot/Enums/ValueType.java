@@ -1,11 +1,11 @@
 package me.Cooltimmetje.Skuddbot.Enums;
 
 /**
- * <class discription>
+ * Enumerator for different types of values.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
- * @version ALPHA-2.0
+ * @since 2.0
+ * @version 2.0
  */
 public enum ValueType {
 

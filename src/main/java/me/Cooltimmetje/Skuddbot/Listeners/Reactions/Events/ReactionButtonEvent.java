@@ -1,36 +1,33 @@
-package me.Cooltimmetje.Skuddbot.Listeners.Reactions;
+package me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 
 /**
- * Event information about the reaction button clicked.
+ * Base abstract event class for reaction button events.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
- * @since ALPHA-2.1.1
+ * @version 2.2.1
+ * @since 2.2.1
  */
-public class ReactionButtonClickedEvent {
+public abstract class ReactionButtonEvent {
 
     @Getter private Message message;
     @Getter private Emoji emoji;
     @Getter private User user;
+    @Getter private ReactionButton button;
 
-    public ReactionButtonClickedEvent(Message message, Emoji emoji, User user){
+    public ReactionButtonEvent(Message message, Emoji emoji, User user, ReactionButton button){
         this.message = message;
         this.emoji = emoji;
         this.user = user;
-    }
-
-    public void undoReaction(){
-        Reaction reaction = message.getReactionByEmoji(emoji.getUnicode()).orElse(null); assert reaction != null;
-        reaction.removeUser(user);
+        this.button = button;
     }
 
     public ServerMember getUserAsMember(){

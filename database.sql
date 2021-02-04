@@ -506,3 +506,23 @@ select c.currency_name, uhc.currency_value from user_has_currencies uhc join cur
 delete uhc from user_has_currencies uhc join currencies c on uhc.currency_id = c.id where uhc.user_id=? and c.currency_name=?;
 insert into user_has_currencies(currency_id, user_id, currency_value) value ((select get_currency_id(?)),?,?) on duplicate key update currency_value=?;
 select id.discord_id, id.twitch_username, id.mixer_username, uhc.currency_value from user_has_currencies uhc join identifier id on uhc.user_id = id.id join currencies c on uhc.currency_id = c.id where id.server_id=? and c.currency_name=?;
+
+# 2.2.1 update script
+delete from user_has_stats where stat_id=(select get_stat_id('daily_last_claim'));
+
+drop table if exists temp_stats;
+create table temp_stats (
+    user_id int,
+    stat_value int
+);
+
+insert into temp_stats
+select user_id, stat_value
+from user_has_stats
+where stat_id=(select get_stat_id('daily_longest_streak'));
+
+update user_has_stats
+set stat_value = (select stat_value from temp_stats ts where user_has_stats.user_id = ts.user_id)
+where stat_id=(select get_stat_id('daily_current_streak'));
+
+drop table temp_stats;

@@ -17,16 +17,14 @@ import java.text.MessageFormat;
  * Hugs punches, whatever, this command can do it.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public abstract class ActionCommand extends Command {
 
-    private String actionString;
 
-    public ActionCommand(String[] invokers, String description, String actionString) {
-        super(invokers, description, Location.BOTH);
-        this.actionString = actionString;
+    public ActionCommand(String[] invokers, String description) {
+        super(invokers, description, "https://wiki.skuddbot.xyz/commands/action-commands");
     }
 
     @Override
@@ -44,10 +42,18 @@ public abstract class ActionCommand extends Command {
         SkuddUser su = pm.getUser(server.getId(), selectedUser.getId());
         boolean allowPing = su.getSettings().getBoolean(UserSetting.MENTION_ME);
 
-        MessagesUtils.sendPlain(message.getChannel(), MessageFormat.format(actionString, allowPing ? selectedUser.getMentionTag() : selectedUser.getDisplayName(server)));
+        ActionProperties ap = getActionProperties(user.getId());
+        String actionString = ap.getActionString();
+        boolean shouldCapitalize = ap.shouldCapitalize();
+        actionString = MessageFormat.format(actionString, user.getDisplayName(server), allowPing ? selectedUser.getMentionTag() : selectedUser.getDisplayName(server));
+
+        if(shouldCapitalize)
+            actionString = actionString.toUpperCase();
+
+        MessagesUtils.sendPlain(message.getChannel(), actionString);
     }
 
-    protected User getRandomActiveUser(User user, Server server){
+    private User getRandomActiveUser(User user, Server server){
         long id;
         SkuddServer ss = sm.getServer(server.getId());
         do {
@@ -55,6 +61,27 @@ public abstract class ActionCommand extends Command {
         } while (id == user.getId());
 
         return Main.getSkuddbot().getApi().getUserById(id).join();
+    }
+
+    protected abstract ActionProperties getActionProperties(long userId);
+
+    public class ActionProperties {
+
+        String actionString;
+        boolean shouldCapitalize;
+
+        public ActionProperties(String actionString, boolean shouldCapitalize){
+            this.actionString = actionString;
+            this.shouldCapitalize = shouldCapitalize;
+        }
+
+        public String getActionString(){
+            return actionString;
+        }
+
+        public boolean shouldCapitalize(){
+            return shouldCapitalize;
+        }
     }
 
 }

@@ -12,8 +12,8 @@ import java.util.HashMap;
  * This holds all server settings.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.0
+ * @since 2.0
  */
 public class ServerSettingsContainer {
 
@@ -60,6 +60,14 @@ public class ServerSettingsContainer {
     public int getInt(ServerSetting setting){
         if(setting.getType() != ValueType.INTEGER) throw new IllegalArgumentException("Setting " + setting + " is not of type INTEGER");
         return Integer.parseInt(getString(setting));
+    }
+
+    public void incrementInt(ServerSetting setting){
+        incrementInt(setting, 1);
+    }
+
+    public void incrementInt(ServerSetting setting, int incrementBy){
+        setInt(setting, getInt(setting) + incrementBy);
     }
 
     public void setDouble(ServerSetting setting, double value){

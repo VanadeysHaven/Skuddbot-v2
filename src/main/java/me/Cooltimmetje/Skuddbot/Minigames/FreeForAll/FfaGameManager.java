@@ -11,8 +11,8 @@ import java.util.Iterator;
  * Game manager, for managing data that needs to persist between games.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
- * @since ALPHA-2.2
+ * @version 2.2.1
+ * @since 2.2
  */
 public class FfaGameManager {
 
@@ -20,10 +20,11 @@ public class FfaGameManager {
 
     @Getter private long serverId;
     private FfaGame currentGame;
-    private CooldownManager cooldownManager = new CooldownManager(COOLDOWN);
+    private CooldownManager cooldownManager;
 
     public FfaGameManager(long serverId){
         this.serverId = serverId;
+        cooldownManager = new CooldownManager(COOLDOWN);
     }
 
     public boolean gameIsActive(){
@@ -39,12 +40,14 @@ public class FfaGameManager {
     }
 
     public void enterGame(TextChannel channel, ServerMember player, int bet){
-        if(!gameIsActive()) {
+        if(!gameIsActive())
             createNewGame(channel, player);
-            if(bet == 0) return;
-        }
 
         currentGame.enterGame(player, bet);
+    }
+
+    public void leaveGame(ServerMember member){
+        currentGame.leaveGame(member);
     }
 
     public boolean isInGame(ServerMember member){
@@ -70,7 +73,7 @@ public class FfaGameManager {
     public void finishGame() {
         Iterator<FfaPlayer> it = currentGame.getPlayers();
         while(it.hasNext()){
-            startCooldown(it.next().getPlayer().getId().getDiscordId());
+            startCooldown(it.next().getMember().getId().getDiscordId());
         }
 
         currentGame = null;

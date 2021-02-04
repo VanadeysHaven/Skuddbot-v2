@@ -6,29 +6,31 @@ import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.MessageAttachment;
 
 /**
  * Commands for donators so they can add messages to the donator pool.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class ManageMessageCommand extends Command {
 
     public ManageMessageCommand() {
-        super(new String[]{"message"}, "Used to manage messages in the donator message pool.", PermissionLevel.DONATOR, Location.DM);
+        super(new String[]{"message"}, "Used to manage messages in the donator message pool.", null, PermissionLevel.DONATOR, Location.DM);
     }
 
     @Override
     public void run(Message message, String content) { //TODO managing of messages
         String[] args = content.split(" ");
-        if (args.length < 4) {
-            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content>`");
+        DonatorMessage.Type type;
+
+        if(args.length < 3){
+            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
             return;
         }
 
-        DonatorMessage.Type type;
         try {
             type = DonatorMessage.Type.valueOf(args[2].toUpperCase().replace("-", "_"));
         } catch (IllegalArgumentException e) {
@@ -36,6 +38,20 @@ public class ManageMessageCommand extends Command {
             return;
         }
 
+        if (args.length >= 4) {
+            addMessage(message, type, args);
+        } else if(type.isAcceptsImages()){
+            addImage(message, type);
+        } else {
+            if(!type.isAcceptsImages() && message.getAttachments().size() > 0){
+                MessagesUtils.addReaction(message, Emoji.X, "Type `" + type + "` does not support image uploads!");
+            }
+            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
+        }
+
+    }
+
+    private void addMessage(Message message, DonatorMessage.Type type, String[] args){
         StringBuilder sb = new StringBuilder();
         for(int i=3; i < args.length; i++){
             sb.append(args[i]).append(" ");
@@ -52,9 +68,32 @@ public class ManageMessageCommand extends Command {
         if(input.length() > type.getMaxLength()){
             MessagesUtils.addReaction(message, Emoji.WARNING, "The message exceeds the __" + type.getMaxLength() + " character limit__ set for this type. For your convenience this is the message trimmed down to the correct length: \n```" + trimmed + "```");
             return;
+        }
+
+        dm.addMessage(dm.getUser(message.getAuthor().getId()), type, trimmed).save();
+        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + trimmed + "` as a `" + type + "` message!");
+    }
+
+    private void addImage(Message message, DonatorMessage.Type type){
+        int amountAdded = 0;
+
+        if(message.getAttachments().size() <= 0){
+            MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
+            return;
+        }
+
+        DonatorMessage lastAdded = null;
+        for(MessageAttachment attachment : message.getAttachments())
+            if(attachment.isImage() && !dm.doesMessageExist(type, attachment.getUrl().toString())) {
+                lastAdded = dm.addMessage(dm.getUser(message.getAuthor().getId()), type, attachment.getUrl().toString());
+                lastAdded.save();
+                amountAdded++;
+            }
+
+        if(amountAdded == 1){
+            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + lastAdded.getMessage() + "` as a `" + type + "` message!");
         } else {
-            dm.addMessage(dm.getUser(message.getAuthor().getId()), type, trimmed).save();
-            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + trimmed + "` as a `" + type + "` message!");
+            MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + amountAdded + "` images as a `" + type + "` message!");
         }
     }
 }

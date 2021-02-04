@@ -12,13 +12,12 @@ import org.javacord.api.entity.message.Message;
  * Used for donators to set their ping message.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class SetPingCommand extends Command {
 
-    public SetPingCommand(){
-        super(new String[]{"setping"}, "Set your ping message with this command.", PermissionLevel.DONATOR, Location.DM);
+    public SetPingCommand(){super(new String[]{"setping"}, "Set your ping message with this command.", null, PermissionLevel.DONATOR, Location.DM);
     }
 
     @Override

@@ -1,10 +1,13 @@
 package me.Cooltimmetje.Skuddbot.Timers;
 
+import me.Cooltimmetje.Skuddbot.Commands.ServerSettingsCommand;
+import me.Cooltimmetje.Skuddbot.Commands.StatsCommand;
 import me.Cooltimmetje.Skuddbot.Minigames.FreeForAll.FfaCommand;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.PagedMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,8 +20,8 @@ import java.util.TimerTask;
  * Timer that runs every 10 minutes.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class TenMinutes extends TimerTask {
 
@@ -35,6 +38,9 @@ public class TenMinutes extends TimerTask {
 
             am.tickAppearance();
             FfaCommand.runReminders();
+            ServerSettingsCommand.clearOverviews();
+            StatsCommand.clearOverviews();
+            PagedMessage.runAutoExpire();
         } catch (Exception e){
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);

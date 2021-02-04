@@ -19,8 +19,8 @@ import java.util.Timer;
  * Main class, this is where the bot starts up from.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
- * @version ALPHA-2.1
+ * @since 2.2.1
+ * @version 2.1
  */
 public class Main {
 
@@ -30,6 +30,7 @@ public class Main {
     @Getter private static Skuddbot skuddbot;
 
     public static void main(String[] args){
+        long startTime = System.currentTimeMillis();
         if(args.length < 3) throw new IllegalArgumentException("Not enough arguments. - Required: 3 - Discord Token, MySql username, Mysql Password");
         logger.info("Starting Skuddbot v2...");
         logger.info("Starting database connection for user " + args[1]);
@@ -41,7 +42,7 @@ public class Main {
         HikariManager.setup(args[1], mysqlPass);
         ServerSetting.saveToDatabase();
         UserSetting.saveToDatabase();
-        Stat.saveToDatabase();
+        Stat.setup();
         Currency.saveToDatabase();
 
         String token = args[0];
@@ -54,7 +55,8 @@ public class Main {
         new AppearanceManager().appearanceStartup();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> getSkuddbot().logout()));
 
-        MessagesUtils.log(":robot: Bot started up!"); //TODO: make this better
+        MessagesUtils.log(":robot: Bot started up! - Startup took " + (System.currentTimeMillis() - startTime) + "ms"); //TODO: make this better
+        logger.info("Ready! - Startup took " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
 }

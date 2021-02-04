@@ -3,7 +3,10 @@ package me.Cooltimmetje.Skuddbot.Listeners.Reactions;
 import lombok.Getter;
 import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonRemovedEvent;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +15,8 @@ import org.slf4j.LoggerFactory;
  * Information about a reaction button.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.1.1
+ * @version 2.2.1
+ * @since 2.1.1
  */
 public class ReactionButton {
 
@@ -21,22 +24,45 @@ public class ReactionButton {
 
     @Getter private Emoji emoji;
     @Getter private Message message;
-    private ReactionButtonCallback callback;
+    private ReactionButtonClickedCallback clickedCallback;
+    private ReactionButtonRemovedCallback removedCallback;
     @Getter private long[] userLocks;
     @Getter @Setter private boolean enabled;
 
-    public ReactionButton(Message message, Emoji emoji, ReactionButtonCallback callback, long... userLocks){
+    public ReactionButton(Message message, Emoji emoji, ReactionButtonClickedCallback clickedCallback, long... userLocks){
+        this(message, emoji, clickedCallback, null, userLocks);
+    }
+
+    public ReactionButton(Message message, Emoji emoji, ReactionButtonClickedCallback clickedCallback, ReactionButtonRemovedCallback removedCallback, long... userLocks) {
         this.message = message;
         this.emoji = emoji;
-        this.callback = callback;
+        this.clickedCallback = clickedCallback;
+        this.removedCallback = removedCallback;
         this.userLocks = userLocks;
 
         enabled = true;
     }
 
-    public void runButton(User user){
-        logger.info("Running callback for user " + user.getIdAsString() + " on message id " + message.getId());
-        callback.buttonClicked(new ReactionButtonClickedEvent(message, emoji, user));
+    public void runClicked(User user){
+        logger.info("Running clicked callback for user " + user.getIdAsString() + " on message id " + message.getId());
+        clickedCallback.run(new ReactionButtonClickedEvent(message, emoji, user, this));
+    }
+
+    public void runRemoved(User user){
+        if(removedCallback == null) {
+            logger.info("Removed callback triggered for user " + user.getIdAsString() + " on message id " + message.getId() + " but there's no removed callback present.");
+            return;
+        }
+
+        logger.info("Running removed callback for user " + user.getIdAsString() + " on message id " + message.getId());
+        removedCallback.run(new ReactionButtonRemovedEvent(message, emoji, user, this));
+    }
+
+    public void removeReaction(User user){
+        if(removedCallback != null) throw new UnsupportedOperationException("You can not remove reactions from a button that has a removed callback associated with it.");
+
+        Reaction reaction = getMessage().getReactionByEmoji(getEmoji().getUnicode()).orElse(null); assert reaction != null;
+        reaction.removeUser(user);
     }
 
     public boolean userIsAllowedToRun(long userId){
@@ -45,6 +71,14 @@ public class ReactionButton {
             if(l == userId) return true;
 
         return false;
+    }
+
+    public void unregister(){
+        ReactionUtils.unregisterButton(this);
+    }
+
+    public boolean isRegistered(){
+        return ReactionUtils.isRegistered(this);
     }
 
     @Override

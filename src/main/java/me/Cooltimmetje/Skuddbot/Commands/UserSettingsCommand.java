@@ -2,6 +2,8 @@ package me.Cooltimmetje.Skuddbot.Commands;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Exceptions.CooldownException;
+import me.Cooltimmetje.Skuddbot.Exceptions.SettingOutOfBoundsException;
 import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
@@ -25,8 +27,8 @@ import java.util.Arrays;
  * Used for viewing and changing usersettings
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class UserSettingsCommand extends Command {
 
@@ -36,7 +38,7 @@ public class UserSettingsCommand extends Command {
 
 
     public UserSettingsCommand() {
-        super(new String[]{"usersettings","usettings"}, "View and change user settings with this command.");
+        super(new String[]{"usersettings","usettings"}, "View and change user settings with this command.", "https://wiki.skuddbot.xyz/features/user-settings#command");
     }
 
     @Override
@@ -120,8 +122,10 @@ public class UserSettingsCommand extends Command {
         try {
             su.getSettings().setString(setting, newValue);
             MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Successfully updated setting `" + setting + "` to `" + newValue + "`!");
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException | SettingOutOfBoundsException e){
             MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
+        } catch (CooldownException e){
+            MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, e.getMessage());
         }
     }
 
@@ -132,6 +136,10 @@ public class UserSettingsCommand extends Command {
             su.getSettings().setLevelUpNotify(newVal);
         } catch (IllegalArgumentException e){
             MessagesUtils.addReaction(message, Emoji.X, "Unsuitable value; must be one of the following: " + Arrays.toString(LevelUpNotification.values()));
+        } catch (CooldownException e){
+            MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, e.getMessage());
+        } catch (SettingOutOfBoundsException e) {
+            MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
         }
     }
 

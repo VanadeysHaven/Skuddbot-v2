@@ -1,7 +1,8 @@
-package me.Cooltimmetje.Skuddbot.Utilities;
+package me.Cooltimmetje.Skuddbot.Listeners.Reactions;
 
 import lombok.Getter;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 
@@ -9,8 +10,8 @@ import org.javacord.api.entity.message.Message;
  * A reaction on a message a user can click for more information.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class DebugReaction {
 
@@ -22,7 +23,7 @@ public class DebugReaction {
     @Getter private boolean posted;
     @Getter private boolean ignoreUser;
 
-    DebugReaction(String output, Emoji emoji, Message message, TextChannel channel, long validUntil, boolean ignoreUser){
+    public DebugReaction(String output, Emoji emoji, Message message, TextChannel channel, long validUntil, boolean ignoreUser){
         this.output = output;
         this.emoji = emoji;
         this.message = message;

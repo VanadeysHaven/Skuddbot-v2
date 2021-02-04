@@ -13,13 +13,14 @@ import java.util.ArrayList;
  * Enum for all the types of currencies.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.1.1
+ * @version 2.1.1
+ * @since 2.1.1
  */
 @Getter
 public enum Currency {
 
-    SKUDDBUX ("skuddbux", ValueType.INTEGER, "Skuddbux", "skuddbux", "0", true, true, true);
+    SKUDDBUX         ("skuddbux",         ValueType.INTEGER, "Skuddbux",         "skuddbux", "0", true,  true, true,  true ),
+    GIVEAWAY_TICKETS ("giveaway_tickets", ValueType.INTEGER, "Giveaway Tickets", "tickets",  "0", false, true, false, false);
 
     private String dbReference;
     private ValueType type;
@@ -28,9 +29,10 @@ public enum Currency {
     private String defaultValue;
     private boolean hasLeaderboard;
     private boolean show;
+    private boolean showWhenZero;
     private boolean canBeEdited;
 
-    Currency(String dbReference, ValueType type, String name, String suffix, String defaultValue, boolean hasLeaderboard, boolean show, boolean canBeEdited){
+    Currency(String dbReference, ValueType type, String name, String suffix, String defaultValue, boolean hasLeaderboard, boolean show, boolean showWhenZero, boolean canBeEdited){
         this.dbReference = dbReference;
         this.type = type;
         this.name = name;
@@ -38,6 +40,7 @@ public enum Currency {
         this.defaultValue = defaultValue;
         this.hasLeaderboard = hasLeaderboard;
         this.show = show;
+        this.showWhenZero = showWhenZero;
         this.canBeEdited = canBeEdited;
     }
 

@@ -14,41 +14,47 @@ import java.util.ArrayList;
  * Constants for user stats.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.2
- * @version ALPHA-2.0
+ * @since 2.2.1
+ * @version 2.0
  */
 @Getter
 public enum Stat {
 
-    EXPERIENCE                  ("xp",                      ValueType.INTEGER, "Experience",                 "xp",         "0",  Category.NO_CATEGORY,       true,  true,  true ),
-    CHALLENGE_WINS              ("chlng_wins",              ValueType.INTEGER, "Wins",                       "wins",       "0",  Category.CHALLENGE,         true,  true,  true ),
-    CHALLENGE_LOSSES            ("chlng_losses",            ValueType.INTEGER, "Losses",                     "Losses",     "0",  Category.CHALLENGE,         true,  true,  true ),
-    CHALLENGE_WINSTREAK         ("chlng_winstreak",         ValueType.INTEGER, "Winstreak",                  "wins",       "0",  Category.CHALLENGE,         true,  true,  true ),
-    CHALLENGE_LONGEST_WINSTREAK ("chlng_longest_winstreak", ValueType.INTEGER, "Longest winstreak",          "wins",       "0",  Category.CHALLENGE,         true,  true,  true ),
-    FFA_WINS                    ("ffa_wins",                ValueType.INTEGER, "Wins",                       "wins",       "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
-    FFA_LOSSES                  ("ffa_losses",              ValueType.INTEGER, "Losses",                     "losses",     "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
-    FFA_HIGHEST_WIN             ("ffa_highest_win",         ValueType.INTEGER, "Most entrants win",          "entrants",   "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
-    FFA_KILLS                   ("ffa_kills",               ValueType.INTEGER, "Kills",                      "kills",      "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
-    FFA_BETS_WON                ("ffa_bets_won",            ValueType.INTEGER, "Bets won",                   "bets",       "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
-    FFA_BETS_LOST               ("ffa_bets_lost",           ValueType.INTEGER, "Bets lost",                  "bets",       "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
-    BJ_WINS                     ("bj_wins",                 ValueType.INTEGER, "Wins",                       "wins",       "0",  Category.BLACKJACK,         true,  true,  true ),
-    BJ_LOSSES                   ("bj_losses",               ValueType.INTEGER, "Losses",                     "losses",     "0",  Category.BLACKJACK,         true,  true,  true ),
-    BJ_PUSHES                   ("bj_pushes",               ValueType.INTEGER, "Pushes",                     "pushes",     "0",  Category.BLACKJACK,         true,  true,  true ),
-    BJ_TWENTY_ONES              ("bj_twenty_ones",          ValueType.INTEGER, "21's",                       "21's",       "0",  Category.BLACKJACK,         true,  true,  true ),
-    BJ_BLACKJACKS               ("bj_blackjacks",           ValueType.INTEGER, "Blackjack's",                "blackjacks", "0",  Category.BLACKJACK,         true,  true,  true ),
-    TD_WINS                     ("td_wins",                 ValueType.INTEGER, "Wins",                       "wins",       "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
-    TD_LOSSES                   ("td_losses",               ValueType.INTEGER, "Losses",                     "losses",     "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
-    TD_DEFENSES                 ("td_defences",             ValueType.INTEGER, "Teammate defences",          "defences",   "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
-    TD_HIGHEST_WIN              ("td_highest_win",          ValueType.INTEGER, "Most entrants win",          "entrants",   "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
-    TD_ALL_SURVIVED             ("td_all_survived",         ValueType.INTEGER, "All teammates survived",     "times",      "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
-    TD_KILLS                    ("td_kills",                ValueType.INTEGER, "Kills",                      "kills",      "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
-    TD_TEAMMATES                ("td_teammates",            ValueType.JSON,    "Favourite Teammate",         "",           "{}", Category.TEAM_DEATHMATCH,   false, false, true ),
-    DAILY_LAST_CLAIM            ("daily_last_claim",        ValueType.LONG,    "daily_last_claim",           "",           "-1", Category.DAILY_BONUS,       false, true,  false),
-    DAILY_CURRENT_STREAK        ("daily_current_streak",    ValueType.INTEGER, "Current claim streak",       "days",       "0",  Category.DAILY_BONUS,       true,  true,  true ),
-    DAILY_LONGEST_STREAK        ("daily_longest_streak",    ValueType.INTEGER, "Longest claim steak",        "days",       "0",  Category.DAILY_BONUS,       true,  true,  true ),
-    DON_WINS                    ("don_wins",                ValueType.INTEGER, "Wins",                       "wins",       "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
-    DON_LOSSES                  ("don_losses",              ValueType.INTEGER, "Losses",                     "losses",     "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
-    DON_LONGEST_STREAK          ("don_longest_streak",      ValueType.INTEGER, "Longest double up streak",   "times",      "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true );
+    EXPERIENCE                  ("xp",                      ValueType.INTEGER, "Experience",                 "xp",           "0",  Category.NO_CATEGORY,       true,  true,  true ),
+    CHALLENGE_WINS              ("chlng_wins",              ValueType.INTEGER, "Wins",                       "wins",         "0",  Category.CHALLENGE,         true,  true,  true ),
+    CHALLENGE_LOSSES            ("chlng_losses",            ValueType.INTEGER, "Losses",                     "Losses",       "0",  Category.CHALLENGE,         true,  true,  true ),
+    CHALLENGE_WINSTREAK         ("chlng_winstreak",         ValueType.INTEGER, "Winstreak",                  "wins",         "0",  Category.CHALLENGE,         true,  true,  true ),
+    CHALLENGE_LONGEST_WINSTREAK ("chlng_longest_winstreak", ValueType.INTEGER, "Longest winstreak",          "wins",         "0",  Category.CHALLENGE,         true,  true,  true ),
+    CHALLENGE_BETS_WON          ("chlng_bets_won",          ValueType.INTEGER, "Bets won",                   "bets",         "0",  Category.CHALLENGE,         true,  true,  true ),
+    CHALLENGE_BETS_LOST         ("chlng_bets_lost",         ValueType.INTEGER, "Bets lost",                  "bets",         "0",  Category.CHALLENGE,         true,  true,  true ),
+    FFA_WINS                    ("ffa_wins",                ValueType.INTEGER, "Wins",                       "wins",         "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
+    FFA_LOSSES                  ("ffa_losses",              ValueType.INTEGER, "Losses",                     "losses",       "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
+    FFA_HIGHEST_WIN             ("ffa_highest_win",         ValueType.INTEGER, "Most entrants win",          "entrants",     "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
+    FFA_KILLS                   ("ffa_kills",               ValueType.INTEGER, "Kills",                      "kills",        "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
+    FFA_BETS_WON                ("ffa_bets_won",            ValueType.INTEGER, "Bets won",                   "bets",         "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
+    FFA_BETS_LOST               ("ffa_bets_lost",           ValueType.INTEGER, "Bets lost",                  "bets",         "0",  Category.FREE_FOR_ALL,      true,  true,  true ),
+    BJ_WINS                     ("bj_wins",                 ValueType.INTEGER, "Wins",                       "hands won",    "0",  Category.BLACKJACK,         true,  true,  true ),
+    BJ_LOSSES                   ("bj_losses",               ValueType.INTEGER, "Losses",                     "hands lost",   "0",  Category.BLACKJACK,         true,  true,  true ),
+    BJ_PUSHES                   ("bj_pushes",               ValueType.INTEGER, "Pushes",                     "hands pushed", "0",  Category.BLACKJACK,         true,  true,  true ),
+    BJ_TWENTY_ONES              ("bj_twenty_ones",          ValueType.INTEGER, "21's",                       "21's",         "0",  Category.BLACKJACK,         true,  true,  true ),
+    BJ_BLACKJACKS               ("bj_blackjacks",           ValueType.INTEGER, "Blackjack's",                "blackjacks",   "0",  Category.BLACKJACK,         true,  true,  true ),
+    BJ_DD_WINS                  ("bj_dd_wins",              ValueType.INTEGER, "Double Down Wins",           "hands won",    "0",  Category.BLACKJACK,         true,  true,  true ),
+    BJ_DD_PUSHES                ("bj_dd_pushes",            ValueType.INTEGER, "Double Down Pushes",         "hands pushed", "0",  Category.BLACKJACK,         true,  true,  true ),
+    BJ_DD_LOSSES                ("bj_dd_losses",            ValueType.INTEGER, "Double Down Losses",         "hands lost",   "0",  Category.BLACKJACK,         true,  true,  true ),
+    TD_WINS                     ("td_wins",                 ValueType.INTEGER, "Wins",                       "wins",         "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
+    TD_LOSSES                   ("td_losses",               ValueType.INTEGER, "Losses",                     "losses",       "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
+    TD_DEFENSES                 ("td_defences",             ValueType.INTEGER, "Teammate defences",          "defences",     "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
+    TD_HIGHEST_WIN              ("td_highest_win",          ValueType.INTEGER, "Most entrants win",          "entrants",     "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
+    TD_ALL_SURVIVED             ("td_all_survived",         ValueType.INTEGER, "All teammates survived",     "times",        "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
+    TD_KILLS                    ("td_kills",                ValueType.INTEGER, "Kills",                      "kills",        "0",  Category.TEAM_DEATHMATCH,   true,  true,  true ),
+    TD_TEAMMATES                ("td_teammates",            ValueType.JSON,    "Favourite Teammate",         "",             "{}", Category.TEAM_DEATHMATCH,   false, false, true ),
+    DAILY_LAST_CLAIM            ("daily_last_claim",        ValueType.LONG,    "daily_last_claim",           "",             "-1", Category.DAILY_BONUS,       false, true,  false),
+    DAILY_CURRENT_STREAK        ("daily_current_streak",    ValueType.INTEGER, "Current claim streak",       "days",         "0",  Category.DAILY_BONUS,       true,  true,  true ),
+    DAILY_LONGEST_STREAK        ("daily_longest_streak",    ValueType.INTEGER, "Longest claim steak",        "days",         "0",  Category.DAILY_BONUS,       true,  true,  true ),
+    DAILY_DAYS_SINCE_WEEKLY     ("daily_days_since_weekly", ValueType.INTEGER, "days_since_weekly",          "",             "99", Category.DAILY_BONUS,       false, true,  false),
+    DON_WINS                    ("don_wins",                ValueType.INTEGER, "Wins",                       "wins",         "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
+    DON_LOSSES                  ("don_losses",              ValueType.INTEGER, "Losses",                     "losses",       "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true ),
+    DON_LONGEST_STREAK          ("don_longest_streak",      ValueType.INTEGER, "Longest double up streak",   "times",        "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true );
 
     private String dbReference;
     private ValueType type;
@@ -80,7 +86,22 @@ public enum Stat {
         return null;
     }
 
-    public static void saveToDatabase(){
+    public static ArrayList<Stat> getByCategory(Category category){
+        ArrayList<Stat> stats = new ArrayList<>();
+
+        for(Stat stat : values())
+            if(stat.getCategory() == category)
+                stats.add(stat);
+
+        return stats;
+    }
+
+    public static void setup(){
+        saveToDatabase();
+        StatPageManager.getInstance().calculate();
+    }
+
+    private static void saveToDatabase(){
         QueryExecutor qe = null;
         ArrayList<String> stats = new ArrayList<>();
         try {
@@ -120,7 +141,7 @@ public enum Stat {
                     sb1.append(" | `").append(MiscUtils.unEnumify(stat.toString())).append("`");
                 }
             }
-            sb.append(sb1.append("\n").toString().substring(3));
+            sb.append(sb1.append("\n").substring(3));
         }
 
         return sb.toString().trim();
@@ -128,7 +149,7 @@ public enum Stat {
 
     @Getter
     public enum Category {
-        NO_CATEGORY       ("",                    true ),
+        NO_CATEGORY       ("Not categorized",     true ),
         CHALLENGE         ("Challenge",           true ),
         FREE_FOR_ALL      ("Free for All",        true ),
         BLACKJACK         ("Blackjack",           true ),
@@ -143,6 +164,11 @@ public enum Stat {
             this.name = name;
             this.show = show;
         }
+
+        public ArrayList<Stat> getAll(){
+            return getByCategory(this);
+        }
+
     }
 
 }

@@ -9,8 +9,8 @@ import java.sql.SQLException;
  * Holds the hikari instance.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.0
+ * @since 2.0
  */
 public class HikariManager {
 
@@ -20,10 +20,10 @@ public class HikariManager {
         hikari = new HikariDataSource();
         hikari.setMaximumPoolSize(10);
 
-        hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-        hikari.addDataSourceProperty("serverName", "localhost");
-        hikari.addDataSourceProperty("port", 3306);
-        hikari.addDataSourceProperty("databaseName", "skuddbot_v2");
+        hikari.setJdbcUrl("jdbc:mysql://localhost:3306/skuddbot_v2?serverTimezone=UTC&useLegacyDatetimeCode=false");
+//        hikari.addDataSourceProperty("serverName", "localhost");
+//        hikari.addDataSourceProperty("port", 3306);
+//        hikari.addDataSourceProperty("databaseName", "skuddbot_v2");
         hikari.addDataSourceProperty("user", user);
         hikari.addDataSourceProperty("password", pass);
     }

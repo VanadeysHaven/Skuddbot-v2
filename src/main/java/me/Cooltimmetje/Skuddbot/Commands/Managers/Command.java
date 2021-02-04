@@ -13,8 +13,8 @@ import java.text.MessageFormat;
  * This class is a command, can be extended to other classes to make for a flexible command system.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.1.1
- * @version ALPHA-2.0
+ * @since 2.2.1
+ * @version 2.0
  */
 public abstract class Command {
 
@@ -22,33 +22,39 @@ public abstract class Command {
     protected static final ProfileManager pm = ProfileManager.getInstance();
     protected static final DonatorManager dm = new DonatorManager();
 
-    private static final String HELP_FORMAT =  "- {0}\n*{1}*";
+    private static final String HELP_FORMAT = "{0}\n" +
+            "> *{1}*\n" +
+            "> Wiki: {2}\n";
+    private static final String HELP_FORMAT_NO_WIKI =  "{0}\n" +
+            "> *{1}*\n";
     private static final int MAX_ALIASES = 3;
     private static final PermissionLevel DEFAULT_PERMISSION = PermissionLevel.DEFAULT;
     private static final Location DEFAULT_LOCATION = Location.SERVER;
 
     @Getter private String[] invokers;
     @Getter private String description;
+    private String wikiUrl;
     @Getter private PermissionLevel requiredPermission;
     @Getter private Location allowedLocation;
 
-    public Command(String[] invokers, String description, PermissionLevel requiredPermission, Location allowedLocation) {
+    public Command(String[] invokers, String description, String wikiUrl, PermissionLevel requiredPermission, Location allowedLocation) {
         this.invokers = invokers;
         this.description = description;
+        this.wikiUrl = wikiUrl;
         this.requiredPermission = requiredPermission;
         this.allowedLocation = allowedLocation;
     }
 
-    public Command(String[] invokers, String description){
-        this(invokers, description, DEFAULT_PERMISSION, DEFAULT_LOCATION);
+    public Command(String[] invokers, String description, String wikiUrl){
+        this(invokers, description, wikiUrl, DEFAULT_PERMISSION, DEFAULT_LOCATION);
     }
 
-    public Command(String[] invokers, String description, PermissionLevel requiredPermission){
-        this(invokers, description, requiredPermission, DEFAULT_LOCATION);
+    public Command(String[] invokers, String description, String wikiUrl, PermissionLevel requiredPermission){
+        this(invokers, description, wikiUrl, requiredPermission, DEFAULT_LOCATION);
     }
 
-    public Command(String[] invokers, String description, Location allowedLocation){
-        this(invokers, description, DEFAULT_PERMISSION, allowedLocation);
+    public Command(String[] invokers, String description, String wikiUrl, Location allowedLocation){
+        this(invokers, description, wikiUrl, DEFAULT_PERMISSION, allowedLocation);
     }
 
     public String formatHelp(String commandPrefix){
@@ -66,7 +72,24 @@ public abstract class Command {
             invokerString += " +" + remainingAliases + " other " + (remainingAliases == 1 ? "alias" : "aliases");
         }
 
-        return MessageFormat.format(HELP_FORMAT, invokerString, description);
+        if(hasWikiUrl())
+            return MessageFormat.format(HELP_FORMAT, invokerString, description, getWikiUrl());
+        else
+            return MessageFormat.format(HELP_FORMAT_NO_WIKI, invokerString, description);
+    }
+
+    public boolean hasWikiUrl(){
+        return wikiUrl != null;
+    }
+
+    public String getWikiUrl(){
+        if(wikiUrl == null)
+            return "N/A";
+
+        if(wikiUrl.contains("wiki.skuddbot.xyz"))
+            return "<" + wikiUrl + ">";
+
+        return wikiUrl;
     }
 
     public abstract void run(Message message, String content);

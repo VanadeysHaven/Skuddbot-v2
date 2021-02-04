@@ -11,13 +11,13 @@ import org.javacord.api.entity.message.Message;
  * Logout command
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class LogoutCommand extends Command {
 
     public LogoutCommand(){
-        super(new String[]{"logout"}, "Logs the bot out and saves all data.", PermissionLevel.TIMMY, Location.BOTH);
+        super(new String[]{"logout"}, "Logs the bot out and saves all data.", null, PermissionLevel.TIMMY, Location.BOTH);
     }
 
     @Override

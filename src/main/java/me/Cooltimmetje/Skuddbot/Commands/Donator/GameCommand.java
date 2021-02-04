@@ -11,13 +11,13 @@ import org.javacord.api.entity.message.Message;
  * Command used to change the current playing status.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class GameCommand extends Command {
 
     public GameCommand() {
-        super(new String[]{"game"}, "Used to change the current playing status.", PermissionLevel.DONATOR, Location.BOTH);
+        super(new String[]{"game"}, "Used to change the current playing status.", null, PermissionLevel.DONATOR, Location.BOTH);
     }
 
     @Override

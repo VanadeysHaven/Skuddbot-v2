@@ -8,8 +8,8 @@ import java.util.Iterator;
  * This class represents a row in a table.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since v0.4.62-ALPHA
+ * @version 2.0
+ * @since 1.4.62
  */
 public class TableRow {
 

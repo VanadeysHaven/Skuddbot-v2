@@ -19,15 +19,15 @@ import java.util.ArrayList;
  * The command for Free for All
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
- * @since ALPHA-2.2
+ * @version 2.2.1
+ * @since 2.2
  */
 public class FfaCommand extends Command {
 
     private static final ArrayList<FfaGameManager> managers = new ArrayList<>();
 
     public FfaCommand() {
-        super(new String[]{"freeforall", "ffa"}, "Play a game of Free for All!");
+        super(new String[]{"freeforall", "ffa"}, "Play a game of Free for All!", "https://wiki.skuddbot.xyz/minigames/free-for-all");
     }
 
     @Override
@@ -46,16 +46,24 @@ public class FfaCommand extends Command {
 
         int bet = 0;
         if(args.length > 1){
-            if(args[1].equalsIgnoreCase("bet")){
-                bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
-            } else if (args[1].equalsIgnoreCase("all")){
+            if (args[1].equalsIgnoreCase("all")) {
                 bet = su.getCurrencies().getInt(Currency.SKUDDBUX);
-            } else if (MiscUtils.isLong(args[1])){
+            } else if (MiscUtils.isInt(args[1])){
                 bet = Integer.parseInt(args[1]);
+            } else if (args[1].equalsIgnoreCase("leave")){
+                if(getManager(server.getId()).isInGame(member)){
+                    getManager(server.getId()).leaveGame(member);
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Game left!");
+                } else {
+                    MessagesUtils.addReaction(message, Emoji.X, "You are not in a game of free for all, or there's no game active.");
+                }
+                return;
             } else {
-                MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!ffa [bet/all/betAmount]`");
+                MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!ffa [all/betAmount/leave]`");
                 return;
             }
+        } else {
+            bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
         }
 
         if(bet != 0 && !su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bet)){

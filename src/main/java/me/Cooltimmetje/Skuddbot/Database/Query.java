@@ -6,8 +6,8 @@ import lombok.Getter;
  * Queries for the database.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.1.1
+ * @since 2.0
  */
 @Getter
 public enum Query {

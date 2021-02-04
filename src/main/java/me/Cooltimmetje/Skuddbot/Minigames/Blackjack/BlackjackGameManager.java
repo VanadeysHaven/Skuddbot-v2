@@ -1,11 +1,12 @@
 package me.Cooltimmetje.Skuddbot.Minigames.Blackjack;
 
 import lombok.Getter;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
+import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.javacord.api.entity.channel.TextChannel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -13,58 +14,86 @@ import java.util.ArrayList;
  * Manages games on a server level.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class BlackjackGameManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(BlackjackGameManager.class);
-    private static final int COOLDOWN = 60;
+    private static final int DECK_AMOUNT = 8;
 
     @Getter private long serverId;
+    private CooldownManager cooldownManager;
     private ArrayList<BlackjackGame> games;
-    private CooldownManager cm;
+    @Getter private RNGManager rngManager;
+    private CardStack cardStack;
 
     public BlackjackGameManager(long serverId){
-        logger.info("Creating new BlackjackGameManager for server ID " + serverId);
         this.serverId = serverId;
+        cooldownManager = new CooldownManager(60);
         games = new ArrayList<>();
-        cm = new CooldownManager(COOLDOWN);
+        rngManager = new RNGManager();
+        cardStack = new CardStack(DECK_AMOUNT, rngManager);
     }
 
-    public BlackjackGame getGame(Identifier id){
-        for(BlackjackGame game : games)
-            if(id.equals(game.getId())) return game;
-
-        return null;
-    }
-
-    public void createGame(Identifier id, TextChannel channel){
-        BlackjackGame game = new BlackjackGame(id, channel);
-        games.add(game);
-
-        game.preGameChecks();
-    }
-
-    public boolean hasGameActive(Identifier id){
-        return getGame(id) != null;
-    }
-
-    public void cleanUp(Identifier id){
-        BlackjackGame toRemove = null;
-        for(BlackjackGame game : games)
-            if(game.getId().equals(id))
-                toRemove = game;
-
-        if(toRemove == null)
-            return;
-
-        games.remove(toRemove);
-        cm.startCooldown(id.getDiscordId());
+    public boolean isOnCooldown(ServerMember member){
+        return isOnCooldown(member.getId());
     }
 
     public boolean isOnCooldown(Identifier id){
-        return cm.isOnCooldown(id.getDiscordId());
+        return isOnCooldown(id.getDiscordId());
+    }
+
+    public boolean isOnCooldown(long userId){
+        return cooldownManager.isOnCooldown(userId);
+    }
+
+    public boolean hasGameActive(ServerMember member){
+        return hasGameActive(member.getId());
+    }
+
+    public boolean hasGameActive(Identifier id){
+        return hasGameActive(id.getDiscordId());
+    }
+
+    public boolean hasGameActive(long userId){
+        for(BlackjackGame game : games)
+            if(game.getPlayer().getId().getId() == userId)
+                return true;
+
+        return false;
+    }
+
+    public void startNewGame(ServerMember member, TextChannel channel, String handInstruction){
+       BlackjackGame game = new BlackjackGame(member, 1, this, channel, handInstruction);
+       games.add(game);
+    }
+
+    public void startNewGame(ServerMember member, int bet, TextChannel channel) {
+        member.asSkuddUser().getCurrencies().incrementInt(Currency.SKUDDBUX, bet * -1);
+        BlackjackGame game = new BlackjackGame(member, bet, this, channel);
+        games.add(game);
+    }
+
+    public void wrapUp(ServerMember member){
+        wrapUp(member.getId());
+    }
+
+    public void wrapUp(Identifier id){
+        wrapUp(id.getDiscordId());
+    }
+
+    public void wrapUp(long userId){
+        cooldownManager.startCooldown(userId);
+        removeGame(userId);
+    }
+
+    private void removeGame(long userId){
+        games.removeIf(game -> game.getPlayer().getId().getId() == userId);
+    }
+
+
+    public Card drawCard(){
+        return cardStack.nextCard();
     }
 
 }

@@ -12,8 +12,8 @@ import java.util.HashMap;
  * This class is used to provide an easy "interface" between the database and the profile system. This handles currencies only.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1
- * @since ALPHA-2.1
+ * @version 2.1
+ * @since 2.1
  */
 public class CurrenciesSapling {
 

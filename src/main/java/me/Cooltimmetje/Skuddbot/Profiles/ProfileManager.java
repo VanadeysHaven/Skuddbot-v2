@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
  * This class is used to recall profiles.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.0
+ * @version 2.1.1
+ * @since 2.0
  */
 public class ProfileManager {
 

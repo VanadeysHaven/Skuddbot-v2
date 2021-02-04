@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 
 import java.sql.SQLException;
 
@@ -12,8 +13,8 @@ import java.sql.SQLException;
  * This class represents a identifier for a user. It combines multiple identifiers into one.
  *
  * @author Tim (Cooltimmetje)
- * @since ALPHA-2.0
- * @version ALPHA-2.0
+ * @since 2.2.1
+ * @version 2.0
  */
 public class Identifier {
 
@@ -111,6 +112,10 @@ public class Identifier {
             assert qe != null;
             qe.close();
         }
+    }
+
+    public ServerMember asServerMember(){
+        return new ServerMember(this);
     }
 
     @Override

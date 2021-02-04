@@ -6,7 +6,6 @@ import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -14,8 +13,8 @@ import java.util.ArrayList;
  * Settings for servers.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 @Getter
 public enum ServerSetting {
@@ -34,6 +33,7 @@ public enum ServerSetting {
     ROLE_ON_JOIN            ("role_on_join",            "This role will be granted to new users when they join the server.",            ValueType.STRING,  null,                   Category.DISCORD,         true ),
     ALLOW_MSG_LVL_UP_NOTIFY ("allow_msg_lvl_up_notify", "When set to false, users will not be notified by message when they level up.", ValueType.BOOLEAN, "true",                 Category.DISCORD,         false),
     ARENA_NAME              ("arena_name",              "This is the name of the arena used in various minigames.",                     ValueType.STRING,  "Skuddbot's Colosseum", Category.MINIGAMES,       true ),
+    JACKPOT                 ("jackpot",                 "Defines the Jackpot amount. (Value updates automatically)",                    ValueType.INTEGER, "0",                    Category.MINIGAMES,       false),
     COMMAND_PREFIX          ("command_prefix",          "The command prefix you can change this to avoid confilcts with other bots.",   ValueType.STRING,  "!",                    Category.COMMANDS,        false),
     ALLOW_MULTI_IMG         ("allow_multi_img",         "Enables the use of multi images in commands like !puppy and !kitty.",          ValueType.BOOLEAN, "true",                 Category.COMMANDS,        false),
     DAILY_CURRENCY_BONUS    ("daily_currency_bonus",    "Defines the base amount of currency a user gets per daily bonus claim.",       ValueType.INTEGER, "100",                  Category.DAILY_BONUS,     false),
@@ -65,9 +65,35 @@ public enum ServerSetting {
         return null;
     }
 
+    public static ServerSetting[] grab(int length, int offset){
+        int arrLength = Math.min(length, values().length - offset);
+        if(arrLength < 1)
+            throw new IndexOutOfBoundsException("There are no server settings available for length " + length + " and offset " + offset);
+
+        ServerSetting[] arr = new ServerSetting[arrLength];
+
+        for(int i=0; i < length; i++){
+            if(i + offset >= values().length)
+                break;
+
+            arr[i] = (values()[i + offset]);
+        }
+
+        return arr;
+    }
+
+    public static int getPagesAmount(int length){
+        int settingsAmount = values().length;
+        int pageAmount = settingsAmount / length;
+
+        if(settingsAmount % length == 0)
+            return pageAmount;
+        else
+            return pageAmount + 1;
+    }
+
     public static void saveToDatabase(){
         QueryExecutor qe = null;
-        ResultSet rs;
         ArrayList<String> settings = new ArrayList<>();
         try {
             qe = new QueryExecutor(Query.SELECT_ALL_SERVER_SETTINGS);

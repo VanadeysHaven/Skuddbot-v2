@@ -21,8 +21,8 @@ import java.sql.SQLException;
  * Command used to add admins.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class ManageAdminsCommand extends Command {
 
@@ -33,10 +33,10 @@ public class ManageAdminsCommand extends Command {
             "If you have any questions regarding this, please contact Timmy.";
 
     public ManageAdminsCommand() {
-        super(new String[]{"admins"}, "Used to add and remove admins.", PermissionLevel.TIMMY, Location.BOTH);
+        super(new String[]{"admins"}, "Used to add and remove admins.", null, PermissionLevel.TIMMY, Location.BOTH);
+
         if(Constants.adminUsers.isEmpty()){
             logger.info("No admins present, loading from database...");
-
             loadAdmins();
         }
     }

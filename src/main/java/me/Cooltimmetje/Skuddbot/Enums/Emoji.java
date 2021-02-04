@@ -6,14 +6,19 @@ import lombok.Getter;
  * Emoji's for easy recalling throughout the code.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 @Getter
 public enum Emoji {
 
     WHITE_CHECK_MARK        ("✅", "white_check_mark"),
     ARROW_UP                ("⬆", "arrow_up"),
+    ARROW_LEFT              ("⬅️", "arrow_left"),
+    ARROW_RIGHT             ("➡️", "arrow_right"),
+    ARROWS_CC               ("\uD83D\uDD04", "arrows_counterclockwise"),
+    ARROWS_LR               ("↔️", "left_right_arrow"),
+    ARROW_LEFT_HOOK         ("↩️", "leftwards_arrow_with_hook"),
     WARNING                 ("⚠", "warning"),
     X                       ("❌", "x"),
     HOURGLASS_FLOWING_SAND  ("⏳", "hourglass_flowing_sand"),
@@ -36,7 +41,9 @@ public enum Emoji {
     NINE                    ("9⃣", "nine"),
     TEN                     ("\uD83D\uDD1F", "keycap_ten"),
     A                       ("\uD83C\uDDE6", "regional_indicator_symbol_a"),
+    B                       ("\uD83C\uDDE7", "regional_indicator_symbol_b"),
     D                       ("\uD83C\uDDE9", "regional_indicator_symbol_d"),
+    G                       ("\uD83C\uDDEC", "regional_indicator_symbol_g"),
     H                       ("\uD83C\uDDED", "regional_indicator_symbol_h"),
     J                       ("\uD83C\uDDEF", "regional_indicator_symbol_j"),
     K                       ("\uD83C\uDDF0", "regional_indicator_symbol_k"),

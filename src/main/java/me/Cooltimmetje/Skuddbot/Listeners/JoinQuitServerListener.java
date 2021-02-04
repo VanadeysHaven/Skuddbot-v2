@@ -16,8 +16,8 @@ import org.javacord.api.event.server.member.ServerMemberLeaveEvent;
  * Stuff for when users join or leave a server.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.0
+ * @version 2.1.1
+ * @since 2.0
  */
 public class JoinQuitServerListener {
 
@@ -41,14 +41,14 @@ public class JoinQuitServerListener {
         SkuddServer ss = sm.getServer(server.getId());
         String text = ss.getSettings().getString(setting);
         long messageChannel =  ss.getSettings().getLong(ServerSetting.WELCOME_GOODBYE_CHANNEL);
-
         if(text == null || messageChannel == -1) return;
 
         text = text.replace("$name", user.getDiscriminatedName()).replace("$server", server.getName());
         TextChannel channel = Main.getSkuddbot().getApi().getTextChannelById(messageChannel).orElse(null);
         if(channel == null){
             String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", "=");
-            MessagesUtils.sendEmoji(server.getOwner().getPrivateChannel().orElse(server.getOwner().openPrivateChannel().join()), Emoji.WARNING,
+            User owner = server.getOwner().orElse(null); assert owner != null;
+            MessagesUtils.sendEmoji(owner.getPrivateChannel().orElse(owner.openPrivateChannel().join()), Emoji.WARNING,
                     "I just tried to send a " + setting.toString().toLowerCase().replace("_", " ") + " in your server to a channel `(ID: " + messageChannel + ")` that doesn't exist. You probably might want to update this channel ID using this command in your server: `" + commandPrefix + "serversettings welcome-goodbye-channel <channel id>`\n" +
                             "Note that this error will only appear once and both welcome and goodbye messages have been disabled until you fix this! For more information visit the wiki: " + "https://wiki.skuddbot.xyz/features/server-settings#channel-does-not-exist-error");
             ss.getSettings().setLong(ServerSetting.WELCOME_GOODBYE_CHANNEL, -1);

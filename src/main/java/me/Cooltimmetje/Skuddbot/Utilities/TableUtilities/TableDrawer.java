@@ -4,8 +4,8 @@ package me.Cooltimmetje.Skuddbot.Utilities.TableUtilities;
  * This is a class to draw neatly looking tables easily.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since v0.4.62-ALPHA
+ * @version 2.1.1
+ * @since 1.4.62
  */
 public class TableDrawer {
 

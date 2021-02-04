@@ -1,9 +1,11 @@
 package me.Cooltimmetje.Skuddbot.Utilities;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.DebugReaction;
 import me.Cooltimmetje.Skuddbot.Main;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 
 import java.util.ArrayList;
 
@@ -11,8 +13,8 @@ import java.util.ArrayList;
  * Utilities to do with Messages.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.0
- * @since ALPHA-2.0
+ * @version 2.2.1
+ * @since 2.0
  */
 public class MessagesUtils {
 
@@ -42,6 +44,19 @@ public class MessagesUtils {
 
     public static void sendEmoji(TextChannel channel, Emoji emoji, String text, boolean allowEveryone){
         sendPlain(channel, emoji.getUnicode() + " " + text, allowEveryone);
+    }
+
+    public static Message sendEmbed(TextChannel channel, EmbedBuilder eb){
+        return channel.sendMessage(eb).join();
+    }
+
+    public static void edit(Message message, String newContent, boolean allowEveryone){
+        if(!allowEveryone) newContent = MiscUtils.stripEveryone(newContent);
+        message.edit(newContent);
+    }
+
+    public static void edit(Message message, String newContent){
+        edit(message, newContent, false);
     }
 
     public static void log(String text){

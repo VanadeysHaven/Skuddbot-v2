@@ -21,13 +21,13 @@ import java.util.concurrent.ExecutionException;
  * Command used to see and edit user currencies.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.1.1
+ * @version 2.2.1
+ * @since 2.1.1
  */
 public class CurrenciesCommand extends Command {
 
     public CurrenciesCommand() {
-        super(new String[]{"currency", "currencies", "wallet", "skuddbux", "bux", "balance", "bal"}, "Shows your current currency balance.", Location.SERVER);
+        super(new String[]{"currency", "currencies", "wallet", "skuddbux", "bux", "balance", "bal"}, "Shows your current currency balance.", "https://wiki.skuddbot.xyz/features/currencies#view-and-edit",Location.SERVER);
     }
 
     @Override
@@ -64,7 +64,8 @@ public class CurrenciesCommand extends Command {
         eb.setTitle("__Server:__ " + server.getName());
 
         for(Currency currency : Currency.values())
-            eb.addInlineField("__" + currency.getName() + ":__", su.getCurrencies().getString(currency));
+            if(currency.isShowWhenZero() || su.getCurrencies().getInt(currency) > 0)
+                eb.addInlineField("__" + currency.getName() + ":__", su.getCurrencies().getString(currency) + " " + currency.getSuffix());
 
         message.getChannel().sendMessage(eb);
     }
@@ -101,6 +102,7 @@ public class CurrenciesCommand extends Command {
                 case "set":
                     su.getCurrencies().setInt(currency, mutationAmount);
                     MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Set currency `" + currency + "` to `" + mutationAmount + "` for user `" + user.getDisplayName(server) + "`");
+                    break;
                 default:
                     MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not a valid operation.");
                     break;

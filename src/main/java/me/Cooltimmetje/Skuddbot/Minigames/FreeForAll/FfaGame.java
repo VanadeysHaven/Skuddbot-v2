@@ -2,8 +2,8 @@ package me.Cooltimmetje.Skuddbot.Minigames.FreeForAll;
 
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
+import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButton;
-import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.ServerSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
@@ -32,8 +32,8 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of Free for All
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.2
- * @since ALPHA-2.2
+ * @version 2.2.1
+ * @since 2.2
  */
 public class FfaGame {
 
@@ -93,8 +93,8 @@ public class FfaGame {
         entrantsAtLastReminder = 0;
 
         sendMessage();
-        buttons.add(ReactionUtils.registerButton(message, Emoji.CROSSED_SWORDS, e -> enterGame(e.getUserAsMember())));
-        buttons.add(ReactionUtils.registerButton(message, Emoji.MONEYBAG, this::enterGameWithDefaultBet));
+        buttons.add(ReactionUtils.registerButton(message, Emoji.CROSSED_SWORDS, e -> enterGame(e.getUserAsMember()), e -> leaveGame(e.getUserAsMember())));
+        buttons.add(ReactionUtils.registerButton(message, Emoji.MONEYBAG, this::enterGameWithDefaultBet, e -> leaveGame(e.getUserAsMember())));
         buttons.add(ReactionUtils.registerButton(message, Emoji.EYES, this::startForcefully, true));
         startButton = ReactionUtils.registerButton(message, Emoji.WHITE_CHECK_MARK, e -> startGame(), host.getId().getDiscordId());
         startButton.setEnabled(false);
@@ -128,7 +128,6 @@ public class FfaGame {
         SkuddUser su = member.asSkuddUser();
         int bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
         if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bet)) {
-            event.undoReaction();
             return;
         }
 
@@ -151,11 +150,22 @@ public class FfaGame {
             startButton.setEnabled(true);
     }
 
+    public void leaveGame(ServerMember member){
+        FfaPlayer player = getPlayer(member);
+        if(player == null)
+            return;
+
+        SkuddUser su = member.asSkuddUser();
+        su.getCurrencies().incrementInt(Currency.SKUDDBUX, player.getBet());
+        entrants.remove(player);
+        sendMessage();
+    }
+
     private void startForcefully(ReactionButtonClickedEvent e) {
         PermissionManager perms = e.getUserAsMember().asSkuddUser().getPermissions();
         if(perms.hasPermission(PermissionLevel.SERVER_ADMIN) && entrants.size() >= 2) {
-            startGame();
             appendToLog("*(Game was force-started by server admin)*");
+            startGame();
         } else
             e.undoReaction();
     }
@@ -198,7 +208,7 @@ public class FfaGame {
     public String award(FfaPlayer winner){
         int xpWinnerReward = 0, sbWinnerReward = 0;
         StringBuilder sb = new StringBuilder();
-        SkuddUser suWinner = winner.getPlayer().asSkuddUser();
+        SkuddUser suWinner = winner.getMember().asSkuddUser();
         sb.append("**WINNER:** ").append(winner.getName()).append(" | ").append(winner.getKills()).append(" kills");
         xpWinnerReward += XP_WIN_REWARD + (XP_KILL_REWARD * winner.getKills());
         sbWinnerReward += SB_WIN_REWARD + (SB_KILL_REWARD * winner.getKills());
@@ -224,7 +234,7 @@ public class FfaGame {
 
         for(FfaPlayer player : entrants) {
             if (player.equals(winner)) continue;
-            SkuddUser su = player.getPlayer().asSkuddUser();
+            SkuddUser su = player.getMember().asSkuddUser();
             su.getStats().incrementInt(Stat.FFA_LOSSES);
             if(player.hasBetted())
                 su.getStats().incrementInt(Stat.FFA_BETS_LOST);
@@ -232,6 +242,18 @@ public class FfaGame {
                 sb.append(player.getName()).append(" | ").append(player.getKills()).append(" kills | +").append(XP_KILL_REWARD * player.getKills()).append(" <:xp_icon:458325613015466004>, +").append(SB_KILL_REWARD * player.getKills()).append(" Skuddbux").append("\n");
                 su.getStats().incrementInt(Stat.EXPERIENCE, XP_KILL_REWARD * player.getKills());
                 su.getCurrencies().incrementInt(Currency.SKUDDBUX, SB_KILL_REWARD * player.getKills());
+            }
+        }
+
+
+        if(!winner.hasBetted()) {
+            int totalAmountOfBets = 0;
+            for (FfaPlayer player : entrants)
+                totalAmountOfBets += player.getBet();
+
+            if (totalAmountOfBets > 0) {
+                sb.append("**ADDED TO JACKPOT:** *").append(totalAmountOfBets).append(" Skuddbux*");
+                server.getSettings().incrementInt(ServerSetting.JACKPOT, totalAmountOfBets);
             }
         }
 
@@ -273,10 +295,21 @@ public class FfaGame {
 
     public boolean isInGame(ServerMember member){
         for(FfaPlayer player : entrants)
-            if(player.getPlayer().equals(member))
+            if(player.getMember().equals(member))
                 return true;
 
         return false;
+    }
+
+    public FfaPlayer getPlayer(ServerMember member){
+        Iterator<FfaPlayer> it = getPlayers();
+        while(it.hasNext()) {
+            FfaPlayer player = it.next();
+            if (player.getMember().equals(member))
+                return player;
+        }
+
+        return null;
     }
 
     private String formatEntrants(boolean withBet){

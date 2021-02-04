@@ -19,8 +19,8 @@ import java.util.List;
  * Class that used to check the global permissions of an user.
  *
  * @author Tim (Cooltimmetje)
- * @version ALPHA-2.1.1
- * @since ALPHA-2.0
+ * @version 2.1.1
+ * @since 2.0
  */
 public class PermissionManager {
 
@@ -56,7 +56,7 @@ public class PermissionManager {
         if(serverId != -1) {
             User user = Main.getSkuddbot().getApi().getUserById(userId).join();
             Server server = Main.getSkuddbot().getApi().getServerById(serverId).orElse(null); assert server != null;
-            if(server.getOwner().getId() == user.getId())
+            if(server.getOwnerId() == user.getId())
                 list.add(PermissionLevel.SERVER_ADMIN);
             else {
                 SkuddServer ss = sm.getServer(serverId);
