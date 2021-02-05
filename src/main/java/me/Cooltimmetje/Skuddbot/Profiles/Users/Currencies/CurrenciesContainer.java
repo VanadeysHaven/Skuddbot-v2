@@ -117,6 +117,11 @@ public class CurrenciesContainer {
         return getInt(currency) >= amount;
     }
 
+    public Cashier getCashier(Currency currency){
+        return new Cashier(id.asServerMember().asSkuddUser(), currency);
+    }
+
+
 //    @Override
 //    public String toString(){
 //        TableArrayGenerator tag = new TableArrayGenerator(new TableRow("Currency", "Amount"));
