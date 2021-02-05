@@ -2,12 +2,13 @@ package me.Cooltimmetje.Skuddbot.Minigames.Blackjack;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Exceptions.InsufficientBalanceException;
+import me.Cooltimmetje.Skuddbot.Exceptions.InvalidBetException;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Cashier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
-import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
-import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * Command used for invoking the blackjack game.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.0
  */
 public class BlackjackCommand extends Command {
@@ -45,25 +46,20 @@ public class BlackjackCommand extends Command {
             return;
         }
 
-        int bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
-        if(args.length > 1) {
-//            if((args[1].equalsIgnoreCase("double") || args[1].equalsIgnoreCase("split")) && su.getPermissions().hasPermission(PermissionLevel.BOT_ADMIN)) {
-//                manager.startNewGame(su.asMember(), message.getChannel(), args[1].toLowerCase()); //Just for testing purposes, it's NOT rigged.
-//                return;
-//            }
-            String betStr = args[1];
-            if(betStr.equalsIgnoreCase("all"))
-                bet = su.getCurrencies().getInt(Currency.SKUDDBUX);
-            else if(MiscUtils.isInt(betStr))
-                bet = Integer.parseInt(betStr);
+        Cashier cashier = su.getCurrencies().getCashier(Currency.SKUDDBUX);
+        int bet = -1;
+        try {
+            if (args.length > 1) {
+                bet = cashier.placeBet(args[1]);
+            } else {
+                bet = cashier.placeBet("");
+            }
+        } catch (InvalidBetException | InsufficientBalanceException e) {
+            MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
         }
 
         if(bet <= 0){
-            MessagesUtils.addReaction(message, Emoji.X, "Your bet must be greater than 0.");
-            return;
-        }
-        if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bet)){
-            MessagesUtils.addReaction(message, Emoji.X, "You do not have enough money to make this bet: " + bet);
+            MessagesUtils.addReaction(message, Emoji.X, "You must place a bet.");
             return;
         }
 
@@ -81,3 +77,8 @@ public class BlackjackCommand extends Command {
     }
 
 }
+
+//            if((args[1].equalsIgnoreCase("double") || args[1].equalsIgnoreCase("split")) && su.getPermissions().hasPermission(PermissionLevel.BOT_ADMIN)) {
+//                manager.startNewGame(su.asMember(), message.getChannel(), args[1].toLowerCase()); //Just for testing purposes, it's NOT rigged.
+//                return;
+//            }
