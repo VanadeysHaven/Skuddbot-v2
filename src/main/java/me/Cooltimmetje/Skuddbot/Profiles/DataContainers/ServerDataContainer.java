@@ -9,7 +9,7 @@ import lombok.Getter;
  * @version 2.3
  * @since 2.3
  */
-public class ServerDataContainer<T> extends DataContainer<T> {
+public class ServerDataContainer<T,S> extends DataContainer<T,S> {
 
     @Getter private long serverId;
 

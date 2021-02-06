@@ -10,7 +10,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
  * @version 2.3
  * @since 2.3
  */
-public class UserDataContainer<T> extends DataContainer<T> {
+public class UserDataContainer<T,S> extends DataContainer<T,S> {
 
     @Getter
     private Identifier id;

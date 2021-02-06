@@ -11,14 +11,19 @@ import java.util.HashMap;
  * @version 2.3
  * @since 2.3
  */
-public class DataContainer<T> {
+public class DataContainer<T extends Enum<T> & Data,S> {
 
     private HashMap<T, String> values;
     private HashMap<T, CooldownManager> cooldowns;
 
-    public DataContainer(){
+    public DataContainer(S sapling){
         values = new HashMap<>();
         cooldowns = new HashMap<>();
+        processSapling(sapling);
+    }
+
+    private void processSapling(S sapling) {
+
     }
 
 }
