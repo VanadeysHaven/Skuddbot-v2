@@ -11,7 +11,7 @@ import java.util.Iterator;
  * Game manager, for managing data that needs to persist between games.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.2
  */
 public class FfaGameManager {
@@ -83,4 +83,17 @@ public class FfaGameManager {
         if(currentGame != null)
             currentGame.runReminder();
     }
+
+    public int getCurrentHighestBet(){
+        int highest = 0;
+        Iterator<FfaPlayer> it = currentGame.getPlayers();
+        while(it.hasNext()) {
+            int curBet = it.next().getBet();
+            if (curBet > highest)
+                highest = curBet;
+        }
+
+        return highest;
+    }
+
 }

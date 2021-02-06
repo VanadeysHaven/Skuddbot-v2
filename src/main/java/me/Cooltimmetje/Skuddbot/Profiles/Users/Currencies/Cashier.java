@@ -33,7 +33,7 @@ public class Cashier {
         return bet;
     }
 
-    private int formatBet(String betStr) throws InvalidBetException {
+    protected int formatBet(String betStr) throws InvalidBetException {
         betStr = betStr.toLowerCase();
         if(MiscUtils.isInt(betStr)) {
             int bet = Integer.parseInt(betStr);

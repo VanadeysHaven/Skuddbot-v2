@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of Free for All
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.2
  */
 public class FfaGame {
@@ -131,6 +131,7 @@ public class FfaGame {
             return;
         }
 
+        su.getCurrencies().incrementInt(Currency.SKUDDBUX, -bet);
         enterGame(member, bet);
     }
 
@@ -142,7 +143,6 @@ public class FfaGame {
         if(isInGame(member))
             return;
 
-        member.asSkuddUser().getCurrencies().incrementInt(Currency.SKUDDBUX, -bet);
         entrants.add(new FfaPlayer(member, bet));
         sendMessage();
 

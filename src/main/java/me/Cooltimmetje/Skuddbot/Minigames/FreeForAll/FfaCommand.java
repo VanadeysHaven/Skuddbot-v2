@@ -2,12 +2,13 @@ package me.Cooltimmetje.Skuddbot.Minigames.FreeForAll;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Exceptions.InsufficientBalanceException;
+import me.Cooltimmetje.Skuddbot.Exceptions.InvalidBetException;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Cashier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
-import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
-import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  * The command for Free for All
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.2
  */
 public class FfaCommand extends Command {
@@ -44,31 +45,26 @@ public class FfaCommand extends Command {
             return;
         }
 
-        int bet = 0;
-        if(args.length > 1){
-            if (args[1].equalsIgnoreCase("all")) {
-                bet = su.getCurrencies().getInt(Currency.SKUDDBUX);
-            } else if (MiscUtils.isInt(args[1])){
-                bet = Integer.parseInt(args[1]);
-            } else if (args[1].equalsIgnoreCase("leave")){
-                if(getManager(server.getId()).isInGame(member)){
-                    getManager(server.getId()).leaveGame(member);
-                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Game left!");
+        int bet = -1;
+        FfaCashier cashier = new FfaCashier(su.getCurrencies().getCashier(Currency.SKUDDBUX));
+        try {
+            if(args.length > 1){
+                if (args[1].equalsIgnoreCase("leave")){
+                    if(getManager(server.getId()).isInGame(member)){
+                        getManager(server.getId()).leaveGame(member);
+                        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Game left!");
+                    } else {
+                        MessagesUtils.addReaction(message, Emoji.X, "You are not in a game of free for all, or there's no game active.");
+                    }
+                    return;
                 } else {
-                    MessagesUtils.addReaction(message, Emoji.X, "You are not in a game of free for all, or there's no game active.");
+                    bet = cashier.placeBet(args[1]);
                 }
-                return;
             } else {
-                MessagesUtils.addReaction(message, Emoji.X, "Invalid usage: `!ffa [all/betAmount/leave]`");
-                return;
+                bet = cashier.placeBet("");
             }
-        } else {
-            bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
-        }
-
-        if(bet != 0 && !su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bet)){
-            MessagesUtils.addReaction(message, Emoji.X, "You do not have enough Skuddbux to make this bet: " + bet);
-            return;
+        } catch (InvalidBetException | InsufficientBalanceException e) {
+            MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
         }
 
         if(manager.isInGame(member)){
@@ -93,6 +89,27 @@ public class FfaCommand extends Command {
     public static void runReminders() {
         for (FfaGameManager manager : managers)
             manager.runReminder();
+    }
+
+    private class FfaCashier extends Cashier {
+
+        public FfaCashier(Cashier cashier) {
+            super(cashier.getUser(), cashier.getCurrency());
+        }
+
+        @Override
+        protected int formatBet(String betStr) throws InvalidBetException {
+            betStr = betStr.toLowerCase();
+
+            if(betStr.equals("match")) return formatMatch();
+
+            return super.formatBet(betStr);
+        }
+
+        private int formatMatch() {
+            return getManager(getUser().getId().getServerId()).getCurrentHighestBet();
+        }
+
     }
 
 
