@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of double or nothing
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.1.1
  */
 public class DonGame {
@@ -65,7 +65,6 @@ public class DonGame {
         this.server = server;
         this.manager = manager;
 
-        pm.getUser(server.getId(), user.getId()).getCurrencies().incrementInt(Currency.SKUDDBUX, bet * -1);
         sendInProgressFormat("Welcome to Double or Nothing!", PLAYING_INSTRUCTION);
 
         buttons = new ArrayList<>();

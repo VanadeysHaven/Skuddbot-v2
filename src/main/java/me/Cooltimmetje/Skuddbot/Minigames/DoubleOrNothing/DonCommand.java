@@ -2,11 +2,12 @@ package me.Cooltimmetje.Skuddbot.Minigames.DoubleOrNothing;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Exceptions.InsufficientBalanceException;
+import me.Cooltimmetje.Skuddbot.Exceptions.InvalidBetException;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Cashier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
-import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
-import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * Command for starting a game of double or nothing.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.1.1
  */
 public class DonCommand extends Command {
@@ -46,23 +47,20 @@ public class DonCommand extends Command {
             return;
         }
 
-        int bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
-        if(args.length >= 2){
-            if(args[1].equalsIgnoreCase("all")){
-                bet = su.getCurrencies().getInt(Currency.SKUDDBUX);
-            } else if (!MiscUtils.isInt(args[1])){
-                MessagesUtils.addReaction(message, Emoji.X, "`" + args[1] + "` is not a valid number.");
-                return;
+        int bet = -1;
+        Cashier cashier = su.getCurrencies().getCashier(Currency.SKUDDBUX);
+        try {
+            if (args.length >= 2) {
+                bet = cashier.placeBet(args[1]);
             } else {
-                bet = Integer.parseInt(args[1]);
+                bet = cashier.placeBet("");
             }
+        } catch (InvalidBetException | InsufficientBalanceException e) {
+            MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
         }
-        if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bet)){
-            MessagesUtils.addReaction(message, Emoji.X, "You do not have enough Skuddbux to make this bet: " + bet);
-            return;
-        }
+
         if(bet <= 0){
-            MessagesUtils.addReaction(message, Emoji.X, "Your bet must be higher than 0!");
+            MessagesUtils.addReaction(message, Emoji.X, "You must place a bet to play!");
             return;
         }
 
