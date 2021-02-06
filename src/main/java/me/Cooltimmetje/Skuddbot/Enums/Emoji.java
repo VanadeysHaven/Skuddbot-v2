@@ -6,7 +6,7 @@ import lombok.Getter;
  * Emoji's for easy recalling throughout the code.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.0
  */
 @Getter
@@ -58,6 +58,7 @@ public enum Emoji {
     BLACK_JOKER             ("\uD83C\uDCCF", "black_joker"),
     SOON                    ("\uD83D\uDD1C", "soon"),
     MONEYBAG                ("\uD83D\uDCB0", "moneybag"),
+    COIN                    ("\uD83E\uDE99", "coin"),
     WASTEBASKET             ("🗑️", "wastebasket"),
     GAME_DIE                ("\uD83C\uDFB2", "game_die"),
     GIFT                    ("\uD83C\uDF81", "gift"),

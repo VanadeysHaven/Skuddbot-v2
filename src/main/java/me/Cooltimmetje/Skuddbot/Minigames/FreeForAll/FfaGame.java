@@ -49,7 +49,7 @@ public class FfaGame {
             ">>> {3}";
     private static final String IN_PROGRESS_FORMAT = HEADER + "\n" +
             "{1}";
-    private static final String ENTER_INSTRUCTION_REACTION = "*Press the " + Emoji.CROSSED_SWORDS.getUnicode() + " reaction to enter without a bet, press the " + Emoji.MONEYBAG.getUnicode() + " reaction to enter with your default bet.*";
+    private static final String ENTER_INSTRUCTION_REACTION = "*Press the " + Emoji.CROSSED_SWORDS.getUnicode() + " reaction to enter without a bet, press the " + Emoji.COIN.getUnicode() + " reaction to enter with your default bet. To match the current highest bet, press the " + Emoji.MONEYBAG.getUnicode() + " reaction.*";
     private static final String ENTER_INSTRUCTION_COMMAND = "*Use `{0}freeforall <bet>` to enter with a bet, use `{0}freeforall all` to go all-in.*";
     private static final String START_INSTRUCTION = "*{0} can start the fight using the " + Emoji.WHITE_CHECK_MARK.getUnicode() + " reaction.*";
     private static final String FIGHT_STARTED_FORMAT = "{0} step into {1} for a EPIC free for all battle. Who will win? *3*... *2*... *1*... **FIGHT!**";
@@ -94,7 +94,8 @@ public class FfaGame {
 
         sendMessage();
         buttons.add(ReactionUtils.registerButton(message, Emoji.CROSSED_SWORDS, e -> enterGame(e.getUserAsMember()), e -> leaveGame(e.getUserAsMember())));
-        buttons.add(ReactionUtils.registerButton(message, Emoji.MONEYBAG, this::enterGameWithDefaultBet, e -> leaveGame(e.getUserAsMember())));
+        buttons.add(ReactionUtils.registerButton(message, Emoji.COIN, this::enterGameWithDefaultBet, e -> leaveGame(e.getUserAsMember())));
+        buttons.add(ReactionUtils.registerButton(message, Emoji.MONEYBAG, this::enterGameWithHighestBet, e -> leaveGame(e.getUserAsMember())));
         buttons.add(ReactionUtils.registerButton(message, Emoji.EYES, this::startForcefully, true));
         startButton = ReactionUtils.registerButton(message, Emoji.WHITE_CHECK_MARK, e -> startGame(), host.getId().getDiscordId());
         startButton.setEnabled(false);
@@ -127,6 +128,18 @@ public class FfaGame {
         ServerMember member = event.getUserAsMember();
         SkuddUser su = member.asSkuddUser();
         int bet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
+        if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bet)) {
+            return;
+        }
+
+        su.getCurrencies().incrementInt(Currency.SKUDDBUX, -bet);
+        enterGame(member, bet);
+    }
+
+    private void enterGameWithHighestBet(ReactionButtonClickedEvent event) {
+        ServerMember member = event.getUserAsMember();
+        SkuddUser su = member.asSkuddUser();
+        int bet = manager.getCurrentHighestBet();
         if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bet)) {
             return;
         }
