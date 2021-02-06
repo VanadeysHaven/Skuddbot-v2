@@ -2,12 +2,13 @@ package me.Cooltimmetje.Skuddbot.Minigames.Challenge;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Exceptions.InsufficientBalanceException;
+import me.Cooltimmetje.Skuddbot.Exceptions.InvalidBetException;
 import me.Cooltimmetje.Skuddbot.Main;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Cashier;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
-import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
-import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * Command for controlling challenges.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.1
  */
 public class ChallengeCommand extends Command {
@@ -31,7 +32,7 @@ public class ChallengeCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
+    public void run(Message message, String content) { //TODO: make this better
         String[] args = content.split(" ");
         Server server = message.getServer().orElse(null); assert server != null;
         User author = message.getAuthor().asUser().orElse(null); assert author != null;
@@ -56,37 +57,37 @@ public class ChallengeCommand extends Command {
             }
 
             SkuddUser su = pm.getUser(server.getId(), author.getId());
-            int placedBet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
-            if(args.length > 2){
-                if(args[2].equalsIgnoreCase("decline")){
-                    manager.processDecline(author, message.getMentionedUsers().get(0), message);
-                    return;
-                } else if(args[2].equalsIgnoreCase("all")) {
-                    placedBet = su.getCurrencies().getInt(Currency.SKUDDBUX);
-                } else if(MiscUtils.isInt(args[2])) {
-                    placedBet = Integer.parseInt(args[2]);
+            Cashier cashier = su.getCurrencies().getCashier(Currency.SKUDDBUX);
+            int placedBet = -1;
+            try {
+                if(args.length > 2){
+                    if(args[2].equalsIgnoreCase("decline")){
+                        manager.processDecline(author, message.getMentionedUsers().get(0), message);
+                        return;
+                    } else {
+                        placedBet = cashier.placeBet(args[2]);
+                    }
+                } else {
+                    placedBet = cashier.placeBet("");
                 }
-            }
-
-            if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, placedBet)){
-                MessagesUtils.addReaction(message, Emoji.X, "You do not have enough Skuddbux to make this bet: " + placedBet);
-                return;
+            } catch (InvalidBetException | InsufficientBalanceException e) {
+                MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
             }
 
             manager.processAccept(author, message.getMentionedUsers().get(0), message, placedBet);
         } else if(args[1].equalsIgnoreCase("open")) {
-            SkuddUser su = pm.getUser(server.getId(), author.getId());
-            int placedBet = su.getSettings().getInt(UserSetting.DEFAULT_BET);
-            if(args.length > 2) {
-                if (args[2].equalsIgnoreCase("all"))
-                    placedBet = su.getCurrencies().getInt(Currency.SKUDDBUX);
-                else if (MiscUtils.isInt(args[2]))
-                    placedBet = Integer.parseInt(args[2]);
-            }
 
-            if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, placedBet)){
-                MessagesUtils.addReaction(message, Emoji.X, "You do not have enough Skuddbux to make this bet: " + placedBet);
-                return;
+            SkuddUser su = pm.getUser(server.getId(), author.getId());
+            Cashier cashier = su.getCurrencies().getCashier(Currency.SKUDDBUX);
+            int placedBet = -1;
+            try {
+                if (args.length > 2) {
+                    placedBet = cashier.placeBet(args[2]);
+                } else {
+                    placedBet = cashier.placeBet("");
+                }
+            } catch (InvalidBetException | InsufficientBalanceException e) {
+                MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
             }
 
             manager.processAccept(author, message, placedBet);

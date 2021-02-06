@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of challenge between 2 users.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.1
  */
 public class ChallengeGame {
@@ -146,8 +146,6 @@ public class ChallengeGame {
 
     public void fight(){
         if(isOpen()) throw new IllegalStateException("Challenge is still open, must add user before fight can be started.");
-        SkuddUser su = pm.getUser(server.getId(), challengerTwo.getMember().getId().getDiscordId());
-        su.getCurrencies().incrementInt(Currency.SKUDDBUX, challengerOne.getBet() * -1);
         challengerTwo.setBet(challengerOne.getBet());
 
         unregisterButtons();

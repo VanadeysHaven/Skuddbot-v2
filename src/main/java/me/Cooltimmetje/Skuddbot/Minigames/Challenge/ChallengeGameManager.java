@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Manager for managing challenge games on a server level.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.1
  */
 public class ChallengeGameManager {
@@ -46,11 +46,13 @@ public class ChallengeGameManager {
         for(ChallengeGame game : games)
             if(game.isMatch(user1, user2)) {
                 SkuddUser su = pm.getUser(serverId, user1.getId());
+                su.getCurrencies().incrementInt(Currency.SKUDDBUX, placedBet);
                 if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, game.getChallengerOne().getBet())){
                     MessagesUtils.addReaction(message, Emoji.X, "You do not have enough Skuddbux to make this bet: " + game.getChallengerOne().getBet());
                     return;
                 }
 
+                su.getCurrencies().incrementInt(Currency.SKUDDBUX, game.getChallengerOne().getBet() * -1);
                 if(game.isOpen()) game.setChallengerTwo(new ChallengePlayer(serverId, user1.getId()));
                 game.addMessage(message);
                 game.fight();
@@ -85,17 +87,19 @@ public class ChallengeGameManager {
         MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Challenge declined.");
     }
 
-    public void addGame(User user1, User user2, Message message, int placedBet){
+    private void addGame(User user1, User user2, Message message, int placedBet){
         SkuddUser su1 = pm.getUser(serverId, user1.getId());
 
+        int actualBet = -1;
         if(user2 != null) {
             SkuddUser su2 = pm.getUser(serverId, user2.getId());
             int user2bal = su2.getCurrencies().getInt(Currency.SKUDDBUX);
-            placedBet = Math.min(placedBet, user2bal);
+            actualBet = Math.min(placedBet, user2bal);
         }
 
-        ChallengePlayer challengerOne = new ChallengePlayer(serverId, user1.getId(), placedBet);
-        su1.getCurrencies().incrementInt(Currency.SKUDDBUX, placedBet * -1);
+        ChallengePlayer challengerOne = new ChallengePlayer(serverId, user1.getId(), actualBet);
+        if(actualBet < placedBet)
+            su1.getCurrencies().incrementInt(Currency.SKUDDBUX, placedBet - actualBet);
 
         ChallengePlayer challengerTwo = null;
         if(user2 != null)
