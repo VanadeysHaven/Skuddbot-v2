@@ -5,7 +5,6 @@ import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
-import me.Cooltimmetje.Skuddbot.Profiles.DataContainers.Data;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
  * @since 2.1.1
  */
 @Getter
-public enum Currency implements Data {
+public enum Currency {
 
     SKUDDBUX         ("skuddbux",         ValueType.INTEGER, "Skuddbux",         "skuddbux", "0", true,  true, true,  true ),
     GIVEAWAY_TICKETS ("giveaway_tickets", ValueType.INTEGER, "Giveaway Tickets", "tickets",  "0", false, true, false, false);

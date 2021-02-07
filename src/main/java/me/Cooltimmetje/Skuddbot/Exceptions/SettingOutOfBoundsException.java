@@ -7,7 +7,7 @@ package me.Cooltimmetje.Skuddbot.Exceptions;
  * @version 2.2.1
  * @since 2.2.1
  */
-public class SettingOutOfBoundsException extends Exception {
+public class SettingOutOfBoundsException extends RuntimeException {
 
     public SettingOutOfBoundsException(String message) {
         super(message);

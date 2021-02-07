@@ -1,5 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Profiles.DataContainers;
 
+import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+
 /**
  * Interface for Data enums.
  *
@@ -10,5 +12,19 @@ package me.Cooltimmetje.Skuddbot.Profiles.DataContainers;
 public interface Data {
 
     String getDbReference();
+
+    String getTechnicalName();
+
+    String getTerminology();
+
+    ValueType getType();
+
+    boolean hasBound();
+
+    boolean checkBound(int i);
+
+    int getMinBound();
+
+    int getMaxBound();
 
 }
