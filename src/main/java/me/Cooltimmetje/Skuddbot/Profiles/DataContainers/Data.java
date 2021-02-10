@@ -36,4 +36,6 @@ public interface Data {
 
     Query getDeleteQuery();
 
+    String getDefaultValue();
+
 }

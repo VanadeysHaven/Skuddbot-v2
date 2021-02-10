@@ -1,11 +1,13 @@
 package me.Cooltimmetje.Skuddbot.Profiles.DataContainers;
 
+import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Exceptions.CooldownException;
 import me.Cooltimmetje.Skuddbot.Exceptions.SettingOutOfBoundsException;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -15,7 +17,7 @@ import java.util.HashMap;
  * @version 2.3
  * @since 2.3
  */
-public class DataContainer<T extends Data> {
+public abstract class DataContainer<T extends Data> {
 
     private HashMap<T, String> values;
     private HashMap<T, CooldownManager> cooldowns;
@@ -142,9 +144,37 @@ public class DataContainer<T extends Data> {
         return manager;
     }
 
-    private void save(T field){ //identifier id //id identifier value value
-
+    public void save(){
+        for(T field : values.keySet()){
+            save(field);
+        }
     }
 
+    public void save(T field){ //identifier id //id identifier value value
+        QueryExecutor qe = null;
+        if (getString(field).equals(field.getDefaultValue())) {
+            try {
+                qe = new QueryExecutor(field.getDeleteQuery()).setInt(1, getIdentifier()).setString(2, field.getDbReference());
+                qe.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                assert qe != null;
+                qe.close();
+            }
+        } else {
+            try {
+                qe = new QueryExecutor(field.getUpdateQuery()).setString(1, field.getDbReference()).setInt(2, getIdentifier()).setString(3, getString(field)).and(4);
+                qe.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                assert qe != null;
+                qe.close();
+            }
+        }
+    }
+
+    public abstract int getIdentifier();
 
 }

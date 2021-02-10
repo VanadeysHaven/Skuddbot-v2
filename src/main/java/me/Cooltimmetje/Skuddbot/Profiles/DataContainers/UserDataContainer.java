@@ -15,4 +15,14 @@ public class UserDataContainer<T extends Data> extends DataContainer<T> {
     @Getter
     private Identifier id;
 
+    public UserDataContainer(Identifier id){
+        super();
+        this.id = id;
+    }
+
+    @Override
+    public int getIdentifier() {
+        return id.getId();
+    }
+
 }
