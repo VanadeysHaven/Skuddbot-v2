@@ -1,5 +1,6 @@
 package me.Cooltimmetje.Skuddbot.Profiles.DataContainers;
 
+import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 
 /**
@@ -26,5 +27,13 @@ public interface Data {
     int getMinBound();
 
     int getMaxBound();
+
+    boolean hasCooldown();
+
+    int getCooldown();
+
+    Query getUpdateQuery();
+
+    Query getDeleteQuery();
 
 }

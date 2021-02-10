@@ -4,6 +4,7 @@ import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Exceptions.CooldownException;
 import me.Cooltimmetje.Skuddbot.Exceptions.SettingOutOfBoundsException;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
+import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
 import java.util.HashMap;
 
@@ -55,6 +56,7 @@ public class DataContainer<T extends Data> {
     }
 
     public void incrementInt(T field, int incrementBy){
+        if(field.getType() == ValueType.INTEGER) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type INTEGER.");
         setInt(field, getInt(field) + incrementBy);
     }
 
@@ -63,12 +65,12 @@ public class DataContainer<T extends Data> {
         return Integer.parseInt(getString(field));
     }
 
-    public void setDouble(T field, String value){
-
+    public void setDouble(T field, double value){
+        setDouble(field,  value, true, false);
     }
 
-    public void setDouble(T field, String value, boolean save, boolean bypassCooldown){
-
+    public void setDouble(T field, double value, boolean save, boolean bypassCooldown){
+        setString(field, value+"", save, bypassCooldown);
     }
 
     public double getDouble(T field){
@@ -76,12 +78,12 @@ public class DataContainer<T extends Data> {
         return Double.parseDouble(getString(field));
     }
 
-    public void setLong(T field, String value){
-
+    public void setLong(T field, long value){
+        setLong(field, value, true, false);
     }
 
-    public void setLong(T field, String value, boolean save, boolean bypassCooldown){
-
+    public void setLong(T field, long value, boolean save, boolean bypassCooldown){
+        setString(field, value+"", save, bypassCooldown);
     }
 
     public long getLong(T field){
@@ -89,36 +91,58 @@ public class DataContainer<T extends Data> {
         return Long.parseLong(getString(field));
     }
 
-    public void setBoolean(T field, String value){
-
+    public void setBoolean(T field, boolean value){
+        setBoolean(field, value, true, false);
     }
 
-    public void setBoolean(T field, String value, boolean save, boolean bypassCooldown){
+    public void setBoolean(T field, boolean value, boolean save, boolean bypassCooldown){
+        setString(field, value+"", save, bypassCooldown);
+    }
 
+    public void toggleBoolean(T field) {
+        if(field.getType() == ValueType.BOOLEAN) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type BOOLEAN.");
+        setBoolean(field, !getBoolean(field));
     }
 
     public boolean getBoolean(T field){
-        if(field.getType() == ValueType.LONG) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type BOOLEAN.");
+        if(field.getType() == ValueType.BOOLEAN) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type BOOLEAN.");
         return Boolean.parseBoolean(getString(field));
     }
 
     private boolean checkType(T field, String value){
-
+        ValueType type = field.getType();
+        switch (type) {
+            case INTEGER: return MiscUtils.isInt(value);
+            case DOUBLE: return MiscUtils.isDouble(value);
+            case LONG: return MiscUtils.isLong(value);
+            case BOOLEAN: return MiscUtils.isBoolean(value);
+            case JSON: return value.equals("{}");
+            default: return type == ValueType.STRING;
+        }
     }
 
     private void startCooldown(T field) {
+        if(!field.hasCooldown()) return;
 
+        getCooldownManager(field).startCooldown(69);
     }
 
     private boolean isOnCooldown(T field){
-
+        if(!field.hasCooldown()) return false;
+        return getCooldownManager(field).isOnCooldown(69);
     }
 
     private CooldownManager getCooldownManager(T field) {
+        CooldownManager manager;
+        if(!cooldowns.containsKey(field)) {
+            manager = new CooldownManager(field.getCooldown(), true);
+            cooldowns.put(field, manager);
+        } else manager = cooldowns.get(field);
 
+        return manager;
     }
 
-    private void save(T field){
+    private void save(T field){ //identifier id //id identifier value value
 
     }
 
