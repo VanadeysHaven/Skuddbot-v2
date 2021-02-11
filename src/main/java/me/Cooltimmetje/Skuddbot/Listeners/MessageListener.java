@@ -48,7 +48,7 @@ public class MessageListener {
 
         if(su.getStats().hasLeveledUp()){
             LevelUpNotification notification = su.getSettings().getLevelUpNotify();
-            if(!ss.getSettings().getBoolean(ServerSetting.ALLOW_MSG_LVL_UP_NOTIFY)){
+            if(!ss.getSettings().getBoolean(ServerSetting.ALLOW_MSG_LVL_UP_NOTIFY) && notification == LevelUpNotification.MESSAGE){
                 notification = LevelUpNotification.REACTION;
             }
             switch(notification) {
