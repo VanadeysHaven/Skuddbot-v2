@@ -1,7 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 
-import me.Cooltimmetje.Skuddbot.Exceptions.CooldownException;
-import me.Cooltimmetje.Skuddbot.Exceptions.SettingOutOfBoundsException;
 import me.Cooltimmetje.Skuddbot.Profiles.DataContainers.UserDataContainer;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 
@@ -20,18 +18,13 @@ public class UserSettingsContainer extends UserDataContainer<UserSetting> {
     }
 
     private void processSettingsSapling(UserSettingsSapling sapling){
-        try {
-            for (UserSetting setting : UserSetting.values()) {
-                String value = sapling.getSetting(setting);
-                if (value != null) {
-                    setString(setting, value, false, true);
-                } else {
-                    setString(setting, setting.getDefaultValue(), false, true);
-                }
+        for (UserSetting setting : UserSetting.values()) {
+            String value = sapling.getSetting(setting);
+            if (value != null) {
+                setString(setting, value, false, true);
+            } else {
+                setString(setting, setting.getDefaultValue(), false, true);
             }
-        } catch (CooldownException | SettingOutOfBoundsException e){
-            e.printStackTrace();
-            //do nothing cuz it won't be thrown here
         }
     }
 
