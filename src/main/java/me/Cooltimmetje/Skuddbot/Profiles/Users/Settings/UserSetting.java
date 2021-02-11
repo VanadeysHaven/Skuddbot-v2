@@ -5,6 +5,7 @@ import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+import me.Cooltimmetje.Skuddbot.Profiles.DataContainers.Data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,11 +15,11 @@ import java.util.ArrayList;
  * Settings for users.
  *
  * @author Tim (Cooltimmetje)
- * @since 2.2.1
+ * @since 2.3
  * @version 2.0
  */
 @Getter
-public enum UserSetting {
+public enum UserSetting implements Data {
 
     LEVEL_UP_NOTIFY    ("lvl_up_notify",      "This defines how you get notified about you leveling up. You can choose between \"REACTION\", \"MESSAGE\", \"DM\" and \"NOTHING\".", ValueType.STRING,  "REACTION", false, 0                                       ),
     TRACK_ME           ("track_me",           "Defines if the bot will track your activity and stats. Turning off PAUSES progress.",                                                ValueType.BOOLEAN, "true",     false, 0                                       ),
@@ -53,6 +54,16 @@ public enum UserSetting {
         this.maxBound = maxBound;
     }
 
+    @Override
+    public String getTechnicalName() {
+        return this.toString();
+    }
+
+    @Override
+    public String getTerminology() {
+        return "setting";
+    }
+
     public boolean hasBound(){
         return minBound != -99999 && maxBound != -99999;
     }
@@ -66,6 +77,16 @@ public enum UserSetting {
         return cooldown > 0;
     }
 
+    @Override
+    public Query getUpdateQuery() {
+        return Query.UPDATE_USER_SETTING_VALUE;
+    }
+
+    @Override
+    public Query getDeleteQuery() {
+        return Query.DELETE_USER_SETTING_VALUE;
+    }
+
     public static UserSetting getByDbReference(String reference){
         for(UserSetting setting : values())
             if(setting.getDbReference().equals(reference))
@@ -73,7 +94,6 @@ public enum UserSetting {
 
         return null;
     }
-
 
     public static void saveToDatabase(){
         QueryExecutor qe = null;

@@ -58,12 +58,12 @@ public abstract class DataContainer<T extends Data> {
     }
 
     public void incrementInt(T field, int incrementBy){
-        if(field.getType() == ValueType.INTEGER) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type INTEGER.");
+        if(field.getType() != ValueType.INTEGER) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type INTEGER.");
         setInt(field, getInt(field) + incrementBy);
     }
 
     public int getInt(T field){
-        if(field.getType() == ValueType.INTEGER) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type INTEGER.");
+        if(field.getType() != ValueType.INTEGER) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type INTEGER.");
         return Integer.parseInt(getString(field));
     }
 
@@ -76,7 +76,7 @@ public abstract class DataContainer<T extends Data> {
     }
 
     public double getDouble(T field){
-        if(field.getType() == ValueType.DOUBLE) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type DOUBLE.");
+        if(field.getType() != ValueType.DOUBLE) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type DOUBLE.");
         return Double.parseDouble(getString(field));
     }
 
@@ -89,7 +89,7 @@ public abstract class DataContainer<T extends Data> {
     }
 
     public long getLong(T field){
-        if(field.getType() == ValueType.LONG) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type LONG.");
+        if(field.getType() != ValueType.LONG) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type LONG.");
         return Long.parseLong(getString(field));
     }
 
@@ -102,12 +102,12 @@ public abstract class DataContainer<T extends Data> {
     }
 
     public void toggleBoolean(T field) {
-        if(field.getType() == ValueType.BOOLEAN) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type BOOLEAN.");
+        if(field.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type BOOLEAN.");
         setBoolean(field, !getBoolean(field));
     }
 
     public boolean getBoolean(T field){
-        if(field.getType() == ValueType.BOOLEAN) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type BOOLEAN.");
+        if(field.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type BOOLEAN.");
         return Boolean.parseBoolean(getString(field));
     }
 
