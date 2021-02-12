@@ -133,6 +133,8 @@ public class ChallengeGame {
         }
 
         if(isOpen()) setChallengerTwo(new ChallengePlayer(server.getId(), event.getUserId().getDiscordId()));
+        getChallengerTwo().setBet(getChallengerOne().getBet());
+        getChallengerTwo().getMember().asSkuddUser().getCurrencies().incrementInt(Currency.SKUDDBUX, challengerOne.getBet() * -1);
         fight();
     }
 
