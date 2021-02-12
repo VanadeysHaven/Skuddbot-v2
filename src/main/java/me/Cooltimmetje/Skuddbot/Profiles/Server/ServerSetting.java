@@ -5,6 +5,7 @@ import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+import me.Cooltimmetje.Skuddbot.Profiles.DataContainers.Data;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,11 +14,11 @@ import java.util.ArrayList;
  * Settings for servers.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3
  * @since 2.0
  */
 @Getter
-public enum ServerSetting {
+public enum ServerSetting implements Data {
 
     XP_MIN                  ("xp_min",                  "Minimum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "10",                   Category.XP,              false),
     XP_MAX                  ("xp_max",                  "Maximum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "15",                   Category.XP,              false),
@@ -117,6 +118,56 @@ public enum ServerSetting {
                 if(qe != null) qe.close();
             }
         }
+    }
+
+    @Override
+    public String getTechnicalName() {
+        return this.toString();
+    }
+
+    @Override
+    public String getTerminology() {
+        return "settings";
+    }
+
+    @Override
+    public boolean hasBound() {
+        return false;
+    }
+
+    @Override
+    public boolean checkBound(int i) {
+        return true;
+    }
+
+    @Override
+    public int getMinBound() {
+        return -1;
+    }
+
+    @Override
+    public int getMaxBound() {
+        return -1;
+    }
+
+    @Override
+    public boolean hasCooldown() {
+        return false;
+    }
+
+    @Override
+    public int getCooldown() {
+        return -1;
+    }
+
+    @Override
+    public Query getUpdateQuery() {
+        return Query.UPDATE_SERVER_SETTING_VALUE;
+    }
+
+    @Override
+    public Query getDeleteQuery() {
+        return Query.DELETE_SERVER_SETTING_VALUE;
     }
 
     public enum Category {

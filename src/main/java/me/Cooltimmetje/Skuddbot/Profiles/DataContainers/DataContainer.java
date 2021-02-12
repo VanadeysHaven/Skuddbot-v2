@@ -32,9 +32,12 @@ public abstract class DataContainer<T extends Data> {
     }
 
     public void setString(T field, String value, boolean save, boolean bypassCooldown){
-        if(!checkType(field, value)) throw new IllegalArgumentException("Value " + value + " is unsuitable for " + field.getTerminology() + " `" + field.getTechnicalName() + "`; not of type " + field.getType());
         if(isOnCooldown(field) && !bypassCooldown) throw new CooldownException("You can't change " + field.getTerminology() + " `" + field.getTechnicalName() + "` currently. You can change it again in: " + getCooldownManager(field).formatTime(69));
-        if(field.getType() == ValueType.INTEGER) if(field.hasBound()) if(!field.checkBound(Integer.parseInt(value))) throw new SettingOutOfBoundsException("The value `" + value + "` is out of bounds for " + field.getTechnicalName() + " " + field + ". (Bounds: `" + field.getMinBound() + "` - `" + field.getMaxBound() + "`)");
+        if(value != null) {
+            if(!checkType(field, value)) throw new IllegalArgumentException("Value " + value + " is unsuitable for " + field.getTerminology() + " `" + field.getTechnicalName() + "`; not of type " + field.getType());
+            if(field.getType() == ValueType.INTEGER) if(field.hasBound()) if(!field.checkBound(Integer.parseInt(value))) throw new SettingOutOfBoundsException("The value `" + value + "` is out of bounds for " + field.getTechnicalName() + " " + field + ". (Bounds: `" + field.getMinBound() + "` - `" + field.getMaxBound() + "`)");
+            if(value.equalsIgnoreCase("null")) value = null;
+        }
 
         this.values.put(field, value);
         if(!bypassCooldown) startCooldown(field);
@@ -151,6 +154,8 @@ public abstract class DataContainer<T extends Data> {
     }
 
     public void save(T field){ //identifier id //id identifier value value
+        String value = getString(field);
+        if(value == null) value = "null";
         QueryExecutor qe = null;
         if (getString(field).equals(field.getDefaultValue())) {
             try {
@@ -164,7 +169,7 @@ public abstract class DataContainer<T extends Data> {
             }
         } else {
             try {
-                qe = new QueryExecutor(field.getUpdateQuery()).setString(1, field.getDbReference()).setInt(2, getIdentifier()).setString(3, getString(field)).and(4);
+                qe = new QueryExecutor(field.getUpdateQuery()).setString(1, field.getDbReference()).setInt(2, getIdentifier()).setString(3, value).and(4);
                 qe.execute();
             } catch (SQLException e) {
                 e.printStackTrace();
