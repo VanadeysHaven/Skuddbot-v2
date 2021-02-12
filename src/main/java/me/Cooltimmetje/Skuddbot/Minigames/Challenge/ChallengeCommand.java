@@ -76,7 +76,6 @@ public class ChallengeCommand extends Command {
 
             manager.processAccept(author, message.getMentionedUsers().get(0), message, placedBet);
         } else if(args[1].equalsIgnoreCase("open")) {
-
             SkuddUser su = pm.getUser(server.getId(), author.getId());
             Cashier cashier = su.getCurrencies().getCashier(Currency.SKUDDBUX);
             int placedBet = -1;

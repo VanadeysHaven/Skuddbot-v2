@@ -90,7 +90,7 @@ public class ChallengeGameManager {
     private void addGame(User user1, User user2, Message message, int placedBet){
         SkuddUser su1 = pm.getUser(serverId, user1.getId());
 
-        int actualBet = -1;
+        int actualBet = placedBet;
         if(user2 != null) {
             SkuddUser su2 = pm.getUser(serverId, user2.getId());
             int user2bal = su2.getCurrencies().getInt(Currency.SKUDDBUX);
