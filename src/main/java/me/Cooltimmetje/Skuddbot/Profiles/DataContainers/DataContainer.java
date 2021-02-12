@@ -4,6 +4,8 @@ import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 import me.Cooltimmetje.Skuddbot.Exceptions.CooldownException;
 import me.Cooltimmetje.Skuddbot.Exceptions.SettingOutOfBoundsException;
+import me.Cooltimmetje.Skuddbot.Profiles.ProfileManager;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Utilities.CooldownManager;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
@@ -18,6 +20,9 @@ import java.util.HashMap;
  * @since 2.3
  */
 public abstract class DataContainer<T extends Data> {
+
+    protected static final ServerManager sm = ServerManager.getInstance();
+    protected static final ProfileManager pm = ProfileManager.getInstance();
 
     private HashMap<T, String> values;
     private HashMap<T, CooldownManager> cooldowns;
@@ -89,6 +94,15 @@ public abstract class DataContainer<T extends Data> {
 
     public void setLong(T field, long value, boolean save, boolean bypassCooldown){
         setString(field, value+"", save, bypassCooldown);
+    }
+
+    public void incrementLong(T field){
+        incrementLong(field, 1);
+    }
+
+    public void incrementLong(T field, long incrementBy){
+        if(field.getType() != ValueType.LONG) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type LONG.");
+        setLong(field, getLong(field) + incrementBy);
     }
 
     public long getLong(T field){

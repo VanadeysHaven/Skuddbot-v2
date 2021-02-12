@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * @version 2.3
  * @since 2.3
  */
-public class ServerDataContainer<T extends Data> extends DataContainer<T> {
+public abstract class ServerDataContainer<T extends Data> extends DataContainer<T> {
 
     @Getter private long serverId;
 
