@@ -5,6 +5,7 @@ import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+import me.Cooltimmetje.Skuddbot.Profiles.DataContainers.Data;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 
 import java.sql.SQLException;
@@ -14,11 +15,11 @@ import java.util.ArrayList;
  * Constants for user stats.
  *
  * @author Tim (Cooltimmetje)
- * @since 2.2.1
+ * @since 2.3
  * @version 2.0
  */
 @Getter
-public enum Stat {
+public enum Stat implements Data {
 
     EXPERIENCE                  ("xp",                      ValueType.INTEGER, "Experience",                 "xp",           "0",  Category.NO_CATEGORY,       true,  true,  true ),
     CHALLENGE_WINS              ("chlng_wins",              ValueType.INTEGER, "Wins",                       "wins",         "0",  Category.CHALLENGE,         true,  true,  true ),
@@ -145,6 +146,56 @@ public enum Stat {
         }
 
         return sb.toString().trim();
+    }
+
+    @Override
+    public String getTechnicalName() {
+        return this.toString();
+    }
+
+    @Override
+    public String getTerminology() {
+        return "stat";
+    }
+
+    @Override
+    public boolean hasBound() {
+        return false;
+    }
+
+    @Override
+    public boolean checkBound(int i) {
+        return true;
+    }
+
+    @Override
+    public int getMinBound() {
+        return -1;
+    }
+
+    @Override
+    public int getMaxBound() {
+        return -1;
+    }
+
+    @Override
+    public boolean hasCooldown() {
+        return false;
+    }
+
+    @Override
+    public int getCooldown() {
+        return -1;
+    }
+
+    @Override
+    public Query getUpdateQuery() {
+        return Query.UPDATE_STAT_VALUE;
+    }
+
+    @Override
+    public Query getDeleteQuery() {
+        return Query.DELETE_STAT_VALUE;
     }
 
     @Getter

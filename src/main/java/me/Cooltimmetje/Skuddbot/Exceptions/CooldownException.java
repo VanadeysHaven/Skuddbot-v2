@@ -7,7 +7,7 @@ package me.Cooltimmetje.Skuddbot.Exceptions;
  * @version 2.2.1
  * @since 2.2.1
  */
-public class CooldownException extends Exception {
+public class CooldownException extends RuntimeException {
 
     public CooldownException(String message){
         super(message);
