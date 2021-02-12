@@ -5,6 +5,7 @@ import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
 import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.ValueType;
+import me.Cooltimmetje.Skuddbot.Profiles.DataContainers.Data;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,11 +14,11 @@ import java.util.ArrayList;
  * Enum for all the types of currencies.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.1.1
+ * @version 2.3
  * @since 2.1.1
  */
 @Getter
-public enum Currency {
+public enum Currency implements Data {
 
     SKUDDBUX         ("skuddbux",         ValueType.INTEGER, "Skuddbux",         "skuddbux", "0", true,  true, true,  true ),
     GIVEAWAY_TICKETS ("giveaway_tickets", ValueType.INTEGER, "Giveaway Tickets", "tickets",  "0", false, true, false, false);
@@ -85,6 +86,56 @@ public enum Currency {
             sb.append(" | `").append(currency.toString()).append("`");
 
         return sb.toString().substring(3);
+    }
+
+    @Override
+    public String getTechnicalName() {
+        return this.toString();
+    }
+
+    @Override
+    public String getTerminology() {
+        return "currency";
+    }
+
+    @Override
+    public boolean hasBound() {
+        return false;
+    }
+
+    @Override
+    public boolean checkBound(int i) {
+        return true;
+    }
+
+    @Override
+    public int getMinBound() {
+        return -1;
+    }
+
+    @Override
+    public int getMaxBound() {
+        return -1;
+    }
+
+    @Override
+    public boolean hasCooldown() {
+        return false;
+    }
+
+    @Override
+    public int getCooldown() {
+        return -1;
+    }
+
+    @Override
+    public Query getUpdateQuery() {
+        return Query.UPDATE_CURRENCY_VALUE;
+    }
+
+    @Override
+    public Query getDeleteQuery() {
+        return Query.DELETE_CURRENCY_VALUE;
     }
 
 }
