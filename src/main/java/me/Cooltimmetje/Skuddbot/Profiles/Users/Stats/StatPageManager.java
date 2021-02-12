@@ -67,6 +67,7 @@ public class StatPageManager {
 
             StatPage curPage = null;
             for (Stat.Category category : Stat.Category.values()) {
+                if(!category.isShow()) continue;
                 ArrayList<Stat> stats = category.getAll();
                 stats.removeIf(s -> !s.isShow());
                 StatPage page = new StatPage(-1, stats);
