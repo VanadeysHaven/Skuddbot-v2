@@ -62,11 +62,15 @@ public class Cashier {
 
     private int formatThousand(String betStr) throws InvalidBetException {
         betStr = betStr.substring(0, betStr.length() - 1);
-        if(!MiscUtils.isInt(betStr)) throw new InvalidBetException(betStr);
-        int thousand = Integer.parseInt(betStr);
-        if(thousand < 1 || thousand > 2147483) throw new InvalidBetException(betStr);
-
-        return thousand * 1000;
+        if(MiscUtils.isInt(betStr)) {
+            int thousand = Integer.parseInt(betStr);
+            if (thousand < 1 || thousand > 2147483) throw new InvalidBetException(betStr);
+            return thousand * 1000;
+        } else if(MiscUtils.isDouble(betStr)) {
+            double thousand = Double.parseDouble(betStr);
+            if (thousand < 1 || thousand > 2147483) throw new InvalidBetException(betStr);
+            return (int) (thousand * 1000);
+        } else throw new InvalidBetException(betStr);
     }
 
 
