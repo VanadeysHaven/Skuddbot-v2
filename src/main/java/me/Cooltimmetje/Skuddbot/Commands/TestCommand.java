@@ -5,7 +5,9 @@ import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonRemovedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
+import me.Cooltimmetje.Skuddbot.Minigames.GameLogs.GenericGameLog;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
+import me.Cooltimmetje.Skuddbot.Utilities.TimeUtils;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 
@@ -16,7 +18,7 @@ import org.javacord.api.entity.message.Message;
  * @version [not deployed]
  * @since [not deployed]
  */
-public class TestCommand extends Command {
+public final class TestCommand extends Command {
 
     public TestCommand() {
         super(new String[]{"test"}, "Testing 1 2 3", null, Location.BOTH);
@@ -24,7 +26,15 @@ public class TestCommand extends Command {
 
     @Override
     public void run(Message message, String content) {
-        new TestInstance(message.getChannel());
+        long curTime = System.currentTimeMillis();
+        GenericGameLog log = new GenericGameLog("test_" + curTime, "Test Log: " + TimeUtils.formatTime(curTime));
+
+        log.addToLog("Hi!");
+        log.addToLog("I'm a game log!");
+        log.addToLog("I was created at " + TimeUtils.formatTime(curTime));
+        log.addToLog("Thank you for reading!");
+
+        log.sendLog(message, Emoji.MAILBOX_WITH_MAIL);
     }
 
     private class TestInstance {

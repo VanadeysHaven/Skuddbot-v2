@@ -7,11 +7,10 @@ package me.Cooltimmetje.Skuddbot.Minigames.GameLogs;
  * @version 2.3.1
  * @since 2.3.1
  */
-public class NameFormatter {
+public final class NameFormatter {
 
     public String format(String input){
-
-        return "hi"; //TODO
+        return input; //TODO
     }
 
 }
