@@ -19,7 +19,7 @@ public final class GameLogSender {
     private File file;
     private Message message;
     private ReactionButton button;
-    private long expireAt;
+    private long expireAt; //TODO
 
     public GameLogSender(File file, Message message, Emoji emoji, long expireAfter){
         this.file = file;

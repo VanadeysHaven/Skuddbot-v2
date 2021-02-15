@@ -46,7 +46,7 @@ public abstract class GameLog {
 
     @Override
     public String toString() {
-        return new NameFormatter().format(header + "\n" + formatLog() + "\n\n" + formatFooter());
+        return new NameFormatter().format(header + "\n\n" + formatLog() + "\n\n" + formatFooter());
     }
 
     private void saveFile(){
