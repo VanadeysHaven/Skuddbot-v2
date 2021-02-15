@@ -206,7 +206,7 @@ public class DailyBonusCommand extends Command {
     }
 
     private String formatTimeUntilNextClaim(long currentTime){
-        return TimeUtils.formatTime(getTimeUntilNextClaim(currentTime));
+        return TimeUtils.formatTimeRemaining(getTimeUntilNextClaim(currentTime));
     }
 
 }

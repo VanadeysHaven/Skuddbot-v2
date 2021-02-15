@@ -57,7 +57,7 @@ public class CooldownManager {
     }
 
     public String formatTime(long identifier){
-        return TimeUtils.formatTime(getTimeRemaining(identifier));
+        return TimeUtils.formatTimeRemaining(getTimeRemaining(identifier));
     }
 
     public void clear(boolean clearForcefully){
