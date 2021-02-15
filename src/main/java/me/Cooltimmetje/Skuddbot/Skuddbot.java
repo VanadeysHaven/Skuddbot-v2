@@ -51,7 +51,7 @@ import java.util.Iterator;
  * @since 2.2.1
  * @version 2.0
  */
-public class Skuddbot {
+public final class Skuddbot {
 
     private static final Logger logger = LoggerFactory.getLogger(Skuddbot.class);
     private static final ServerManager sm = ServerManager.getInstance();
