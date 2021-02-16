@@ -3,6 +3,7 @@ package me.Cooltimmetje.Skuddbot.Timers;
 import me.Cooltimmetje.Skuddbot.Commands.ServerSettingsCommand;
 import me.Cooltimmetje.Skuddbot.Commands.StatsCommand;
 import me.Cooltimmetje.Skuddbot.Minigames.FreeForAll.FfaCommand;
+import me.Cooltimmetje.Skuddbot.Minigames.GameLogs.GameLogSender;
 import me.Cooltimmetje.Skuddbot.Profiles.Server.SkuddServer;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerManager;
 import me.Cooltimmetje.Skuddbot.Utilities.AppearanceManager;
@@ -41,6 +42,7 @@ public class TenMinutes extends TimerTask {
             ServerSettingsCommand.clearOverviews();
             StatsCommand.clearOverviews();
             PagedMessage.runAutoExpire();
+            GameLogSender.runExpire();
         } catch (Exception e){
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);

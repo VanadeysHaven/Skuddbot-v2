@@ -31,8 +31,12 @@ public abstract class GameLog {
     }
 
     public void sendLog(Message message, Emoji emoji){
+        sendLog(message, emoji,1800000);
+    }
+
+    public void sendLog(Message message, Emoji emoji, long expireAfter){
         saveFile();
-        new GameLogSender(file, message, emoji, 1800000);
+        new GameLogSender(file, message, emoji, expireAfter);
     }
 
     public abstract String formatLog();

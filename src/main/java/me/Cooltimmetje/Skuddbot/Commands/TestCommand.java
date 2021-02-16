@@ -34,7 +34,7 @@ public final class TestCommand extends Command {
         log.addToLog("I was created at " + TimeUtils.formatTime(curTime));
         log.addToLog("Thank you for reading!");
 
-        log.sendLog(message, Emoji.MAILBOX_WITH_MAIL);
+        log.sendLog(message, Emoji.MAILBOX_WITH_MAIL, 1);
     }
 
     private class TestInstance {
