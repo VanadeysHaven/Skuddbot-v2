@@ -46,6 +46,10 @@ public class ServerMember {
         return getUser().getDisplayName(getServer());
     }
 
+    public String getGameLogName(){
+        return "$" + id.getServerId() + "-" + id.getDiscordId();
+    }
+
     public SkuddUser asSkuddUser(){
         return ProfileManager.getInstance().getUser(id);
     }

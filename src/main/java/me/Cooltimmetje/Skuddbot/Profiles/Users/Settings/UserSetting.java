@@ -28,7 +28,8 @@ public enum UserSetting implements Data {
     MINIGAME_REMINDERS ("minigame_reminders", "Defines if you want to be reminded about pending minigames.",                                                                        ValueType.BOOLEAN, "true",     false, 0                                       ),
     DEFAULT_BET        ("default_bet",        "Defines your default bet used in various minigames",                                                                                 ValueType.INTEGER, "50",       false, 0,     0,   2147483647),
     TIMEZONE           ("timezone",           "Defines the offset in various timebound activities.",                                                                                ValueType.INTEGER, "0",        false, 86400, -12, 12        ),
-    GN_PLAYING_CARDS   ("gn_playing_cards",   "Defines whether you want to use gender neutral playing cards.",                                                                      ValueType.BOOLEAN, "true",     false, 0                                       );
+    GN_PLAYING_CARDS   ("gn_playing_cards",   "Defines whether you want to use gender neutral playing cards.",                                                                      ValueType.BOOLEAN, "true",     false, 0                                       ),
+    ANON_GAME_LOG      ("anon_game_log",      "Defines whether you will be anonymized in Game Logs.",                                                                               ValueType.BOOLEAN, "false",    false, 0                                       );
 
     private String dbReference;
     private String description;

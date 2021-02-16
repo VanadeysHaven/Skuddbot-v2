@@ -6,6 +6,7 @@ import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClicked
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonRemovedEvent;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.Cooltimmetje.Skuddbot.Minigames.GameLogs.GenericGameLog;
+import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.TimeUtils;
 import org.javacord.api.entity.channel.TextChannel;
@@ -28,10 +29,11 @@ public final class TestCommand extends Command {
     public void run(Message message, String content) {
         long curTime = System.currentTimeMillis();
         GenericGameLog log = new GenericGameLog("test_" + curTime, "Test Log: " + TimeUtils.formatTime(curTime));
+        ServerMember member = new ServerMember(message.getServer().get().getId(), message.getAuthor().getId());
 
         log.addToLog("Hi!");
         log.addToLog("I'm a game log!");
-        log.addToLog("I was created at " + TimeUtils.formatTime(curTime));
+        log.addToLog("I was created at " + TimeUtils.formatTime(curTime) + " by " + member.getGameLogName());
         log.addToLog("Thank you for reading!");
 
         log.sendLog(message, Emoji.MAILBOX_WITH_MAIL, 1);
