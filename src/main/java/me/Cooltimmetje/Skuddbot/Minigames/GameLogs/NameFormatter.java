@@ -6,8 +6,6 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-
 /**
  * Class responsible for filling in usernames in the game logs, will also anonymize any usernames of users that have chosen to have their name anonymized.
  * When adding names to game logs, they should be in the format $<server_id>-<user_id>
@@ -22,11 +20,9 @@ public final class NameFormatter {
     private static final Logger logger = LoggerFactory.getLogger(NameFormatter.class);
 
     private int anonymousNumber;
-    private HashMap<String,String> cachedNames;
 
     public NameFormatter(){
         anonymousNumber = 0;
-        cachedNames = new HashMap<>();
     }
 
     public String format(String input){
