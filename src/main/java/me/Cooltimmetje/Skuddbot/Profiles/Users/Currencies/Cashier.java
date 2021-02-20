@@ -12,7 +12,7 @@ import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
  * It also checks whether the user has enough currency and deducts the amount from their balance.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.3
+ * @version 2.3.01
  * @since 2.3
  */
 public class Cashier {
@@ -27,6 +27,7 @@ public class Cashier {
 
     public int placeBet(String betStr) throws InvalidBetException, InsufficientBalanceException {
         int bet = formatBet(betStr);
+        if(bet < 0) throw new InvalidBetException(betStr);
         if(!user.getCurrencies().hasEnoughBalance(currency, bet)) throw new InsufficientBalanceException(currency, bet);
         user.getCurrencies().incrementInt(currency, bet * -1);
 
@@ -62,11 +63,15 @@ public class Cashier {
 
     private int formatThousand(String betStr) throws InvalidBetException {
         betStr = betStr.substring(0, betStr.length() - 1);
-        if(!MiscUtils.isInt(betStr)) throw new InvalidBetException(betStr);
-        int thousand = Integer.parseInt(betStr);
-        if(thousand < 1 || thousand > 2147483) throw new InvalidBetException(betStr);
-
-        return thousand * 1000;
+        if(MiscUtils.isInt(betStr)) {
+            int thousand = Integer.parseInt(betStr);
+            if (thousand < 1 || thousand > 2147483) throw new InvalidBetException(betStr);
+            return thousand * 1000;
+        } else if(MiscUtils.isDouble(betStr)) {
+            double thousand = Double.parseDouble(betStr);
+            if (thousand < 1 || thousand > 2147483) throw new InvalidBetException(betStr);
+            return (int) (thousand * 1000);
+        } else throw new InvalidBetException(betStr);
     }
 
 
