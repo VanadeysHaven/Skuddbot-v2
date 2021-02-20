@@ -1,0 +1,38 @@
+sequenceDiagram
+participant U as User
+participant S as Skuddbot
+participant L as Linking Website
+participant D as Discord API
+participant T as Twitch API
+
+U->>S: Request Linking URL
+S->>L: Request Linking URL
+L->>L: Generate Linking URL
+L->>S: Return Linking URL
+S->>U: Send Linking URL to user
+U->>L: Visit Linking URL
+
+rect rgba(114, 137, 218, .5)
+L->>U: Redirect user to Discord OAuth flow
+U->>D: Authenticate
+D->>U: Send user back to Linking Website
+D->>L: Return authorization code
+L->>D: Request token
+D->>L: Return token
+U->>L: Land back on Linking Website
+end
+
+rect rgba(100, 65, 165, .5)
+L->>U: Redirect user to Twitch OAuth flow
+U->>T: Authenticate
+T->>U: Send user back to Linking Website
+T->>L: Return authorization code
+L->>T: Request token
+T->>L: Return token
+U->>L: Land back on Linking Website
+end
+
+L->>S: Report successful link
+L->>S: Return token and username
+L->>U: Report successful link
+S->>U: Confirm successful link
