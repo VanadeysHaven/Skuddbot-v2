@@ -45,7 +45,7 @@ public final class FfaCommand extends Command {
             return;
         }
 
-        int bet = -1;
+        int bounty = -1;
         FfaCashier cashier = new FfaCashier(su.getCurrencies().getCashier(Currency.SKUDDBUX));
         try {
             if(args.length > 1){
@@ -58,10 +58,10 @@ public final class FfaCommand extends Command {
                     }
                     return;
                 } else {
-                    bet = cashier.placeBet(args[1]);
+                    bounty = cashier.placeBet(args[1]);
                 }
             } else {
-                bet = cashier.placeBet("");
+                bounty = cashier.placeBet("");
             }
         } catch (InvalidBetException | InsufficientBalanceException e) {
             MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
@@ -73,7 +73,7 @@ public final class FfaCommand extends Command {
         }
 
         message.delete();
-        manager.enterGame(channel, member, bet);
+        manager.enterGame(channel, member, bounty);
     }
 
     private FfaGameManager getManager(long serverId){
@@ -107,7 +107,7 @@ public final class FfaCommand extends Command {
         }
 
         private int formatMatch() {
-            return getManager(getUser().getId().getServerId()).getCurrentHighestBet();
+            return getManager(getUser().getId().getServerId()).getCurrentHighestBounty();
         }
 
     }

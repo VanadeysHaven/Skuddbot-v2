@@ -39,11 +39,11 @@ public final class FfaGameManager {
         enterGame(channel, player, 0);
     }
 
-    public void enterGame(TextChannel channel, ServerMember player, int bet){
+    public void enterGame(TextChannel channel, ServerMember player, int bounty){
         if(!gameIsActive())
             createNewGame(channel, player);
 
-        currentGame.enterGame(player, bet);
+        currentGame.enterGame(player, bounty);
     }
 
     public void leaveGame(ServerMember member){
@@ -84,13 +84,13 @@ public final class FfaGameManager {
             currentGame.runReminder();
     }
 
-    public int getCurrentHighestBet(){
+    public int getCurrentHighestBounty(){
         int highest = 0;
         Iterator<FfaPlayer> it = currentGame.getPlayers();
         while(it.hasNext()) {
-            int curBet = it.next().getBet();
-            if (curBet > highest)
-                highest = curBet;
+            int curBounty = it.next().getBounty();
+            if (curBounty > highest)
+                highest = curBounty;
         }
 
         return highest;

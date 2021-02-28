@@ -13,19 +13,19 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 public final class FfaPlayer {
 
     @Getter private ServerMember member;
-    @Getter private int bet;
+    @Getter private int bounty;
     @Getter private int kills;
     private boolean isAlive;
 
-    public FfaPlayer(ServerMember member, int bet){
+    public FfaPlayer(ServerMember member, int bounty){
         this.member = member;
-        this.bet = bet;
+        this.bounty = bounty;
         kills = 0;
         isAlive = true;
     }
 
-    public boolean hasBetted(){
-        return bet > 0;
+    public boolean hasPlacedBounty(){
+        return bounty > 0;
     }
 
     public void kill(){
@@ -40,10 +40,10 @@ public final class FfaPlayer {
         return isAlive;
     }
 
-    public String getNameAndBet(){
+    public String getNameAndBounty(){
         String ret = member.getDisplayName();
-        if(hasBetted()){
-            ret += " (" + bet + ")";
+        if(hasPlacedBounty()){
+            ret += " (" + bounty + ")";
         }
 
         return ret;
