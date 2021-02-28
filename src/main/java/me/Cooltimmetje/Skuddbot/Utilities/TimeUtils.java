@@ -29,7 +29,10 @@ public class TimeUtils {
         String pattern = "dd-MM-yyyy HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 
-        return sdf.format(new Date(timeInMillis));
+        return sdf.format(new Date(timeInMillis)) + " (UTC)";
     }
 
+    public static String formatTime() {
+        return formatTime(System.currentTimeMillis());
+    }
 }
