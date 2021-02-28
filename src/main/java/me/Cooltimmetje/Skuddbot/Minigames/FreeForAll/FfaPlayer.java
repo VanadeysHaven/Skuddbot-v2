@@ -7,10 +7,10 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
  * Represents a player in FFA
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3.1
  * @since 2.2
  */
-public class FfaPlayer {
+public final class FfaPlayer {
 
     @Getter private ServerMember member;
     @Getter private int bet;

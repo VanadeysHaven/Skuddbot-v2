@@ -20,10 +20,10 @@ import java.util.ArrayList;
  * The command for Free for All
  *
  * @author Tim (Cooltimmetje)
- * @version 2.3
+ * @version 2.3.1
  * @since 2.2
  */
-public class FfaCommand extends Command {
+public final class FfaCommand extends Command {
 
     private static final ArrayList<FfaGameManager> managers = new ArrayList<>();
 
