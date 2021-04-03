@@ -6,7 +6,7 @@ import lombok.Getter;
  * Emoji's for easy recalling throughout the code.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.3
+ * @version 2.3.02
  * @since 2.0
  */
 @Getter
@@ -63,6 +63,7 @@ public enum Emoji {
     GAME_DIE                ("\uD83C\uDFB2", "game_die"),
     GIFT                    ("\uD83C\uDF81", "gift"),
     DAGGER                  ("\uD83D\uDDE1", "dagger"),
+    HAMSTER                 ("\uD83D\uDC39", "hamster"),
     RABBIT                  ("\uD83D\uDC30", "rabbit");
 
     private String unicode;

@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * A donator message.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.0
+ * @version 2.3.02
  * @since 2.0
  */
 public class DonatorMessage {
@@ -25,14 +25,15 @@ public class DonatorMessage {
 
     @Getter
     public enum Type {
-        AI_NAME           ("ai_name",           64,               false),
-        BACON             ("bacon",             512, Emoji.BACON, true ),
-        CAKE              ("cake",              512, Emoji.CAKE,  true ),
-        KITTY             ("kitty",             512, Emoji.CAT,   true ),
-        PLAYING           ("playing",           128,              false),
-        PLAYING_CHRISTMAS ("playing_christmas", 128,              false),
-        PLAYING_NEW_YEAR  ("playing_new_year",  128,              false),
-        PUPPY             ("puppy",             512, Emoji.DOG,   true );
+        AI_NAME           ("ai_name",           64,                 false),
+        BACON             ("bacon",             512, Emoji.BACON,   true ),
+        CAKE              ("cake",              512, Emoji.CAKE,    true ),
+        GUINEA_PIG        ("guinea_pig",        512, Emoji.HAMSTER, true ), //Yes I know, hamster emoji, leave me alone
+        KITTY             ("kitty",             512, Emoji.CAT,     true ),
+        PLAYING           ("playing",           128,                false),
+        PLAYING_CHRISTMAS ("playing_christmas", 128,                false),
+        PLAYING_NEW_YEAR  ("playing_new_year",  128,                false),
+        PUPPY             ("puppy",             512, Emoji.DOG,     true );
 
         private String dbReference;
         private int maxLength;
