@@ -11,11 +11,8 @@ import me.Cooltimmetje.Skuddbot.Commands.Managers.CommandManager;
 import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.*;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.HugCommand;
 import me.Cooltimmetje.Skuddbot.Commands.Useless.ActionCommands.PunchCommand;
-import me.Cooltimmetje.Skuddbot.Commands.Useless.FlipCommand;
-import me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands.*;
-import me.Cooltimmetje.Skuddbot.Commands.Useless.PanicCommand;
-import me.Cooltimmetje.Skuddbot.Commands.Useless.RiotCommand;
-import me.Cooltimmetje.Skuddbot.Commands.Useless.SaluteCommand;
+import me.Cooltimmetje.Skuddbot.Commands.Useless.*;
+import me.Cooltimmetje.Skuddbot.Donator.DonatorMessage;
 import me.Cooltimmetje.Skuddbot.Listeners.JoinQuitServerListener;
 import me.Cooltimmetje.Skuddbot.Listeners.MessageListener;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.ReactionUtils;
@@ -45,7 +42,7 @@ import java.util.Iterator;
  * This class represents the bot, and is used to register commands and listeners.
  *
  * @author Tim (Cooltimmetje)
- * @since 2.3.02
+ * @since 2.3.03
  * @version 2.0
  */
 public class Skuddbot {
@@ -73,12 +70,16 @@ public class Skuddbot {
 
     void registerCommands() {
         logger.info("Registering global commands...");
-        commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(), new PuppyCommand(), new KittyCommand(), new CakeCommand(),
-                new BaconCommand(), new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(), new LogoutCommand(),
-                new ExperienceCommand(), new StatsLeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(), new GlobalSettingsCommand(),
-                new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand(), new UserInfoCommand(), new AboutCommand(), new ServerInfoCommand(), new BlackjackCommand(), new ChallengeCommand(),
-                new InviteCommand(), new CurrenciesCommand(), new CurrenciesLeaderboardCommand(), new DailyBonusCommand(), new DonCommand(), new FfaCommand(), new PurgeCommand(), new JackpotCommand(),
-                new GuineaPigCommand());
+        commandManager.registerCommand(new PingCommand(), new ServerSettingsCommand(), new UserSettingsCommand(), new StatsCommand(),
+                new ManageAdminsCommand(), new GameCommand(), new ManageMessageCommand(), new ManageDonatorsCommand(), new HelpCommand(), new LogoutCommand(),
+                new ExperienceCommand(), new StatsLeaderboardCommand(), new RiotCommand(), new FlipCommand(), new SetPingCommand(), new HugCommand(), new PunchCommand(),
+                new GlobalSettingsCommand(), new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand(), new UserInfoCommand(), new AboutCommand(),
+                new ServerInfoCommand(), new BlackjackCommand(), new ChallengeCommand(), new InviteCommand(), new CurrenciesCommand(), new CurrenciesLeaderboardCommand(),
+                new DailyBonusCommand(), new DonCommand(), new FfaCommand(), new PurgeCommand(), new JackpotCommand());
+
+        for(DonatorMessage.Type type : DonatorMessage.Type.values())
+            if(type.isAcceptsImages())
+                commandManager.registerCommand(new ImageCommand(type));
     }
 
     void registerListeners() {

@@ -1,4 +1,4 @@
-package me.Cooltimmetje.Skuddbot.Commands.Useless.ImageCommands;
+package me.Cooltimmetje.Skuddbot.Commands.Useless;
 
 import me.Cooltimmetje.Skuddbot.Commands.Managers.Command;
 import me.Cooltimmetje.Skuddbot.Donator.DonatorManager;
@@ -15,16 +15,16 @@ import org.javacord.api.entity.server.Server;
  * Class for handling random image commands.
  *
  * @author Tim (Cooltimmetje)
- * @version 2.2.1
+ * @version 2.3.03
  * @since 2.0
  */
-public abstract class ImageCommand extends Command {
+public class ImageCommand extends Command {
 
     private DonatorManager dm = new DonatorManager();
     private DonatorMessage.Type type;
 
-    public ImageCommand(String[] invokers, String description, DonatorMessage.Type type) {
-        super(invokers, description, "https://wiki.skuddbot.xyz/commands/image-commands", PermissionLevel.DEFAULT, Location.BOTH);
+    public ImageCommand(DonatorMessage.Type type) {
+        super(type.getCommands(), type.getCommandDescription(), "https://wiki.skuddbot.xyz/commands/image-commands", PermissionLevel.DEFAULT, Location.BOTH);
         this.type = type;
     }
 
