@@ -4,12 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
+import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * A donator message.
@@ -43,7 +46,7 @@ public class DonatorMessage {
         PANDA             ("panda",             512, Emoji.PANDA,   true, "Deadly balls of floof",                       "panda"),
         PUPPY             ("puppy",             512, Emoji.DOG,     true, "PUPPERRRRRRRRR",                              "puppy", "emergencypuppy", "wuff", "dogger", "doggo", "dog", "pupper", "riit", "rogged", "woowoo", "dogo", "dogggo", "doogo", "dogoo", "owo", "doggerino", "addit", "doggy", "defectius"),
         SEAL              ("seal",              512, Emoji.SEAL,    true, "Seal of approval",                            "seal"),
-        SNAKE             ("snake",             512, Emoji.SNAKE,   true, "Snek",                                        "snake", "snake", "dangernoodle");
+        SNAKE             ("snake",             512, Emoji.SNAKE,   true, "Snek",                                        "snake", "snek", "dangernoodle");
 
         private String dbReference;
         private int maxLength;
@@ -74,6 +77,34 @@ public class DonatorMessage {
 
             return null;
         }
+
+        private static void saveToDatabase(){ //TODO
+            QueryExecutor qe = null;
+            ArrayList<String> stats = new ArrayList<>();
+            try {
+                qe = new QueryExecutor(Query.SELECT_ALL_STATS);
+                QueryResult qr = qe.executeQuery();
+                while(qr.nextResult()){
+                    stats.add(qr.getString("stat_name"));
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                if(qe != null) qe.close();
+            }
+            for(Stat stat : values()){
+                if(stats.contains(stat.getDbReference())) continue;
+                try {
+                    qe = new QueryExecutor(Query.INSERT_STAT).setString(1, stat.getDbReference());
+                    qe.execute();
+                } catch (SQLException e){
+                    e.printStackTrace();
+                } finally {
+                    if(qe != null) qe.close();
+                }
+            }
+        }
+
     }
 
     @Getter private DonatorUser owner;
