@@ -4,15 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Database.Query;
 import me.Cooltimmetje.Skuddbot.Database.QueryExecutor;
-import me.Cooltimmetje.Skuddbot.Database.QueryResult;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
-import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * A donator message.
@@ -38,7 +35,7 @@ public class DonatorMessage {
         /* Images */
         BACON             ("bacon",             512, Emoji.BACON,   true, "mmm... Bacon... *drools*",                    "bacon"),
         BAT               ("bat",               512, Emoji.BAT,     true, "For when you need a sky pupper in your life", "bat", "skypupper"),
-        BUNNY             ("bunny",             512, Emoji.RABBIT,  true, "Bun bun",                                     "bunny", "bune", "rabbit", "bun", "bunbun", "boopersnoot"),
+        BUNNY             ("bunny",             512, Emoji.RABBIT,  true, "Bun bun",                                     "bunny", "bune", "rabbit", "bun", "bunbun", "boopersnoot",  "flufferbutt", "floppetyhoppety"),
         CAKE              ("cake",              512, Emoji.CAKE,    true, "CAKE! HAPPY BIRTHDAY!",                       "cake"),
         GUINEA_PIG        ("guinea_pig",        512, Emoji.HAMSTER, true, "Cute balls of flooooffffff",                  "gp", "guinea", "piggie", "guineapigs", "guineapiggie", "piggies", "wheek", "guineapig"), //Yes I know, hamster emoji, leave me alone
         KITTY             ("kitty",             512, Emoji.CAT,     true, "Kittttieeessss",                              "kitty", "cat", "pussy", "kitten"),
@@ -79,30 +76,30 @@ public class DonatorMessage {
         }
 
         private static void saveToDatabase(){ //TODO
-            QueryExecutor qe = null;
-            ArrayList<String> stats = new ArrayList<>();
-            try {
-                qe = new QueryExecutor(Query.SELECT_ALL_STATS);
-                QueryResult qr = qe.executeQuery();
-                while(qr.nextResult()){
-                    stats.add(qr.getString("stat_name"));
-                }
-            } catch (SQLException e){
-                e.printStackTrace();
-            } finally {
-                if(qe != null) qe.close();
-            }
-            for(Stat stat : values()){
-                if(stats.contains(stat.getDbReference())) continue;
-                try {
-                    qe = new QueryExecutor(Query.INSERT_STAT).setString(1, stat.getDbReference());
-                    qe.execute();
-                } catch (SQLException e){
-                    e.printStackTrace();
-                } finally {
-                    if(qe != null) qe.close();
-                }
-            }
+//            QueryExecutor qe = null;
+//            ArrayList<String> stats = new ArrayList<>();
+//            try {
+//                qe = new QueryExecutor(Query.SELECT_ALL_STATS);
+//                QueryResult qr = qe.executeQuery();
+//                while(qr.nextResult()){
+//                    stats.add(qr.getString("stat_name"));
+//                }
+//            } catch (SQLException e){
+//                e.printStackTrace();
+//            } finally {
+//                if(qe != null) qe.close();
+//            }
+//            for(Stat stat : values()){
+//                if(stats.contains(stat.getDbReference())) continue;
+//                try {
+//                    qe = new QueryExecutor(Query.INSERT_STAT).setString(1, stat.getDbReference());
+//                    qe.execute();
+//                } catch (SQLException e){
+//                    e.printStackTrace();
+//                } finally {
+//                    if(qe != null) qe.close();
+//                }
+//            }
         }
 
     }
