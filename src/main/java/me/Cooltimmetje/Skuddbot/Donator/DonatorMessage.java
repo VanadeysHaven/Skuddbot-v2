@@ -43,7 +43,7 @@ public class DonatorMessage {
         PANDA             ("panda",             512, Emoji.PANDA,   true, "Deadly balls of floof",                       "panda"),
         PUPPY             ("puppy",             512, Emoji.DOG,     true, "PUPPERRRRRRRRR",                              "puppy", "emergencypuppy", "wuff", "dogger", "doggo", "dog", "pupper", "riit", "rogged", "woowoo", "dogo", "dogggo", "doogo", "dogoo", "owo", "doggerino", "addit", "doggy", "defectius"),
         SEAL              ("seal",              512, Emoji.SEAL,    true, "Seal of approval",                            "seal"),
-        SNAKE             ("snake",             512, Emoji.SNAKE,   true, "Snek",                                        "snake", "snek", "dangernoodle");
+        SNAKE             ("snake",             512, Emoji.SNAKE,   true, "Snek",                                        "snake", "snek", "dangernoodle", "murderspagurders", "dangernoodles", "cautionramen", "hazardspaghetti", "slipperytubedudes", "noperopes", "sneksdosneaks", "stringsdostings", "linguinisdomeanies");
 
         private String dbReference;
         private int maxLength;
