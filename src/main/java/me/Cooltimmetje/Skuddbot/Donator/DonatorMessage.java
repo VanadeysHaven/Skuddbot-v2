@@ -35,7 +35,7 @@ public class DonatorMessage {
         /* Images */
         BACON             ("bacon",             512, Emoji.BACON,   true, "mmm... Bacon... *drools*",                    "bacon"),
         BAT               ("bat",               512, Emoji.BAT,     true, "For when you need a sky pupper in your life", "bat", "skypupper"),
-        BUNNY             ("bunny",             512, Emoji.RABBIT,  true, "Bun bun",                                     "bunny", "bune", "rabbit", "bun", "bunbun", "boopersnoot",  "flufferbutt", "floppetyhoppety"),
+        BUNNY             ("bunny",             512, Emoji.RABBIT,  true, "Bun bun",                                     "bunny", "bune", "rabbit", "bun", "bunbun", "boopersnoot",  "flufferbutt", "floppetyhoppety", "wigglesniffers"),
         CAKE              ("cake",              512, Emoji.CAKE,    true, "CAKE! HAPPY BIRTHDAY!",                       "cake"),
         GUINEA_PIG        ("guinea_pig",        512, Emoji.HAMSTER, true, "Cute balls of flooooffffff",                  "gp", "guinea", "piggie", "guineapigs", "guineapiggie", "piggies", "wheek", "guineapig"), //Yes I know, hamster emoji, leave me alone
         KITTY             ("kitty",             512, Emoji.CAT,     true, "Kittttieeessss",                              "kitty", "cat", "pussy", "kitten"),
