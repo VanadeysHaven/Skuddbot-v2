@@ -3,7 +3,7 @@ package me.Cooltimmetje.Skuddbot.Profiles.Users.Settings;
 /**
  * Settings for level up notifications.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.0
  * @version 2.0
  */

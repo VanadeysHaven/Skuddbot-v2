@@ -6,7 +6,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 /**
  * Container for holding currencies.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.1.1
  */

@@ -12,7 +12,7 @@ import java.text.MessageFormat;
 /**
  * This class is a command, can be extended to other classes to make for a flexible command system.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.2.1
  * @version 2.0
  */

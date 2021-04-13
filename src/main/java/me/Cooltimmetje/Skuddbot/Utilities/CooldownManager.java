@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * Class for easily managing cooldowns
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

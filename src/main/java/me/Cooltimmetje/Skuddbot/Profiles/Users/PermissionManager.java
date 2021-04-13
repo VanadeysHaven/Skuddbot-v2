@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Class that used to check the global permissions of an user.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.1.1
  * @since 2.0
  */

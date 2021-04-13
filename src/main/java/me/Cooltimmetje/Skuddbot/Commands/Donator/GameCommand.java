@@ -10,7 +10,7 @@ import org.javacord.api.entity.message.Message;
 /**
  * Command used to change the current playing status.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

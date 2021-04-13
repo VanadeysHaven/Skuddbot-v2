@@ -15,7 +15,7 @@ import org.javacord.api.entity.message.Message;
 /**
  * Command for testing purposes.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version [not deployed]
  * @since [not deployed]
  */

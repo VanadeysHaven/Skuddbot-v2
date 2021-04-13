@@ -5,7 +5,7 @@ import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClicked
 /**
  * Event runnable for reaction buttons
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.1.1
  */

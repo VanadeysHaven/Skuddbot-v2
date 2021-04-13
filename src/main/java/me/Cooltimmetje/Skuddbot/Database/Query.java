@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * Queries for the database.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.1.1
  * @since 2.0
  */

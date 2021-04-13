@@ -13,7 +13,7 @@ import org.javacord.api.entity.user.User;
 /**
  * Command for kicking a user from a server.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version [not deployed]
  * @since [not deployed]
  */

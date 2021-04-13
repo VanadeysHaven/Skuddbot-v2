@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * This class is responsible for registering commands and process incoming requests for commands.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.1.1
  * @version 2.0
  */

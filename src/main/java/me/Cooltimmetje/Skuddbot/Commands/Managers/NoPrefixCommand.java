@@ -5,7 +5,7 @@ import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 /**
  * Command without a prefix
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

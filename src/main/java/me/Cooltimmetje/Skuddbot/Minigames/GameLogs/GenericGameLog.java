@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Generic simple game log.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.1
  * @since 2.3.1
  */

@@ -14,7 +14,7 @@ import org.javacord.api.entity.server.Server;
 /**
  * Class for handling random image commands.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.03
  * @since 2.0
  */

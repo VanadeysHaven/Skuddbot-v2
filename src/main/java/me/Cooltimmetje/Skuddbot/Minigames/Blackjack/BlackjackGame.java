@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Represents a game of blackjack.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

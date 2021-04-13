@@ -5,7 +5,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 /**
  * Interface for the CommandManager to prevent unwanted changes to it.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.0
  * @since 2.0
  */

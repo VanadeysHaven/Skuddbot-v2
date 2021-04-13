@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Command for controlling challenges.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.1
  */

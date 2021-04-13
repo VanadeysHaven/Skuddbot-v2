@@ -14,7 +14,7 @@ import java.sql.SQLException;
 /**
  * A donator message.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.03
  * @since 2.0
  */

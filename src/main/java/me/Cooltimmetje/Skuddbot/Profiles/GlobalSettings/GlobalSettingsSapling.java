@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
- * [class description]
+ * Sapling for global settings
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.0
  * @since 2.0
  */

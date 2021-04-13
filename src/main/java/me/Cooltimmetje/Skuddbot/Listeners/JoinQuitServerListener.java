@@ -15,7 +15,7 @@ import org.javacord.api.event.server.member.ServerMemberLeaveEvent;
 /**
  * Stuff for when users join or leave a server.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.1.1
  * @since 2.0
  */

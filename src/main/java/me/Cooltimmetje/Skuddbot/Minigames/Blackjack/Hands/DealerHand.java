@@ -6,7 +6,7 @@ import me.Cooltimmetje.Skuddbot.Minigames.Blackjack.Card;
 /**
  * Represents the hand of the dealer.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.2.1
  */

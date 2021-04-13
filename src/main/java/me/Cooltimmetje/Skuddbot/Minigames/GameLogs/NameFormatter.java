@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * Class responsible for filling in usernames in the game logs, will also anonymize any usernames of users that have chosen to have their name anonymized.
  * When adding names to game logs, they should be in the format $<server_id>-<user_id>
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.1
  * @since 2.3.1
  */

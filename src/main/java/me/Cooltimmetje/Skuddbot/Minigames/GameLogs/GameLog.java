@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 /**
  * A game log is a more verbose log of what has happened in a minigame, and is sent to Discord via a upload of a text file.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.1
  * @since 2.3.1
  */

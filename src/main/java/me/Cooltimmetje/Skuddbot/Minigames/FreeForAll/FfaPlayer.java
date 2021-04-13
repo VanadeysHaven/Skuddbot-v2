@@ -6,7 +6,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 /**
  * Represents a player in FFA
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.1
  * @since 2.2
  */

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Class for managing Double or Nothing games on a server level.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.1.1
  */

@@ -9,7 +9,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 /**
  * This class holds the stats for users.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.3
  * @version 2.0
  */

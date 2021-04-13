@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Settings for servers.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.0
  */

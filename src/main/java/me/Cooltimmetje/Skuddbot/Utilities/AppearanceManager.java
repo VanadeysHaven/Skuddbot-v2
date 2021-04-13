@@ -16,7 +16,7 @@ import java.util.Date;
 /**
  * Managing the playing status and avatar.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.0
  * @since 2.0
  */

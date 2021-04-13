@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Manages everything to do with donator data.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.0
  * @since 2.0
  */

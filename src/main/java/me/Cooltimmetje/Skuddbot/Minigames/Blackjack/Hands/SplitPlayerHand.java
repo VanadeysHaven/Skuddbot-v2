@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * A hand of Blackjack that has been split.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.2.1
  */

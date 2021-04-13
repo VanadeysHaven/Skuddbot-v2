@@ -3,7 +3,7 @@ package me.Cooltimmetje.Skuddbot.Utilities.TableUtilities;
 /**
  * This is a class to draw neatly looking tables easily.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.1.1
  * @since 1.4.62
  */

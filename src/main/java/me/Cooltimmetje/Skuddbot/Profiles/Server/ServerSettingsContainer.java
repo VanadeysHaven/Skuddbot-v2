@@ -5,7 +5,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.DataContainers.ServerDataContainer;
 /**
  * This holds all server settings.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.0
  */

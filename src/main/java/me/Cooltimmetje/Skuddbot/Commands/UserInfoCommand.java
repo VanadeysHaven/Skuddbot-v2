@@ -19,7 +19,7 @@ import java.awt.*;
 /**
  * Used for viewing info about users.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

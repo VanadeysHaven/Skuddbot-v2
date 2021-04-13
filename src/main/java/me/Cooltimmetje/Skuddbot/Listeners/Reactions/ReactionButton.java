@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Information about a reaction button.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.1.1
  */

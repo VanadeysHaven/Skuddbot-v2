@@ -8,7 +8,7 @@ import org.javacord.api.entity.message.Message;
 /**
  * This class is a simple ping command.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.2.1
  * @version 2.0
  */

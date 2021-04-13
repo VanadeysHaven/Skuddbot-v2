@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Command for viewing and altering server settings.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

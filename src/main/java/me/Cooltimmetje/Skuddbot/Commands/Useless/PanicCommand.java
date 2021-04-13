@@ -7,7 +7,7 @@ import org.javacord.api.entity.message.Message;
 /**
  * We all sometimes need a little panic in our lives.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

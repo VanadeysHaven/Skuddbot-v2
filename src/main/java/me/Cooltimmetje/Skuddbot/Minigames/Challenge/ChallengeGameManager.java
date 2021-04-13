@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Manager for managing challenge games on a server level.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.1
  */

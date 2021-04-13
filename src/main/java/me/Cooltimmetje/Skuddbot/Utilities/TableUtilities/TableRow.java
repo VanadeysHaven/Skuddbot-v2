@@ -7,7 +7,7 @@ import java.util.Iterator;
 /**
  * This class represents a row in a table.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.0
  * @since 1.4.62
  */

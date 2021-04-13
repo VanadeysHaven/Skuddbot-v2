@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Utility to quickly create paged messages. Meant to be extended so specific behaviour can be added easily.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.2.1
  */

@@ -7,7 +7,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
 /**
  * represents a player of challenge
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.2.1
  */

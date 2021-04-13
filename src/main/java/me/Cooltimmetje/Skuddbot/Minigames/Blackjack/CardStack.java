@@ -10,7 +10,7 @@ import java.util.Stack;
 /**
  * Represents a deck of cards.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.2.1
  */

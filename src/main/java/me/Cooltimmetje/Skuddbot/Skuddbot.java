@@ -41,7 +41,7 @@ import java.util.Iterator;
 /**
  * This class represents the bot, and is used to register commands and listeners.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.3.03
  * @version 2.0
  */

@@ -3,7 +3,7 @@ package me.Cooltimmetje.Skuddbot.Enums;
 /**
  * Permission levels used for commands.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.0
  * @since 2.0
  */

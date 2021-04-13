@@ -12,7 +12,7 @@ import java.sql.SQLException;
 /**
  * This class represents a identifier for a user. It combines multiple identifiers into one.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.2.1
  * @version 2.0
  */

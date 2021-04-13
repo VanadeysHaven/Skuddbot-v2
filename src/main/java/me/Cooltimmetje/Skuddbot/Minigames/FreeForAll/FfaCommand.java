@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * The command for Free for All
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.1
  * @since 2.2
  */

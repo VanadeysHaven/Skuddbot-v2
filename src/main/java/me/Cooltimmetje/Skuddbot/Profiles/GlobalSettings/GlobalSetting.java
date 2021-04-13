@@ -6,7 +6,7 @@ import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 /**
  * Settings that apply to the bot globally.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.0
  * @since 2.0
  */

@@ -15,7 +15,7 @@ import java.util.HashMap;
 /**
  * Main class that serves as a basis for all data containers.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.3
  */

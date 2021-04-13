@@ -10,7 +10,7 @@ import java.util.Iterator;
 /**
  * Game manager, for managing data that needs to persist between games.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.1
  * @since 2.2
  */

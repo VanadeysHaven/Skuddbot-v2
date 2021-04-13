@@ -24,7 +24,7 @@ import java.util.Date;
 /**
  * Command used to claim daily bonuses.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.1.1
  */

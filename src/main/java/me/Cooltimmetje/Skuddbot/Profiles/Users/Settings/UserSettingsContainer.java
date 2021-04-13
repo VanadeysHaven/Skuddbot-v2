@@ -6,7 +6,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 /**
  * This holds all user settings.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.3
  * @version 2.0
  */

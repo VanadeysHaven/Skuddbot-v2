@@ -16,7 +16,7 @@ import org.javacord.api.entity.message.Message;
 /**
  * Command for editing global settings.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

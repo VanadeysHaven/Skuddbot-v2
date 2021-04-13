@@ -9,7 +9,7 @@ import org.javacord.api.entity.message.Message;
 /**
  * A reaction on a message a user can click for more information.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

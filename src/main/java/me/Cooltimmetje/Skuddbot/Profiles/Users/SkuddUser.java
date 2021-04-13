@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This class represents a user and their data and statistics.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2
  * @since 2.0
  */

@@ -6,7 +6,7 @@ import me.Cooltimmetje.Skuddbot.Enums.ValueType;
 /**
  * Interface for Data enums.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.3
  */

@@ -6,7 +6,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 /**
  * Can be thrown whenever we encounter a user without insufficient balance of a certain currency.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.3
  */

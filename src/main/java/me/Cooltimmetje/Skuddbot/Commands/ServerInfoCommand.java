@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Command used for viewing server information.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

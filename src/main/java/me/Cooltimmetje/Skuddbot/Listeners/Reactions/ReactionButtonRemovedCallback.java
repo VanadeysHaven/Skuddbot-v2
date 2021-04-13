@@ -5,7 +5,7 @@ import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonRemoved
 /**
  * Callback for when a reaction button gets a reaction removed.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.2.1
  */

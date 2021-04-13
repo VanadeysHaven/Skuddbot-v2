@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 /**
  * This class represents a guild, and it's settings and user profiles.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.1.1
  * @version 2.0
  */

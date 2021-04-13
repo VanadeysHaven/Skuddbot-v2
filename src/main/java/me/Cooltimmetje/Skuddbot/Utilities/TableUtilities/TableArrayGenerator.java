@@ -7,7 +7,7 @@ import java.util.Iterator;
 /**
  * This class is used for more automated generation of arrays to use in the TableDrawer.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 1.4.62
  * @since 1.4.62
  */

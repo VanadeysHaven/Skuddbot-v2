@@ -3,7 +3,7 @@ package me.Cooltimmetje.Skuddbot.Exceptions;
 /**
  * Gets thrown whenever the Cashier class encounters an invalid formatted bet.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.3
  */

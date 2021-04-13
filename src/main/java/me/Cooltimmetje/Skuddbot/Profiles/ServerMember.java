@@ -10,7 +10,7 @@ import org.javacord.api.entity.user.User;
 /**
  * Represents a member of a server.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.2
  */

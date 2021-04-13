@@ -11,7 +11,7 @@ import java.util.HashMap;
 /**
  * This class is used to provide an easy "interface" between the database and the profile system. This handles currencies only.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.1
  * @since 2.1
  */

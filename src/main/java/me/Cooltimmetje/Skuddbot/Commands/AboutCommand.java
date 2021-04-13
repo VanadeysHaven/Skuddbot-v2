@@ -13,7 +13,7 @@ import java.util.Arrays;
 /**
  * Shows information about the bot.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

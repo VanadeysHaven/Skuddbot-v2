@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Enum for all the types of currencies.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.1.1
  */

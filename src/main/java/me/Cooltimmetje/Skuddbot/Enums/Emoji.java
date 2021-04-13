@@ -5,7 +5,7 @@ import lombok.Getter;
 /**
  * Emoji's for easy recalling throughout the code.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.1
  * @since 2.0
  */
@@ -64,7 +64,6 @@ public enum Emoji {
     GIFT                    ("\uD83C\uDF81", "gift"),
     DAGGER                  ("\uD83D\uDDE1", "dagger"),
     PRINTER                 ("\uD83D\uDDA8", "printer"),
-    DAGGER                  ("\uD83D\uDDE1", "dagger"),
     HAMSTER                 ("\uD83D\uDC39", "hamster"),
     RABBIT                  ("\uD83D\uDC30", "rabbit"),
     SNAKE                   ("\uD83D\uDC0D", "snake"),

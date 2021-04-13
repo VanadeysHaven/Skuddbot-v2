@@ -29,7 +29,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Used to view and edit stats.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

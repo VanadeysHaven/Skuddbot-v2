@@ -16,7 +16,7 @@ import java.util.HashMap;
 /**
  * Used to manage donators.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Command used to see and edit user currencies.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.1.1
  */

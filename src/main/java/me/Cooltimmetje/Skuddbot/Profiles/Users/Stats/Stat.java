@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Constants for user stats.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.3
  * @version 2.0
  */

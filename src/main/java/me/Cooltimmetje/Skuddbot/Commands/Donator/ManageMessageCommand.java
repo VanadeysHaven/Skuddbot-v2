@@ -11,7 +11,7 @@ import org.javacord.api.entity.message.MessageAttachment;
 /**
  * Commands for donators so they can add messages to the donator pool.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

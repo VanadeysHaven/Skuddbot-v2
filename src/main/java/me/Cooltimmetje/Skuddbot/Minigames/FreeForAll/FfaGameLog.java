@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Represents a game log for Free For All.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.1
  * @since 2.3.1
  */

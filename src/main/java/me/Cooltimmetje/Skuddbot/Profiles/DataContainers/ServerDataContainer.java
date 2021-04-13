@@ -8,7 +8,7 @@ import java.sql.SQLException;
 /**
  * Data container with support for server data.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.3
  */

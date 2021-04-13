@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * Some useful utilities I can use throughout the code.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.2
  * @version 2.0
  */

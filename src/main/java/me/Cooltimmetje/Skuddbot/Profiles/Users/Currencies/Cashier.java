@@ -11,7 +11,7 @@ import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
  * The cashier is responsible of converting strings of text into the actual bet.
  * It also checks whether the user has enough currency and deducts the amount from their balance.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.01
  * @since 2.3
  */

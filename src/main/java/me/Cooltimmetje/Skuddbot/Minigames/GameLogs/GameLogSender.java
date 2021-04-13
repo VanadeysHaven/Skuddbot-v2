@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Responsible for sending the game log to Discord based on reaction adds.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3.1
  * @since 2.3.1
  */

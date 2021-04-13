@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Help for commands
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.0
  */

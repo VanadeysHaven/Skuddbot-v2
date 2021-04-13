@@ -6,7 +6,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Identifier;
 /**
  * Data container with support for user data.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.3
  * @since 2.3
  */

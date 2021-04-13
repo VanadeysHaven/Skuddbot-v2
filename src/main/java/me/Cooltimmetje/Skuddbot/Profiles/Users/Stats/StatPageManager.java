@@ -14,7 +14,7 @@ import java.util.Collections;
 /**
  * Class for managing stat pages.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.2.1
  */

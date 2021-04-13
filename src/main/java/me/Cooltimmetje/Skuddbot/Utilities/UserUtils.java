@@ -8,7 +8,7 @@ import java.util.concurrent.CompletionException;
 /**
  * Utilities to do with Users.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.2.1
  */

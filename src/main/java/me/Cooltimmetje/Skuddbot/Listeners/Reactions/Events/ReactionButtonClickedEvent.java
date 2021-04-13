@@ -8,7 +8,7 @@ import org.javacord.api.entity.user.User;
 /**
  * Event information about the reaction button clicked.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.2.1
  * @since 2.1.1
  */

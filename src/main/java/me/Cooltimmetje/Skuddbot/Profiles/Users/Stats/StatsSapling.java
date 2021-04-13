@@ -11,7 +11,7 @@ import java.util.HashMap;
 /**
  * This class is used to provide an easy "interface" between the database and the profile system. This handles stats only.
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @since 2.0
  * @version 2.0
  */
