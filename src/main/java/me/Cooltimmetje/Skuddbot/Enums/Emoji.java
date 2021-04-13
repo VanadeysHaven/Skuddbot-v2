@@ -63,7 +63,15 @@ public enum Emoji {
     GAME_DIE                ("\uD83C\uDFB2", "game_die"),
     GIFT                    ("\uD83C\uDF81", "gift"),
     DAGGER                  ("\uD83D\uDDE1", "dagger"),
-    PRINTER                 ("\uD83D\uDDA8", "printer");
+    PRINTER                 ("\uD83D\uDDA8", "printer"),
+    DAGGER                  ("\uD83D\uDDE1", "dagger"),
+    HAMSTER                 ("\uD83D\uDC39", "hamster"),
+    RABBIT                  ("\uD83D\uDC30", "rabbit"),
+    SNAKE                   ("\uD83D\uDC0D", "snake"),
+    SEAL                    ("\uD83E\uDDAD", "seal"),
+    OWL                     ("\uD83E\uDD89", "owl"),
+    BAT                     ("\uD83E\uDD87", "bat"),
+    PANDA                   ("\uD83D\uDC3C", "panda_face");
 
     private String unicode;
     private String alias;

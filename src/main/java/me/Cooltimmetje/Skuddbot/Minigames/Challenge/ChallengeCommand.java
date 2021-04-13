@@ -87,6 +87,7 @@ public class ChallengeCommand extends Command {
                 }
             } catch (InvalidBetException | InsufficientBalanceException e) {
                 MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
+                return;
             }
 
             manager.processAccept(author, message, placedBet);

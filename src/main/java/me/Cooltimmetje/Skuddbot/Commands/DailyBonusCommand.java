@@ -37,7 +37,8 @@ public class DailyBonusCommand extends Command {
     @Getter
     private enum Bonus {
 
-        VALENTINE (14, 2, 23649, 69420, Emoji.HEART.getUnicode() + " *HAPPY VALENTINES DAY!*");
+        EASTER_1 (4, 4, 20001, 53879, Emoji.RABBIT.getUnicode() + " *HAPPY EASTER!*"),
+        EASTER_2 (5, 4, 26384, 85743, Emoji.RABBIT.getUnicode() + " *HAPPY EASTER!*");
 
         int day;
         int month;

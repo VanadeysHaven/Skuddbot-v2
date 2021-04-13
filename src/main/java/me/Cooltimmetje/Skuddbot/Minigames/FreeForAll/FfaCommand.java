@@ -112,5 +112,4 @@ public final class FfaCommand extends Command {
 
     }
 
-
 }
