@@ -37,8 +37,7 @@ public class DailyBonusCommand extends Command {
     @Getter
     private enum Bonus {
 
-        EASTER_1 (4, 4, 20001, 53879, Emoji.RABBIT.getUnicode() + " *HAPPY EASTER!*"),
-        EASTER_2 (5, 4, 26384, 85743, Emoji.RABBIT.getUnicode() + " *HAPPY EASTER!*");
+        KINGS_DAY (27, 4, 68000, 70000, Emoji.CROWN.getUnicode() + Emoji.FLAG_NL.getUnicode() + " *HAPPY KINGS DAY!*");
 
         int day;
         int month;
