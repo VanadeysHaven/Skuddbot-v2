@@ -70,7 +70,9 @@ public enum Emoji {
     SEAL                    ("\uD83E\uDDAD", "seal"),
     OWL                     ("\uD83E\uDD89", "owl"),
     BAT                     ("\uD83E\uDD87", "bat"),
-    PANDA                   ("\uD83D\uDC3C", "panda_face");
+    PANDA                   ("\uD83D\uDC3C", "panda_face"),
+    FLAG_NL                 ("\uD83C\uDDF3\uD83C\uDDF1", "flag_nl"),
+    CROWN                   ("\uD83D\uDC51", "crown");
 
     private String unicode;
     private String alias;
