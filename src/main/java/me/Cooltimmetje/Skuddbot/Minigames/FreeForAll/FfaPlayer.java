@@ -1,7 +1,10 @@
 package me.Cooltimmetje.Skuddbot.Minigames.FreeForAll;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.Cooltimmetje.Skuddbot.Profiles.ServerMember;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * Represents a player in FFA
@@ -15,6 +18,7 @@ public final class FfaPlayer {
     @Getter private ServerMember member;
     @Getter private int bounty;
     @Getter private int kills;
+    @Getter private int collectedBounty;
     private boolean isAlive;
 
     public FfaPlayer(ServerMember member, int bounty){
@@ -28,8 +32,20 @@ public final class FfaPlayer {
         return bounty > 0;
     }
 
-    public void kill(){
+    public Pair<Integer, Integer> kill(FfaPlayer killer){
+        killer.incrementKills();
+
+        int allowedCollection = Math.min(killer.getMaxBountyCollection(), bounty);
+        killer.collectedBounty += allowedCollection;
+        bounty -= allowedCollection;
+
+        int splitCollection = splitCollectedBounty();
+        killer.collectedBounty += splitCollection;
+        collectedBounty -= splitCollection;
+
         isAlive = false;
+
+        return new ImmutablePair<>(allowedCollection, splitCollection);
     }
 
     public void incrementKills(){
@@ -49,8 +65,23 @@ public final class FfaPlayer {
         return ret;
     }
 
+    public int splitCollectedBounty(){
+        int half = collectedBounty / 2;
+        collectedBounty -= half;
+
+        return half;
+    }
+
+    public int getMaxBountyCollection(){
+        return (int) (bounty * 2.5);
+    }
+
     public String getName(){
         return member.getDisplayName();
+    }
+
+    public String getGameLogName(){
+        return member.getGameLogName();
     }
 
     @Override
