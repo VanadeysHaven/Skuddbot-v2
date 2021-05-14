@@ -1,6 +1,7 @@
 package me.Cooltimmetje.Skuddbot.Minigames.FreeForAll;
 
 import me.Cooltimmetje.Skuddbot.Minigames.GameLogs.GameLog;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.TimeUtils;
 
 import java.util.ArrayList;
@@ -14,11 +15,13 @@ import java.util.ArrayList;
  */
 public final class FfaGameLog extends GameLog {
 
+    private static ArrayList<String> entrants;
     private static ArrayList<String> combatLog;
     private static ArrayList<String> rewardLog;
 
     public FfaGameLog(long serverId, String serverName) {
         super("ffa_" + serverId + "_" + System.currentTimeMillis(), "Free For All: " + serverName + " - " + TimeUtils.formatTime());
+        entrants = new ArrayList<>();
         combatLog = new ArrayList<>();
         rewardLog = new ArrayList<>();
     }
@@ -26,12 +29,18 @@ public final class FfaGameLog extends GameLog {
     @Override
     public String formatLog() {
         StringBuilder sb = new StringBuilder();
-        sb.append("KILL FEED:");
+        sb.append("ENTRANTS:");
+        for(String str : entrants) sb.append("\n").append(str);
+        sb.append("\n\n").append("KILL FEED:");
         for(String str : combatLog) sb.append("\n").append(str);
         sb.append("\n\n").append("REWARDS:");
         for(String str : rewardLog) sb.append("\n").append(str);
 
         return sb.toString().trim();
+    }
+
+    public void addEntrant(String str) {
+        entrants.add(str);
     }
 
     public void addCombat(String str){

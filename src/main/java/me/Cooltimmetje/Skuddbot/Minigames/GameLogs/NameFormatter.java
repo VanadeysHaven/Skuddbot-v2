@@ -34,6 +34,7 @@ public final class NameFormatter {
 
     private String formatName(String idString){
         try {
+            if(idString.endsWith(":")) idString = idString.substring(0, idString.length() - 1);
             String[] ids = idString.split("-");
             long serverId = Long.parseLong(ids[0]);
             long userId = Long.parseLong(ids[1]);
