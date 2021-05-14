@@ -1,6 +1,5 @@
 package me.Cooltimmetje.Skuddbot.Minigames.FreeForAll;
 
-import com.mysql.cj.xdevapi.Table;
 import me.Cooltimmetje.Skuddbot.Enums.Emoji;
 import me.Cooltimmetje.Skuddbot.Enums.PermissionLevel;
 import me.Cooltimmetje.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
@@ -14,6 +13,7 @@ import me.Cooltimmetje.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.PermissionManager;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.Cooltimmetje.Skuddbot.Profiles.Users.SkuddUser;
+import me.Cooltimmetje.Skuddbot.Profiles.Users.Stats.Stat;
 import me.Cooltimmetje.Skuddbot.Utilities.MessagesUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.MiscUtils;
 import me.Cooltimmetje.Skuddbot.Utilities.RNGManager;
@@ -44,7 +44,7 @@ public final class FfaGame {
     private static final RNGManager random = new RNGManager();
     private static final Logger logger = LoggerFactory.getLogger(FfaGame.class);
 
-    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **FREE FOR ALL** | *{0}*\n";
+    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **FREE FOR ALL** [beta] | *{0}*\n";
     private static final String OUTSTANDING_FORMAT = HEADER + "\n" +
             "{1} is opened for a Free for all fight! " +
             "\n\n**CURRENT ENTRANTS:**\n" +
@@ -76,7 +76,7 @@ public final class FfaGame {
     private State state;
     private String log;
     private String killFeed;
-    private String verboseLog;
+    private FfaGameLog gameLog;
 
     private long lastReminder;
     private long timeStarted;
@@ -95,6 +95,7 @@ public final class FfaGame {
         lastReminder = System.currentTimeMillis();
         timeStarted = System.currentTimeMillis();
         entrantsAtLastReminder = 0;
+        gameLog = new FfaGameLog(server.getServerId(), server.getName());
 
         sendMessage();
         buttons.add(ReactionUtils.registerButton(message, Emoji.CROSSED_SWORDS, e -> enterGame(e.getUserAsMember()), e -> leaveGame(e.getUserAsMember())));
@@ -195,6 +196,8 @@ public final class FfaGame {
         appendToLog(MessageFormat.format(FIGHT_STARTED_FORMAT, formatEntrants(false), server.getSettings().getString(ServerSetting.ARENA_NAME)));
         sendMessage();
         channel.type();
+        for(FfaPlayer entrant : entrants)
+            gameLog.addEntrant(entrant.getGameLogName() + " (" + entrant.getBounty() + ")");
         FfaPlayer winner = simulateFight();
         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
         exec.schedule(() -> revealResults(winner), 5, TimeUnit.SECONDS);
@@ -206,9 +209,11 @@ public final class FfaGame {
         appendToLog("");
         appendToLog("> Click the " + Emoji.NOTEPAD_SPIRAL.getUnicode() + " reaction to view the kill feed.");
         appendToLog("> Click the " + Emoji.GIFT.getUnicode() + " reaction to view the rewards.");
+        appendToLog("> Click the " + Emoji.PRINTER.getUnicode() + " reaction to view the game log.");
         sendMessage();
         MessagesUtils.addReaction(message, Emoji.NOTEPAD_SPIRAL, "**Free for all kill feed:** \n" + killFeed, 6*60*60*1000, true);
         MessagesUtils.addReaction(message, Emoji.GIFT, "**Free for all rewards:** \n" + rewards, 6*60*60*1000, true);
+        gameLog.sendLog(message, Emoji.PRINTER, 6*60*60*1000);
         manager.finishGame();
     }
 
@@ -220,81 +225,86 @@ public final class FfaGame {
         killFeed += append + "\n";
     }
 
-    private void appendToVerboseLog(String append) {
-        verboseLog += append + "\n";
+    public String award(FfaPlayer winner){
+        int xpReward = 0, currencyReward = 0;
+        StringBuilder sb = new StringBuilder();
+        SkuddUser suWinner = winner.getMember().asSkuddUser();
+        sb.append("**WINNER:** ").append(winner.getName()).append(" | ").append(winner.getKills()).append(" kills");
+        String gameLogString = "WINNER: " + winner.getGameLogName() + " | " + winner.getKills() + " kills";
+        xpReward += XP_WIN_REWARD + (XP_KILL_REWARD * winner.getKills());
+        currencyReward += SB_WIN_REWARD + (SB_KILL_REWARD * winner.getKills());
+        suWinner.getStats().incrementInt(Stat.FFA_WINS);
+        suWinner.getStats().incrementInt(Stat.FFA_KILLS, winner.getKills());
+        currencyReward += winner.getCollectedBounty() + (winner.getBounty() * 2);
+
+        if(suWinner.getStats().getInt(Stat.FFA_HIGHEST_WIN) < entrants.size()) {
+            sb.append(" | **NEW HIGHEST ENTRANTS WIN**");
+            gameLogString += " | NEW HIGHEST ENTRANTS WIN";
+            suWinner.getStats().setInt(Stat.FFA_HIGHEST_WIN, entrants.size());
+        }
+        sb.append(" | +" + xpReward + " <:xp_icon:458325613015466004>, +" + currencyReward + " Skuddbux").append("\n");
+        gameLogString += " | +" + xpReward + " XP, +" + currencyReward + " Skuddbux";
+        gameLog.addReward(gameLogString);
+        suWinner.getStats().incrementInt(Stat.EXPERIENCE, xpReward);
+        suWinner.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyReward);
+        if(winner.hasPlacedBounty())
+            suWinner.getStats().incrementInt(Stat.FFA_BOUNTIES_SURVIVED);
+
+        int jackpot = 0;
+        for(FfaPlayer player : entrants) {
+            xpReward = 0; currencyReward = 0;
+            if (player.equals(winner)) continue;
+            SkuddUser su = player.getMember().asSkuddUser();
+            su.getStats().incrementInt(Stat.FFA_LOSSES);
+            if(player.hasPlacedBounty())
+                su.getStats().incrementInt(Stat.FFA_BOUNTIES_SURVIVED);
+            if(player.getKills() > 0 || player.getBounty() > 0) {
+                xpReward = XP_KILL_REWARD * player.getKills();
+                currencyReward = SB_KILL_REWARD * player.getKills();
+                int halfBounty = player.splitBounty();
+                currencyReward += player.getCollectedBounty() + halfBounty;
+                jackpot += player.getBounty() - halfBounty;
+
+                sb.append(player.getName()).append(" | ").append(player.getKills()).append(" kills | +").append(xpReward).append(" <:xp_icon:458325613015466004>, +").append(currencyReward).append(" Skuddbux").append("\n");
+                gameLog.addReward(player.getGameLogName() + " | " + player.getKills() + " kills | +" + xpReward + " XP, +" + currencyReward + " Skuddbux");
+                su.getStats().incrementInt(Stat.EXPERIENCE, xpReward);
+                su.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyReward);
+            }
+        }
+
+        if (jackpot > 0) {
+            sb.append("**ADDED TO JACKPOT:** *").append(jackpot).append(" Skuddbux*");
+            gameLog.addReward("ADDED TO JACKPOT: " + jackpot + " Skuddbux");
+            server.getSettings().incrementInt(ServerSetting.JACKPOT, jackpot);
+        }
+
+        return sb.toString().trim();
     }
 
-    public String award(FfaPlayer winner){ //TODO
-//        int xpWinnerReward = 0, sbWinnerReward = 0;
-//        StringBuilder sb = new StringBuilder();
-//        SkuddUser suWinner = winner.getMember().asSkuddUser();
-//        sb.append("**WINNER:** ").append(winner.getName()).append(" | ").append(winner.getKills()).append(" kills");
-//        xpWinnerReward += XP_WIN_REWARD + (XP_KILL_REWARD * winner.getKills());
-//        sbWinnerReward += SB_WIN_REWARD + (SB_KILL_REWARD * winner.getKills());
-//        suWinner.getStats().incrementInt(Stat.FFA_WINS);
-//        suWinner.getStats().incrementInt(Stat.FFA_KILLS, winner.getKills());
-//
-//        if(winner.hasBetted()) {
-//            sb.append(" | **BET WON**");
-//            suWinner.getStats().incrementInt(Stat.FFA_BETS_WON);
-//            for(FfaPlayer player : entrants)
-//                if(player.equals(winner))
-//                    sbWinnerReward += player.getBet() * 2;
-//                else
-//                    sbWinnerReward += player.getBet();
-//        }
-//        if(suWinner.getStats().getInt(Stat.FFA_HIGHEST_WIN) < entrants.size()) {
-//            sb.append(" | **NEW HIGHEST ENTRANTS WIN**");
-//            suWinner.getStats().setInt(Stat.FFA_HIGHEST_WIN, entrants.size());
-//        }
-//        sb.append(" | +" + xpWinnerReward + " <:xp_icon:458325613015466004>, +" + sbWinnerReward + " Skuddbux").append("\n");
-//        suWinner.getStats().incrementInt(Stat.EXPERIENCE, xpWinnerReward);
-//        suWinner.getCurrencies().incrementInt(Currency.SKUDDBUX, sbWinnerReward);
-//
-//        for(FfaPlayer player : entrants) {
-//            if (player.equals(winner)) continue;
-//            SkuddUser su = player.getMember().asSkuddUser();
-//            su.getStats().incrementInt(Stat.FFA_LOSSES);
-//            if(player.hasBetted())
-//                su.getStats().incrementInt(Stat.FFA_BETS_LOST);
-//            if(player.getKills() > 0) {
-//                sb.append(player.getName()).append(" | ").append(player.getKills()).append(" kills | +").append(XP_KILL_REWARD * player.getKills()).append(" <:xp_icon:458325613015466004>, +").append(SB_KILL_REWARD * player.getKills()).append(" Skuddbux").append("\n");
-//                su.getStats().incrementInt(Stat.EXPERIENCE, XP_KILL_REWARD * player.getKills());
-//                su.getCurrencies().incrementInt(Currency.SKUDDBUX, SB_KILL_REWARD * player.getKills());
-//            }
-//        }
-//
-//
-//        if(!winner.hasBetted()) {
-//            int totalAmountOfBets = 0;
-//            for (FfaPlayer player : entrants)
-//                totalAmountOfBets += player.getBet();
-//
-//            if (totalAmountOfBets > 0) {
-//                sb.append("**ADDED TO JACKPOT:** *").append(totalAmountOfBets).append(" Skuddbux*");
-//                server.getSettings().incrementInt(ServerSetting.JACKPOT, totalAmountOfBets);
-//            }
-//        }
-
-//        return sb.toString().trim();
-        return null;
-    }
-
-    public FfaPlayer simulateFight(){ //TODO
+    public FfaPlayer simulateFight(){
         logger.info("Simulating FFA fight in " + server.getName());
         FfaPlayer winner = null;
         while (getPlayerAliveCount() > 1){
             FfaPlayer killer = getRandomAlivePlayer();
-            FfaPlayer victim = getRandomAlivePlayer();
+            FfaPlayer victim;
+            do {
+               victim = getRandomAlivePlayer();
+            } while (victim.getMember().getUser().getId() == killer.getMember().getUser().getId());
 
             Pair<String, String> results = processKill(killer, victim);
 
             appendToKillFeed("**" + killer.getName() + "** eliminated **" + victim.getName() + "**");
 
-            appendToVerboseLog(killer.getGameLogName() + " eliminated " + victim.getGameLogName());
-            appendToVerboseLog(TableDividers.VERTICAL_RIGHT + "> " + killer.getGameLogName() + ": " + results.getLeft());
-            appendToVerboseLog(TableDividers.UP_RIGHT + "> " + victim.getGameLogName() + ": " + results.getRight());
-            appendToVerboseLog("");
+            gameLog.addCombat(killer.getGameLogName() + " eliminated " + victim.getGameLogName());
+            if(results.getRight().equals("")) {
+                gameLog.addCombat(TableDividers.UP_RIGHT.getCharacter() + "> " + killer.getGameLogName() + ": " + results.getLeft());
+            } else {
+                gameLog.addCombat(TableDividers.VERTICAL_RIGHT.getCharacter() + "> " + killer.getGameLogName() + ": " + results.getLeft());
+                gameLog.addCombat(TableDividers.UP_RIGHT.getCharacter() + "> " + victim.getGameLogName() + ": " + results.getRight());
+            }
+//            gameLog.addCombat("");
+
+            winner = killer;
         }
 
         return winner;

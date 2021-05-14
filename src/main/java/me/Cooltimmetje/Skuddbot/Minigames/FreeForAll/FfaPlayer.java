@@ -65,11 +65,12 @@ public final class FfaPlayer {
         return ret;
     }
 
-    public int splitCollectedBounty(){
-        int half = collectedBounty / 2;
-        collectedBounty -= half;
+    public int splitBounty(){
+        return bounty / 2;
+    }
 
-        return half;
+    public int splitCollectedBounty(){
+        return collectedBounty / 2;
     }
 
     public int getMaxBountyCollection(){
