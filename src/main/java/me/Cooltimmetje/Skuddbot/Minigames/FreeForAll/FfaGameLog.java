@@ -10,14 +10,14 @@ import java.util.ArrayList;
  * Represents a game log for Free For All.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.1
+ * @version 2.3.11
  * @since 2.3.1
  */
 public final class FfaGameLog extends GameLog {
 
-    private static ArrayList<String> entrants;
-    private static ArrayList<String> combatLog;
-    private static ArrayList<String> rewardLog;
+    private ArrayList<String> entrants;
+    private ArrayList<String> combatLog;
+    private ArrayList<String> rewardLog;
 
     public FfaGameLog(long serverId, String serverName) {
         super("ffa_" + serverId + "_" + System.currentTimeMillis(), "Free For All: " + serverName + " - " + TimeUtils.formatTime());
