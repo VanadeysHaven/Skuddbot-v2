@@ -30,7 +30,7 @@ public class DonatorMessage {
         AI_NAME           ("ai_name",           64 ),
         PLAYING           ("playing",           128),
         PLAYING_CHRISTMAS ("playing_christmas", 128),
-        PLAYING_NEW_YEAR  ("playig_new_year",  128),
+        PLAYING_NEW_YEAR  ("playing_new_year",  128),
 
         /* Images */
         BACON             ("bacon",             512, Emoji.BACON,   true, "mmm... Bacon... *drools*",                    "bacon"),
@@ -39,6 +39,7 @@ public class DonatorMessage {
         CAKE              ("cake",              512, Emoji.CAKE,    true, "CAKE! HAPPY BIRTHDAY!",                       "cake"),
         GUINEA_PIG        ("guinea_pig",        512, Emoji.HAMSTER, true, "Cute balls of flooooffffff",                  "gp", "guinea", "piggie", "guineapigs", "guineapiggie", "piggies", "wheek", "guineapig"), //Yes I know, hamster emoji, leave me alone
         KITTY             ("kitty",             512, Emoji.CAT,     true, "Kittttieeessss",                              "kitty", "cat", "pussy", "kitten"),
+        OTTER             ("otter",             512, Emoji.OTTER,   true, "Otterssss!",                                  "otter"),
         OWL               ("owl",               512, Emoji.OWL,     true, "Hoot hoot!",                                  "owl", "hoots", "hoot"),
         PANDA             ("panda",             512, Emoji.PANDA,   true, "Deadly balls of floof",                       "panda"),
         PUPPY             ("puppy",             512, Emoji.DOG,     true, "PUPPERRRRRRRRR",                              "puppy", "emergencypuppy", "wuff", "dogger", "doggo", "dog", "pupper", "riit", "rogged", "woowoo", "dogo", "dogggo", "doogo", "dogoo", "owo", "doggerino", "addit", "doggy", "defectius"),
