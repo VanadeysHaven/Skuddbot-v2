@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.Cooltimmetje</groupId>
+    <groupId>me.VanadeysHaven</groupId>
     <artifactId>Skuddbot</artifactId>
     <version>2.0</version>
 
@@ -85,7 +85,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>me.Cooltimmetje.Skuddbot.Main</mainClass>
+                                    <mainClass>me.VanadeysHaven.Skuddbot.Main</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>
