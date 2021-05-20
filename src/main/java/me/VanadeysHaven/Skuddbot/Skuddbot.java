@@ -1,19 +1,16 @@
 package me.VanadeysHaven.Skuddbot;
 
 import lombok.Getter;
-import me.Cooltimmetje.Skuddbot.Commands.*;
 import me.VanadeysHaven.Skuddbot.Commands.Donator.GameCommand;
 import me.VanadeysHaven.Skuddbot.Commands.Donator.ManageMessageCommand;
 import me.VanadeysHaven.Skuddbot.Commands.Donator.SetPingCommand;
 import me.VanadeysHaven.Skuddbot.Commands.HelpCommand.HelpCommand;
 import me.VanadeysHaven.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandManager;
-import me.Cooltimmetje.Skuddbot.Commands.SuperAdmin.*;
 import me.VanadeysHaven.Skuddbot.Commands.SuperAdmin.*;
 import me.VanadeysHaven.Skuddbot.Commands.Useless.*;
 import me.VanadeysHaven.Skuddbot.Commands.Useless.ActionCommands.HugCommand;
 import me.VanadeysHaven.Skuddbot.Commands.Useless.ActionCommands.PunchCommand;
-import me.Cooltimmetje.Skuddbot.Commands.Useless.*;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorMessage;
 import me.VanadeysHaven.Skuddbot.Listeners.JoinQuitServerListener;
 import me.VanadeysHaven.Skuddbot.Listeners.MessageListener;
