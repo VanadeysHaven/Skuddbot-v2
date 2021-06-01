@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Database.Query;
 import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Database.QueryResult;
+import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
 import me.VanadeysHaven.Skuddbot.Profiles.DataContainers.Data;
 
@@ -20,8 +21,9 @@ import java.util.ArrayList;
 @Getter
 public enum Currency implements Data {
 
-    SKUDDBUX         ("skuddbux",         ValueType.INTEGER, "Skuddbux",         "skuddbux", "0", true,  true, true,  true ),
-    GIVEAWAY_TICKETS ("giveaway_tickets", ValueType.INTEGER, "Giveaway Tickets", "tickets",  "0", false, true, false, false);
+    SKUDDBUX         ("skuddbux",         ValueType.INTEGER, "Skuddbux",         "skuddbux",              "0", true,  true, true,  true ),
+    GIVEAWAY_TICKETS ("giveaway_tickets", ValueType.INTEGER, "Giveaway Tickets", "tickets",               "0", false, true, false, false),
+    PRIDE_FLAGS      ("pride_flags",      ValueType.INTEGER, "Pride Flags",      Emoji.PRIDE_FLAG.getUnicode(), "0", false, true, false, false);
 
     private String dbReference;
     private ValueType type;

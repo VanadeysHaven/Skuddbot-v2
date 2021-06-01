@@ -73,7 +73,17 @@ public enum Emoji {
     PANDA                   ("\uD83D\uDC3C", "panda_face"),
     FLAG_NL                 ("\uD83C\uDDF3\uD83C\uDDF1", "flag_nl"),
     CROWN                   ("\uD83D\uDC51", "crown"),
-    OTTER                   ("\uD83E\uDDA6", "otter");
+    OTTER                   ("\uD83E\uDDA6", "otter"),
+    PRIDE_FLAG              ("<:pride_flag:849214038335815710>", "pride_flag"),
+    GAY_FLAG                ("\uD83C\uDFF3️\u200D\uD83C\uDF08", "rainbow_flag"),
+    TRANS_FLAG              ("\uD83C\uDFF3️\u200D⚧", "transgender_flag"),
+    LESBIAN_FLAG            ("<:lesbian:849214038017179649>", "lesbian"),
+    NONBINARY_FLAG          ("<:non_binary:849214038361505822>", "non_binary"),
+    BI_FLAG                 ("<:bi:849214038402662440>", "bi"),
+    GENDERFLUID_FLAG        ("<:genderfluid:849214039296966676>", "genderfluid_flag"),
+    ACE_FLAG                ("<:ace:849216294876348417>", "ace"),
+    QUEER_FLAG              ("<:queer:849217259141988382>", "queer");
+
 
     private String unicode;
     private String alias;

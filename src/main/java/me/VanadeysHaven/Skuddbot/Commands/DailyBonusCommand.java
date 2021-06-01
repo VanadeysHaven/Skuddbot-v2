@@ -6,6 +6,7 @@ import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSettingsContainer;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
+import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.CurrenciesContainer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSettingsContainer;
@@ -37,7 +38,15 @@ public class DailyBonusCommand extends Command {
     @Getter
     private enum Bonus {
 
-        KINGS_DAY (27, 4, 68000, 70000, Emoji.CROWN.getUnicode() + Emoji.FLAG_NL.getUnicode() + " *HAPPY KINGS DAY!*");
+        PRIDE_WED1 (2, 6, 10000, 20000,  Emoji.GAY_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
+        PRIDE_SAT1 (5, 6, 10000, 20000,  Emoji.GENDERFLUID_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
+        PRIDE_WED2 (9, 6, 10000, 20000,  Emoji.LESBIAN_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
+        PRIDE_SAT2 (12, 6, 10000, 20000, Emoji.TRANS_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
+        PRIDE_WED3 (16, 6, 10000, 20000, Emoji.BI_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
+        PRIDE_SAT3 (19, 6, 10000, 20000, Emoji.NONBINARY_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
+        PRIDE_WED4 (23, 6, 10000, 20000, Emoji.ACE_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
+        PRIDE_SAT4 (26, 6, 10000, 20000, Emoji.QUEER_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
+        PRIDE_WED5 (30, 6, 10000, 20000, Emoji.PRIDE_FLAG.getUnicode() + " *HAPPY PRIDE MONTH!*");
 
         int day;
         int month;
@@ -82,6 +91,7 @@ public class DailyBonusCommand extends Command {
         SkuddServer sServer = sm.getServer(server.getId());
         ServerSettingsContainer settings = sServer.getSettings();
         UserSettingsContainer uSettings = user.getSettings();
+        CurrenciesContainer currencies = user.getCurrencies();
         StatsContainer stats = user.getStats();
 
         long currentTime = System.currentTimeMillis() + (MILLIS_IN_HOUR * uSettings.getInt(UserSetting.TIMEZONE));
@@ -130,6 +140,14 @@ public class DailyBonusCommand extends Command {
         if(b != null) {
             xpBonus += b.getXpBonus();
             currencyBonus += b.getCurrencyBonus();
+
+            if(getDay(currentTime) == 30){
+                int flags = currencies.getInt(Currency.PRIDE_FLAGS);
+                xpBonus *= Math.max(1, flags);
+                currencyBonus *= Math.max(1, flags);
+            } else {
+                currencies.incrementInt(Currency.PRIDE_FLAGS);
+            }
         }
 
         user.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyBonus);
@@ -151,7 +169,12 @@ public class DailyBonusCommand extends Command {
             streakString += " | **New longest streak!**";
 
         String bonusStr = applyWeekly ? (isEligibleForWeekly ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "\n**WEEKLY BONUS NOT APPLIED:** *not eligible*") : "";
-        if(b != null) bonusStr += "\n**SEASONAL BONUS APPLIED:** " + b.getMessage();
+        if(b != null) {
+            bonusStr += "\n**SEASONAL BONUS APPLIED:** " + b.getMessage();
+            if(getDay(currentTime) == 30){
+                bonusStr += " (" + currencies.getString(Currency.PRIDE_FLAGS) + " pride flags applied!)";
+            }
+        }
 
         String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), bonusStr, currencyBonus, xpBonus, streakString);
 
