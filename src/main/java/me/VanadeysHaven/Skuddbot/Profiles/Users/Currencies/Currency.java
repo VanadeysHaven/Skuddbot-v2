@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Enum for all the types of currencies.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3
+ * @version 2.3.13
  * @since 2.1.1
  */
 @Getter

@@ -6,7 +6,7 @@ import lombok.Getter;
  * Emoji's for easy recalling throughout the code.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.1
+ * @version 2.3.13
  * @since 2.0
  */
 @Getter
