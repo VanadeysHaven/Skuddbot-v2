@@ -6,7 +6,7 @@ import lombok.Getter;
  * Emoji's for easy recalling throughout the code.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.13
+ * @version 2.3.14
  * @since 2.0
  */
 @Getter
@@ -77,7 +77,7 @@ public enum Emoji {
     PRIDE_FLAG              ("<:pride_flag:849214038335815710>", "pride_flag"),
     GAY_FLAG                ("\uD83C\uDFF3️\u200D\uD83C\uDF08", "rainbow_flag"),
     TRANS_FLAG              ("\uD83C\uDFF3️\u200D⚧", "transgender_flag"),
-    LESBIAN_FLAG            ("<:lesbian:849214038017179649>", "lesbian"),
+    LESBIAN_FLAG            ("<:lesbian:849696141012238389>", "lesbian"),
     NONBINARY_FLAG          ("<:non_binary:849214038361505822>", "non_binary"),
     BI_FLAG                 ("<:bi:849214038402662440>", "bi"),
     GENDERFLUID_FLAG        ("<:genderfluid:849214039296966676>", "genderfluid_flag"),

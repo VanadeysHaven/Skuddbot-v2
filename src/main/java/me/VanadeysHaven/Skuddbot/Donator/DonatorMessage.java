@@ -4,18 +4,20 @@ import lombok.Getter;
 import lombok.Setter;
 import me.VanadeysHaven.Skuddbot.Database.Query;
 import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
+import me.VanadeysHaven.Skuddbot.Database.QueryResult;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Utilities.RNGManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * A donator message.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.03
+ * @version 2.3.14
  * @since 2.0
  */
 public class DonatorMessage {
@@ -77,30 +79,30 @@ public class DonatorMessage {
         }
 
         private static void saveToDatabase(){ //TODO
-//            QueryExecutor qe = null;
-//            ArrayList<String> stats = new ArrayList<>();
-//            try {
-//                qe = new QueryExecutor(Query.SELECT_ALL_STATS);
-//                QueryResult qr = qe.executeQuery();
-//                while(qr.nextResult()){
-//                    stats.add(qr.getString("stat_name"));
-//                }
-//            } catch (SQLException e){
-//                e.printStackTrace();
-//            } finally {
-//                if(qe != null) qe.close();
-//            }
-//            for(Stat stat : values()){
-//                if(stats.contains(stat.getDbReference())) continue;
-//                try {
-//                    qe = new QueryExecutor(Query.INSERT_STAT).setString(1, stat.getDbReference());
-//                    qe.execute();
-//                } catch (SQLException e){
-//                    e.printStackTrace();
-//                } finally {
-//                    if(qe != null) qe.close();
-//                }
-//            }
+            QueryExecutor qe = null;
+            ArrayList<String> types = new ArrayList<>();
+            try {
+                qe = new QueryExecutor(Query.SELECT_ALL_DATA_TYPES);
+                QueryResult qr = qe.executeQuery();
+                while(qr.nextResult()){
+                    types.add(qr.getString("data_name"));
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            } finally {
+                if(qe != null) qe.close();
+            }
+            for(Type type : values()){
+                if(types.contains(type.getDbReference())) continue;
+                try {
+                    qe = new QueryExecutor(Query.INSERT_DATA_TYPE).setString(1, type.getDbReference());
+                    qe.execute();
+                } catch (SQLException e){
+                    e.printStackTrace();
+                } finally {
+                    if(qe != null) qe.close();
+                }
+            }
         }
 
     }

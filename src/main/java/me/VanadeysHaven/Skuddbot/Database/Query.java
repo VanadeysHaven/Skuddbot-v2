@@ -6,7 +6,7 @@ import lombok.Getter;
  * Queries for the database.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.1.1
+ * @version 2.3.14
  * @since 2.0
  */
 @Getter
@@ -55,6 +55,8 @@ public enum Query {
     PURGE_DONATOR_DATA("delete from donator_has_data where discord_id=?;"),
     DELETE_DONATOR("delete from donators where id=?;"),
     INSERT_DONATOR_MESSAGE("insert into donator_has_data(data_id, discord_id, data_value) value (get_donator_type_id(?),?,?);"),
+    SELECT_ALL_DATA_TYPES("select data_name from donator_data;"),
+    INSERT_DATA_TYPE("insert ignore into donator_data (data_name) value (?);"),
 
     //ADMINS
     ADD_ADMIN("insert into admin_users (discord_id) value (?);"),
