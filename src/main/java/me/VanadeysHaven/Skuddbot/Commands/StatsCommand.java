@@ -30,10 +30,10 @@ import java.util.concurrent.ExecutionException;
  * Used to view and edit stats.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.2
  * @since 2.0
  */
-public class StatsCommand extends Command {
+public final class StatsCommand extends Command {
 
     private static final int OVERVIEW_EXPIRE_TIME = 10; //in minutes
 
