@@ -44,7 +44,7 @@ public final class FfaGame {
     private static final RNGManager random = new RNGManager();
     private static final Logger logger = LoggerFactory.getLogger(FfaGame.class);
 
-    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **FREE FOR ALL** [beta] | *{0}*\n";
+    private static final String HEADER = Emoji.CROSSED_SWORDS.getUnicode() + " **FREE FOR ALL** | *{0}*\n";
     private static final String OUTSTANDING_FORMAT = HEADER + "\n" +
             "{1} is opened for a Free for all fight! " +
             "\n\n**CURRENT ENTRANTS:**\n" +
@@ -242,7 +242,7 @@ public final class FfaGame {
             gameLogString += " | NEW HIGHEST ENTRANTS WIN";
             suWinner.getStats().setInt(Stat.FFA_HIGHEST_WIN, entrants.size());
         }
-        sb.append(" | +" + xpReward + " <:xp_icon:458325613015466004>, +" + currencyReward + " Skuddbux").append("\n");
+        sb.append(" | +").append(xpReward).append(" <:xp_icon:458325613015466004>, +").append(currencyReward).append(" Skuddbux").append("\n");
         gameLogString += " | +" + xpReward + " XP, +" + currencyReward + " Skuddbux";
         gameLog.addReward(gameLogString);
         suWinner.getStats().incrementInt(Stat.EXPERIENCE, xpReward);
@@ -257,7 +257,7 @@ public final class FfaGame {
             SkuddUser su = player.getMember().asSkuddUser();
             su.getStats().incrementInt(Stat.FFA_LOSSES);
             if(player.hasPlacedBounty())
-                su.getStats().incrementInt(Stat.FFA_BOUNTIES_SURVIVED);
+                su.getStats().incrementInt(Stat.FFA_BOUNTIES_LOST);
             if(player.getKills() > 0 || player.getBounty() > 0) {
                 xpReward = XP_KILL_REWARD * player.getKills();
                 currencyReward = SB_KILL_REWARD * player.getKills();
