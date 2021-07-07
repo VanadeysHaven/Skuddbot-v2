@@ -54,7 +54,7 @@ public enum Stat implements Data {
     DAILY_LAST_CLAIM            ("daily_last_claim",        ValueType.LONG,    "daily_last_claim",           "",             "-1", Category.DAILY_BONUS,       false, true,  false, true ),
     DAILY_CURRENT_STREAK        ("daily_current_streak",    ValueType.INTEGER, "Current claim streak",       "days",         "0",  Category.DAILY_BONUS,       true,  true,  true,  true ),
     DAILY_MULTIPLIER            ("daily_multiplier",        ValueType.INTEGER, "Multiplier",                 "",             "-1", Category.DAILY_BONUS,       false, true,  true , true ),
-    DAILY_DAYS_MISSED           ("daily_days_missed",       ValueType.INTEGER, "Days missed",                "days",         "0",  Category.DAILY_BONUS,       false, true,  true,  false),
+    DAILY_DAYS_PAUSED           ("daily_days_paused",       ValueType.INTEGER, "Days paused",                "days",         "0",  Category.DAILY_BONUS,       false, true,  true,  false),
     DAILY_LONGEST_STREAK        ("daily_longest_streak",    ValueType.INTEGER, "Longest claim steak",        "days",         "0",  Category.DAILY_BONUS,       true,  true,  true,  true ),
     DAILY_DAYS_SINCE_WEEKLY     ("daily_days_since_weekly", ValueType.INTEGER, "days_since_weekly",          "",             "0",  Category.DAILY_BONUS,       false, true,  false, true ),
     DON_WINS                    ("don_wins",                ValueType.INTEGER, "Wins",                       "wins",         "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true,  true ),
