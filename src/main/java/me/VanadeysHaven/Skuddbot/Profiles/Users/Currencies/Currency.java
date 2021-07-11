@@ -15,15 +15,15 @@ import java.util.ArrayList;
  * Enum for all the types of currencies.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.13
+ * @version 2.3.2
  * @since 2.1.1
  */
 @Getter
 public enum Currency implements Data {
 
-    SKUDDBUX         ("skuddbux",         ValueType.INTEGER, "Skuddbux",         "skuddbux",              "0", true,  true, true,  true ),
-    GIVEAWAY_TICKETS ("giveaway_tickets", ValueType.INTEGER, "Giveaway Tickets", "tickets",               "0", false, true, false, false),
-    PRIDE_FLAGS      ("pride_flags",      ValueType.INTEGER, "Pride Flags",      Emoji.PRIDE_FLAG.getUnicode(), "0", false, true, false, false);
+    SKUDDBUX         ("skuddbux",         ValueType.INTEGER, "Skuddbux",                                    "skuddbux",              "0", true,  true, true,  true ),
+    GIVEAWAY_TICKETS ("giveaway_tickets", ValueType.INTEGER, "Giveaway Tickets",                            "tickets",               "0", false, true, false, false),
+    PRIDE_FLAGS      ("pride_flags",      ValueType.INTEGER, "Pride Flags (Pride Month 2021) (Legacy)",     Emoji.PRIDE_FLAG.getUnicode(), "0", false, true, false, false);
 
     private String dbReference;
     private ValueType type;
