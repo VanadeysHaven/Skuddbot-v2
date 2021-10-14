@@ -52,7 +52,7 @@ public enum Stat implements Data {
     TD_KILLS                    ("td_kills",                ValueType.INTEGER, "Kills",                      "kills",        "0",  Category.TEAM_DEATHMATCH,   true,  true,  true,  true ),
     TD_TEAMMATES                ("td_teammates",            ValueType.JSON,    "Favourite Teammate",         "",             "{}", Category.TEAM_DEATHMATCH,   false, false, true,  true ),
     DAILY_LAST_CLAIM            ("daily_last_claim",        ValueType.LONG,    "daily_last_claim",           "",             "-1", Category.DAILY_BONUS,       false, true,  false, true ),
-    DAILY_CURRENT_STREAK        ("daily_current_streak",    ValueType.INTEGER, "Current claim streak",       "days",         "0",  Category.DAILY_BONUS,       true,  true,  true,  true ),
+    DAILY_CURRENT_STREAK        ("daily_current_streak",    ValueType.INTEGER, "Current claim streak",       "days",         "-1", Category.DAILY_BONUS,       true,  true,  true,  true ),
     DAILY_MULTIPLIER            ("daily_multiplier",        ValueType.INTEGER, "Multiplier",                 "",             "-1", Category.DAILY_BONUS,       false, true,  true , true ),
     DAILY_DAYS_PAUSED           ("daily_days_paused",       ValueType.INTEGER, "Days paused",                "days",         "0",  Category.DAILY_BONUS,       false, true,  true,  false),
     DAILY_LONGEST_STREAK        ("daily_longest_streak",    ValueType.INTEGER, "Longest claim steak",        "days",         "0",  Category.DAILY_BONUS,       true,  true,  true,  true ),

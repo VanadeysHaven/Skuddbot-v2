@@ -26,7 +26,7 @@ import java.util.Date;
  * Command used to claim daily bonuses.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.13
+ * @version 2.3.2
  * @since 2.1.1
  */
 public class DailyBonusCommand extends Command {
@@ -101,16 +101,25 @@ public class DailyBonusCommand extends Command {
             return;
         }
 
-        int lastClaimStreak = -1;
+        int currentMultiplier = stats.getInt(Stat.DAILY_MULTIPLIER);
+        int currentStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
+        if(currentMultiplier == -1)
+            if(currentStreak < 15)
+                currentMultiplier = 14;
+            else
+                currentMultiplier = Math.min(currentStreak, settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP));
+
         long daysMissed = 0;
+
         if(hasDaysMissed(user, currentTime)) {
             daysMissed = getDaysMissed(user, currentTime);
-            lastClaimStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
 
-            int penalty = (int) Math.min(lastClaimStreak - 1, PENALTY * daysMissed);
+            int penalty = (int) Math.min(currentStreak - 1, PENALTY * daysMissed);
             stats.incrementInt(Stat.DAILY_CURRENT_STREAK, penalty * -1);
+            stats.incrementIntBounds(Stat.DAILY_MULTIPLIER, penalty * -1, 1, settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP));
         } else {
             stats.incrementInt(Stat.DAILY_CURRENT_STREAK);
+            stats.incrementIntBounds(Stat.DAILY_MULTIPLIER, 1, 1, settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP));
         }
 
         int currentStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
@@ -124,8 +133,8 @@ public class DailyBonusCommand extends Command {
 
         int currencyBonusBase = settings.getInt(ServerSetting.DAILY_CURRENCY_BONUS);
         int xpBonusBase = settings.getInt(ServerSetting.DAILY_XP_BONUS);
-        int cap = settings.getInt(ServerSetting.DAILY_BONUS_CAP);
-        double multiplier = Math.pow(settings.getDouble(ServerSetting.DAILY_BONUS_MULTIPLIER), Math.min(currentStreak, cap + 1) - 1);
+        int cap = settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP);
+        double multiplier = Math.pow(settings.getDouble(ServerSetting.DAILY_BONUS_MODIFIER), Math.min(currentStreak, cap + 1) - 1);
         int currencyBonus = (int) (currencyBonusBase * multiplier);
         int xpBonus = (int) (xpBonusBase * multiplier);
         boolean applyWeekly = currentStreak > cap && (currentStreak - cap) % 7 == 0;
@@ -140,14 +149,6 @@ public class DailyBonusCommand extends Command {
         if(b != null) {
             xpBonus += b.getXpBonus();
             currencyBonus += b.getCurrencyBonus();
-
-            if(getDay(currentTime) == 30){
-                int flags = currencies.getInt(Currency.PRIDE_FLAGS);
-                xpBonus *= Math.max(1, flags);
-                currencyBonus *= Math.max(1, flags);
-            } else {
-                currencies.incrementInt(Currency.PRIDE_FLAGS);
-            }
         }
 
         user.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyBonus);
