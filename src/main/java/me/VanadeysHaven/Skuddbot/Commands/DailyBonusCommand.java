@@ -116,10 +116,12 @@ public class DailyBonusCommand extends Command {
         }
 
         long daysMissed = 0;
+        long lastClaimStreak = 0;
 
         if(hasDaysMissed(user, currentTime)) {
             daysMissed = getDaysMissed(user, currentTime);
 
+            lastClaimStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
             int penalty = (int) Math.min(currentStreak - 1, PENALTY * daysMissed);
             stats.incrementInt(Stat.DAILY_CURRENT_STREAK, penalty * -1);
             stats.incrementIntBounds(Stat.DAILY_MULTIPLIER, penalty * -1, 1, settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP));
@@ -135,12 +137,12 @@ public class DailyBonusCommand extends Command {
             stats.setInt(Stat.DAILY_LONGEST_STREAK, currentStreak);
         }
 
-        int currencyBonusBase = settings.getInt(ServerSetting.DAILY_CURRENCY_BONUS);
-        int xpBonusBase = settings.getInt(ServerSetting.DAILY_XP_BONUS);
+        int currencyBonus = settings.getInt(ServerSetting.DAILY_CURRENCY_BONUS);
+        int xpBonus = settings.getInt(ServerSetting.DAILY_XP_BONUS);
         int cap = settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP);
-        double multiplier = Math.pow(settings.getDouble(ServerSetting.DAILY_BONUS_MODIFIER), Math.min(currentStreak, cap + 1) - 1);
-        int currencyBonus = (int) (currencyBonusBase * multiplier);
-        int xpBonus = (int) (xpBonusBase * multiplier);
+        double multiplier = Math.pow(settings.getDouble(ServerSetting.DAILY_BONUS_MODIFIER), currentMultiplier);
+        currencyBonus *= multiplier;
+        xpBonus *= multiplier;
         boolean applyWeekly = stats.getInt(Stat.DAILY_DAYS_SINCE_WEEKLY) >= 7;
 
         if(applyWeekly){
