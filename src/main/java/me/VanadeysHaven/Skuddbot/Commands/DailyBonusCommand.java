@@ -103,11 +103,17 @@ public class DailyBonusCommand extends Command {
 
         int currentMultiplier = stats.getInt(Stat.DAILY_MULTIPLIER);
         int currentStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
-        if(currentMultiplier == -1)
-            if(currentStreak < 15)
+        int longestStreak = stats.getInt(Stat.DAILY_LONGEST_STREAK);
+        if(currentMultiplier == -1) {
+            if (currentStreak < 15) {
                 currentMultiplier = 14;
-            else
+            }
+            else {
                 currentMultiplier = Math.min(currentStreak, settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP));
+            }
+
+            currentStreak = longestStreak;
+        }
 
         long daysMissed = 0;
 
@@ -122,8 +128,6 @@ public class DailyBonusCommand extends Command {
             stats.incrementIntBounds(Stat.DAILY_MULTIPLIER, 1, 1, settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP));
         }
 
-        int currentStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
-        int longestStreak = stats.getInt(Stat.DAILY_LONGEST_STREAK);
 
         boolean newLongest = false;
         if(currentStreak > longestStreak){
