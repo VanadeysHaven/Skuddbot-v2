@@ -141,13 +141,14 @@ public class DailyBonusCommand extends Command {
         double multiplier = Math.pow(settings.getDouble(ServerSetting.DAILY_BONUS_MODIFIER), Math.min(currentStreak, cap + 1) - 1);
         int currencyBonus = (int) (currencyBonusBase * multiplier);
         int xpBonus = (int) (xpBonusBase * multiplier);
-        boolean applyWeekly = currentStreak > cap && (currentStreak - cap) % 7 == 0;
-        boolean isEligibleForWeekly = stats.getInt(Stat.DAILY_DAYS_SINCE_WEEKLY) >= 7;
+        boolean applyWeekly = stats.getInt(Stat.DAILY_DAYS_SINCE_WEEKLY) >= 7;
 
-        if(applyWeekly && isEligibleForWeekly){
+        if(applyWeekly){
             xpBonus *= 2;
             currencyBonus *= 2;
-            stats.setInt(Stat.DAILY_DAYS_SINCE_WEEKLY, 0);
+            stats.setInt(Stat.DAILY_DAYS_SINCE_WEEKLY, 1);
+        } else {
+            stats.incrementInt(Stat.DAILY_DAYS_SINCE_WEEKLY);
         }
         Bonus b = Bonus.getForDay(getDay(currentTime), getMonth(currentTime));
         if(b != null) {
@@ -173,7 +174,7 @@ public class DailyBonusCommand extends Command {
         if(newLongest && currentStreak >= 2)
             streakString += " | **New longest streak!**";
 
-        String bonusStr = applyWeekly ? (isEligibleForWeekly ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "\n**WEEKLY BONUS NOT APPLIED:** *not eligible*") : "";
+        String bonusStr = applyWeekly ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "";
         if(b != null) {
             bonusStr += "\n**SEASONAL BONUS APPLIED:** " + b.getMessage();
             if(getDay(currentTime) == 30){
