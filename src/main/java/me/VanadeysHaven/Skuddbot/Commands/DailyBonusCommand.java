@@ -85,7 +85,6 @@ public class DailyBonusCommand extends Command {
 
     @Override
     public void run(Message message, String content) {
-
         Server server = message.getServer().orElse(null); assert server != null;
         SkuddUser user = pm.getUser(server.getId(), message.getAuthor().getId());
         SkuddServer sServer = sm.getServer(server.getId());
