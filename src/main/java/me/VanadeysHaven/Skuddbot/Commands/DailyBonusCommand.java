@@ -35,6 +35,7 @@ public class DailyBonusCommand extends Command {
     private static final long MILLIS_IN_HOUR = 3600000;
     private static final int PENALTY = 5;
 
+
     @Getter
     private enum Bonus {
 
@@ -79,8 +80,11 @@ public class DailyBonusCommand extends Command {
             "+{3} <:xp_icon:458325613015466004>\n" +
             "{4}";
 
+    private final Helper helper;
+
     public DailyBonusCommand() {
         super(new String[]{"dailybonus", "claim", "db"}, "Claim your daily bonus.", "https://wiki.skuddbot.xyz/systems/daily-bonus");
+        helper = new Helper();
     }
 
     @Override
@@ -95,8 +99,8 @@ public class DailyBonusCommand extends Command {
 
         long currentTime = System.currentTimeMillis() + (MILLIS_IN_HOUR * uSettings.getInt(UserSetting.TIMEZONE));
 
-        if(!canClaim(user, currentTime)){
-            MessagesUtils.addReaction(message, Emoji.X, "You can't claim your daily bonus yet. - You can claim it again in " + formatTimeUntilNextClaim(currentTime));
+        if(!helper.canClaim(user, currentTime)){
+            MessagesUtils.addReaction(message, Emoji.X, "You can't claim your daily bonus yet. - You can claim it again in " + helper.formatTimeUntilNextClaim(currentTime));
             return;
         }
 
@@ -117,8 +121,8 @@ public class DailyBonusCommand extends Command {
         long daysMissed = 0;
         long lastClaimStreak = 0;
 
-        if(hasDaysMissed(user, currentTime)) {
-            daysMissed = getDaysMissed(user, currentTime);
+        if(helper.hasDaysMissed(user, currentTime)) {
+            daysMissed = helper.getDaysMissed(user, currentTime);
 
             lastClaimStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
             int penalty = (int) Math.min(currentStreak - 1, PENALTY * daysMissed);
@@ -151,7 +155,7 @@ public class DailyBonusCommand extends Command {
         } else {
             stats.incrementInt(Stat.DAILY_DAYS_SINCE_WEEKLY);
         }
-        Bonus b = Bonus.getForDay(getDay(currentTime), getMonth(currentTime));
+        Bonus b = Bonus.getForDay(helper.getDay(currentTime), helper.getMonth(currentTime));
         if(b != null) {
             xpBonus += b.getXpBonus();
             currencyBonus += b.getCurrencyBonus();
@@ -178,7 +182,7 @@ public class DailyBonusCommand extends Command {
         String bonusStr = applyWeekly ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "";
         if(b != null) {
             bonusStr += "\n**SEASONAL BONUS APPLIED:** " + b.getMessage();
-            if(getDay(currentTime) == 30){
+            if(helper.getDay(currentTime) == 30){
                 bonusStr += " (" + currencies.getString(Currency.PRIDE_FLAGS) + " pride flags applied!)";
             }
         }
@@ -186,57 +190,60 @@ public class DailyBonusCommand extends Command {
         String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), bonusStr, currencyBonus, xpBonus, streakString);
 
         MessagesUtils.sendPlain(message.getChannel(), msg);
-        stats.setLong(Stat.DAILY_LAST_CLAIM, getCurrentDay(currentTime));
+        stats.setLong(Stat.DAILY_LAST_CLAIM, helper.getCurrentDay(currentTime));
         stats.incrementInt(Stat.DAILY_DAYS_SINCE_WEEKLY);
     }
 
-    private int getDay(long currentTime){
-        Date current = new Date(currentTime);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(current);
+    public static class Helper {
 
-        return cal.get(Calendar.DAY_OF_MONTH);
+        public int getDay(long currentTime) {
+            Date current = new Date(currentTime);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(current);
+
+            return cal.get(Calendar.DAY_OF_MONTH);
+        }
+
+        public int getMonth(long currentTime) {
+            Date current = new Date(currentTime);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(current);
+
+            return cal.get(Calendar.MONTH) + 1;
+        }
+
+        public long getCurrentDay(long currentTime) {
+            long currentWholeDayMillis = currentTime - (currentTime % MILLIS_IN_DAY);
+            return currentWholeDayMillis / MILLIS_IN_DAY;
+        }
+
+        public boolean canClaim(SkuddUser su, long currentTime) {
+            if (su.getStats().getLong(Stat.DAILY_LAST_CLAIM) == -1) return true;
+            return getCurrentDay(currentTime) > su.getStats().getLong(Stat.DAILY_LAST_CLAIM);
+        }
+
+        public long getDaysMissed(SkuddUser su, long currentTime) {
+            long claimDay = su.getStats().getLong(Stat.DAILY_LAST_CLAIM);
+            long currentDay = getCurrentDay(currentTime);
+
+            if (claimDay == -1) return 0;
+            return (currentDay - claimDay) - 1;
+        }
+
+        public boolean hasDaysMissed(SkuddUser su, long currentTime) {
+            return getDaysMissed(su, currentTime) > 0;
+        }
+
+        public long getTimeUntilNextClaim(long currentTime) {
+            long nextDayStartsAt = currentTime + MILLIS_IN_DAY;
+            nextDayStartsAt = nextDayStartsAt - (nextDayStartsAt % MILLIS_IN_DAY);
+
+            return nextDayStartsAt - currentTime;
+        }
+
+        public String formatTimeUntilNextClaim(long currentTime) {
+            return TimeUtils.formatTimeRemaining(getTimeUntilNextClaim(currentTime));
+        }
+
     }
-
-    private int getMonth(long currentTime){
-        Date current = new Date(currentTime);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(current);
-
-        return cal.get(Calendar.MONTH) + 1;
-    }
-
-    private long getCurrentDay(long currentTime){
-        long currentWholeDayMillis = currentTime - (currentTime % MILLIS_IN_DAY);
-        return currentWholeDayMillis / MILLIS_IN_DAY;
-    }
-
-    private boolean canClaim(SkuddUser su, long currentTime){
-        if(su.getStats().getLong(Stat.DAILY_LAST_CLAIM) == -1) return true;
-        return getCurrentDay(currentTime) > su.getStats().getLong(Stat.DAILY_LAST_CLAIM);
-    }
-
-    private long getDaysMissed(SkuddUser su, long currentTime){
-        long claimDay = su.getStats().getLong(Stat.DAILY_LAST_CLAIM);
-        long currentDay = getCurrentDay(currentTime);
-
-        if(claimDay == -1) return 0;
-        return (currentDay - claimDay) - 1;
-    }
-
-    private boolean hasDaysMissed(SkuddUser su, long currentTime){
-        return getDaysMissed(su, currentTime) > 0;
-    }
-
-    private long getTimeUntilNextClaim(long currentTime){
-        long nextDayStartsAt = currentTime + MILLIS_IN_DAY;
-        nextDayStartsAt = nextDayStartsAt - (nextDayStartsAt % MILLIS_IN_DAY);
-
-        return nextDayStartsAt - currentTime;
-    }
-
-    private String formatTimeUntilNextClaim(long currentTime){
-        return TimeUtils.formatTimeRemaining(getTimeUntilNextClaim(currentTime));
-    }
-
 }
