@@ -1,11 +1,8 @@
 package me.VanadeysHaven.Skuddbot.Profiles;
 
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.CurrenciesSapling;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSettingsSapling;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.StatsSapling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +38,7 @@ public class ProfileManager {
             logger.info("Loading from database...");
             Identifier id = new Identifier(serverId, discordId);
             id.save();
-            su = new SkuddUser(id, new StatsSapling(id), new UserSettingsSapling(id), new CurrenciesSapling(id));
+            su = new SkuddUser(id);
             ss.addUser(su);
         }
 
