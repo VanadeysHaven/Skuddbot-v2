@@ -11,18 +11,33 @@ public class DailyBonusCommandSpec {
 
     /*
     getDay
-getMonth
-getCurrentDay
-canClaim
-getDaysMissed
-hasDaysMissed
-getTimeUntilNextClaim
-formatTimeUntilNextClaim
+    getMonth
+    getCurrentDay
+    canClaim
+    getDaysMissed
+    hasDaysMissed
+    getTimeUntilNextClaim
+    formatTimeUntilNextClaim
      */
 
     @Test
     public void testGetDayReturnsCorrectDay(){
         assertEquals(1L, helper.getDay(testCurrentTimeMillis));
+    }
+
+    @Test
+    public void testGetMonthReturnsCorrectMonth(){
+        assertEquals(1, helper.getMonth(testCurrentTimeMillis));
+    }
+
+    @Test
+    public void testGetCurrentDayReturnsCorrectDay(){
+        assertEquals(18993, helper.getCurrentDay(testCurrentTimeMillis));
+    }
+
+    @Test
+    public void testCanClaimDeniesClaim(){
+//        helper.canClaim()
     }
 
 }
