@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DailyBonusCommandSpec {
+public class DailyBonusCommandTests {
 
     private static long testCurrentTimeMillis = 1641074041290L;
     private static DailyBonusCommand.Helper helper = new DailyBonusCommand.Helper();
