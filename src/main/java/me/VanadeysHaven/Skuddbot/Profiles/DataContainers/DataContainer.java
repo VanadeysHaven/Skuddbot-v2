@@ -155,6 +155,10 @@ public abstract class DataContainer<T extends Data> {
         return Boolean.parseBoolean(getString(field));
     }
 
+    public boolean isEmpty(){
+        return values.isEmpty();
+    }
+
     private boolean checkType(T field, String value){
         ValueType type = field.getType();
         switch (type) {
