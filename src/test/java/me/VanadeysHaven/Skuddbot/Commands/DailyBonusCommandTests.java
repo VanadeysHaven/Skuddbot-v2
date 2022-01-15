@@ -2,23 +2,12 @@ package me.VanadeysHaven.Skuddbot.Commands;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DailyBonusCommandTests {
 
     private static long testCurrentTimeMillis = 1641074041290L;
     private static DailyBonusCommand.Helper helper = new DailyBonusCommand.Helper();
-
-    /*
-    getDay
-    getMonth
-    getCurrentDay
-    canClaim
-    getDaysMissed
-    hasDaysMissed
-    getTimeUntilNextClaim
-    formatTimeUntilNextClaim
-     */
 
     @Test
     public void testGetDayReturnsCorrectDay(){
@@ -37,7 +26,33 @@ public class DailyBonusCommandTests {
 
     @Test
     public void testCanClaimDeniesClaim(){
-//        helper.canClaim()
+        assertFalse(helper.canClaim(18993, 18993));
+    }
+
+    @Test
+    public void testCanClaimAllowsClaim(){
+        assertTrue(helper.canClaim(18993, 18994));
+    }
+
+    @Test
+    public void testCanClaimAllowsClaimForNewUser(){
+        assertTrue(helper.canClaim(-1, 18994));
+    }
+
+    @Test
+    public void testGetDaysMissedReturnsCorrectAmountForNewUser(){
+        assertEquals(0, helper.getDaysMissed(-1, 18993));
+    }
+
+    @Test
+    public void testGetDaysMissedReturnsCorrectAmount(){
+        assertEquals(0, helper.getDaysMissed(18993, 18994));
+        assertEquals(1, helper.getDaysMissed(18993, 18995));
+    }
+
+    @Test
+    public void testGetTimeUntilNextClaimReturnsCorrectAmount(){
+        assertEquals(7558710, helper.getTimeUntilNextClaim(testCurrentTimeMillis));
     }
 
 }
