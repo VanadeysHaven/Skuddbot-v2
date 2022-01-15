@@ -98,8 +98,10 @@ public class DailyBonusCommand extends Command {
         StatsContainer stats = user.getStats();
 
         long currentTime = System.currentTimeMillis() + (MILLIS_IN_HOUR * uSettings.getInt(UserSetting.TIMEZONE));
+        long currentDay = helper.getCurrentDay(currentTime);
+        long lastClaim = user.getStats().getLong(Stat.DAILY_LAST_CLAIM);
 
-        if(!helper.canClaim(user, currentTime)){
+        if(!helper.canClaim(lastClaim, currentDay)){
             MessagesUtils.addReaction(message, Emoji.X, "You can't claim your daily bonus yet. - You can claim it again in " + helper.formatTimeUntilNextClaim(currentTime));
             return;
         }
@@ -121,8 +123,8 @@ public class DailyBonusCommand extends Command {
         long daysMissed = 0;
         long lastClaimStreak = 0;
 
-        if(helper.hasDaysMissed(user, currentTime)) {
-            daysMissed = helper.getDaysMissed(user, currentTime);
+        if(helper.hasDaysMissed(lastClaim, currentTime)) {
+            daysMissed = helper.getDaysMissed(lastClaim, currentDay);
 
             lastClaimStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
             int penalty = (int) Math.min(currentStreak - 1, PENALTY * daysMissed);
@@ -194,7 +196,7 @@ public class DailyBonusCommand extends Command {
         stats.incrementInt(Stat.DAILY_DAYS_SINCE_WEEKLY);
     }
 
-    public static class Helper {
+    static class Helper {
 
         public int getDay(long currentTime) {
             Date current = new Date(currentTime);
@@ -217,21 +219,18 @@ public class DailyBonusCommand extends Command {
             return currentWholeDayMillis / MILLIS_IN_DAY;
         }
 
-        public boolean canClaim(SkuddUser su, long currentTime) {
-            if (su.getStats().getLong(Stat.DAILY_LAST_CLAIM) == -1) return true;
-            return getCurrentDay(currentTime) > su.getStats().getLong(Stat.DAILY_LAST_CLAIM);
+        public boolean canClaim(long lastClaim, long currentDay) {
+            if (lastClaim == -1) return true;
+            return currentDay > lastClaim;
         }
 
-        public long getDaysMissed(SkuddUser su, long currentTime) {
-            long claimDay = su.getStats().getLong(Stat.DAILY_LAST_CLAIM);
-            long currentDay = getCurrentDay(currentTime);
-
-            if (claimDay == -1) return 0;
-            return (currentDay - claimDay) - 1;
+        public long getDaysMissed(long lastClaim, long currentDay) {
+            if (lastClaim == -1) return 0;
+            return (currentDay - lastClaim) - 1;
         }
 
-        public boolean hasDaysMissed(SkuddUser su, long currentTime) {
-            return getDaysMissed(su, currentTime) > 0;
+        public boolean hasDaysMissed(long lastClaim, long currentTime) {
+            return getDaysMissed(lastClaim, currentTime) > 0;
         }
 
         public long getTimeUntilNextClaim(long currentTime) {
