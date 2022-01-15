@@ -2,7 +2,7 @@ package me.VanadeysHaven.Skuddbot.Minigames.Challenge;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.VanadeysHaven.Skuddbot.Profiles.ServerMember;
+import me.VanadeysHaven.Skuddbot.Profiles.Users.ServerMember;
 
 /**
  * represents a player of challenge

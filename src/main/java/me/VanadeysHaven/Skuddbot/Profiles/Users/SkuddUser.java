@@ -2,7 +2,6 @@ package me.VanadeysHaven.Skuddbot.Profiles.Users;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.VanadeysHaven.Skuddbot.Profiles.ServerMember;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.CurrenciesContainer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.CurrenciesSapling;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSettingsContainer;

@@ -5,7 +5,6 @@ import lombok.Setter;
 import me.VanadeysHaven.Skuddbot.Database.Query;
 import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Database.QueryResult;
-import me.VanadeysHaven.Skuddbot.Profiles.ServerMember;
 
 import java.sql.SQLException;
 

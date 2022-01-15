@@ -1,8 +1,8 @@
 package me.VanadeysHaven.Skuddbot.Minigames.Blackjack;
 
 import lombok.Getter;
-import me.VanadeysHaven.Skuddbot.Profiles.ServerMember;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
+import me.VanadeysHaven.Skuddbot.Profiles.Users.ServerMember;
 import me.VanadeysHaven.Skuddbot.Utilities.CooldownManager;
 import me.VanadeysHaven.Skuddbot.Utilities.RNGManager;
 import org.javacord.api.entity.channel.TextChannel;
