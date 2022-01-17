@@ -66,11 +66,10 @@ public class DailyBonusCommand extends Command {
     }
 
     public static String MESSAGE_FORMAT = Emoji.GIFT.getUnicode() + " **DAILY BONUS** | *{0}*\n\n" +
-            "Daily bonus claimed: {1}\n" +
-
-            "+{2} Skuddbux\n" +
-            "+{3} <:xp_icon:458325613015466004>\n" +
-            "{4}";
+            "Daily bonus claimed: ({1}) {2}\n" +
+            "+{3} Skuddbux\n" +
+            "+{4} <:xp_icon:458325613015466004>\n" +
+            "{5}";
 
     private final Helper helper;
 
@@ -86,7 +85,6 @@ public class DailyBonusCommand extends Command {
         SkuddServer sServer = sm.getServer(server.getId());
         ServerSettingsContainer settings = sServer.getSettings();
         UserSettingsContainer uSettings = user.getSettings();
-        CurrenciesContainer currencies = user.getCurrencies();
         StatsContainer stats = user.getStats();
 
         long currentTime = System.currentTimeMillis() + (MILLIS_IN_HOUR * uSettings.getInt(UserSetting.TIMEZONE));
@@ -98,84 +96,52 @@ public class DailyBonusCommand extends Command {
             return;
         }
 
-        int currentMultiplier = stats.getInt(Stat.DAILY_MULTIPLIER);
-        int currentStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
+        int currentMultiplier = stats.getInt(Stat.DAILY_CURRENT_MULTIPLIER);
+        int initialStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
         int longestStreak = stats.getInt(Stat.DAILY_LONGEST_STREAK);
+        int weeklyCounter = stats.getInt(Stat.DAILY_WEEKLY_COUNTER);
+        int frozenDays = stats.getInt(Stat.DAILY_DAYS_FROZEN);
 
-        long daysMissed = 0;
-        long lastClaimStreak = 0;
+        int baseCurrency = settings.getInt(ServerSetting.DAILY_BASE_CURRENCY_BONUS);
+        int baseExperience = settings.getInt(ServerSetting.DAILY_BASE_EXPERIENCE_BONUS);
+        int multiplierCap = settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP);
+        double multiplierModifier = settings.getDouble(ServerSetting.DAILY_BONUS_MODIFIER);
 
-        if(helper.hasDaysMissed(lastClaim, currentTime)) {
-            daysMissed = helper.getDaysMissed(lastClaim, currentDay);
+        Helper.Calculator calculator = helper.new Calculator(currentTime, lastClaim, currentDay,
+                        multiplierCap, multiplierModifier, baseCurrency,
+                        baseExperience, currentMultiplier, initialStreak,
+                        longestStreak, weeklyCounter, frozenDays)
+                .runCalculations();
 
-            lastClaimStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
-            int penalty = (int) Math.min(currentStreak - 1, PENALTY * daysMissed);
-            stats.incrementInt(Stat.DAILY_CURRENT_STREAK, penalty * -1);
-            stats.incrementIntBounds(Stat.DAILY_MULTIPLIER, penalty * -1, 1, settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP));
-        } else {
-            stats.incrementInt(Stat.DAILY_CURRENT_STREAK);
-            stats.incrementIntBounds(Stat.DAILY_MULTIPLIER, 1, 1, settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP));
-        }
-
-
-        boolean newLongest = false;
-        if(currentStreak > longestStreak){
-            newLongest = true;
-            stats.setInt(Stat.DAILY_LONGEST_STREAK, currentStreak);
-        }
-
-        int currencyBonus = settings.getInt(ServerSetting.DAILY_CURRENCY_BONUS);
-        int xpBonus = settings.getInt(ServerSetting.DAILY_XP_BONUS);
-        int cap = settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP);
-        double multiplier = Math.pow(settings.getDouble(ServerSetting.DAILY_BONUS_MODIFIER), currentMultiplier);
-        currencyBonus *= multiplier;
-        xpBonus *= multiplier;
-        boolean applyWeekly = stats.getInt(Stat.DAILY_DAYS_SINCE_WEEKLY) >= 7;
-
-        if(applyWeekly){
-            xpBonus *= 2;
-            currencyBonus *= 2;
-            stats.setInt(Stat.DAILY_DAYS_SINCE_WEEKLY, 1);
-        } else {
-            stats.incrementInt(Stat.DAILY_DAYS_SINCE_WEEKLY);
-        }
-        Bonus b = Bonus.getForDay(helper.getDay(currentTime), helper.getMonth(currentTime));
-        if(b != null) {
-            xpBonus += b.getXpBonus();
-            currencyBonus += b.getCurrencyBonus();
-        }
-
-        user.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyBonus);
-        stats.incrementInt(Stat.EXPERIENCE, xpBonus);
+        calculator.process(user);
 
         String streakString = "";
-        if (currentStreak == 1 && lastClaimStreak > 1)
-            streakString = "**Claim streak lost:** *" + lastClaimStreak + " days* | " +
-                    "**Days missed:** *" + daysMissed + " " + (daysMissed == 1 ? "day" : "days") + "*";
-        else if(daysMissed >= 1 && lastClaimStreak > 1)
-            streakString = "**Claim streak reduced:** *" + currentStreak + " days* (-" + (daysMissed * PENALTY) + " days) | " +
-                    "**Days missed:** *" + daysMissed + " " + (daysMissed == 1 ? "day" : "days") + "*";
-        else if (currentStreak == 2)
-            streakString = "**Claim streak started:** *" + currentStreak + " days*";
-        else if (currentStreak > 2)
-            streakString = "**Claim streak continued:** *" + currentStreak + " days*";
+        if (calculator.getCurrentStreak() == 1 && initialStreak > 1)
+            streakString = "**Claim streak lost:** *" + initialStreak + " days* | " +
+                    "**Days missed:** *" + calculator.getMissedDays() + " " + (calculator.getMissedDays() == 1 ? "day" : "days") + "*";
+        else if(calculator.getMissedDays()  >= 1 && initialStreak > 1)
+            streakString = "**Claim streak reduced:** *" + initialStreak + " days* (-" + (calculator.getMissedDays()  * PENALTY) + " days) | " +
+                    "**Days missed:** *" + calculator.getMissedDays()  + " " + (calculator.getMissedDays()  == 1 ? "day" : "days") + "*";
+        else if (calculator.getCurrentStreak() == 2)
+            streakString = "**Claim streak started:** *" + calculator.getCurrentStreak() + " days*";
+        else if (calculator.getCurrentStreak() > 2)
+            streakString = "**Claim streak continued:** *" + calculator.getCurrentStreak() + " days*";
 
-        if(newLongest && currentStreak >= 2)
+        if(calculator.isNewLongest() && initialStreak >= 2)
             streakString += " | **New longest streak!**";
 
-        String bonusStr = applyWeekly ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "";
-        if(b != null) {
-            bonusStr += "\n**SEASONAL BONUS APPLIED:** " + b.getMessage();
-            if(helper.getDay(currentTime) == 30){
-                bonusStr += " (" + currencies.getString(Currency.PRIDE_FLAGS) + " pride flags applied!)";
-            }
+        String multiplierString = "x" + calculator.getCurrentMultiplier();
+        if(calculator.isPenaltyApplied())
+            multiplierString = "~~" + multiplierString + "~~ | **FROZEN**";
+        if(calculator.getCurrentMultiplier() == calculator.getMultiplierCap())
+            multiplierString += " | **MAX**";
+        String bonusStr = calculator.isWeeklyApplied() ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "";
+        if(calculator.isBonusApplied()) {
+            bonusStr += "\n**SEASONAL BONUS APPLIED:** " + calculator.getAppliedBonus().getMessage();
         }
 
-        String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), bonusStr, currencyBonus, xpBonus, streakString);
-
+        String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), multiplierString, bonusStr, calculator.getCurrencyBonus(), calculator.getExperienceBonus(), streakString);
         MessagesUtils.sendPlain(message.getChannel(), msg);
-        stats.setLong(Stat.DAILY_LAST_CLAIM, helper.getCurrentDay(currentTime));
-        stats.incrementInt(Stat.DAILY_DAYS_SINCE_WEEKLY);
     }
 
     static class Helper {
@@ -205,6 +171,7 @@ public class DailyBonusCommand extends Command {
             private long missedDays;
             private int currencyBonus;
             private int experienceBonus;
+            private Bonus appliedBonus;
 
             public Calculator(long currentTime, long lastClaim, long currentDay,
                               int multiplierCap, double multiplierModifier, int baseCurrency,
@@ -301,11 +268,31 @@ public class DailyBonusCommand extends Command {
 
                 Bonus b = Bonus.getForDay(getDay(currentTime), getMonth(currentTime));
                 if(b != null) {
+                    appliedBonus = b;
                     currencyBonus += b.getCurrencyBonus();
                     experienceBonus += b.getXpBonus();
                 }
 
                 return this;
+            }
+
+            public boolean hasMissedDays(){
+                return missedDays > 0;
+            }
+
+            public boolean isBonusApplied(){
+                return appliedBonus != null;
+            }
+
+            public void process(SkuddUser su){
+                su.getStats().setLong(Stat.DAILY_LAST_CLAIM, currentDay);
+                su.getStats().setInt(Stat.DAILY_CURRENT_MULTIPLIER, currentMultiplier);
+                su.getStats().setInt(Stat.DAILY_CURRENT_STREAK, currentStreak);
+                su.getStats().setInt(Stat.DAILY_LONGEST_STREAK, longestStreak);
+                su.getStats().setInt(Stat.DAILY_WEEKLY_COUNTER, weeklyCounter);
+                su.getStats().setInt(Stat.DAILY_DAYS_FROZEN, frozenDays);
+                su.getStats().incrementInt(Stat.EXPERIENCE, experienceBonus);
+                su.getCurrencies().incrementInt(Currency.SKUDDBUX, currencyBonus);
             }
 
         }
@@ -339,10 +326,6 @@ public class DailyBonusCommand extends Command {
         public long getDaysMissed(long lastClaim, long currentDay) {
             if (lastClaim == -1) return 0;
             return (currentDay - lastClaim) - 1;
-        }
-
-        public boolean hasDaysMissed(long lastClaim, long currentTime) {
-            return getDaysMissed(lastClaim, currentTime) > 0;
         }
 
         public long getTimeUntilNextClaim(long currentTime) {
