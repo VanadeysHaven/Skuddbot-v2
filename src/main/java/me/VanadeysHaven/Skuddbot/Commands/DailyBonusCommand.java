@@ -211,14 +211,13 @@ public class DailyBonusCommand extends Command {
 
             public Calculator initializeMultipliers(){
                 if(currentMultiplier == -1) {
+                    currentStreak = longestStreak;
+
                     if (currentStreak < 15)
                         currentMultiplier = 14;
                     else
                         currentMultiplier = Math.min(currentStreak, multiplierCap);
-
-                    currentStreak = longestStreak;
                 }
-
                 return this;
             }
 

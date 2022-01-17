@@ -76,13 +76,13 @@ public class DailyBonusCommandTests {
         DailyBonusCommand.Helper.Calculator calculator =
                 helper.new Calculator(-1, -1, -1,
                         30, -1, -1,
-                        -1, -1, 17,
-                        100, -1, -1)
+                        -1, -1, -1,
+                        17, -1, -1)
                         .initializeMultipliers();
 
         assertEquals(17, calculator.getCurrentMultiplier());
-        assertEquals(100, calculator.getCurrentStreak());
-        assertEquals(100, calculator.getCurrentStreak());
+        assertEquals(17, calculator.getCurrentStreak());
+        assertEquals(17, calculator.getLongestStreak());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class DailyBonusCommandTests {
         DailyBonusCommand.Helper.Calculator calculator =
                 helper.new Calculator(-1, -1, -1,
                         30, -1, -1,
-                        -1, -1, 55,
+                        -1, -1, -1,
                         100, -1, -1)
                         .initializeMultipliers();
 
