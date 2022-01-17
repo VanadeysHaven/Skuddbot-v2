@@ -49,11 +49,11 @@ public class DailyBonusCommand extends Command {
         PRIDE_SAT4 (26, 6, 10000, 20000, Emoji.QUEER_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
         PRIDE_WED5 (30, 6, 10000, 20000, Emoji.PRIDE_FLAG.getUnicode() + " *HAPPY PRIDE MONTH!*");
 
-        int day;
-        int month;
-        int currencyBonus;
-        int xpBonus;
-        String message;
+        final int day;
+        final int month;
+        final int currencyBonus;
+        final int xpBonus;
+        final String message;
 
         Bonus(int day, int month, int currencyBonus, int xpBonus, String message){
             this.day = day;
@@ -109,16 +109,6 @@ public class DailyBonusCommand extends Command {
         int currentMultiplier = stats.getInt(Stat.DAILY_MULTIPLIER);
         int currentStreak = stats.getInt(Stat.DAILY_CURRENT_STREAK);
         int longestStreak = stats.getInt(Stat.DAILY_LONGEST_STREAK);
-        if(currentMultiplier == -1) {
-            if (currentStreak < 15) {
-                currentMultiplier = 14;
-            }
-            else {
-                currentMultiplier = Math.min(currentStreak, settings.getInt(ServerSetting.DAILY_BONUS_MULTIPLIER_CAP));
-            }
-
-            currentStreak = longestStreak;
-        }
 
         long daysMissed = 0;
         long lastClaimStreak = 0;
@@ -197,6 +187,110 @@ public class DailyBonusCommand extends Command {
     }
 
     static class Helper {
+
+        @Getter
+        class Calculator {
+
+            private final long currentTime;
+            private final long currentDay;
+            private final long lastClaim;
+
+            private final int multiplierCap;
+            private final double multiplierModifier;
+            private final int baseCurrency;
+            private final int baseExperience;
+
+            private int currentMultiplier;
+            private int currentStreak;
+            private int longestStreak;
+
+            private int weeklyCounter;
+            private int frozenDays;
+
+            private boolean penaltyApplied;
+            private boolean weeklyApplied;
+            private boolean newLongest;
+            private long missedDays;
+
+            public Calculator(long currentTime, long lastClaim, long currentDay,
+                              int multiplierCap, double multiplierModifier, int baseCurrency,
+                              int baseExperience, int currentMultiplier, int currentStreak,
+                              int longestStreak, int weeklyCounter, int frozenDays) {
+                this.currentTime = currentTime;
+                this.currentDay = currentDay;
+                this.lastClaim = lastClaim;
+
+                this.multiplierCap = multiplierCap;
+                this.multiplierModifier = multiplierModifier;
+                this.baseCurrency = baseCurrency;
+                this.baseExperience = baseExperience;
+
+                this.currentMultiplier = currentMultiplier;
+                this.currentStreak = currentStreak;
+                this.longestStreak = longestStreak;
+
+                this.weeklyCounter = weeklyCounter;
+                this.frozenDays = frozenDays;
+
+                penaltyApplied = false;
+                weeklyApplied = false;
+                newLongest = false;
+                missedDays = -1;
+            }
+
+            public Calculator runCalculations(){
+                initializeMultipliers();
+                checkDaysMissed();
+                countUp();
+
+                return this;
+            }
+
+
+            public Calculator initializeMultipliers(){
+                if(currentMultiplier == -1) {
+                    if (currentStreak < 15)
+                        currentMultiplier = 14;
+                    else
+                        currentMultiplier = Math.min(currentStreak, multiplierCap);
+
+                    currentStreak = longestStreak;
+                }
+
+                return this;
+            }
+
+            public Calculator checkDaysMissed(){
+                missedDays = getDaysMissed(lastClaim, currentDay);
+                frozenDays += missedDays;
+                currentMultiplier = (int) Math.max(currentMultiplier - (PENALTY * missedDays), 0);
+                currentStreak = (int) Math.max(currentStreak - (PENALTY * missedDays), 0);
+                return this;
+            }
+
+            public Calculator countUp(){
+                if(frozenDays > 0) {
+                    frozenDays--;
+                    penaltyApplied = true;
+                    return this;
+                }
+                if(weeklyCounter >= 7) {
+                    weeklyApplied = true;
+                    weeklyCounter = -1;
+                }
+
+                currentStreak++;
+                if(longestStreak < currentStreak) {
+                    longestStreak = currentStreak;
+                    newLongest = true;
+                }
+                weeklyCounter++;
+                currentMultiplier = Math.min(currentMultiplier + 1, multiplierCap);
+
+                return this;
+            }
+
+        }
 
         public int getDay(long currentTime) {
             Date current = new Date(currentTime);
