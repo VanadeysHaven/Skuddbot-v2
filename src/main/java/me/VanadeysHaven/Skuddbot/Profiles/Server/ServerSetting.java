@@ -20,27 +20,27 @@ import java.util.ArrayList;
 @Getter
 public enum ServerSetting implements Data {
 
-    XP_MIN                     ("xp_min",                  "Minimum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "10",                   Category.XP,              false),
-    XP_MAX                     ("xp_max",                  "Maximum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "15",                   Category.XP,              false),
-    XP_MIN_TWITCH              ("xp_min_twitch",           "Minimum amount of XP gain per message on Twitch.",                             ValueType.INTEGER, "10",                   Category.XP,              false), //TODO
-    XP_MAX_TWITCH              ("xp_max_twitch",           "Maximum amount of XP gain per message on Twitch.",                             ValueType.INTEGER, "15",                   Category.XP,              false), //TODO
-    XP_BASE                    ("xp_base",                 "Amount of XP an user will need to level up from level 1 to level 2.",          ValueType.INTEGER, "1500",                 Category.XP,              false),
-    XP_MULTIPLIER              ("xp_multiplier",           "Multiplier for XP levels. The higher this number, the steeper the XP curve.",  ValueType.DOUBLE,  "1.2",                  Category.XP,              false),
-    TWITCH_CHANNEL             ("twitch_channel",          "The Twitch channel this bot should keep track of stats.",                      ValueType.STRING,  null,                   Category.TWITCH,          false), //TODO
-    WELCOME_MESSAGE            ("welcome_message",         "This message will be posted when a new user joins the server.",                ValueType.STRING,  null,                   Category.WELCOME_GOODBYE, true ),
-    GOODBYE_MESSAGE            ("goodbye_message",         "This message will be posted when a user leaves the server.",                   ValueType.STRING,  null,                   Category.WELCOME_GOODBYE, true ),
-    WELCOME_GOODBYE_CHANNEL    ("welcome_goodbye_channel", "This is the channel where the welcome/goodbye messages will be posted to.",    ValueType.LONG,    "-1",                   Category.WELCOME_GOODBYE, false),
-    ADMIN_ROLE                 ("admin_role",              "This role will have access to commands that require elevated permissions.",    ValueType.STRING,  null,                   Category.DISCORD,         true ),
-    ROLE_ON_JOIN               ("role_on_join",            "This role will be granted to new users when they join the server.",            ValueType.STRING,  null,                   Category.DISCORD,         true ),
-    ALLOW_MSG_LVL_UP_NOTIFY    ("allow_msg_lvl_up_notify", "When set to false, users will not be notified by message when they level up.", ValueType.BOOLEAN, "true",                 Category.DISCORD,         false),
-    ARENA_NAME                 ("arena_name",              "This is the name of the arena used in various minigames.",                     ValueType.STRING,  "Skuddbot's Colosseum", Category.MINIGAMES,       true ),
-    JACKPOT                    ("jackpot",                 "Defines the Jackpot amount. (Value updates automatically)",                    ValueType.INTEGER, "0",                    Category.MINIGAMES,       false),
-    COMMAND_PREFIX             ("command_prefix",          "The command prefix you can change this to avoid confilcts with other bots.",   ValueType.STRING,  "!",                    Category.COMMANDS,        false),
-    ALLOW_MULTI_IMG            ("allow_multi_img",         "Enables the use of multi images in commands like !puppy and !kitty.",          ValueType.BOOLEAN, "true",                 Category.COMMANDS,        false),
-    DAILY_BASE_CURRENCY_BONUS("daily_currency_bonus",    "Defines the base amount of currency a user gets per daily bonus claim.",       ValueType.INTEGER, "250",                  Category.DAILY_BONUS,     false),
-    DAILY_BASE_EXPERIENCE_BONUS("daily_xp_bonus",          "Defines the base amount of experience a user gets per daily bonus claim.",     ValueType.INTEGER, "500",                  Category.DAILY_BONUS,     false),
-    DAILY_BONUS_MODIFIER       ("daily_bonus_multiplier",  "Defines the modifier applied to the bonuses after a streak claim.",            ValueType.DOUBLE,  "1.05",                 Category.DAILY_BONUS,     false),
-    DAILY_BONUS_MULTIPLIER_CAP ("daily_bonus_cap",         "Defines the cap of the multiplier.",                                           ValueType.INTEGER, "30",                   Category.DAILY_BONUS,     false);
+    XP_MIN                      ("xp_min",                  "Minimum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "10",                   Category.XP,              false),
+    XP_MAX                      ("xp_max",                  "Maximum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "15",                   Category.XP,              false),
+    XP_MIN_TWITCH               ("xp_min_twitch",           "Minimum amount of XP gain per message on Twitch.",                             ValueType.INTEGER, "10",                   Category.XP,              false), //TODO
+    XP_MAX_TWITCH               ("xp_max_twitch",           "Maximum amount of XP gain per message on Twitch.",                             ValueType.INTEGER, "15",                   Category.XP,              false), //TODO
+    XP_BASE                     ("xp_base",                 "Amount of XP an user will need to level up from level 1 to level 2.",          ValueType.INTEGER, "1500",                 Category.XP,              false),
+    XP_MULTIPLIER               ("xp_multiplier",           "Multiplier for XP levels. The higher this number, the steeper the XP curve.",  ValueType.DOUBLE,  "1.2",                  Category.XP,              false),
+    TWITCH_CHANNEL              ("twitch_channel",          "The Twitch channel this bot should keep track of stats.",                      ValueType.STRING,  null,                   Category.TWITCH,          false), //TODO
+    WELCOME_MESSAGE             ("welcome_message",         "This message will be posted when a new user joins the server.",                ValueType.STRING,  null,                   Category.WELCOME_GOODBYE, true ),
+    GOODBYE_MESSAGE             ("goodbye_message",         "This message will be posted when a user leaves the server.",                   ValueType.STRING,  null,                   Category.WELCOME_GOODBYE, true ),
+    WELCOME_GOODBYE_CHANNEL     ("welcome_goodbye_channel", "This is the channel where the welcome/goodbye messages will be posted to.",    ValueType.LONG,    "-1",                   Category.WELCOME_GOODBYE, false),
+    ADMIN_ROLE                  ("admin_role",              "This role will have access to commands that require elevated permissions.",    ValueType.STRING,  null,                   Category.DISCORD,         true ),
+    ROLE_ON_JOIN                ("role_on_join",            "This role will be granted to new users when they join the server.",            ValueType.STRING,  null,                   Category.DISCORD,         true ),
+    ALLOW_MSG_LVL_UP_NOTIFY     ("allow_msg_lvl_up_notify", "When set to false, users will not be notified by message when they level up.", ValueType.BOOLEAN, "true",                 Category.DISCORD,         false),
+    ARENA_NAME                  ("arena_name",              "This is the name of the arena used in various minigames.",                     ValueType.STRING,  "Skuddbot's Colosseum", Category.MINIGAMES,       true ),
+    JACKPOT                     ("jackpot",                 "Defines the Jackpot amount. (Value updates automatically)",                    ValueType.INTEGER, "0",                    Category.MINIGAMES,       false),
+    COMMAND_PREFIX              ("command_prefix",          "The command prefix you can change this to avoid confilcts with other bots.",   ValueType.STRING,  "!",                    Category.COMMANDS,        false),
+    ALLOW_MULTI_IMG             ("allow_multi_img",         "Enables the use of multi images in commands like !puppy and !kitty.",          ValueType.BOOLEAN, "true",                 Category.COMMANDS,        false),
+    DAILY_BASE_CURRENCY_BONUS   ("daily_currency_bonus",    "Defines the base amount of currency a user gets per daily bonus claim.",       ValueType.INTEGER, "250",                  Category.DAILY_BONUS,     false),
+    DAILY_BASE_EXPERIENCE_BONUS ("daily_xp_bonus",          "Defines the base amount of experience a user gets per daily bonus claim.",     ValueType.INTEGER, "500",                  Category.DAILY_BONUS,     false),
+    DAILY_BONUS_MODIFIER        ("daily_bonus_multiplier",  "Defines the modifier applied to the bonuses after a streak claim.",            ValueType.DOUBLE,  "1.05",                 Category.DAILY_BONUS,     false),
+    DAILY_BONUS_MULTIPLIER_CAP  ("daily_bonus_cap",         "Defines the cap of the multiplier.",                                           ValueType.INTEGER, "30",                   Category.DAILY_BONUS,     false);
 
     private final String dbReference;
     private final String description;
