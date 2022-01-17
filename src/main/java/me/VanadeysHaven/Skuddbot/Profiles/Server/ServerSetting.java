@@ -37,17 +37,17 @@ public enum ServerSetting implements Data {
     JACKPOT                    ("jackpot",                 "Defines the Jackpot amount. (Value updates automatically)",                    ValueType.INTEGER, "0",                    Category.MINIGAMES,       false),
     COMMAND_PREFIX             ("command_prefix",          "The command prefix you can change this to avoid confilcts with other bots.",   ValueType.STRING,  "!",                    Category.COMMANDS,        false),
     ALLOW_MULTI_IMG            ("allow_multi_img",         "Enables the use of multi images in commands like !puppy and !kitty.",          ValueType.BOOLEAN, "true",                 Category.COMMANDS,        false),
-    DAILY_CURRENCY_BONUS       ("daily_currency_bonus",    "Defines the base amount of currency a user gets per daily bonus claim.",       ValueType.INTEGER, "100",                  Category.DAILY_BONUS,     false),
-    DAILY_XP_BONUS             ("daily_xp_bonus",          "Defines the base amount of experience a user gets per daily bonus claim.",     ValueType.INTEGER, "250",                  Category.DAILY_BONUS,     false),
+    DAILY_CURRENCY_BONUS       ("daily_currency_bonus",    "Defines the base amount of currency a user gets per daily bonus claim.",       ValueType.INTEGER, "250",                  Category.DAILY_BONUS,     false),
+    DAILY_XP_BONUS             ("daily_xp_bonus",          "Defines the base amount of experience a user gets per daily bonus claim.",     ValueType.INTEGER, "500",                  Category.DAILY_BONUS,     false),
     DAILY_BONUS_MODIFIER       ("daily_bonus_multiplier",  "Defines the modifier applied to the bonuses after a streak claim.",            ValueType.DOUBLE,  "1.05",                 Category.DAILY_BONUS,     false),
     DAILY_BONUS_MULTIPLIER_CAP ("daily_bonus_cap",         "Defines the cap of the multiplier.",                                           ValueType.INTEGER, "30",                   Category.DAILY_BONUS,     false);
 
-    private String dbReference;
-    private String description;
-    private ValueType type;
-    private String defaultValue;
-    private Category category;
-    private boolean allowSpaces;
+    private final String dbReference;
+    private final String description;
+    private final ValueType type;
+    private final String defaultValue;
+    private final Category category;
+    private final boolean allowSpaces;
 
     ServerSetting(String dbReference, String description, ValueType type, String defaultValue, Category category, boolean allowSpaces){
         this.dbReference = dbReference;

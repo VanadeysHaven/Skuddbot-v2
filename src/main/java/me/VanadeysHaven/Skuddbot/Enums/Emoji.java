@@ -82,11 +82,11 @@ public enum Emoji {
     BI_FLAG                 ("<:bi:849214038402662440>", "bi"),
     GENDERFLUID_FLAG        ("<:genderfluid:849214039296966676>", "genderfluid_flag"),
     ACE_FLAG                ("<:ace:849216294876348417>", "ace"),
-    QUEER_FLAG              ("<:queer:849217259141988382>", "queer");
+    QUEER_FLAG              ("<:queer:849217259141988382>", "queer"),
+    FIREWORKS               ("\uD83C\uDF86", "fireworks");
 
-
-    private String unicode;
-    private String alias;
+    private final String unicode;
+    private final String alias;
 
     Emoji(String unicode, String alias){
         this.unicode = unicode;

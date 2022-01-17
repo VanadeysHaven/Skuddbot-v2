@@ -35,19 +35,11 @@ public class DailyBonusCommand extends Command {
     private static final long MILLIS_IN_HOUR = 3600000;
     private static final int PENALTY = 5;
 
-
     @Getter
     private enum Bonus {
 
-        PRIDE_WED1 (2, 6, 10000, 20000,  Emoji.GAY_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
-        PRIDE_SAT1 (5, 6, 10000, 20000,  Emoji.GENDERFLUID_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
-        PRIDE_WED2 (9, 6, 10000, 20000,  Emoji.LESBIAN_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
-        PRIDE_SAT2 (12, 6, 10000, 20000, Emoji.TRANS_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
-        PRIDE_WED3 (16, 6, 10000, 20000, Emoji.BI_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
-        PRIDE_SAT3 (19, 6, 10000, 20000, Emoji.NONBINARY_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
-        PRIDE_WED4 (23, 6, 10000, 20000, Emoji.ACE_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
-        PRIDE_SAT4 (26, 6, 10000, 20000, Emoji.QUEER_FLAG.getUnicode() + " *HAPPY PRIDE MONTH! (+1 pride flag)*"),
-        PRIDE_WED5 (30, 6, 10000, 20000, Emoji.PRIDE_FLAG.getUnicode() + " *HAPPY PRIDE MONTH!*");
+        HAPPY_NEW_YEAR(1, 1, 10000, 5000, Emoji.FIREWORKS.getUnicode() + "Happy new year!"),
+        VALENTINE(14, 2, 10000, 5000, Emoji.HEART.getUnicode() + " Happy valentines day!");
 
         final int day;
         final int month;
@@ -211,6 +203,8 @@ public class DailyBonusCommand extends Command {
             private boolean weeklyApplied;
             private boolean newLongest;
             private long missedDays;
+            private int currencyBonus;
+            private int experienceBonus;
 
             public Calculator(long currentTime, long lastClaim, long currentDay,
                               int multiplierCap, double multiplierModifier, int baseCurrency,
@@ -236,14 +230,15 @@ public class DailyBonusCommand extends Command {
                 weeklyApplied = false;
                 newLongest = false;
                 missedDays = -1;
+                currencyBonus = 0;
+                experienceBonus = 0;
             }
 
             public Calculator runCalculations(){
                 initializeMultipliers();
                 checkDaysMissed();
                 countUp();
-
-                return this;
+                return calculateBonuses();
             }
 
 
@@ -286,6 +281,29 @@ public class DailyBonusCommand extends Command {
                 }
                 weeklyCounter++;
                 currentMultiplier = Math.min(currentMultiplier + 1, multiplierCap);
+
+                return this;
+            }
+
+            public Calculator calculateBonuses(){
+                if(penaltyApplied) {
+                    currencyBonus = baseCurrency;
+                    experienceBonus = baseExperience;
+                } else {
+                    currencyBonus = (int) (baseCurrency * Math.pow(multiplierModifier, currentMultiplier - 1));
+                    experienceBonus = (int) (baseExperience * Math.pow(multiplierModifier, currentMultiplier - 1));
+
+                    if(weeklyApplied) {
+                        currencyBonus *= 2;
+                        experienceBonus *= 2;
+                    }
+                }
+
+                Bonus b = Bonus.getForDay(getDay(currentTime), getMonth(currentTime));
+                if(b != null) {
+                    currencyBonus += b.getCurrencyBonus();
+                    experienceBonus += b.getXpBonus();
+                }
 
                 return this;
             }

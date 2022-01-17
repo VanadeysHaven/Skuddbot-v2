@@ -1,17 +1,19 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.aggregator.AggregateWith;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class DailyBonusCommandTests {
 
-    private final static long testCurrentTimeMillis = 1641074041290L;
+    private final static long testCurrentTimeMillis = 1642433093940L;
+    private final static long testCurrentTimeMillisWithBonus = 1641074041290L;
     private final static DailyBonusCommand.Helper helper = new DailyBonusCommand.Helper();
 
     @Test
     public void testGetDayReturnsCorrectDay(){
-        assertEquals(1L, helper.getDay(testCurrentTimeMillis));
+        assertEquals(17, helper.getDay(testCurrentTimeMillis));
     }
 
     @Test
@@ -21,7 +23,7 @@ public class DailyBonusCommandTests {
 
     @Test
     public void testGetCurrentDayReturnsCorrectDay(){
-        assertEquals(18993, helper.getCurrentDay(testCurrentTimeMillis));
+        assertEquals(19009, helper.getCurrentDay(testCurrentTimeMillis));
     }
 
     @Test
@@ -52,7 +54,7 @@ public class DailyBonusCommandTests {
 
     @Test
     public void testGetTimeUntilNextClaimReturnsCorrectAmount(){
-        assertEquals(7558710, helper.getTimeUntilNextClaim(testCurrentTimeMillis));
+        assertEquals(30906060, helper.getTimeUntilNextClaim(testCurrentTimeMillis));
     }
 
     @Test
@@ -170,15 +172,16 @@ public class DailyBonusCommandTests {
                 helper.new Calculator(-1, 18993, 18994,
                         30, -1, -1,
                         -1, 20, 35,
-                        35, 6, 3)
+                        35, 7, 3)
                         .initializeMultipliers().checkDaysMissed().countUp();
 
         assertTrue(calculator.isPenaltyApplied());
+        assertEquals(2, calculator.getFrozenDays());
         assertFalse(calculator.isWeeklyApplied());
         assertEquals(35, calculator.getCurrentStreak());
         assertEquals(35, calculator.getLongestStreak());
         assertFalse(calculator.isNewLongest());
-        assertEquals(6, calculator.getWeeklyCounter());
+        assertEquals(7, calculator.getWeeklyCounter());
         assertEquals(20, calculator.getCurrentMultiplier());
     }
 
@@ -211,6 +214,123 @@ public class DailyBonusCommandTests {
         assertEquals(30, calculator.getCurrentMultiplier());
         assertEquals(31, calculator.getCurrentStreak());
         assertEquals(31, calculator.getLongestStreak());
+    }
+
+    @Test
+    public void testCorrectBonusesForUserUnderCap(){
+        DailyBonusCommand.Helper.Calculator calculator =
+                helper.new Calculator(testCurrentTimeMillis, 18993, 18994,
+                        30, 1.2, 250,
+                        500, 16, 16,
+                        16, 4, 0)
+                        .runCalculations();
+
+        assertEquals(4622, calculator.getCurrencyBonus());
+        assertEquals(9244, calculator.getExperienceBonus());
+    }
+
+    @Test
+    public void testCorrectBonusesForUserOverCap(){
+        DailyBonusCommand.Helper.Calculator calculator =
+                helper.new Calculator(testCurrentTimeMillis, 18993, 18994,
+                        30, 1.2, 250,
+                        500, 30, 37,
+                        37, 4, 0)
+                        .runCalculations();
+
+        assertEquals(49453, calculator.getCurrencyBonus());
+        assertEquals(98906, calculator.getExperienceBonus());
+    }
+
+    @Test
+    public void testCorrectBonusForUserWithWeekly(){
+        DailyBonusCommand.Helper.Calculator calculator =
+                helper.new Calculator(testCurrentTimeMillis, 18993, 18994,
+                        30, 1.2, 250,
+                        500, 30, 37,
+                        37, 7, 0)
+                        .runCalculations();
+
+        assertEquals(98906, calculator.getCurrencyBonus());
+        assertEquals(197812, calculator.getExperienceBonus());
+    }
+
+    @Test
+    public void testCorrectBonusesWithSeasonalBonus(){
+        DailyBonusCommand.Helper.Calculator calculator =
+                helper.new Calculator(testCurrentTimeMillisWithBonus, 18993, 18994,
+                        30, 1.2, 250,
+                        500, 30, 37,
+                        37, 4, 0)
+                        .runCalculations();
+
+        assertEquals(59453, calculator.getCurrencyBonus());
+        assertEquals(103906, calculator.getExperienceBonus());
+    }
+
+    @Test
+    public void testCorrectBonusesForFrozenUser(){
+        DailyBonusCommand.Helper.Calculator calculator =
+                helper.new Calculator(testCurrentTimeMillis, 18993, 18994,
+                        30, 1.2, 250,
+                        500, 30, 37,
+                        37, 4, 4)
+                        .runCalculations();
+
+        assertEquals(250, calculator.getCurrencyBonus());
+        assertEquals(500, calculator.getExperienceBonus());
+    }
+
+    @Test
+    public void testCorrectBonusesForFrozenUserWithPendingWeekly(){
+        DailyBonusCommand.Helper.Calculator calculator =
+                helper.new Calculator(testCurrentTimeMillis, 18993, 18994,
+                        30, 1.2, 250,
+                        500, 30, 37,
+                        37, 7, 4)
+                        .runCalculations();
+
+        assertEquals(250, calculator.getCurrencyBonus());
+        assertEquals(500, calculator.getExperienceBonus());
+    }
+
+    @Test
+    public void testCorrectBonusesForFrozenUserWithSeasonalBonus(){
+        DailyBonusCommand.Helper.Calculator calculator =
+                helper.new Calculator(testCurrentTimeMillisWithBonus, 18993, 18994,
+                        30, 1.2, 250,
+                        500, 30, 37,
+                        37, 4, 4)
+                        .runCalculations();
+
+        assertEquals(10250, calculator.getCurrencyBonus());
+        assertEquals(5500, calculator.getExperienceBonus());
+    }
+
+    @Test
+    public void testCorrectBonusesForUserWithMissedDay(){
+        DailyBonusCommand.Helper.Calculator calculator =
+                helper.new Calculator(testCurrentTimeMillis, 18992, 18994,
+                        30, 1.2, 250,
+                        500, 30, 37,
+                        37, 4, 0)
+                        .runCalculations();
+
+        assertEquals(250, calculator.getCurrencyBonus());
+        assertEquals(500, calculator.getExperienceBonus());
+    }
+
+    @Test
+    public void testCorrectBonusesForUserWithMissedDayWithSeasonalBonus(){
+        DailyBonusCommand.Helper.Calculator calculator =
+                helper.new Calculator(testCurrentTimeMillisWithBonus, 18992, 18994,
+                        30, 1.2, 250,
+                        500, 30, 37,
+                        37, 4, 0)
+                        .runCalculations();
+
+        assertEquals(10250, calculator.getCurrencyBonus());
+        assertEquals(5500, calculator.getExperienceBonus());
     }
 
 }
