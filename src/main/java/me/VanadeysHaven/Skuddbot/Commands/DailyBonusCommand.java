@@ -127,7 +127,7 @@ public class DailyBonusCommand extends Command {
         else if (calculator.getCurrentStreak() > 2)
             streakString = "**Claim streak continued:** *" + calculator.getCurrentStreak() + " days*";
 
-        if(calculator.isNewLongest() && initialStreak >= 2)
+        if(calculator.isNewLongest() && calculator.getCurrentStreak() >= 2)
             streakString += " | **New longest streak!**";
 
         String multiplierString = "x" + calculator.getCurrentMultiplier();
@@ -223,9 +223,11 @@ public class DailyBonusCommand extends Command {
 
             public Calculator checkDaysMissed(){
                 missedDays = getDaysMissed(lastClaim, currentDay);
-                frozenDays += missedDays;
-                currentMultiplier = (int) Math.max(currentMultiplier - (PENALTY * missedDays), 0);
-                currentStreak = (int) Math.max(currentStreak - (PENALTY * missedDays), 0);
+                if (missedDays > 0) {
+                    frozenDays += missedDays;
+                    currentMultiplier = (int) Math.max(currentMultiplier - (PENALTY * missedDays), 0);
+                    currentStreak = (int) Math.max(currentStreak - (PENALTY * missedDays), 0);
+                }
                 return this;
             }
 
