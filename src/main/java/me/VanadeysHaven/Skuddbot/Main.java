@@ -19,10 +19,10 @@ import java.util.Timer;
  * Main class, this is where the bot starts up from.
  *
  * @author Tim (Vanadey's Haven)
- * @since 2.2.1
+ * @since 2.3.2
  * @version 2.1
  */
-public class Main {
+public final class Main {
 
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
     private static Timer timer = new Timer();

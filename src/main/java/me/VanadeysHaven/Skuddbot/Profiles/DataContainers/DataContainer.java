@@ -16,7 +16,7 @@ import java.util.HashMap;
  * Main class that serves as a basis for all data containers.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3
+ * @version 2.3.2
  * @since 2.3
  */
 public abstract class DataContainer<T extends Data> {
@@ -68,6 +68,33 @@ public abstract class DataContainer<T extends Data> {
     public void incrementInt(T field, int incrementBy){
         if(field.getType() != ValueType.INTEGER) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type INTEGER.");
         setInt(field, getInt(field) + incrementBy);
+    }
+
+    public void incrementIntMax(T field, int incrementBy, int maxValue){
+        if(field.getType() != ValueType.INTEGER) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type INTEGER.");
+
+        int newValue = getInt(field) + incrementBy;
+        setInt(field, Math.min(newValue, maxValue));
+    }
+
+    public void incrementIntMin(T field, int incrementBy, int minValue){
+        if(field.getType() != ValueType.INTEGER) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type INTEGER.");
+
+        int newValue = getInt(field) + incrementBy;
+        setInt(field, Math.max(newValue, minValue));
+    }
+
+    public void incrementIntBounds(T field, int incrementBy, int min, int max){
+        if(field.getType() != ValueType.INTEGER) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type INTEGER.");
+
+        int newValue = getInt(field) + incrementBy;
+        if(newValue < min){
+            incrementIntMin(field, incrementBy, min);
+        } else if (newValue > max){
+            incrementIntMax(field, incrementBy, max);
+        } else {
+            incrementInt(field, incrementBy);
+        }
     }
 
     public int getInt(T field){
@@ -126,6 +153,10 @@ public abstract class DataContainer<T extends Data> {
     public boolean getBoolean(T field){
         if(field.getType() != ValueType.BOOLEAN) throw new IllegalArgumentException(field.getTerminology() + " " + field.getTechnicalName() + " is not of type BOOLEAN.");
         return Boolean.parseBoolean(getString(field));
+    }
+
+    public boolean isEmpty(){
+        return values.isEmpty();
     }
 
     private boolean checkType(T field, String value){

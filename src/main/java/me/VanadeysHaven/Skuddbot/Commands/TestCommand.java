@@ -6,7 +6,7 @@ import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonClicke
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonRemovedEvent;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.VanadeysHaven.Skuddbot.Minigames.GameLogs.GenericGameLog;
-import me.VanadeysHaven.Skuddbot.Profiles.ServerMember;
+import me.VanadeysHaven.Skuddbot.Profiles.Users.ServerMember;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.TimeUtils;
 import org.javacord.api.entity.channel.TextChannel;

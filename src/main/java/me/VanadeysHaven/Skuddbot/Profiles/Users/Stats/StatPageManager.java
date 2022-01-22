@@ -3,6 +3,7 @@ package me.VanadeysHaven.Skuddbot.Profiles.Users.Stats;
 import lombok.Getter;
 import lombok.Setter;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
+import me.VanadeysHaven.Skuddbot.Enums.ValueType;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.slf4j.Logger;
@@ -15,10 +16,10 @@ import java.util.Collections;
  * Class for managing stat pages.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.2
  * @since 2.2.1
  */
-public class StatPageManager {
+public final class StatPageManager {
 
     private static final Logger logger = LoggerFactory.getLogger(StatPageManager.class);
     private static StatPageManager instance;
@@ -126,6 +127,9 @@ public class StatPageManager {
                 if(stat == Stat.EXPERIENCE){
                     eb.addField("__" + stat.getName() + ":__", su.getStats().formatLevel(), true);
                 } else {
+                    if(stat.getType() == ValueType.INTEGER && !stat.isShowAtZero() && su.getStats().getInt(stat) == 0)
+                        continue;
+
                     eb.addField("__" + stat.getName() + ":__", su.getStats().getString(stat) + " " + stat.getSuffix(), true);
                 }
             }

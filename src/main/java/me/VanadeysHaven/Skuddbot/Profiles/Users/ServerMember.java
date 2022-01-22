@@ -1,9 +1,8 @@
-package me.VanadeysHaven.Skuddbot.Profiles;
+package me.VanadeysHaven.Skuddbot.Profiles.Users;
 
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Main;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
+import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 

@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Minigames.FreeForAll;
 
 import lombok.Getter;
-import me.VanadeysHaven.Skuddbot.Profiles.ServerMember;
+import me.VanadeysHaven.Skuddbot.Profiles.Users.ServerMember;
 import me.VanadeysHaven.Skuddbot.Utilities.CooldownManager;
 import org.javacord.api.entity.channel.TextChannel;
 
