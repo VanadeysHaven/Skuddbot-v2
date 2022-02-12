@@ -2,7 +2,9 @@ package me.VanadeysHaven.Skuddbot.Utilities;
 
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Various utilities regarding time.
@@ -28,6 +30,8 @@ public class TimeUtils {
     public static String formatTime(long timeInMillis){
         String pattern = "dd-MM-yyyy HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        TimeZone tz = TimeZone.getTimeZone("Etc/UTC");
+        sdf.setTimeZone(tz);
 
         return sdf.format(new Date(timeInMillis)) + " (UTC)";
     }

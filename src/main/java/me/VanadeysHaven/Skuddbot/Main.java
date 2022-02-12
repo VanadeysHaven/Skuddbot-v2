@@ -9,6 +9,8 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Timers.TenMinutes;
 import me.VanadeysHaven.Skuddbot.Utilities.AppearanceManager;
 import me.VanadeysHaven.Skuddbot.Utilities.Constants;
+import me.VanadeysHaven.Skuddbot.Utilities.EnvironmentVariables.EnvVariable;
+import me.VanadeysHaven.Skuddbot.Utilities.EnvironmentVariables.EnvVarsManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,28 +26,34 @@ import java.util.Timer;
  */
 public final class Main {
 
-    private final static Logger logger = LoggerFactory.getLogger(Main.class);
-    private static Timer timer = new Timer();
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Timer timer = new Timer();
 
     @Getter private static Skuddbot skuddbot;
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException {
         long startTime = System.currentTimeMillis();
-        if(args.length < 3) throw new IllegalArgumentException("Not enough arguments. - Required: 3 - Discord Token, MySql username, Mysql Password");
+        EnvVarsManager envVars = EnvVarsManager.getInstance();
+        envVars.load(args);
+        if(envVars.getEnvVariable(EnvVariable.DISCORD_TOKEN).equalsIgnoreCase(EnvVariable.DISCORD_TOKEN.getDefaultValue())) {
+            logger.error("No discord token found!");
+            System.exit(-1);
+        }
+
+        logger.info("Waiting 10 seconds to allow database to finish starting up...");
+        Thread.sleep(10000);
+
         logger.info("Starting Skuddbot v2...");
-        logger.info("Starting database connection for user " + args[1]);
+        logger.info("Starting database connection for user " + envVars.getEnvVariable(EnvVariable.MYSQL_USER));
 
-        String mysqlPass = args[2];
-        if(mysqlPass.equals("-nopass")) mysqlPass = ""; //For my testing environment
-        //Yes I am too lazy to set a password, leave me alone.
-
-        HikariManager.setup(args[1], mysqlPass);
+        HikariManager.setup(envVars.getEnvVariable(EnvVariable.MYSQL_USER), envVars.getEnvVariable(EnvVariable.MYSQL_PASSWORD),
+                envVars.getEnvVariable(EnvVariable.MYSQL_DATABASE), envVars.getEnvVariable(EnvVariable.MYSQL_HOST), envVars.getEnvVariable(EnvVariable.MYSQL_PORT));
         ServerSetting.saveToDatabase();
         UserSetting.saveToDatabase();
         Stat.setup();
         Currency.saveToDatabase();
 
-        String token = args[0];
+        String token = envVars.getEnvVariable(EnvVariable.DISCORD_TOKEN);
         skuddbot = new Skuddbot(token);
         skuddbot.registerCommands();
         skuddbot.buildAndLogin();

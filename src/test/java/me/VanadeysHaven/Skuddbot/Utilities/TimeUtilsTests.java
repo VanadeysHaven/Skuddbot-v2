@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class TimeUtilsTests {
 
-    private static long testCurrentTimeMillis = 1641074041290L;
-    private static long testTimeRemaining = 7558710;
+    private static final long testCurrentTimeMillis = 1641074041290L;
+    private static final long testTimeRemaining = 7558710;
 
     /*
     formatTimeRemaining
@@ -28,7 +28,7 @@ public class TimeUtilsTests {
 
     @Test
     public void testFormatTimeReturnsCorrectFormat(){
-        assertEquals("01-01-2022 22:54:01 (UTC)", TimeUtils.formatTime(testCurrentTimeMillis));
+        assertEquals("01-01-2022 21:54:01 (UTC)", TimeUtils.formatTime(testCurrentTimeMillis));
     }
 
 }

@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  database:
+    container_name: skuddbot_v2_database
+    build: database
+    ports:
+      - "3306:3306"
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - net
+    env_file: configs/.env
+  bot:
+    build: .
+    container_name: skuddbot_v2
+    networks:
+      - net
+    env_file: configs/.env
+    environment:
+      - MYSQL_HOST=skuddbot_v2_database
+
+
+volumes:
+  database:
+
+networks:
+  net:

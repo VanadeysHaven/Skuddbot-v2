@@ -16,11 +16,11 @@ public class HikariManager {
 
     private static HikariDataSource hikari = null;
 
-    public static void setup(String user, String pass){
+    public static void setup(String user, String pass, String databaseName, String host, String port){
         hikari = new HikariDataSource();
         hikari.setMaximumPoolSize(10);
 
-        hikari.setJdbcUrl("jdbc:mysql://localhost:3306/skuddbot_v2?serverTimezone=UTC&useLegacyDatetimeCode=false");
+        hikari.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + databaseName + "?serverTimezone=UTC&useLegacyDatetimeCode=false");
 //        hikari.addDataSourceProperty("serverName", "localhost");
 //        hikari.addDataSourceProperty("port", 3306);
 //        hikari.addDataSourceProperty("databaseName", "skuddbot_v2");
