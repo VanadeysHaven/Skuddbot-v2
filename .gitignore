@@ -5,4 +5,5 @@ modules
 .idea
 dependency-reduced-pom.xml
 GameLogs
-configs/.env
+configs
+!configs/.env-example
