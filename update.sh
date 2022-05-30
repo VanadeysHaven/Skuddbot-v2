@@ -16,7 +16,7 @@ echo "DEPLOY_TIME=$time_bot" >> configs/git.env
 
 if [ "$(docker ps -a | grep skuddbot_v2_database)" ]
   echo "Backing up database..."
-  sudo docker exec -it skuddbot_v2_database sh -c 'exec mysqldump ${MYSQL_DATABASE} -uroot -p"${MYSQL_ROOT_PASSWORD}"' > backup-$time_file.sql
+  sudo docker exec -it skuddbot_v2_database sh -c 'exec mysqldump ${MYSQL_DATABASE} -uroot -p"${MYSQL_ROOT_PASSWORD}"' > backups/backup-$time_file.sql
 then
 fi
 

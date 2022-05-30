@@ -9,3 +9,4 @@ configs
 !configs/.env-example
 !configs/global.env
 database/import_data
+backups
