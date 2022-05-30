@@ -1,15 +1,15 @@
 echo "Pulling latest version from Git..."
-sudo git pull
+git pull
 
-commit=$(sudo git log --pretty=format:'%h' -n 1)
-branch=$(sudo git branch --show-current)
+commit=$(git log --pretty=format:'%h' -n 1)
+branch=$(git branch --show-current)
 time_file=`date +%Y%m%d%H%M%S`
-time_bot=`date +%Y-%m-%d %H:%M:%S (UTC)`
+time_bot=`date +%Y-%m-%d %H:%M:%S \(UTC\)`
 
 echo "Deploying $branch > $commit"
 echo "Updating configs"
-sudo rm configs/git.env -f
-sudo touch configs/git.env
+rm configs/git.env -f
+touch configs/git.env
 echo "COMMIT=$commit" >> configs/git.env
 echo "BRANCH=$branch" >> configs/git.env
 echo "DEPLOY_TIME=$time_bot" >> configs/git.env
