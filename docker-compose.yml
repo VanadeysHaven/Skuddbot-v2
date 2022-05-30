@@ -19,7 +19,10 @@ services:
       - database
     networks:
       - net
-    env_file: configs/.env
+    env_file:
+      - configs/.env
+      - configs/git.env
+      - configs/global.env
     environment:
       - MYSQL_HOST=skuddbot_v2_database
     restart: unless-stopped

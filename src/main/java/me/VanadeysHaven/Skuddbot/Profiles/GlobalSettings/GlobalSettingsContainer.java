@@ -4,6 +4,7 @@ import me.VanadeysHaven.Skuddbot.Database.Query;
 import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
 import me.VanadeysHaven.Skuddbot.Utilities.AppearanceManager;
+import me.VanadeysHaven.Skuddbot.Utilities.EnvironmentVariables.EnvVarsManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 
 import java.sql.SQLException;
@@ -13,12 +14,12 @@ import java.util.HashMap;
  * Container for global settings.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.0
+ * @version 2.3.21
  * @since 2.0
  */
 public class GlobalSettingsContainer {
 
-    private HashMap<GlobalSetting,String> settings;
+    private final HashMap<GlobalSetting,String> settings;
 
     public GlobalSettingsContainer(GlobalSettingsSapling sapling){
         settings = new HashMap<>();
@@ -47,7 +48,10 @@ public class GlobalSettingsContainer {
     }
 
     public String getString(GlobalSetting setting){
-        return settings.get(setting);
+        if(!setting.hasLinkedEnvVariable()) return settings.get(setting);
+        String value = EnvVarsManager.getInstance().getEnvVariable(setting.getLinkedEnvVariable());
+        if(value.equals(setting.getLinkedEnvVariable().getDefaultValue())) return settings.get(setting);
+        return value;
     }
 
     public void setBoolean(GlobalSetting setting, boolean value){

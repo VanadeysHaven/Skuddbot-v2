@@ -3,20 +3,26 @@ sudo git pull
 
 commit=$(sudo git log --pretty=format:'%h' -n 1)
 branch=$(sudo git branch --show-current)
-time="Temp"
+time_file=`date +%Y%m%d%H%M%S`
+time_bot=`date +%Y-%m-%d %H:%M:%S (UTC)`
 
 echo "Deploying $branch > $commit"
+echo "Updating configs"
+sudo rm configs/git.env -f
+sudo touch configs/git.env
+echo "COMMIT=$commit" >> configs/git.env
+echo "BRANCH=$branch" >> configs/git.env
+echo "DEPLOY_TIME=$time_bot" >> configs/git.env
 
-echo "Backing up database..."
-sudo docker exec -it skuddbot_v2_database sh -c 'exec mysqldump ${MYSQL_DATABASE} -uroot -p"${MYSQL_ROOT_PASSWORD}"' > backup.sql
-
-echo "Updating database..."
-sudo docker exec -it skuddbot_v2_database sh -c 'exec mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" ${MYSQL_DATABASE} -e "INSERT INTO global_settings(setting, value) VALUE (\"commit\",\"$commit\") ON DUPLICATE KEY UPDATE value=\"$commit\";"'
-sudo docker exec -it skuddbot_v2_database sh -c 'exec mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" ${MYSQL_DATABASE} -e "INSERT INTO global_settings(setting, value) VALUE (?,?) ON DUPLICATE KEY UPDATE value=?;"'
-sudo docker exec -it skuddbot_v2_database sh -c 'exec mysql -uroot -p"${MYSQL_ROOT_PASSWORD}" ${MYSQL_DATABASE} -e "INSERT INTO global_settings(setting, value) VALUE (?,?) ON DUPLICATE KEY UPDATE value=?;"'
+if [ "$(docker ps -a | grep skuddbot_v2_database)" ]
+  echo "Backing up database..."
+  sudo docker exec -it skuddbot_v2_database sh -c 'exec mysqldump ${MYSQL_DATABASE} -uroot -p"${MYSQL_ROOT_PASSWORD}"' > backup-$time_file.sql
+fi
 
 echo "Shutting down bot..."
 sudo docker compose down
 
 echo "Rebuilding images and launching..."
-sudo docker compose up -d
+sudo docker compose up -d --remove-orphans --build
+
+echo

@@ -17,7 +17,11 @@ public enum EnvVariable {
     MYSQL_HOST     ("localhost"      ),
     MYSQL_DATABASE ("skuddbot_v2"    ),
     MYSQL_PORT     ("3306"           ),
-    DISCORD_TOKEN  ("your_token_here");
+    DISCORD_TOKEN  ("your_token_here"),
+    COMMIT         ("123abc"         ),
+    BRANCH         ("master"         ),
+    DEPLOY_TIME    ("today"          ),
+    VERSION        ("2.0"            );
 
     private final String defaultValue;
 
