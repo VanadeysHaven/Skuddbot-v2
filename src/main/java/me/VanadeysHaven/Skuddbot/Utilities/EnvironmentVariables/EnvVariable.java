@@ -19,7 +19,7 @@ public enum EnvVariable {
     MYSQL_PORT     ("3306"           ),
     DISCORD_TOKEN  ("your_token_here"),
     COMMIT         ("123abc"         ),
-    BRANCH         ("master"         ),
+    BRANCH         ("master_"        ),
     DEPLOY_TIME    ("today"          ),
     VERSION        ("2.0"            );
 
