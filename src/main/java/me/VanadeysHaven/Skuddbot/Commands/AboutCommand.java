@@ -14,7 +14,7 @@ import java.util.Arrays;
  * Shows information about the bot.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.21
  * @since 2.0
  */
 public class AboutCommand extends Command {
@@ -30,9 +30,8 @@ public class AboutCommand extends Command {
         eb.setAuthor("Skuddbot " + gsc.getString(GlobalSetting.VERSION), null, Main.getSkuddbot().getApi().getYourself().getAvatar());
         eb.setThumbnail(Main.getSkuddbot().getApi().getYourself().getAvatar());
 
-        for (GlobalSetting gs : new ArrayList<>(Arrays.asList(GlobalSetting.BUILD_TIME, GlobalSetting.DEPLOY_TIME, GlobalSetting.BRANCH, GlobalSetting.COMMIT, GlobalSetting.WIKI))) {
+        for (GlobalSetting gs : new ArrayList<>(Arrays.asList(GlobalSetting.DEPLOY_TIME, GlobalSetting.BRANCH, GlobalSetting.COMMIT, GlobalSetting.WIKI)))
             eb.addInlineField("__" + gs.getName() + ":__", gsc.getString(gs));
-        }
 
         message.getChannel().sendMessage(eb);
     }
