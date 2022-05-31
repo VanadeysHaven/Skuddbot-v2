@@ -2,6 +2,7 @@
   <configuration default="false" name="Run Bot" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="me.VanadeysHaven.Skuddbot.Main" />
     <module name="Skuddbot" />
+    <option name="PROGRAM_PARAMETERS" value="--skip-db-wait" />
     <extension name="net.ashald.envfile">
       <option name="IS_ENABLED" value="true" />
       <option name="IS_SUBST" value="false" />
@@ -11,6 +12,7 @@
       <ENTRIES>
         <ENTRY IS_ENABLED="true" PARSER="runconfig" />
         <ENTRY IS_ENABLED="true" PARSER="env" PATH="configs/.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" PATH="configs/global.env" />
       </ENTRIES>
     </extension>
     <method v="2">

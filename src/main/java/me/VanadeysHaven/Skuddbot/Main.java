@@ -15,6 +15,7 @@ import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.Timer;
 
 /**
@@ -40,8 +41,10 @@ public final class Main {
             System.exit(-1);
         }
 
-        logger.info("Waiting 10 seconds to allow database to finish starting up...");
-        Thread.sleep(10000);
+        if(!Arrays.asList(args).contains("--skip-db-wait")) {
+            logger.info("Waiting 10 seconds to allow database to finish starting up...");
+            Thread.sleep(10000);
+        }
 
         logger.info("Starting Skuddbot v2...");
         logger.info("Starting database connection for user " + envVars.getEnvVariable(EnvVariable.MYSQL_USER));
