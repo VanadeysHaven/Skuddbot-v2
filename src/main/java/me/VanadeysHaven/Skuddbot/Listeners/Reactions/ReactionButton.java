@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
  * Information about a reaction button.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.22
  * @since 2.1.1
  */
-public class ReactionButton {
+public final class ReactionButton {
 
     private static final Logger logger = LoggerFactory.getLogger(ReactionButton.class);
 
@@ -28,6 +28,8 @@ public class ReactionButton {
     private ReactionButtonRemovedCallback removedCallback;
     @Getter private long[] userLocks;
     @Getter @Setter private boolean enabled;
+    private long expireAt;
+    private boolean oneTimeUse;
 
     public ReactionButton(Message message, Emoji emoji, ReactionButtonClickedCallback clickedCallback, long... userLocks){
         this(message, emoji, clickedCallback, null, userLocks);
@@ -39,6 +41,8 @@ public class ReactionButton {
         this.clickedCallback = clickedCallback;
         this.removedCallback = removedCallback;
         this.userLocks = userLocks;
+        this.expireAt = -1;
+        this.oneTimeUse = false;
 
         enabled = true;
     }
@@ -46,6 +50,8 @@ public class ReactionButton {
     public void runClicked(User user){
         logger.info("Running clicked callback for user " + user.getIdAsString() + " on message id " + message.getId());
         clickedCallback.run(new ReactionButtonClickedEvent(message, emoji, user, this));
+
+        if(oneTimeUse) unregister();
     }
 
     public void runRemoved(User user){
@@ -79,6 +85,22 @@ public class ReactionButton {
 
     public boolean isRegistered(){
         return ReactionUtils.isRegistered(this);
+    }
+
+    public void expireAfter(long expireAfter) {
+        expireAt = System.currentTimeMillis() + expireAfter;
+    }
+
+    public boolean isExpired() {
+        return expireAt != -1 && expireAt < System.currentTimeMillis();
+    }
+
+    public void checkExpire() {
+        if(isExpired()) unregister();
+    }
+
+    public void setOneTimeUse() {
+        oneTimeUse = true;
     }
 
     @Override

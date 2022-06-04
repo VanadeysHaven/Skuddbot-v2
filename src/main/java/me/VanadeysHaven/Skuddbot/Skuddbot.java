@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot;
 
 import lombok.Getter;
+import me.VanadeysHaven.Skuddbot.Commands.*;
 import me.VanadeysHaven.Skuddbot.Commands.Donator.GameCommand;
 import me.VanadeysHaven.Skuddbot.Commands.Donator.ManageMessageCommand;
 import me.VanadeysHaven.Skuddbot.Commands.Donator.SetPingCommand;
@@ -8,9 +9,9 @@ import me.VanadeysHaven.Skuddbot.Commands.HelpCommand.HelpCommand;
 import me.VanadeysHaven.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandManager;
 import me.VanadeysHaven.Skuddbot.Commands.SuperAdmin.*;
-import me.VanadeysHaven.Skuddbot.Commands.Useless.*;
 import me.VanadeysHaven.Skuddbot.Commands.Useless.ActionCommands.HugCommand;
 import me.VanadeysHaven.Skuddbot.Commands.Useless.ActionCommands.PunchCommand;
+import me.VanadeysHaven.Skuddbot.Commands.Useless.*;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorMessage;
 import me.VanadeysHaven.Skuddbot.Listeners.JoinQuitServerListener;
 import me.VanadeysHaven.Skuddbot.Listeners.MessageListener;
@@ -24,7 +25,6 @@ import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSettingsSapling;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import me.VanadeysHaven.Skuddbot.Commands.*;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ import java.util.Iterator;
  * This class represents the bot, and is used to register commands and listeners.
  *
  * @author Tim (Vanadey's Haven)
- * @since 2.3.03
+ * @since 2.3.22
  * @version 2.0
  */
 public final class Skuddbot {
@@ -76,6 +76,8 @@ public final class Skuddbot {
                 new GlobalSettingsCommand(), new ClearCooldownCommand(), new SaluteCommand(), new PanicCommand(), new UserInfoCommand(), new AboutCommand(),
                 new ServerInfoCommand(), new BlackjackCommand(), new ChallengeCommand(), new InviteCommand(), new CurrenciesCommand(), new CurrenciesLeaderboardCommand(),
                 new DailyBonusCommand(), new DonCommand(), new FfaCommand(), new PurgeCommand(), new JackpotCommand());
+
+//        commandManager.registerCommand(new TestCommand());
 
         for(DonatorMessage.Type type : DonatorMessage.Type.values())
             if(type.isAcceptsImages())
