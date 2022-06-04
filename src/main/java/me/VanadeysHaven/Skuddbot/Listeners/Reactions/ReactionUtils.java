@@ -1,7 +1,6 @@
 package me.VanadeysHaven.Skuddbot.Listeners.Reactions;
 
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.Reaction;
 import org.javacord.api.entity.user.User;
@@ -25,23 +24,6 @@ public final class ReactionUtils {
     private static final Logger logger = LoggerFactory.getLogger(ReactionUtils.class);
 
     private final static ArrayList<ReactionButton> buttons = new ArrayList<>();
-
-    public static void run(ReactionAddEvent event) {
-        User user = event.getUser().orElse(null); assert user != null;
-        for(DebugReaction reaction : MessagesUtils.reactions){
-            if(user.isBot()) return;
-            Message message = event.getMessage().orElse(null); assert message != null;
-            if(message.getId() != reaction.getMessage().getId()) continue;
-            if(user.getId() != reaction.getMessage().getAuthor().getId() && !reaction.isIgnoreUser()) continue;
-
-            Reaction reactionObject = event.getReaction().orElse(null); assert reactionObject != null;
-            String unicode = reactionObject.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
-            if(!unicode.equals(reaction.getEmoji().getUnicode())) continue;
-
-            reaction.post();
-            return;
-        }
-    }
 
     public static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonClickedCallback clickedCallback, long... userLocks){
         return registerButton(message, emoji, clickedCallback, null,false, userLocks);

@@ -89,7 +89,6 @@ public final class Skuddbot {
         api.addMessageCreateListener(event -> this.commandManager.process(event.getMessage()));
         api.addMessageCreateListener(event -> MessageListener.run(event.getMessage()));
         logger.info("Registering ReactionAddListener...");
-        api.addReactionAddListener(ReactionUtils::run);
         api.addReactionAddListener(ReactionUtils::runClicked);
         logger.info("Registering ReactionRemoveListener...");
         api.addReactionRemoveListener(ReactionUtils::runRemoved);
