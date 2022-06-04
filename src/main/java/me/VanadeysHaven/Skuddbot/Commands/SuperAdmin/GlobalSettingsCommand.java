@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.SuperAdmin;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
@@ -17,7 +18,7 @@ import org.javacord.api.entity.message.Message;
  * Command for editing global settings.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class GlobalSettingsCommand extends Command {
@@ -27,8 +28,9 @@ public class GlobalSettingsCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        String[] args = content.split(" ");
+    public void run(CommandRequest request) {
+        String[] args = request.getContent().split(" ");
+        Message message = request.getMessage();
         GlobalSetting setting = null;
         String newValue = "";
         if(args.length >= 2) {
