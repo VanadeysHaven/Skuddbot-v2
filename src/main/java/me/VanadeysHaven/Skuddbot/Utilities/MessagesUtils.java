@@ -2,6 +2,9 @@ package me.VanadeysHaven.Skuddbot.Utilities;
 
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.DebugReaction;
+import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButton;
+import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButtonClickedCallback;
+import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.VanadeysHaven.Skuddbot.Main;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
@@ -13,16 +16,24 @@ import java.util.ArrayList;
  * Utilities to do with Messages.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.22
  * @since 2.0
  */
-public class MessagesUtils {
+public final class MessagesUtils {
 
-    public static ArrayList<DebugReaction> reactions = new ArrayList<>(); //TODO: CLEANUP
+    @Deprecated public static ArrayList<DebugReaction> reactions = new ArrayList<>(); //TODO: CLEANUP
 
     public static void addReaction(Message message, Emoji emoji, String output, long expireTime, boolean ignoreUser){
-        message.addReaction(emoji.getUnicode());
-        reactions.add(new DebugReaction(output, emoji, message, message.getChannel(), System.currentTimeMillis() + expireTime, ignoreUser));
+        ReactionButtonClickedCallback callback = event -> sendEmoji(message.getChannel(), emoji, output);
+
+        ReactionButton button;
+        if(ignoreUser)
+            button = ReactionUtils.registerButton(message, emoji, callback);
+        else
+            button = ReactionUtils.registerButton(message, emoji, callback, message.getAuthor().getId());
+
+        button.expireAfter(expireTime);
+        button.setOneTimeUse();
     }
 
     public static void addReaction(Message message, Emoji emoji, String output){

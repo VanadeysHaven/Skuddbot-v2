@@ -5,10 +5,7 @@ import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonRemovedEvent;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
-import me.VanadeysHaven.Skuddbot.Minigames.GameLogs.GenericGameLog;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.ServerMember;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import me.VanadeysHaven.Skuddbot.Utilities.TimeUtils;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 
@@ -27,16 +24,7 @@ public final class TestCommand extends Command {
 
     @Override
     public void run(Message message, String content) {
-        long curTime = System.currentTimeMillis();
-        GenericGameLog log = new GenericGameLog("test_" + curTime, "Test Log: " + TimeUtils.formatTime(curTime));
-        ServerMember member = new ServerMember(message.getServer().get().getId(), message.getAuthor().getId());
-
-        log.addToLog("Hi!");
-        log.addToLog("I'm a game log!");
-        log.addToLog("I was created at " + TimeUtils.formatTime(curTime) + " by " + member.getGameLogName());
-        log.addToLog("Thank you for reading!");
-
-        log.sendLog(message, Emoji.MAILBOX_WITH_MAIL, 1);
+        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Test", 60000, false);
     }
 
     private class TestInstance {

@@ -17,14 +17,14 @@ import java.util.Arrays;
  * Listens to reactions being added to messages.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.22
  * @since 2.0
  */
-public class ReactionUtils {
+public final class ReactionUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(ReactionUtils.class);
 
-    private static ArrayList<ReactionButton> buttons = new ArrayList<>();
+    private final static ArrayList<ReactionButton> buttons = new ArrayList<>();
 
     public static void run(ReactionAddEvent event) {
         User user = event.getUser().orElse(null); assert user != null;
@@ -89,6 +89,12 @@ public class ReactionUtils {
         ReactionButton button = getButton(user, message, reaction);
 
         if(button != null) button.runRemoved(user);
+    }
+
+    public static void checkExpire(){
+        for(ReactionButton button : buttons){
+            button.checkExpire();
+        }
     }
 
     private static ReactionButton getButton(User user, Message message, Reaction reaction){
