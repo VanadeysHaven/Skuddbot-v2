@@ -1,7 +1,6 @@
 package me.VanadeysHaven.Skuddbot.Utilities;
 
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
-import me.VanadeysHaven.Skuddbot.Listeners.Reactions.DebugReaction;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButtonClickedCallback;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
@@ -9,8 +8,6 @@ import me.VanadeysHaven.Skuddbot.Main;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-
-import java.util.ArrayList;
 
 /**
  * Utilities to do with Messages.
@@ -20,8 +17,6 @@ import java.util.ArrayList;
  * @since 2.0
  */
 public final class MessagesUtils {
-
-    @Deprecated public static ArrayList<DebugReaction> reactions = new ArrayList<>(); //TODO: CLEANUP
 
     public static void addReaction(Message message, Emoji emoji, String output, long expireTime, boolean ignoreUser){
         ReactionButtonClickedCallback callback = event -> sendEmoji(message.getChannel(), emoji, output);
