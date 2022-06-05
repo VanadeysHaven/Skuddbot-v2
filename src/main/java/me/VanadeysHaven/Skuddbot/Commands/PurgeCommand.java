@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
@@ -17,7 +18,7 @@ import java.util.concurrent.ExecutionException;
  * Command used to purge messages.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.2.1
  */
 public class PurgeCommand extends Command {
@@ -29,13 +30,13 @@ public class PurgeCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        String str = content.split(" ")[1];
-        if(!MiscUtils.isInt(content.split(" ")[1]))
-            MessagesUtils.addReaction(message, Emoji.X, str + " is not a integer.");
+    public void run(CommandRequest request) {
+        String str = request.getArgs()[1];
+        if(!MiscUtils.isInt(str))
+            MessagesUtils.addReaction(request.getMessage(), Emoji.X, str + " is not a integer.");
         int amountToDelete = Integer.parseInt(str);
 
-        new PurgeOperation(message, amountToDelete);
+        new PurgeOperation(request.getMessage(), amountToDelete);
     }
 
     private class PurgeOperation {

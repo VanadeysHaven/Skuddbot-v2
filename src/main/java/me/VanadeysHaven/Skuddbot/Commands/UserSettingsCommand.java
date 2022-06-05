@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Exceptions.CooldownException;
 import me.VanadeysHaven.Skuddbot.Exceptions.SettingOutOfBoundsException;
@@ -18,8 +19,6 @@ import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableRow;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.MessageAuthor;
 import org.javacord.api.entity.server.Server;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 
@@ -27,14 +26,13 @@ import java.util.Arrays;
  * Used for viewing and changing usersettings
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class UserSettingsCommand extends Command {
 
     private static final ProfileManager pm = ProfileManager.getInstance();
     private static final ServerManager sm = ServerManager.getInstance();
-    private static Logger logger = LoggerFactory.getLogger(UserSettingsCommand.class);
 
 
     public UserSettingsCommand() {
@@ -42,11 +40,12 @@ public class UserSettingsCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        String[] args = content.split(" ");
-        MessageAuthor user = message.getAuthor();
-        Server server = message.getServer().orElse(null); assert server != null;
+    public void run(CommandRequest request) {
+        String[] args = request.getArgs();
+        MessageAuthor user = request.getSender();
+        Server server = request.getServer();
         SkuddUser su = pm.getUser(server.getId(), user.getId());
+        Message message = request.getMessage();
         UserSetting setting = null;
         String newValue = "";
 

@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
@@ -17,7 +18,7 @@ import org.javacord.api.entity.user.User;
  * Used for viewing experience.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class ExperienceCommand extends Command {
@@ -27,12 +28,13 @@ public class ExperienceCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        User user = message.getAuthor().asUser().orElse(null); assert user != null;
-        Server server = message.getServer().orElse(null); assert server != null;
+    public void run(CommandRequest request) {
+        User user = request.getUser();
+        Server server = request.getServer();
         SkuddUser su = pm.getUser(server.getId(), user.getId());
         PermissionManager authorPermissions = su.getPermissions();
-        String[] args = content.split(" ");
+        String[] args = request.getArgs();
+        Message message = request.getMessage();
 
         if(args.length >= 2){
             if(!message.getMentionedUsers().isEmpty()){
@@ -44,7 +46,7 @@ public class ExperienceCommand extends Command {
             su = pm.getUser(server.getId(), user.getId());
         }
 
-        if(user.getId() != message.getAuthor().getId() && su.getSettings().getBoolean(UserSetting.PROFILE_PRIVATE) && !authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)){
+        if(user.getId() != request.getSender().getId() && su.getSettings().getBoolean(UserSetting.PROFILE_PRIVATE) && !authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)){
             MessagesUtils.addReaction(message, Emoji.X, "This user has set their stats to private.");
             return;
         }

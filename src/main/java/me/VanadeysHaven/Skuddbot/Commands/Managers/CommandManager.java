@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * This class is responsible for registering commands and process incoming requests for commands.
  *
  * @author Tim (Vanadey's Haven)
- * @since 2.1.1
+ * @since 2.3.23
  * @version 2.0
  */
 public class CommandManager implements HelpGenerator {
@@ -145,7 +145,7 @@ public class CommandManager implements HelpGenerator {
                 if (requestedInvoker.equalsIgnoreCase(invoker)) {
                     if (command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
                         if (permissions.hasPermission(command.getRequiredPermission())) {
-                            command.run(message, messageContent);
+                            command.run(new CommandRequest(message));
                         } else {
                             MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
                         }
@@ -167,7 +167,7 @@ public class CommandManager implements HelpGenerator {
                 if(requestedInvoker.equalsIgnoreCase(invoker)){
                     if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
                         if(permissions.hasPermission(command.getRequiredPermission())) {
-                            command.run(message, messageContent);
+                            command.run(new CommandRequest(message));
                         }
                     }
                 }
@@ -190,7 +190,7 @@ public class CommandManager implements HelpGenerator {
                 if(requestedInvoker.equalsIgnoreCase(invoker)){
                     if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.DM){
                         if(permissions.hasPermission(command.getRequiredPermission())){
-                            command.run(message, messageContent);
+                            command.run(new CommandRequest(message));
                         }
                     } else {
                         MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
@@ -210,7 +210,7 @@ public class CommandManager implements HelpGenerator {
                 if(requestedInvoker.equalsIgnoreCase(invoker)){
                     if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
                         if(permissions.hasPermission(command.getRequiredPermission())) {
-                            command.run(message, messageContent);
+                            command.run(new CommandRequest(message));
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Minigames.FreeForAll;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Exceptions.InsufficientBalanceException;
 import me.VanadeysHaven.Skuddbot.Exceptions.InvalidBetException;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * The command for Free for All
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.1
+ * @version 2.3.23
  * @since 2.2
  */
 public final class FfaCommand extends Command {
@@ -32,14 +33,16 @@ public final class FfaCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        String[] args = content.split(" ");
-        Server server = message.getServer().orElse(null); assert server != null;
-        User user = message.getUserAuthor().orElse(null); assert user != null;
-        TextChannel channel = message.getChannel();
+    public void run(CommandRequest request) {
+        String[] args = request.getArgs();
+        Server server = request.getServer();
+        User user = request.getUser();
+        TextChannel channel = request.getChannel();
         SkuddUser su = pm.getUser(server.getId(), user.getId());
         ServerMember member = su.asMember();
         FfaGameManager manager = getManager(server.getId());
+        Message message = request.getMessage();
+
         if(manager.isOnCooldown(user.getId())){
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You are still wounded from the last fight, you must wait 5 minutes between games.");
             return;

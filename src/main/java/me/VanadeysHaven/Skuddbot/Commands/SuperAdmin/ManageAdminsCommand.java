@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.SuperAdmin;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Database.Query;
 import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Database.QueryResult;
@@ -21,7 +22,7 @@ import java.sql.SQLException;
  * Command used to add admins.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class ManageAdminsCommand extends Command {
@@ -42,8 +43,9 @@ public class ManageAdminsCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        String[] args = content.split(" ");
+    public void run(CommandRequest request) {
+        String[] args = request.getContent().split(" ");
+        Message message = request.getMessage();
 
         if(args.length < 3){
             MessagesUtils.addReaction(message, Emoji.X, "Not enough arguments! `!admins <add/remove> <id>`");

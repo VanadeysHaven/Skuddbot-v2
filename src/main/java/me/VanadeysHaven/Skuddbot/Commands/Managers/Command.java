@@ -5,7 +5,6 @@ import me.VanadeysHaven.Skuddbot.Donator.DonatorManager;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
-import org.javacord.api.entity.message.Message;
 
 import java.text.MessageFormat;
 
@@ -92,7 +91,7 @@ public abstract class Command {
         return wikiUrl;
     }
 
-    public abstract void run(Message message, String content);
+    public abstract void run(CommandRequest request);
 
     public enum Location {
         SERVER, DM, BOTH

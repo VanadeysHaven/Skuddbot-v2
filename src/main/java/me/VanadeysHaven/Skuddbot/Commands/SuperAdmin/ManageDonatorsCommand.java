@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.SuperAdmin;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorManager;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
@@ -17,7 +18,7 @@ import java.util.HashMap;
  * Used to manage donators.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class ManageDonatorsCommand extends Command {
@@ -35,8 +36,9 @@ public class ManageDonatorsCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        String[] args = content.split(" ");
+    public void run(CommandRequest request) {
+        String[] args = request.getContent().split(" ");
+        Message message = request.getMessage();
 
         if(args.length < 3){
             MessagesUtils.addReaction(message, Emoji.X, "Not enough arguments! `!donators <add/remove> <id>`");
@@ -72,7 +74,7 @@ public class ManageDonatorsCommand extends Command {
                     MessagesUtils.addReaction(message, Emoji.WARNING, "This user is not a donator.");
                     return;
                 }
-                if(!confirm.containsKey(message.getAuthor().getId()) || confirm.get(message.getAuthor().getId()) != id){
+                if(!confirm.containsKey(message.getAuthor().getId()) || confirm.get(message.getAuthor().getId()) != id){ //TODO: BETTER CONFIRMATION
                     MessagesUtils.addReaction(message, Emoji.WARNING, "This action will delete all donator data associated with " + user.getDiscriminatedName() + "'s account and remove them as a donator! If you continue, there's no way back. **Run this command again to confirm you action!**");
                     confirm.put(message.getAuthor().getId(), id);
                     return;

@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
@@ -21,7 +22,7 @@ import java.util.concurrent.ExecutionException;
  * Command used to see and edit user currencies.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.1.1
  */
 public class CurrenciesCommand extends Command {
@@ -31,11 +32,14 @@ public class CurrenciesCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        Server server = message.getServer().orElse(null); assert server != null;
-        User author = message.getUserAuthor().orElse(null); assert author != null;
+    public void run(CommandRequest request) {
+        Server server = request.getServer();
+        User author = request.getUser();
         User user = author;
-        String[] args = content.split(" ");
+        String[] args = request.getArgs();
+        Message message = request.getMessage();
+        String content = request.getContent();
+
         if(!message.getMentionedUsers().isEmpty())
             user = message.getMentionedUsers().get(0);
 
@@ -67,7 +71,7 @@ public class CurrenciesCommand extends Command {
             if(currency.isShowWhenZero() || su.getCurrencies().getInt(currency) > 0)
                 eb.addInlineField("__" + currency.getName() + ":__", su.getCurrencies().getString(currency) + " " + currency.getSuffix());
 
-        message.getChannel().sendMessage(eb);
+        request.getChannel().sendMessage(eb);
     }
 
     private void editValue(Message message, String content, SkuddUser su, User user, Server server) {

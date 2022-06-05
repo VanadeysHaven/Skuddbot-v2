@@ -1,14 +1,14 @@
 package me.VanadeysHaven.Skuddbot.Commands.Useless;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.message.Message;
 
 /**
  * We all sometimes need a little panic in our lives.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class PanicCommand extends Command {
@@ -18,8 +18,8 @@ public class PanicCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        MessagesUtils.sendPlain(message.getChannel(), "EVERYONE PANIC!!!");
+    public void run(CommandRequest request) {
+        MessagesUtils.sendPlain(request.getChannel(), "EVERYONE PANIC!!!");
     }
 
 }

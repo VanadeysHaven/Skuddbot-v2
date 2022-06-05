@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
@@ -20,7 +21,7 @@ import java.awt.*;
  * Used for viewing info about users.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class UserInfoCommand extends Command {
@@ -30,16 +31,18 @@ public class UserInfoCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        Server server = message.getServer().orElse(null);
+    public void run(CommandRequest request) {
+        Server server = request.getServer();
         EmbedBuilder eb = new EmbedBuilder();
         SkuddUser su = null;
-        User user = message.getUserAuthor().orElse(null); assert user != null;
+        User user = request.getUser();
+        Message message = request.getMessage();
+        String[] args = request.getArgs();
 
         if(message.getMentionedUsers().size() > 0) {
             user = message.getMentionedUsers().get(0);
-        } else if(content.split(" ").length >= 2){
-            String idStr = content.split(" ")[1];
+        } else if(args.length >= 2){
+            String idStr = args[1];
             if(MiscUtils.isLong(idStr)){
                 User attemptUser = Main.getSkuddbot().getApi().getUserById(Long.parseLong(idStr)).join();
                 if(attemptUser != null) {
@@ -82,12 +85,12 @@ public class UserInfoCommand extends Command {
             for (Role role : user.getRoles(server)) {
                 sbRoles.append(", ").append(role.getName());
             }
-            eb.addField("__Server Roles:__", MiscUtils.stripEveryone(sbRoles.toString().substring(2).trim()));
+            eb.addField("__Server Roles:__", MiscUtils.stripEveryone(sbRoles.substring(2).trim()));
         }
 
         eb.setColor(color);
         eb.setFooter("Skuddbot " + Main.getSkuddbot().getGlobalSettings().getString(GlobalSetting.VERSION));
 
-        message.getChannel().sendMessage(eb);
+        request.getChannel().sendMessage(eb);
     }
 }

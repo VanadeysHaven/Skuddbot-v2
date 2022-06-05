@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
@@ -21,7 +22,7 @@ import java.util.LinkedHashMap;
  * Command for currency leaderboards.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.1.1
  */
 public class CurrenciesLeaderboardCommand extends Command {
@@ -33,17 +34,19 @@ public class CurrenciesLeaderboardCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
+    public void run(CommandRequest request) {
         long startTime = System.currentTimeMillis();
-        Server server = message.getServer().orElse(null); assert server != null;
+        Server server = request.getServer();
         SkuddServer ss = sm.getServer(server.getId());
-        String[] args = content.split(" ");
+        String[] args = request.getArgs();
+        Message message = request.getMessage();
+
         Currency currency ;
         if(args.length < 2){
             currency = Currency.SKUDDBUX;
         } else {
             if (args[1].equalsIgnoreCase("list")) {
-                MessagesUtils.sendPlain(message.getChannel(), "Available currencies: \n\n" + Currency.formatCurrencies());
+                MessagesUtils.sendPlain(request.getChannel(), "Available currencies: \n\n" + Currency.formatCurrencies());
                 return;
             } else {
                 try {

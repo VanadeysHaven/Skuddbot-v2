@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.Useless;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import org.javacord.api.entity.message.Message;
@@ -11,7 +12,7 @@ import org.javacord.api.entity.user.User;
  * (╯°□°）╯︵ n ou
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class FlipCommand extends Command {
@@ -21,9 +22,10 @@ public class FlipCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        Server server = message.getServer().orElse(null);
-        String[] args = content.split(" ");
+    public void run(CommandRequest request) {
+        Message message = request.getMessage();
+        Server server = request.getServer();
+        String[] args = request.getContent().split(" ");
         if(args.length < 2) {
             MessagesUtils.sendPlain(message.getChannel(), "(╯°□°）╯︵ " + MiscUtils.flipText("WHAT DO YOU WANT TO FLIP?!"));
             return;

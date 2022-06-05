@@ -2,6 +2,7 @@ package me.VanadeysHaven.Skuddbot.Commands;
 
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
@@ -30,7 +31,7 @@ import java.util.concurrent.ExecutionException;
  * Used to view and edit stats.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.2
+ * @version 2.3.23
  * @since 2.0
  */
 public final class StatsCommand extends Command {
@@ -50,8 +51,11 @@ public final class StatsCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
+    public void run(CommandRequest request) {
+        String content = request.getContent();
+        Message message = request.getMessage();
         String[] args = content.split(" ");
+
         if(args.length >= 5)
             editValue(message, content);
         else if(args.length >= 1)

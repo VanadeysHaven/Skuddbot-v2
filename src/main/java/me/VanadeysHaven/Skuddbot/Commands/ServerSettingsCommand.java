@@ -2,6 +2,7 @@ package me.VanadeysHaven.Skuddbot.Commands;
 
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
@@ -27,7 +28,7 @@ import java.util.List;
  * Command for viewing and altering server settings.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class ServerSettingsCommand extends Command {
@@ -42,11 +43,12 @@ public class ServerSettingsCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content){
-        String[] args = content.split(" ");
-        Server server = message.getServer().orElse(null); assert server != null;
+    public void run(CommandRequest request) {
+        String[] args = request.getArgs();
+        Server server = request.getServer();
         SkuddServer ss = sm.getServer(server.getId());
         ServerSetting setting = null;
+        Message message = request.getMessage();
         String newValue = "";
         if(args.length >= 2) {
             setting = fromString(args[1]);
