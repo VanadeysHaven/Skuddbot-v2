@@ -81,4 +81,8 @@ public class CommandRequest {
         return user;
     }
 
+    public String[] getArgs() {
+        return getContent().split(" ");
+    }
+
 }

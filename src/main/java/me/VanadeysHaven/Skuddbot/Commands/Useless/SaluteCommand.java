@@ -25,8 +25,8 @@ import java.util.HashMap;
 public class SaluteCommand extends NoPrefixCommand {
 
     private static final int COOLDOWN = 15;
-    private HashMap<Long, CooldownManager> cooldowns = new HashMap<>();
-    private static RNGManager random = new RNGManager();
+    private final HashMap<Long, CooldownManager> cooldowns = new HashMap<>();
+    private final static RNGManager random = new RNGManager();
 
     public SaluteCommand() {
         super(new String[]{"o7"}, "o7 CMDR", null, PermissionLevel.DEFAULT, Location.BOTH);

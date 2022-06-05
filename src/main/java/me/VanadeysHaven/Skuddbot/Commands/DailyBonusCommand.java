@@ -2,11 +2,11 @@ package me.VanadeysHaven.Skuddbot.Commands;
 
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSettingsContainer;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.CurrenciesContainer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSettingsContainer;
@@ -26,7 +26,7 @@ import java.util.Date;
  * Command used to claim daily bonuses.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.2
+ * @version 2.3.23
  * @since 2.1.1
  */
 public class DailyBonusCommand extends Command {
@@ -79,8 +79,9 @@ public class DailyBonusCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        Server server = message.getServer().orElse(null); assert server != null;
+    public void run(CommandRequest request) {
+        Server server = request.getServer();
+        Message message = request.getMessage();
         SkuddUser user = pm.getUser(server.getId(), message.getAuthor().getId());
         SkuddServer sServer = sm.getServer(server.getId());
         ServerSettingsContainer settings = sServer.getSettings();
@@ -140,8 +141,8 @@ public class DailyBonusCommand extends Command {
             bonusStr += "\n**SEASONAL BONUS APPLIED:** " + calculator.getAppliedBonus().getMessage();
         }
 
-        String msg = MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), multiplierString, bonusStr, calculator.getCurrencyBonus(), calculator.getExperienceBonus(), streakString);
-        MessagesUtils.sendPlain(message.getChannel(), msg);
+        String msg = MessageFormat.format(MESSAGE_FORMAT, request.getSender().getDisplayName(), multiplierString, bonusStr, calculator.getCurrencyBonus(), calculator.getExperienceBonus(), streakString);
+        MessagesUtils.sendPlain(request.getChannel(), msg);
     }
 
     static class Helper {
@@ -275,10 +276,6 @@ public class DailyBonusCommand extends Command {
                 }
 
                 return this;
-            }
-
-            public boolean hasMissedDays(){
-                return missedDays > 0;
             }
 
             public boolean isBonusApplied(){

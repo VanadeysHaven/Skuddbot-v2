@@ -1,13 +1,13 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import org.javacord.api.entity.message.Message;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 
 /**
  * Command used to get the invite link for the bot.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.1
  */
 public class InviteCommand extends Command {
@@ -17,8 +17,8 @@ public class InviteCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        message.getChannel().sendMessage("You can use this link to invite the bot to your server: <https://discordapp.com/oauth2/authorize?client_id=209779487309692929&scope=bot&permissions=8>\n" +
+    public void run(CommandRequest request) {
+        request.getChannel().sendMessage("You can use this link to invite the bot to your server: <https://discordapp.com/oauth2/authorize?client_id=209779487309692929&scope=bot&permissions=8>\n" +
                 "You can use this link to join the Skuddbot Test server: <https://discord.gg/GmrwEka>");
     }
 }

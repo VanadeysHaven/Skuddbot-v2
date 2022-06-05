@@ -1,11 +1,11 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.channel.ServerVoiceChannel;
-import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
@@ -16,7 +16,7 @@ import java.util.Optional;
  * Command used for viewing server information.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class ServerInfoCommand extends Command {
@@ -26,8 +26,8 @@ public class ServerInfoCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        Server server = message.getServer().orElse(null); assert server != null;
+    public void run(CommandRequest request) {
+        Server server = request.getServer();
         EmbedBuilder eb = new EmbedBuilder();
         User owner = server.getOwner().orElse(null); assert owner != null;
 
@@ -53,7 +53,7 @@ public class ServerInfoCommand extends Command {
         eb.addInlineField("__Verification Level:__", server.getVerificationLevel().name());
         eb.addField("__Default Notifications:__", server.getDefaultMessageNotificationLevel().name());
 
-        message.getChannel().sendMessage(eb);
+        request.getChannel().sendMessage(eb);
     }
 
 }

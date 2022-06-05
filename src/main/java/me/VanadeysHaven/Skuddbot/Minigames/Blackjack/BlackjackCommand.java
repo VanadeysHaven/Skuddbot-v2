@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Minigames.Blackjack;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Exceptions.InsufficientBalanceException;
 import me.VanadeysHaven.Skuddbot.Exceptions.InvalidBetException;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * Command used for invoking the blackjack game.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3
+ * @version 2.3.23
  * @since 2.0
  */
 public class BlackjackCommand extends Command {
@@ -30,12 +31,13 @@ public class BlackjackCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        String[] args = content.split(" ");
-        Server server = message.getServer().orElse(null); assert server != null;
+    public void run(CommandRequest request) {
+        String[] args = request.getArgs();
+        Server server = request.getServer();
         BlackjackGameManager manager = getManager(server.getId());
-        Identifier id = new Identifier(server.getId(), message.getAuthor().getId());
+        Identifier id = new Identifier(server.getId(), request.getSender().getId());
         SkuddUser su = pm.getUser(id);
+        Message message = request.getMessage();
 
         if(manager.isOnCooldown(id)){
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You are currently on cooldown, to prevent gambling addictions you must wait 1 minute between games.");

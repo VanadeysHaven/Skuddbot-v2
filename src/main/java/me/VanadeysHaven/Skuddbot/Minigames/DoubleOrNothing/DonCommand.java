@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Minigames.DoubleOrNothing;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Exceptions.InsufficientBalanceException;
 import me.VanadeysHaven.Skuddbot.Exceptions.InvalidBetException;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * Command for starting a game of double or nothing.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3
+ * @version 2.3.23
  * @since 2.1.1
  */
 public class DonCommand extends Command {
@@ -31,12 +32,13 @@ public class DonCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        String[] args = content.split(" ");
-        Server server = message.getServer().orElse(null); assert server != null;
-        User user = message.getAuthor().asUser().orElse(null); assert user != null;
+    public void run(CommandRequest request) {
+        String[] args = request.getArgs();
+        Server server = request.getServer();
+        User user = request.getUser();
         SkuddUser su = pm.getUser(server.getId(), user.getId());
         DonGameManager manager = getManager(server.getId());
+        Message message = request.getMessage();
 
         if (manager.isOnCooldown(user.getId())) {
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You must wait 1 minute between games.");
