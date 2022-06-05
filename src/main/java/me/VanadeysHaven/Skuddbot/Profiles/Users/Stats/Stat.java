@@ -6,6 +6,7 @@ import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Database.QueryResult;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
 import me.VanadeysHaven.Skuddbot.Profiles.DataContainers.Data;
+import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 
 import java.sql.SQLException;
@@ -105,7 +106,7 @@ public enum Stat implements Data {
 
     public static void setup(){
         saveToDatabase();
-        StatPageManager.getInstance().calculate();
+        PageManager.getInstance().calculate();
     }
 
     private static void saveToDatabase(){
