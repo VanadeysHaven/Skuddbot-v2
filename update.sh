@@ -3,6 +3,7 @@ mkdir database/import_data -p
 mkdir backups -p
 
 echo "Pulling latest version from Git..."
+git fetch
 git pull
 
 commit=$(git log --pretty=format:'%h' -n 1)
