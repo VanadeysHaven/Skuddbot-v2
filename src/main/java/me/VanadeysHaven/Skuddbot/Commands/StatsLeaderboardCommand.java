@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
@@ -15,8 +16,6 @@ import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableRow;
 import org.apache.commons.lang3.StringUtils;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 
@@ -24,12 +23,10 @@ import java.util.LinkedHashMap;
  * Command for stat leaderboards.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class StatsLeaderboardCommand extends Command {
-
-    private static final Logger logger = LoggerFactory.getLogger(StatsLeaderboardCommand.class);
 
     private static final int LEADERBOARD_LIMIT = 10;
 
@@ -38,18 +35,19 @@ public class StatsLeaderboardCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
+    public void run(CommandRequest request) {
         long startTime = System.currentTimeMillis();
-        Server server = message.getServer().orElse(null); assert server != null;
+        Server server = request.getServer();
         SkuddServer ss = sm.getServer(server.getId());
         String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
-        String[] args = content.split(" ");
+        String[] args = request.getArgs();
+        Message message = request.getMessage();
         if(args.length < 2){
             MessagesUtils.addReaction(message, Emoji.X, "You need to specify which stat leaderboard you want to view. Use `" + commandPrefix + " list` to view all available stats.");
             return;
         }
         if(args[1].equalsIgnoreCase("list")){
-            MessagesUtils.sendPlain(message.getChannel(), "Available stats: \n\n" + Stat.formatStats());
+            MessagesUtils.sendPlain(request.getChannel(), "Available stats: \n\n" + Stat.formatStats());
             return;
         }
         Stat stat;
@@ -99,7 +97,7 @@ public class StatsLeaderboardCommand extends Command {
         String sb = "**" + stat.getCategory().getName() + ": " + stat.getName() + " leaderboard** | **" + server.getName() + "**\n```\n" +
                 new TableDrawer(tag).drawTable() +
                 "```" + "\n" + "Generated in `" + (System.currentTimeMillis() - startTime) + "ms`";
-        MessagesUtils.sendPlain(message.getChannel(), sb.trim());
+        MessagesUtils.sendPlain(request.getChannel(), sb.trim());
     }
 
     private String getName(Identifier id, Server server){

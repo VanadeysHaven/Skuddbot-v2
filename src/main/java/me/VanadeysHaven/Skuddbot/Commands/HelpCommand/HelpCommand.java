@@ -2,6 +2,7 @@ package me.VanadeysHaven.Skuddbot.Commands.HelpCommand;
 
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
@@ -21,7 +22,7 @@ import java.util.List;
  * Help for commands
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public class HelpCommand extends Command {
@@ -41,31 +42,32 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String content) {
-        User author = message.getUserAuthor().orElse(null); assert author != null;
+    public void run(CommandRequest request) {
+        User user = request.getUser();
         long serverId = -1;
-        Server server = message.getServer().orElse(null);
+        Server server = request.getServer();
+        Message message = request.getMessage();
         if(server != null)
             serverId = server.getId();
 
-        TextChannel channel = author.getPrivateChannel().orElse(author.openPrivateChannel().join());
-        int pages = getPageAmount(author.getId(), serverId);
+        TextChannel channel = user.getPrivateChannel().orElse(user.openPrivateChannel().join());
+        int pages = getPageAmount(user.getId(), serverId);
 
-        if(hasActiveOverview(author.getId())) {
+        if(hasActiveOverview(user.getId())) {
             if(serverId == -1)
                 MessagesUtils.addReaction(message, Emoji.X, "You already have a active overview.");
             else {
-                getOverview(author.getId()).setServer(server);
+                getOverview(user.getId()).setServer(server);
                 MessagesUtils.addReaction(message, Emoji.MAILBOX_WITH_MAIL, "Head back to your DM's, the help message has been updated.");
                 MessagesUtils.sendPlain(channel, "ding").delete();
             }
         } else {
             if (serverId == -1)
-                overviews.add(new Overview(pages, channel, author));
+                overviews.add(new Overview(pages, channel, user));
             else
-                overviews.add(new Overview(pages, channel, author, server));
+                overviews.add(new Overview(pages, channel, user, server));
 
-            if (message.getChannel().getType() != ChannelType.PRIVATE_CHANNEL)
+            if (request.getChannel().getType() != ChannelType.PRIVATE_CHANNEL)
                 MessagesUtils.addReaction(message, Emoji.MAILBOX_WITH_MAIL, "Sliding into the DM's... :smirk:");
         }
     }

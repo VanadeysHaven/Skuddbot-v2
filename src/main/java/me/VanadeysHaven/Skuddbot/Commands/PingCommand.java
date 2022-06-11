@@ -1,15 +1,15 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.message.Message;
 
 /**
  * This class is a simple ping command.
  *
  * @author Tim (Vanadey's Haven)
- * @since 2.2.1
+ * @since 2.3.23
  * @version 2.0
  */
 public class PingCommand extends Command {
@@ -19,16 +19,16 @@ public class PingCommand extends Command {
     }
 
     @Override
-    public void run(Message message, String messageContent) {
-        if(dm.isDonator(message.getAuthor().getId())){
-            String text = dm.getUser(message.getAuthor().getId()).getPingMessage();
+    public void run(CommandRequest request) {
+        if(dm.isDonator(request.getSender().getId())){
+            String text = dm.getUser(request.getSender().getId()).getPingMessage();
             if(text != null){
-                MessagesUtils.sendEmoji(message.getChannel(), Emoji.WHITE_CHECK_MARK, text);
+                MessagesUtils.sendEmoji(request.getChannel(), Emoji.WHITE_CHECK_MARK, text);
                 return;
             }
         }
 
-        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "PONG!");
+        MessagesUtils.addReaction(request.getMessage(), Emoji.WHITE_CHECK_MARK, "PONG!");
     }
 
 }

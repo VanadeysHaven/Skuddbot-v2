@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.Useless.ActionCommands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
@@ -17,20 +18,20 @@ import java.text.MessageFormat;
  * Hugs punches, whatever, this command can do it.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.3.23
  * @since 2.0
  */
 public abstract class ActionCommand extends Command {
-
 
     public ActionCommand(String[] invokers, String description) {
         super(invokers, description, "https://wiki.skuddbot.xyz/commands/action-commands");
     }
 
     @Override
-    public void run(Message message, String content) {
-        Server server = message.getServer().orElse(null); assert server != null;
-        User user = message.getUserAuthor().orElse(null); assert user != null;
+    public void run(CommandRequest request) {
+        Message message = request.getMessage();
+        Server server = request.getServer();
+        User user = request.getUser();
         User selectedUser;
         try {
             selectedUser = getRandomActiveUser(user, server);
