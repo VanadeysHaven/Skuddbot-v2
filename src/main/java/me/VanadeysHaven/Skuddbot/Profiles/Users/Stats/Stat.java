@@ -7,6 +7,8 @@ import me.VanadeysHaven.Skuddbot.Database.QueryResult;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
 import me.VanadeysHaven.Skuddbot.Profiles.DataContainers.Data;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageManager;
+import me.VanadeysHaven.Skuddbot.Profiles.Pages.Pageable;
+import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageableCategory;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 
 import java.sql.SQLException;
@@ -16,11 +18,11 @@ import java.util.ArrayList;
  * Constants for user stats.
  *
  * @author Tim (Vanadey's Haven)
- * @since 2.3.2
+ * @since 2.3.24
  * @version 2.0
  */
 @Getter
-public enum Stat implements Data {
+public enum Stat implements Data, Pageable<Stat.Category> {
 
     EXPERIENCE                  ("xp",                      ValueType.INTEGER, "Experience",                 "xp",           "0",  Category.NO_CATEGORY,       true,  true,  true,  true ),
     CHALLENGE_WINS              ("chlng_wins",              ValueType.INTEGER, "Wins",                       "wins",         "0",  Category.CHALLENGE,         true,  true,  true,  true ),
@@ -206,7 +208,7 @@ public enum Stat implements Data {
     }
 
     @Getter
-    public enum Category {
+    public enum Category implements PageableCategory {
         NO_CATEGORY       ("Not categorized",     true ),
         CHALLENGE         ("Challenge",           true ),
         FREE_FOR_ALL      ("Free for All",        true ),

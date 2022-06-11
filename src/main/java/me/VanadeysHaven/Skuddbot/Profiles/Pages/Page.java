@@ -3,6 +3,7 @@ package me.VanadeysHaven.Skuddbot.Profiles.Pages;
 import lombok.Getter;
 import lombok.Setter;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
+import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,114 +22,226 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory> {
 
     private static final Logger logger = LoggerFactory.getLogger(Page.class);
 
-    private static final int MAX_SIZE = 21;
+    /**
+     * The maximum amount of items per page.
+     */
+    private static final int MAX_SIZE = PageManager.MAX_SIZE;
 
+    /**
+     * The page number.
+     */
     @Getter @Setter private int pageNumber;
+    /**
+     * The items in the page.
+     */
     @Getter private List<T> pageItems;
-    private PageManager pageManager;
+    /**
+     * The page manager that manages this page.
+     */
+    private final PageManager pageManager;
 
-    public Page(int pageNumber, List<T> pageItems) {
+    /**
+     * Constructor for Page.
+     * @param pageNumber The page number.
+     * @param pageItems The items in the page.
+     * @param pageManager The page manager.
+     */
+    public Page(int pageNumber, List<T> pageItems, PageManager pageManager) {
         this.pageNumber = pageNumber;
         this.pageItems = pageItems;
+        this.pageManager = pageManager;
     }
 
-    public EmbedBuilder generatePage(){
-        EmbedBuilder eb = new EmbedBuilder();
+    /**
+     * Generates the embed for the page.
+     *
+     * @return The embed for the page.
+     */
+    public EmbedBuilder generatePage(SkuddUser user){
+        EmbedBuilder eb = new EmbedBuilder(); //Create a new embed builder.
 
-        String[] title = getPageTitle().split("\n");
-        eb.setAuthor(title[0]);
-        eb.setTitle(title[1]);
+        String[] title = getPageTitle() //Get the title of the page.
+                .replace("$user", user.asMember().getDisplayName()) //Replace $user with the user's display name.
+                .replace("$server", user.asMember().getServer().getName()) //Replace $server with the server's name.
+                .split("\n"); //Split the title into multiple lines.
+        eb.setAuthor(title[0]); //Set the author of the embed with the first line of the title.
+        eb.setTitle(title[1]); //Set the title of the embed with the second line of the title.
 
-        C category = null;
-        for(T item : pageItems) {
-            if(item.getCategory() != category){
-                category = item.getCategory();
-                eb.addField("\u200B", category.getName() + ": ", false);
+        C category = null; //Initialize category variable.
+        for(T item : pageItems) { //Iterate over all items in the page.
+            if(item.getCategory() != category){ //If the category of the item is different from the category of the last item.
+                category = item.getCategory(); //Set the category to the category of the item.
+                eb.addField("\u200B", category.getName() + ": ", false); //Create new category header
             }
 
-            String data = getData(item);
+            String data = getData(item, user); //Get the data for the item.
             if(data == null)
-                continue;
+                continue; //If the data is null, skip current item.
 
-            eb.addField("__" + item.getName() + ":__", data, true);
+            eb.addField("__" + item.getName() + ":__", data, true); //Add the item to the embed.
         }
 
-        eb.addField("\u200B", "\u200b", false);
-        addFooter(eb);
+        addFooter(eb); //Add the footer to the embed.
 
-        return eb;
+        return eb; //Return the embed.
     }
 
+    /**
+     * Adds the footer to the embed.
+     *
+     * @param eb The embed builder that  the footer will be added to.
+     */
     private void addFooter(EmbedBuilder eb){
-        eb.addField("\u200B", "\u200B", false);
-        eb.addField("__Page:__", pageNumber + "/" + pageManager.getPageAmount(), true);
-        eb.addField("__Navigate between pages:__", Emoji.ARROW_LEFT.getUnicode() + " and " + Emoji.ARROW_RIGHT.getUnicode(), true);
-        eb.addField("__Refresh current page:__", Emoji.ARROWS_CC.getUnicode(), true);
+        eb.addField("\u200B", "\u200B", false); //Add a blank field
+        eb.addField("__Page:__", pageNumber + "/" + pageManager.getPageAmount(), true); //add the page indicator
+        eb.addField("__Navigate between pages:__", Emoji.ARROW_LEFT.getUnicode() + " and " + Emoji.ARROW_RIGHT.getUnicode(), true); //add the navigation instructions
+        eb.addField("__Refresh current page:__", Emoji.ARROWS_CC.getUnicode(), true); //add the refresh instructions
     }
 
+    /**
+     * Merges the page with the given page.
+     *
+     * @param page The page to merge with.
+     */
     public void mergeWith(Page<T, C> page){
-        if(!canMerge(page)) throw new IllegalStateException("These pages can't be merged.");
+        if(!canMerge(page)) //If the pages can't be merged, throw an exception.
+            throw new IllegalStateException("These pages can't be merged.");
 
-        List<T> list = new ArrayList<>(pageItems);
-        list = mergeLists(list, page.getPageItems());
+        List<T> list = new ArrayList<>(pageItems); //Create a new list of items.
+        list = mergeLists(list, page.getPageItems()); //Merge the lists.
 
-        pageItems = list;
+        pageItems = list; //Set the page items to the merged list.
     }
 
-    public Page trimPage(){
-        if(!exceedsMaxLength()) throw new IllegalStateException("This page doesn't exceed the max length.");
 
-        List<T> currentPage = new ArrayList<>(pageItems);
-        List<T> newPage = currentPage.subList(MAX_SIZE, currentPage.size());
-        currentPage = currentPage.subList(0, MAX_SIZE);
+    /**
+     * Trims the current page to the max size, and returns a new page with the remainder.
+     *
+     * @return A new page with the remainder.
+     * @throws IllegalStateException If the current page doesn't need to be trimmed.
+     */
+    public Page<T,C> trimPage(){
+        if(!exceedsMaxLength()) //check if the current page needs to be trimmed and throw an exception if it doesn't
+            throw new IllegalStateException("This page doesn't exceed the max length.");
 
-        pageItems = currentPage;
+        List<T> currentPage = new ArrayList<>(pageItems); //create a new list of the current page
+        List<T> newPage = currentPage.subList(MAX_SIZE, currentPage.size()); //create a new list of the page after the max length
+        currentPage = currentPage.subList(0, MAX_SIZE); //trim the current page to the max length
 
-        return new Page(-1, newPage); //TODO: FIND SOLUTION
+        pageItems = currentPage; //set the current page to the trimmed page
+
+        return constructNewPage(pageNumber + 1, newPage, pageManager); //construct and return the child page
     }
 
+    /**
+     * Abstract method that constructs a new Page.
+     *
+     * @param pageNumber The page number of the new page.
+     * @param pageItems The items of the new page.
+     * @param pageManager The page manager of the new page.
+     * @return A new page.
+     */
+    protected abstract Page<T,C> constructNewPage(int pageNumber, List<T> pageItems, PageManager pageManager);
+
+    /**
+     * Checks if a given page can merge with the current page.
+     *
+     * @param page The page to check.
+     * @return True if the pages can be merged, false otherwise.
+     */
     public boolean canMerge(Page<T, C> page){
-        return exceedsMaxLength(mergeLists(getPageItems(), page.getPageItems()));
+        return exceedsMaxLength(mergeLists(getPageItems(), page.getPageItems())); //return whether the merged list exceeds the max length
     }
 
+    /**
+     * Merges two lists together.
+     *
+     * @param list1 The first list.
+     * @param list2 The second list.
+     * @return The merged list.
+     */
     private List<T> mergeLists(List<T> list1, List<T> list2){
-        List<T> list = new ArrayList<>(list1);
-        list.addAll(list2);
+        List<T> list = new ArrayList<>(list1); //create a new list with items from the first list
+        list.addAll(list2); //add all items from the second list
 
-        return list;
+        return list; //return the merged list
     }
 
+    /**
+     * Checks if the current page exceeds the max length.
+     *
+     * @return True if the current page exceeds the max length, false otherwise.
+     */
     private boolean exceedsMaxLength(){
-        return exceedsMaxLength(pageItems);
+        return exceedsMaxLength(pageItems); //return whether the current page exceeds the max length
     }
 
+    /**
+     * Checks if a given list exceeds the max length.
+     *
+     * @param list The list to check.
+     * @return True if the list exceeds the max length, false otherwise.
+     */
     private boolean exceedsMaxLength(List<T> list) {
-        return getElementCount(list) > MAX_SIZE;
+        return getElementCount(list) > MAX_SIZE; //return whether the list exceeds the max length
     }
 
+    /**
+     * Gets the amount of elements in the current page.
+     *
+     * @return The amount of elements in the current page.
+     */
     private int getElementCount(){
-        return getElementCount(pageItems);
+        return getElementCount(pageItems); //return the amount of elements in the current page
     }
 
+    /**
+     * Gets the amount of elements in a given list.
+     *
+     * @param list The list to count.
+     * @return The amount of elements in the list.
+     */
     private int getElementCount(List<T> list){
         return getCategoryCount(list) + list.size();
     }
 
+    /**
+     * Gets the amount of categories in the current page.
+     * @return The amount of categories in the current page.
+     */
     private int getCategoryCount(){
-        return getCategoryCount(pageItems);
+        return getCategoryCount(pageItems); //return the amount of categories in the current page
     }
 
+    /**
+     * Gets the amount of categories in a given list.
+     *
+     * @param list The list to count.
+     * @return The amount of categories in the list.
+     */
     private int getCategoryCount(List<T> list){
-        List<C> counted = new ArrayList<>();
-        for(T item : list)
+        List<C> counted = new ArrayList<>(); //create a new list of counted categories
+        for(T item : list) //iterate over all items in the list
             if(!counted.contains(item.getCategory()))
-                counted.add(item.getCategory());
+                counted.add(item.getCategory()); //add the category to the list if it isn't already in the list
 
-        return counted.size();
+        return counted.size(); //return the amount of categories in the list
     }
 
+    /**
+     * Method for getting the page title.
+     *
+     * @return The page title.
+     */
     public abstract String getPageTitle();
 
-    public abstract String getData(T item);
+    /**
+     * Method for getting the data associated with an item.
+     *
+     * @param item The item to get the data for.
+     * @param user
+     * @return The data associated with the item.
+     */
+    public abstract String getData(T item, SkuddUser user);
 
 }
