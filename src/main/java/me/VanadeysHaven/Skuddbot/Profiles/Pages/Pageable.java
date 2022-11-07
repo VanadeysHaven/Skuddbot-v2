@@ -13,4 +13,6 @@ public interface Pageable<C> {
 
     C getCategory();
 
+    boolean isShow();
+
 }

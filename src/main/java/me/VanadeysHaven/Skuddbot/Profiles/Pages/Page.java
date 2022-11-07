@@ -18,7 +18,7 @@ import java.util.List;
  * @version 2.3.24
  * @since 2.3.24
  */
-public abstract class Page<T extends Pageable<C>, C extends PageableCategory> {
+public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>> {
 
     private static final Logger logger = LoggerFactory.getLogger(Page.class);
 
@@ -38,7 +38,7 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory> {
     /**
      * The page manager that manages this page.
      */
-    private final PageManager pageManager;
+    private final PageManager<T,C> pageManager;
 
     /**
      * Constructor for Page.
@@ -46,7 +46,7 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory> {
      * @param pageItems The items in the page.
      * @param pageManager The page manager.
      */
-    public Page(int pageNumber, List<T> pageItems, PageManager pageManager) {
+    public Page(int pageNumber, List<T> pageItems, PageManager<T,C> pageManager) {
         this.pageNumber = pageNumber;
         this.pageItems = pageItems;
         this.pageManager = pageManager;
@@ -130,18 +130,8 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory> {
 
         pageItems = currentPage; //set the current page to the trimmed page
 
-        return constructNewPage(pageNumber + 1, newPage, pageManager); //construct and return the child page
+        return pageManager.constructNewPage(pageNumber + 1, newPage, pageManager); //construct and return the child page
     }
-
-    /**
-     * Abstract method that constructs a new Page.
-     *
-     * @param pageNumber The page number of the new page.
-     * @param pageItems The items of the new page.
-     * @param pageManager The page manager of the new page.
-     * @return A new page.
-     */
-    protected abstract Page<T,C> constructNewPage(int pageNumber, List<T> pageItems, PageManager pageManager);
 
     /**
      * Checks if a given page can merge with the current page.
@@ -172,7 +162,7 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory> {
      *
      * @return True if the current page exceeds the max length, false otherwise.
      */
-    private boolean exceedsMaxLength(){
+    public boolean exceedsMaxLength(){
         return exceedsMaxLength(pageItems); //return whether the current page exceeds the max length
     }
 
@@ -239,7 +229,7 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory> {
      * Method for getting the data associated with an item.
      *
      * @param item The item to get the data for.
-     * @param user
+     * @param user The user we should get the data for.
      * @return The data associated with the item.
      */
     public abstract String getData(T item, SkuddUser user);

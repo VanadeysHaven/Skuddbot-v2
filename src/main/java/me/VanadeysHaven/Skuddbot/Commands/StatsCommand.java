@@ -38,7 +38,7 @@ public final class StatsCommand extends Command {
     private static final int OVERVIEW_EXPIRE_TIME = 10; //in minutes
 
     private static final Logger logger = LoggerFactory.getLogger(StatsCommand.class);
-    private static final PageManager spm = PageManager.getInstance();
+    private static final PageManager spm = PageManager.getInstance(); //todo: fix
     private static final UserUtils uu = UserUtils.getInstance();
 
     private static final String INVALID_ARGS = "Invalid argument usage:\n" +

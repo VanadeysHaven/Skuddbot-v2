@@ -6,13 +6,13 @@ import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Database.QueryResult;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
 import me.VanadeysHaven.Skuddbot.Profiles.DataContainers.Data;
-import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.Pageable;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageableCategory;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Constants for user stats.
@@ -108,7 +108,7 @@ public enum Stat implements Data, Pageable<Stat.Category> {
 
     public static void setup(){
         saveToDatabase();
-        PageManager.getInstance().calculate();
+        //PageManager.getInstance().calculate(); //todo: fix
     }
 
     private static void saveToDatabase(){
@@ -208,7 +208,7 @@ public enum Stat implements Data, Pageable<Stat.Category> {
     }
 
     @Getter
-    public enum Category implements PageableCategory {
+    public enum Category implements PageableCategory<Stat> {
         NO_CATEGORY       ("Not categorized",     true ),
         CHALLENGE         ("Challenge",           true ),
         FREE_FOR_ALL      ("Free for All",        true ),
@@ -229,6 +229,10 @@ public enum Stat implements Data, Pageable<Stat.Category> {
             return getByCategory(this);
         }
 
+        @Override
+        public List<Stat> getItems() {
+            return getByCategory(this);
+        }
     }
 
 }
