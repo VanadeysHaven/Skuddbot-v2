@@ -64,6 +64,8 @@ public enum Stat implements Data, Pageable<Stat.Category> {
     DON_LOSSES                  ("don_losses",              ValueType.INTEGER, "Losses",                     "losses",       "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true,  true ),
     DON_LONGEST_STREAK          ("don_longest_streak",      ValueType.INTEGER, "Longest double up streak",   "times",        "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true,  true );
 
+    private static final StatPageManager pageManager = new StatPageManager();
+
     private final String dbReference;
     private final ValueType type;
     private final String name;
@@ -108,7 +110,7 @@ public enum Stat implements Data, Pageable<Stat.Category> {
 
     public static void setup(){
         saveToDatabase();
-        //PageManager.getInstance().calculate(); //todo: fix
+        pageManager.calculatePages(Category.values());
     }
 
     private static void saveToDatabase(){
@@ -205,6 +207,10 @@ public enum Stat implements Data, Pageable<Stat.Category> {
     @Override
     public Query getDeleteQuery() {
         return Query.DELETE_STAT_VALUE;
+    }
+
+    public static StatPageManager getPageManager() {
+        return pageManager;
     }
 
     @Getter

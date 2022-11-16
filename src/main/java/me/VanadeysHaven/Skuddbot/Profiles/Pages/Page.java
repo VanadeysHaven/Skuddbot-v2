@@ -3,8 +3,10 @@ package me.VanadeysHaven.Skuddbot.Profiles.Pages;
 import lombok.Getter;
 import lombok.Setter;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
+import me.VanadeysHaven.Skuddbot.Profiles.DataContainers.DataContainer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +66,7 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
                 .replace("$user", user.asMember().getDisplayName()) //Replace $user with the user's display name.
                 .replace("$server", user.asMember().getServer().getName()) //Replace $server with the server's name.
                 .split("\n"); //Split the title into multiple lines.
-        eb.setAuthor(title[0]); //Set the author of the embed with the first line of the title.
+        eb.setAuthor(title[0], null, getPageAuthorImage(user.asMember().getUser())); //Set the author of the embed with the first line of the title and the author image.
         eb.setTitle(title[1]); //Set the title of the embed with the second line of the title.
 
         C category = null; //Initialize category variable.
@@ -140,7 +142,7 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
      * @return True if the pages can be merged, false otherwise.
      */
     public boolean canMerge(Page<T, C> page){
-        return exceedsMaxLength(mergeLists(getPageItems(), page.getPageItems())); //return whether the merged list exceeds the max length
+        return !exceedsMaxLength(mergeLists(getPageItems(), page.getPageItems())); //return whether the merged list exceeds the max length
     }
 
     /**
@@ -224,6 +226,14 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
      * @return The page title.
      */
     public abstract String getPageTitle();
+
+    /**
+     * Method for getting the author image url for the embed.
+     *
+     * @param user The user that the page is for
+     * @return The author image url for the embed.
+     */
+    public abstract String getPageAuthorImage(User user);
 
     /**
      * Method for getting the data associated with an item.

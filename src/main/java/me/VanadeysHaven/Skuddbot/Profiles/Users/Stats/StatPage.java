@@ -3,6 +3,7 @@ package me.VanadeysHaven.Skuddbot.Profiles.Users.Stats;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.Page;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
+import org.javacord.api.entity.user.User;
 
 import java.util.List;
 
@@ -30,16 +31,16 @@ public class StatPage extends Page<Stat, Stat.Category> {
      * @inheritDoc
      */
     @Override
-    protected Page<Stat, Stat.Category> constructNewPage(int pageNumber, List<Stat> pageItems, PageManager<Stat, Stat.Category> pageManager) {
-        return new StatPage(pageNumber, pageItems, pageManager); //Constructs new StatPage and return it.
+    public String getPageTitle() {
+        return "Stats for: $user\nServer: $server";
     }
 
     /**
      * @inheritDoc
      */
     @Override
-    public String getPageTitle() {
-        return "Stats for: $user\nServer: $server";
+    public String getPageAuthorImage(User user) {
+        return user.getAvatar().getUrl().toString();
     }
 
     /**

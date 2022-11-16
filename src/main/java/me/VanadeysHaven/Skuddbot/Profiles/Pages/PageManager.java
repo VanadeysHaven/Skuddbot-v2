@@ -15,19 +15,13 @@ import java.util.List;
  */
 public abstract class PageManager<T extends Pageable<C>, C extends PageableCategory<T>> {
 
-    /**
-     * The logger for this class.
-     */
+    /** The logger for this class. */
     private static final Logger logger = LoggerFactory.getLogger(PageManager.class);
 
-    /**
-     * The maximum amount of elements per page.
-     */
+    /** The maximum amount of elements per page. */
     public static final int MAX_SIZE = 21;
 
-    /**
-     * List that contains the pages.
-     */
+    /** List that contains the pages. */
     private final List<Page<T, C>> pages;
 
     /**
@@ -74,6 +68,18 @@ public abstract class PageManager<T extends Pageable<C>, C extends PageableCateg
     }
 
     /**
+     * Get the page with the specified page number.
+     *
+     * @param pageNumber The page number to get the page for.
+     * @return The page with the specified page number.
+     */
+    public Page<T,C> getPage(int pageNumber){
+        if(pageNumber <= 0 || pageNumber > getPageAmount()) throw new IllegalArgumentException("Page " + pageNumber + " does not exist."); //if page number does not exist, throw exception.
+
+        return pages.get(pageNumber - 1); // return the page, -1 because page numbers start at 1, but indexes start at 0.
+    }
+
+    /**
      * Adds a page to the list of pages.
      * @param page The page to add.
      */
@@ -91,6 +97,14 @@ public abstract class PageManager<T extends Pageable<C>, C extends PageableCateg
         return pages.size(); //Returns the amount of pages.
     }
 
+    /**
+     * Constructs a new page.
+     *
+     * @param pageNumber The page number of the page.
+     * @param items The items that should be on the page.
+     * @param pageManager The page manager that should be used for the page.
+     * @return The new page.
+     */
     public abstract Page<T,C> constructNewPage(int pageNumber, List<T> items, PageManager<T,C> pageManager);
 
 
