@@ -3,7 +3,6 @@ package me.VanadeysHaven.Skuddbot.Profiles.Pages;
 import lombok.Getter;
 import lombok.Setter;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
-import me.VanadeysHaven.Skuddbot.Profiles.DataContainers.DataContainer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;

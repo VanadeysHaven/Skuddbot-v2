@@ -1,33 +1,24 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
-import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
-import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
-import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButton;
-import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.VanadeysHaven.Skuddbot.Main;
-import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PagedEmbed;
 import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.StatPageManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
-import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 /**

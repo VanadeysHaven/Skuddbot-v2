@@ -1,7 +1,6 @@
 package me.VanadeysHaven.Skuddbot.Timers;
 
 import me.VanadeysHaven.Skuddbot.Commands.ServerSettingsCommand;
-import me.VanadeysHaven.Skuddbot.Commands.StatsCommand;
 import me.VanadeysHaven.Skuddbot.Minigames.FreeForAll.FfaCommand;
 import me.VanadeysHaven.Skuddbot.Minigames.GameLogs.GameLogSender;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PagedEmbed;
