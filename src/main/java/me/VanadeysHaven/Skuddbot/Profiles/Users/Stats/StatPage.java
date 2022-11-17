@@ -35,6 +35,12 @@ public class StatPage extends Page<Stat, Stat.Category> {
 
     /** @inheritDoc */
     @Override
+    public String getPageDescription() {
+        return null;
+    }
+
+    /** @inheritDoc */
+    @Override
     public String getPageAuthorImage(SkuddUser user, SkuddServer server) {
         return user.asMember().getUser().getAvatar().getUrl().toString();
     }

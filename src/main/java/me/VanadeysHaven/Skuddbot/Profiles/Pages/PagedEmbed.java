@@ -10,7 +10,6 @@ import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButtonRemovedCallba
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -131,7 +130,7 @@ public class PagedEmbed {
      */
     private void sendMessage(){
         if(message == null)  // If the message is null.
-            message = MessagesUtils.sendEmbed(channel, getContent()); // Send the message.
+            message = channel.sendMessage(getDescription(), getContent()).join(); // Send the message
         else // If the message is not null.
             message.edit(getContent()); // Edit the message.
     }
@@ -214,6 +213,16 @@ public class PagedEmbed {
      */
     public void setAutoExpire(int expireAfter){ //seconds
         setAutoExpire((long)expireAfter * 1000); // Set the expiry at time.
+    }
+
+
+    /**
+     * Gets the description of the paged embed.
+     *
+     * @return The description of the paged embed.
+     */
+    private String getDescription(){
+        return pageManager.getPage(page).getPageDescription(); // Get the description for the page.
     }
 
     /**

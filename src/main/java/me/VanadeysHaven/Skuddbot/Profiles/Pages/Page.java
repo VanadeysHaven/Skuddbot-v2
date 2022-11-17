@@ -231,6 +231,13 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
     public abstract String getPageTitle();
 
     /**
+     * Method for getting the page description. This is sent as the content of the message along with the embed.
+     *
+     * @return The page description.
+     */
+    public abstract String getPageDescription();
+
+    /**
      * Method for getting the author image url for the embed.
      *
      * @param user The user to get the author image url for. Can be null if the page isn't user specific.
