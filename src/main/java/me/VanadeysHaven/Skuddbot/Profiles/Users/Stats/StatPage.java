@@ -32,7 +32,7 @@ public class StatPage extends Page<Stat, Stat.Category> {
      */
     @Override
     public String getPageTitle() {
-        return "Stats for: $user\nServer: $server";
+        return "Stats for: $user\n__Server:__ $server";
     }
 
     /**
