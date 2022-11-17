@@ -12,7 +12,9 @@ import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Constants for user stats.
@@ -98,14 +100,16 @@ public enum Stat implements Data, Pageable<Stat.Category> {
         return null;
     }
 
-    public static ArrayList<Stat> getByCategory(Category category){
-        ArrayList<Stat> stats = new ArrayList<>();
-
-        for(Stat stat : values())
-            if(stat.getCategory() == category)
-                stats.add(stat);
-
-        return stats;
+    /**
+     * Get all stats that are in the given category
+     *
+     * @param category The category to get stats from
+     * @return A list of stats in the given category
+     */
+    public static List<Stat> getByCategory(Category category){
+        return Arrays.stream(values()) // create a stream of all the values
+                .filter(stat -> stat.getCategory() == category) // filter out all the values that don't match the category
+                .collect(Collectors.toList()); // collect the values into a list and return it
     }
 
     public static void setup(){
