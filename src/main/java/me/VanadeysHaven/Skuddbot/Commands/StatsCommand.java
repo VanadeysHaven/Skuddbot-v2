@@ -7,6 +7,7 @@ import me.VanadeysHaven.Skuddbot.Enums.ValueType;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PagedEmbed;
 import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
+import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.StatPageManager;
@@ -77,7 +78,8 @@ public final class StatsCommand extends Command {
             }
         }
 
-        new PagedEmbed(pageManager, message.getChannel(), ProfileManager.getInstance().getUser(server.getId(), target.getId()), author.getId());
+        new PagedEmbed(pageManager, message.getChannel(), ProfileManager.getInstance().getUser(server.getId(), target.getId()),
+                ServerManager.getInstance().getServer(server.getId()), author.getId()); //create new embed to show the stats
     }
 
     private void editValue(Message message, String content) { // command name stat operation amount

@@ -2,8 +2,8 @@ package me.VanadeysHaven.Skuddbot.Profiles.Users.Stats;
 
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.Page;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageManager;
+import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
-import org.javacord.api.entity.user.User;
 
 import java.util.List;
 
@@ -27,27 +27,21 @@ public class StatPage extends Page<Stat, Stat.Category> {
         super(pageNumber, pageItems, pageManager);
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     @Override
     public String getPageTitle() {
         return "Stats for: $user\n__Server:__ $server";
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     @Override
-    public String getPageAuthorImage(User user) {
-        return user.getAvatar().getUrl().toString();
+    public String getPageAuthorImage(SkuddUser user, SkuddServer server) {
+        return user.asMember().getUser().getAvatar().getUrl().toString();
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     @Override
-    public String getData(Stat item, SkuddUser user) {
+    public String getData(Stat item, SkuddUser user, SkuddServer server) {
         StatsContainer stats = user.getStats(); //Gets the stats container for the user.
         if(item == Stat.EXPERIENCE) //If the item is experience.
             return stats.formatLevel(); //Format the level.

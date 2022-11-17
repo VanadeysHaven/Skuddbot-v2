@@ -8,6 +8,7 @@ import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButtonClickedCallback;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButtonRemovedCallback;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
+import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import org.javacord.api.entity.channel.TextChannel;
@@ -63,6 +64,8 @@ public class PagedEmbed {
     private List<ReactionButton> buttons;
     /** The user that the paged embed is for. */
     private SkuddUser user;
+    /** The server that the paged embed is for. */
+    private SkuddServer server;
     /** The user that initiated the paged embed.*/
     private long callerId;
 
@@ -71,16 +74,18 @@ public class PagedEmbed {
      *
      * @param pageManager The page manager that manages the pages to be displayed.
      * @param channel The channel in which the paged embed will be displayed in.
-     * @param user The user that the paged embed is for.
+     * @param user The user that the paged embed is for. Can be null if the paged embed is not for a user.
+     * @param server The server that the paged embed is for.
      * @param callerId The user that initiated the paged embed.
      */
-    public PagedEmbed(PageManager<?,?> pageManager, TextChannel channel, SkuddUser user, long callerId) {
+    public PagedEmbed(PageManager<?,?> pageManager, TextChannel channel, SkuddUser user, SkuddServer server, long callerId) {
         this.pageManager = pageManager; // Set the page manager.
         page = 1; // Set the page to 1.
         this.maxPage = pageManager.getPageAmount(); // Set the max page to the amount of pages in the page manager.
         this.channel = channel; // Set the channel.
         buttons = new ArrayList<>(); // Create a new list for the buttons.
         this.user = user; // Set the user.
+        this.server = server; // Set the server.
         this.callerId = callerId; // Set the caller ID.
 
         setAutoExpire(1800); // Set the auto-expire to 30 minutes.
@@ -217,7 +222,7 @@ public class PagedEmbed {
      * @return The content of the page.
      */
     private EmbedBuilder getContent() {
-        return pageManager.getPage(page).generatePage(user); // Get the content of the page.
+        return pageManager.getPage(page).generatePage(user, server); // Get the content of the page.
     }
 
 }

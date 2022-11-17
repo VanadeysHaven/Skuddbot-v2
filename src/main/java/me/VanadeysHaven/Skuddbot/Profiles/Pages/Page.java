@@ -3,9 +3,9 @@ package me.VanadeysHaven.Skuddbot.Profiles.Pages;
 import lombok.Getter;
 import lombok.Setter;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
+import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,16 +56,18 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
     /**
      * Generates the embed for the page.
      *
+     * @param user The user to generate the embed for. Can be null if the page is not user-specific.
+     * @param server The server to generate the embed for.
      * @return The embed for the page.
      */
-    public EmbedBuilder generatePage(SkuddUser user){
+    public EmbedBuilder generatePage(SkuddUser user, SkuddServer server){
         EmbedBuilder eb = new EmbedBuilder(); //Create a new embed builder.
 
         String[] title = getPageTitle() //Get the title of the page.
-                .replace("$user", user.asMember().getDisplayName()) //Replace $user with the user's display name.
-                .replace("$server", user.asMember().getServer().getName()) //Replace $server with the server's name.
+                .replace("$user", getUserName(user)) //Replace $user with the user's display name.
+                .replace("$server", getServerName(server)) //Replace $server with the server's name.
                 .split("\n"); //Split the title into multiple lines.
-        eb.setAuthor(title[0], null, getPageAuthorImage(user.asMember().getUser())); //Set the author of the embed with the first line of the title and the author image.
+        eb.setAuthor(title[0], null, getPageAuthorImage(user, server)); //Set the author of the embed with the first line of the title and the author image.
         eb.setTitle(title[1]); //Set the title of the embed with the second line of the title.
 
         C category = null; //Initialize category variable.
@@ -75,7 +77,7 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
                 eb.addField("\u200B", category.getName() + ": ", false); //Create new category header
             }
 
-            String data = getData(item, user); //Get the data for the item.
+            String data = getData(item, user, server); //Get the data for the item.
             if(data == null)
                 continue; //If the data is null, skip current item.
 
@@ -229,18 +231,43 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
     /**
      * Method for getting the author image url for the embed.
      *
-     * @param user The user that the page is for
+     * @param user The user to get the author image url for. Can be null if the page isn't user specific.
+     * @param server The server to get the author image url for.
      * @return The author image url for the embed.
      */
-    public abstract String getPageAuthorImage(User user);
+    public abstract String getPageAuthorImage(SkuddUser user, SkuddServer server);
 
     /**
      * Method for getting the data associated with an item.
      *
      * @param item The item to get the data for.
-     * @param user The user we should get the data for.
+     * @param user The user to get the data for. Can be null if the page isn't user specific.
+     * @param server The server that the page is for.
      * @return The data associated with the item.
      */
-    public abstract String getData(T item, SkuddUser user);
+    public abstract String getData(T item, SkuddUser user, SkuddServer server);
+
+    /**
+     * Method for getting the server name for a specified server.
+     *
+     * @param server The server to get the name for.
+     * @return The server for the specified server.
+     */
+    public String getServerName(SkuddServer server){
+        return server.getName(); //return the server name
+    }
+
+    /**
+     * Method for getting the username for a specified user.
+     *
+     * @param user The user to get the name for. Can be null if the page isn't user specific.
+     * @return The username for the specified user.
+     */
+    public String getUserName(SkuddUser user) {
+        if(user == null)
+            return "Unknown"; //return "Unknown" if the user is null
+
+        return user.asMember().getDisplayName(); //return the username
+    }
 
 }
