@@ -68,7 +68,8 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
                 .replace("$server", getServerName(server)) //Replace $server with the server's name.
                 .split("\n"); //Split the title into multiple lines.
         eb.setAuthor(title[0], null, getPageAuthorImage(user, server)); //Set the author of the embed with the first line of the title and the author image.
-        eb.setTitle(title[1]); //Set the title of the embed with the second line of the title.
+        if(title.length > 1) //If there are more lines in the title...
+            eb.setTitle(title[1]); //Set the title of the embed to the second line of the title.
 
         C category = null; //Initialize category variable.
         for(T item : pageItems) { //Iterate over all items in the page.

@@ -51,7 +51,7 @@ public final class Main {
 
         HikariManager.setup(envVars.getEnvVariable(EnvVariable.MYSQL_USER), envVars.getEnvVariable(EnvVariable.MYSQL_PASSWORD),
                 envVars.getEnvVariable(EnvVariable.MYSQL_DATABASE), envVars.getEnvVariable(EnvVariable.MYSQL_HOST), envVars.getEnvVariable(EnvVariable.MYSQL_PORT));
-        ServerSetting.saveToDatabase();
+        ServerSetting.setup();
         UserSetting.saveToDatabase();
         Stat.setup();
         Currency.saveToDatabase();

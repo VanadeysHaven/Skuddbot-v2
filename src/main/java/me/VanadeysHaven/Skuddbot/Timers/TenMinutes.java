@@ -1,6 +1,5 @@
 package me.VanadeysHaven.Skuddbot.Timers;
 
-import me.VanadeysHaven.Skuddbot.Commands.ServerSettingsCommand;
 import me.VanadeysHaven.Skuddbot.Minigames.FreeForAll.FfaCommand;
 import me.VanadeysHaven.Skuddbot.Minigames.GameLogs.GameLogSender;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PagedEmbed;
@@ -39,7 +38,6 @@ public class TenMinutes extends TimerTask {
 
             am.tickAppearance();
             FfaCommand.runReminders();
-            ServerSettingsCommand.clearOverviews();
             PagedMessage.runAutoExpire();
             PagedEmbed.runAutoExpire();
             GameLogSender.runExpire();
