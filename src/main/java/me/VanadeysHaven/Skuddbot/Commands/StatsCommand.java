@@ -10,7 +10,6 @@ import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.StatPageManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
@@ -34,7 +33,6 @@ public final class StatsCommand extends Command {
     private static final int OVERVIEW_EXPIRE_TIME = 10; //in minutes
 
     private static final Logger logger = LoggerFactory.getLogger(StatsCommand.class);
-    private static final StatPageManager pageManager = Stat.getPageManager();
     private static final UserUtils uu = UserUtils.getInstance();
 
     private static final String INVALID_ARGS = "Invalid argument usage:\n" +
@@ -78,7 +76,7 @@ public final class StatsCommand extends Command {
             }
         }
 
-        new PagedEmbed(pageManager, message.getChannel(), ProfileManager.getInstance().getUser(server.getId(), target.getId()),
+        new PagedEmbed(Stat.getPageManager(), message.getChannel(), ProfileManager.getInstance().getUser(server.getId(), target.getId()),
                 ServerManager.getInstance().getServer(server.getId()), author.getId()); //create new embed to show the stats
     }
 
