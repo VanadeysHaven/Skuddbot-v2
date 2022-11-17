@@ -114,7 +114,7 @@ public enum Stat implements Data, Pageable<Stat.Category> {
 
     public static void setup(){
         saveToDatabase();
-        pageManager.calculatePages(Category.values());
+        PAGE_MANAGER.calculatePages(Category.values());
     }
 
     private static void saveToDatabase(){
@@ -213,8 +213,13 @@ public enum Stat implements Data, Pageable<Stat.Category> {
         return Query.DELETE_STAT_VALUE;
     }
 
+    /**
+     * Get the page manager for the stats.
+     *
+     * @return The page manager for the stats.
+     */
     public static StatPageManager getPageManager() {
-        return pageManager;
+        return PAGE_MANAGER;
     }
 
     @Getter
