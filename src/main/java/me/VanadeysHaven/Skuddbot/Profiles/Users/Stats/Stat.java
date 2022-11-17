@@ -66,7 +66,7 @@ public enum Stat implements Data, Pageable<Stat.Category> {
     DON_LOSSES                  ("don_losses",              ValueType.INTEGER, "Losses",                     "losses",       "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true,  true ),
     DON_LONGEST_STREAK          ("don_longest_streak",      ValueType.INTEGER, "Longest double up streak",   "times",        "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true,  true );
 
-    private static final StatPageManager pageManager = new StatPageManager();
+    private static final StatPageManager PAGE_MANAGER = new StatPageManager();
 
     private final String dbReference;
     private final ValueType type;
