@@ -37,8 +37,8 @@ public class ServerSettingPage extends Page<ServerSetting, ServerSetting.Categor
     /** @inheritDoc */
     @Override
     public String getPageAuthorImage(SkuddUser user, SkuddServer server) {
-        Icon icon = server.asDiscordServer().getIcon().orElse(null); assert icon != null;
-        return icon.getUrl().toString();
+        Icon icon = server.asDiscordServer().getIcon().orElse(null); assert icon != null; //get the icon and assert it's not null
+        return icon.getUrl().toString(); // return the icon url as a string
     }
 
     /**
