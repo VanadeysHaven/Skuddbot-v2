@@ -219,7 +219,7 @@ public enum Stat implements Data, Pageable<Stat.Category> {
      * @return The page manager for the stats.
      */
     public static StatPageManager getPageManager() {
-        return PAGE_MANAGER;
+        return PAGE_MANAGER; // return the page manager
     }
 
     @Getter
