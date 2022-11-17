@@ -228,6 +228,15 @@ public enum ServerSetting implements Data, Pageable<ServerSetting.Category> {
             return true; // All server settings categories are always shown, so just return true.
         }
 
+        /**
+         * {@inheritDoc}
+         *
+         * @return Returns always true here because all server settings categories headers are always shown.
+         */
+        public boolean isShowHeader(){
+            return true; // All server settings categories headers are always shown, so just return true.
+        }
+
     }
 
     /**

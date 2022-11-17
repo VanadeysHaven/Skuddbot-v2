@@ -224,20 +224,22 @@ public enum Stat implements Data, Pageable<Stat.Category> {
 
     @Getter
     public enum Category implements PageableCategory<Stat> {
-        NO_CATEGORY       ("Not categorized",     true ),
-        CHALLENGE         ("Challenge",           true ),
-        FREE_FOR_ALL      ("Free for All",        true ),
-        BLACKJACK         ("Blackjack",           true ),
-        TEAM_DEATHMATCH   ("Team Deathmatch",     false),
-        DAILY_BONUS       ("Daily Bonus",         true ),
-        DOUBLE_OR_NOTHING ("Double or Nothing",   true );
+        NO_CATEGORY       ("Not categorized",     true,  false),
+        CHALLENGE         ("Challenge",           true,  true ),
+        FREE_FOR_ALL      ("Free for All",        true,  true ),
+        BLACKJACK         ("Blackjack",           true,  true ),
+        TEAM_DEATHMATCH   ("Team Deathmatch",     false, true ),
+        DAILY_BONUS       ("Daily Bonus",         true,  true ),
+        DOUBLE_OR_NOTHING ("Double or Nothing",   true,  true );
 
         private final String name;
         private final boolean show;
+        private final boolean showHeader;
 
-        Category(String name, boolean show){
+        Category(String name, boolean show, boolean showHeader){
             this.name = name;
             this.show = show;
+            this.showHeader = showHeader;
         }
 
         @Override

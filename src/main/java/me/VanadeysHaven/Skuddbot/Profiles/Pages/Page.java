@@ -75,7 +75,8 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
         for(T item : pageItems) { //Iterate over all items in the page.
             if(item.getCategory() != category){ //If the category of the item is different from the category of the last item.
                 category = item.getCategory(); //Set the category to the category of the item.
-                eb.addField("\u200B", category.getName() + ": ", false); //Create new category header
+                if(category.isShowHeader()) //If the category is supposed to show a header...
+                    eb.addField("\u200B", category.getName() + ": ", false); //Create new category header
             }
 
             String data = getData(item, user, server); //Get the data for the item.
@@ -216,8 +217,8 @@ public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>>
     private int getCategoryCount(List<T> list){
         List<C> counted = new ArrayList<>(); //create a new list of counted categories
         for(T item : list) //iterate over all items in the list
-            if(!counted.contains(item.getCategory()))
-                counted.add(item.getCategory()); //add the category to the list if it isn't already in the list
+            if(!counted.contains(item.getCategory()) && item.getCategory().isShowHeader()) //if the category of the item hasn't been counted and the category is set to show a header
+                counted.add(item.getCategory()); //add the category to the list
 
         return counted.size(); //return the amount of categories in the list
     }
