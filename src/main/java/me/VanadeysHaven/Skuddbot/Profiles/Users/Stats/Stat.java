@@ -235,10 +235,6 @@ public enum Stat implements Data, Pageable<Stat.Category> {
             this.show = show;
         }
 
-        public ArrayList<Stat> getAll(){
-            return getByCategory(this);
-        }
-
         @Override
         public List<Stat> getItems() {
             return getByCategory(this);
