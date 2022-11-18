@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
  * This class represents a guild, and it's settings and user profiles.
  *
  * @author Tim (Vanadey's Haven)
- * @since 2.1.1
+ * @since 2.3.24
  * @version 2.0
  */
 public class SkuddServer {
@@ -162,5 +162,14 @@ public class SkuddServer {
     public String getName(){
         Server server = Main.getSkuddbot().getApi().getServerById(serverId).orElse(null); assert server != null;
         return server.getName();
+    }
+
+    /**
+     * Method for getting the current SkuddServer as a Discord server.
+     *
+     * @return The Discord server.
+     */
+    public Server asDiscordServer() {
+        return Main.getSkuddbot().getApi().getServerById(serverId).orElse(null);
     }
 }

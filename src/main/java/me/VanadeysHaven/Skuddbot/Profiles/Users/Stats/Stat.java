@@ -6,20 +6,25 @@ import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Database.QueryResult;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
 import me.VanadeysHaven.Skuddbot.Profiles.DataContainers.Data;
+import me.VanadeysHaven.Skuddbot.Profiles.Pages.Pageable;
+import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageableCategory;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Constants for user stats.
  *
  * @author Tim (Vanadey's Haven)
- * @since 2.3.2
+ * @since 2.3.24
  * @version 2.0
  */
 @Getter
-public enum Stat implements Data {
+public enum Stat implements Data, Pageable<Stat.Category> {
 
     EXPERIENCE                  ("xp",                      ValueType.INTEGER, "Experience",                 "xp",           "0",  Category.NO_CATEGORY,       true,  true,  true,  true ),
     CHALLENGE_WINS              ("chlng_wins",              ValueType.INTEGER, "Wins",                       "wins",         "0",  Category.CHALLENGE,         true,  true,  true,  true ),
@@ -61,6 +66,8 @@ public enum Stat implements Data {
     DON_LOSSES                  ("don_losses",              ValueType.INTEGER, "Losses",                     "losses",       "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true,  true ),
     DON_LONGEST_STREAK          ("don_longest_streak",      ValueType.INTEGER, "Longest double up streak",   "times",        "0",  Category.DOUBLE_OR_NOTHING, true,  true,  true,  true );
 
+    private static final StatPageManager PAGE_MANAGER = new StatPageManager();
+
     private final String dbReference;
     private final ValueType type;
     private final String name;
@@ -93,19 +100,21 @@ public enum Stat implements Data {
         return null;
     }
 
-    public static ArrayList<Stat> getByCategory(Category category){
-        ArrayList<Stat> stats = new ArrayList<>();
-
-        for(Stat stat : values())
-            if(stat.getCategory() == category)
-                stats.add(stat);
-
-        return stats;
+    /**
+     * Get all stats that are in the given category
+     *
+     * @param category The category to get stats from
+     * @return A list of stats in the given category
+     */
+    public static List<Stat> getByCategory(Category category){
+        return Arrays.stream(values()) // create a stream of all the values
+                .filter(stat -> stat.getCategory() == category) // filter out all the values that don't match the category
+                .collect(Collectors.toList()); // collect the values into a list and return it
     }
 
     public static void setup(){
         saveToDatabase();
-        StatPageManager.getInstance().calculate();
+        PAGE_MANAGER.calculatePages(Category.values());
     }
 
     private static void saveToDatabase(){
@@ -204,28 +213,39 @@ public enum Stat implements Data {
         return Query.DELETE_STAT_VALUE;
     }
 
+    /**
+     * Get the page manager for the stats.
+     *
+     * @return The page manager for the stats.
+     */
+    public static StatPageManager getPageManager() {
+        return PAGE_MANAGER; // return the page manager
+    }
+
     @Getter
-    public enum Category {
-        NO_CATEGORY       ("Not categorized",     true ),
-        CHALLENGE         ("Challenge",           true ),
-        FREE_FOR_ALL      ("Free for All",        true ),
-        BLACKJACK         ("Blackjack",           true ),
-        TEAM_DEATHMATCH   ("Team Deathmatch",     false),
-        DAILY_BONUS       ("Daily Bonus",         true ),
-        DOUBLE_OR_NOTHING ("Double or Nothing",   true );
+    public enum Category implements PageableCategory<Stat> {
+        NO_CATEGORY       ("Not categorized",     true,  false),
+        CHALLENGE         ("Challenge",           true,  true ),
+        FREE_FOR_ALL      ("Free for All",        true,  true ),
+        BLACKJACK         ("Blackjack",           true,  true ),
+        TEAM_DEATHMATCH   ("Team Deathmatch",     false, true ),
+        DAILY_BONUS       ("Daily Bonus",         true,  true ),
+        DOUBLE_OR_NOTHING ("Double or Nothing",   true,  true );
 
         private final String name;
         private final boolean show;
+        private final boolean showHeader;
 
-        Category(String name, boolean show){
+        Category(String name, boolean show, boolean showHeader){
             this.name = name;
             this.show = show;
+            this.showHeader = showHeader;
         }
 
-        public ArrayList<Stat> getAll(){
+        @Override
+        public List<Stat> getItems() {
             return getByCategory(this);
         }
-
     }
 
 }

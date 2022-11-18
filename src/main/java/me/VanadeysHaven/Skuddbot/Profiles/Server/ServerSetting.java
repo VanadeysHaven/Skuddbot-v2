@@ -6,19 +6,24 @@ import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Database.QueryResult;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
 import me.VanadeysHaven.Skuddbot.Profiles.DataContainers.Data;
+import me.VanadeysHaven.Skuddbot.Profiles.Pages.Pageable;
+import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageableCategory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Settings for servers.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.2
+ * @version 2.3.24
  * @since 2.0
  */
 @Getter
-public enum ServerSetting implements Data {
+public enum ServerSetting implements Data, Pageable<ServerSetting.Category> {
 
     XP_MIN                      ("xp_min",                  "Minimum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "10",                   Category.XP,              false),
     XP_MAX                      ("xp_max",                  "Maximum amount of XP gain per message on Discord.",                            ValueType.INTEGER, "15",                   Category.XP,              false),
@@ -35,12 +40,14 @@ public enum ServerSetting implements Data {
     ALLOW_MSG_LVL_UP_NOTIFY     ("allow_msg_lvl_up_notify", "When set to false, users will not be notified by message when they level up.", ValueType.BOOLEAN, "true",                 Category.DISCORD,         false),
     ARENA_NAME                  ("arena_name",              "This is the name of the arena used in various minigames.",                     ValueType.STRING,  "Skuddbot's Colosseum", Category.MINIGAMES,       true ),
     JACKPOT                     ("jackpot",                 "Defines the Jackpot amount. (Value updates automatically)",                    ValueType.INTEGER, "0",                    Category.MINIGAMES,       false),
-    COMMAND_PREFIX              ("command_prefix",          "The command prefix you can change this to avoid confilcts with other bots.",   ValueType.STRING,  "!",                    Category.COMMANDS,        false),
+    COMMAND_PREFIX              ("command_prefix",          "The command prefix you can change this to avoid conflicts with other bots.",   ValueType.STRING,  "!",                    Category.COMMANDS,        false),
     ALLOW_MULTI_IMG             ("allow_multi_img",         "Enables the use of multi images in commands like !puppy and !kitty.",          ValueType.BOOLEAN, "true",                 Category.COMMANDS,        false),
     DAILY_BASE_CURRENCY_BONUS   ("daily_currency_bonus",    "Defines the base amount of currency a user gets per daily bonus claim.",       ValueType.INTEGER, "250",                  Category.DAILY_BONUS,     false),
     DAILY_BASE_EXPERIENCE_BONUS ("daily_xp_bonus",          "Defines the base amount of experience a user gets per daily bonus claim.",     ValueType.INTEGER, "500",                  Category.DAILY_BONUS,     false),
     DAILY_BONUS_MODIFIER        ("daily_bonus_multiplier",  "Defines the modifier applied to the bonuses after a streak claim.",            ValueType.DOUBLE,  "1.05",                 Category.DAILY_BONUS,     false),
     DAILY_BONUS_MULTIPLIER_CAP  ("daily_bonus_cap",         "Defines the cap of the multiplier.",                                           ValueType.INTEGER, "30",                   Category.DAILY_BONUS,     false);
+
+    private static final ServerSettingPageManager PAGE_MANAGER = new ServerSettingPageManager();
 
     private final String dbReference;
     private final String description;
@@ -66,6 +73,18 @@ public enum ServerSetting implements Data {
         return null;
     }
 
+    /**
+     * Get all settings in a category.
+     *
+     * @param category The category to get the settings from.
+     * @return All settings in the category.
+     */
+    public static List<ServerSetting> getByCategory(Category category){
+        return Arrays.stream(values()) // create stream from values
+                .filter(s -> s.getCategory() == category) // filter out all settings that are not in the category
+                .collect(Collectors.toList()); // collect the stream into a list and return it
+    }
+
     public static ServerSetting[] grab(int length, int offset){
         int arrLength = Math.min(length, values().length - offset);
         if(arrLength < 1)
@@ -83,14 +102,12 @@ public enum ServerSetting implements Data {
         return arr;
     }
 
-    public static int getPagesAmount(int length){
-        int settingsAmount = values().length;
-        int pageAmount = settingsAmount / length;
-
-        if(settingsAmount % length == 0)
-            return pageAmount;
-        else
-            return pageAmount + 1;
+    /**
+     * Setup server settings in database and calculate the pages.
+     */
+    public static void setup(){
+        saveToDatabase(); // save all settings to database
+        PAGE_MANAGER.calculatePages(Category.values()); // calculate pages
     }
 
     public static void saveToDatabase(){
@@ -170,8 +187,65 @@ public enum ServerSetting implements Data {
         return Query.DELETE_SERVER_SETTING_VALUE;
     }
 
-    public enum Category {
-        XP, DISCORD, TWITCH, WELCOME_GOODBYE, MINIGAMES, COMMANDS, DAILY_BONUS
+    /** @inheritDoc */
+    @Override
+    public String getName() {
+        return this.toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return Returns always true here because all server settings are always shown.
+     */
+    @Override
+    public boolean isShow() {
+        return true; // All server settings are always shown, so just return true.
+    }
+
+    public enum Category implements PageableCategory<ServerSetting> {
+        XP, DISCORD, TWITCH, WELCOME_GOODBYE, MINIGAMES, COMMANDS, DAILY_BONUS;
+
+        /** @inheritDoc */
+        @Override
+        public String getName() {
+            return this.toString();
+        }
+
+        /** @inheritDoc */
+        @Override
+        public List<ServerSetting> getItems() {
+            return getByCategory(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return Returns always true here because all server settings categories are always shown.
+         */
+        @Override
+        public boolean isShow() {
+            return true; // All server settings categories are always shown, so just return true.
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return Returns always true here because all server settings categories headers are always shown.
+         */
+        public boolean isShowHeader(){
+            return true; // All server settings categories headers are always shown, so just return true.
+        }
+
+    }
+
+    /**
+     * Get the page manager for the server settings.
+     *
+     * @return The page manager for the server settings.
+     */
+    public static ServerSettingPageManager getPageManager() {
+        return PAGE_MANAGER; // return the page manager
     }
 
 }

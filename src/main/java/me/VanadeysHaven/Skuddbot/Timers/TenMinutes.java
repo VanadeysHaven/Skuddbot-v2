@@ -1,10 +1,9 @@
 package me.VanadeysHaven.Skuddbot.Timers;
 
-import me.VanadeysHaven.Skuddbot.Commands.ServerSettingsCommand;
-import me.VanadeysHaven.Skuddbot.Commands.StatsCommand;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.VanadeysHaven.Skuddbot.Minigames.FreeForAll.FfaCommand;
 import me.VanadeysHaven.Skuddbot.Minigames.GameLogs.GameLogSender;
+import me.VanadeysHaven.Skuddbot.Profiles.Pages.PagedEmbed;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
 import me.VanadeysHaven.Skuddbot.Utilities.AppearanceManager;
@@ -22,7 +21,7 @@ import java.util.TimerTask;
  * Timer that runs every 10 minutes.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.22
+ * @version 2.3.24
  * @since 2.0
  */
 public final class TenMinutes extends TimerTask {
@@ -40,9 +39,8 @@ public final class TenMinutes extends TimerTask {
 
             am.tickAppearance();
             FfaCommand.runReminders();
-            ServerSettingsCommand.clearOverviews();
-            StatsCommand.clearOverviews();
             PagedMessage.runAutoExpire();
+            PagedEmbed.runAutoExpire();
             GameLogSender.runExpire();
             ReactionUtils.checkExpire();
         } catch (Exception e){

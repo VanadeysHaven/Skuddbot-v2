@@ -1,37 +1,32 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
-import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
-import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
-import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButton;
-import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.VanadeysHaven.Skuddbot.Main;
+import me.VanadeysHaven.Skuddbot.Profiles.Pages.PagedEmbed;
+import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
+import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.StatPageManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
-import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.server.Server;
 import org.javacord.api.entity.user.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Used to view and edit stats.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.3.24
  * @since 2.0
  */
 public final class StatsCommand extends Command {
@@ -39,7 +34,6 @@ public final class StatsCommand extends Command {
     private static final int OVERVIEW_EXPIRE_TIME = 10; //in minutes
 
     private static final Logger logger = LoggerFactory.getLogger(StatsCommand.class);
-    private static final StatPageManager spm = StatPageManager.getInstance();
     private static final UserUtils uu = UserUtils.getInstance();
 
     private static final String INVALID_ARGS = "Invalid argument usage:\n" +
@@ -86,114 +80,8 @@ public final class StatsCommand extends Command {
             }
         }
 
-        deactivateOverview(author.getId());
-        overviews.add(new Overview(message, pm.getUser(server.getId(), target.getId()), author.getId()));
-    }
-
-    private static ArrayList<Overview> overviews = new ArrayList<>();
-
-    private void deactivateOverview(long userId){
-        Iterator<Overview> it = overviews.iterator();
-        while(it.hasNext()){
-            Overview cur = it.next();
-            if(cur.getAuthor() == userId){
-                cur.unregisterButtons(true);
-                it.remove();
-            }
-        }
-    }
-
-    public static void clearOverviews(){
-        Iterator<Overview> it = overviews.iterator();
-        while(it.hasNext()) {
-            Overview cur = it.next();
-
-            long expireTimeMillis = OVERVIEW_EXPIRE_TIME * 60 * 1000;
-            if(expireTimeMillis < cur.getTimeSinceInitiation()) {
-                cur.unregisterButtons(true);
-                it.remove();
-            }
-        }
-    }
-
-    private class Overview {
-
-        private final int MAX_PAGE = spm.getPageAmount();
-
-        private int page;
-        @Getter private final long author;
-        private final SkuddUser user;
-        private final TextChannel textChannel;
-        private final Server server;
-        private final long timeInitiated;
-        private final Message message;
-        private final ArrayList<ReactionButton> buttons;
-
-        private Overview(Message message, SkuddUser user){
-            this(message, user, user.getId().getDiscordId());
-        }
-
-        private Overview(Message message, SkuddUser user, long author) {
-            page = 1;
-            this.author = author;
-            this.user = user;
-            textChannel = message.getChannel();
-            server = message.getServer().orElse(null);
-            assert server != null;
-            timeInitiated = System.currentTimeMillis();
-            message.delete();
-
-            this.message = MessagesUtils.sendEmbed(textChannel, spm.getPage(page).generateOverview(user));
-            buttons = new ArrayList<>();
-            buttons.add(ReactionUtils.registerButton(this.message, Emoji.ARROW_LEFT, this::prevPage, user.getId().getDiscordId(), author));
-            buttons.add(ReactionUtils.registerButton(this.message, Emoji.ARROW_RIGHT, this::nextPage, user.getId().getDiscordId(), author));
-            buttons.add(ReactionUtils.registerButton(this.message, Emoji.ARROWS_CC, this::refresh, user.getId().getDiscordId(), author));
-        }
-
-        private void nextPage(ReactionButtonClickedEvent event){
-            event.undoReaction();
-
-            int newPage = page + 1;
-            if(checkPage(newPage)){
-                page = newPage;
-                update();
-            }
-        }
-
-        private void prevPage(ReactionButtonClickedEvent event){
-            event.undoReaction();
-
-            int newPage = page - 1;
-            if(checkPage(newPage)){
-                page = newPage;
-                update();
-            }
-        }
-
-        private void refresh(ReactionButtonClickedEvent event){
-            event.undoReaction();
-            update();
-        }
-
-        private boolean checkPage(int newPage){
-            return newPage >= 1 && newPage <= MAX_PAGE;
-        }
-
-        private void update(){
-            message.edit(spm.getPage(page).generateOverview(user));
-        }
-
-        private void unregisterButtons(boolean removeReactions) {
-            if(removeReactions) message.removeAllReactions();
-
-            for(ReactionButton button : buttons)
-                button.unregister();
-        }
-
-        private long getTimeSinceInitiation(){
-            return System.currentTimeMillis() - timeInitiated;
-        }
-
+        new PagedEmbed(Stat.getPageManager(), message.getChannel(), ProfileManager.getInstance().getUser(server.getId(), target.getId()),
+                ServerManager.getInstance().getServer(server.getId()), author.getId()); //create new embed to show the stats
     }
 
     private void editValue(Message message, String content) { // command name stat operation amount
