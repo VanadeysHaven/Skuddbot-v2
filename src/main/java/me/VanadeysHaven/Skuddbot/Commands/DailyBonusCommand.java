@@ -26,7 +26,7 @@ import java.util.Date;
  * Command used to claim daily bonuses.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.3.24
  * @since 2.1.1
  */
 public class DailyBonusCommand extends Command {
@@ -39,7 +39,9 @@ public class DailyBonusCommand extends Command {
     private enum Bonus {
 
         HAPPY_NEW_YEAR(1, 1, 10000, 5000, Emoji.FIREWORKS.getUnicode() + "Happy new year!"),
-        VALENTINE(14, 2, 10000, 5000, Emoji.HEART.getUnicode() + " Happy valentines day!");
+        VALENTINE(14, 2, 10000, 5000, Emoji.HEART.getUnicode() + " Happy valentines day!"),
+        CHIRSTMAS(25, 12, 250000, 500000, Emoji.SANTA.getUnicode() + " Ho ho ho! Merry christmas!"),
+        BOXING_DAY(26, 12, 250000, 500000, Emoji.PACKAGE.getUnicode() + " Ho ho ho! Merry christmas!");
 
         final int day;
         final int month;

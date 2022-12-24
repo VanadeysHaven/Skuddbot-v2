@@ -83,7 +83,9 @@ public enum Emoji {
     GENDERFLUID_FLAG        ("<:genderfluid:849214039296966676>", "genderfluid_flag"),
     ACE_FLAG                ("<:ace:849216294876348417>", "ace"),
     QUEER_FLAG              ("<:queer:849217259141988382>", "queer"),
-    FIREWORKS               ("\uD83C\uDF86", "fireworks");
+    FIREWORKS               ("\uD83C\uDF86", "fireworks"),
+    SANTA                   ("\uD83C\uDF85", "santa"),
+    PACKAGE                 ("\uD83D\uDCE6", "package");
 
     private final String unicode;
     private final String alias;
