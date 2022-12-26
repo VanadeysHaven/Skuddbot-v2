@@ -38,22 +38,29 @@ public class DailyBonusCommand extends Command {
     @Getter
     private enum Bonus {
 
-        HAPPY_NEW_YEAR(1, 1, 10000, 5000, Emoji.FIREWORKS.getUnicode() + "Happy new year!"),
-        VALENTINE(14, 2, 10000, 5000, Emoji.HEART.getUnicode() + " Happy valentines day!"),
-        CHIRSTMAS(25, 12, 250000, 500000, Emoji.SANTA.getUnicode() + " Ho ho ho! Merry christmas!"),
-        BOXING_DAY(26, 12, 250000, 500000, Emoji.PACKAGE.getUnicode() + " Ho ho ho! Merry christmas!");
+        HAPPY_NEW_YEAR(1, 1, 64000, 32000, Emoji.FIREWORKS, "Happy 2023!"),
+        VALENTINE(14, 2, 10000, 5000, Emoji.HEART, "Happy valentines day!"),
+        CHIRSTMAS(25, 12, 250000, 500000, Emoji.SANTA, "Ho ho ho! Merry christmas!"),
+        BOXING_DAY(26, 12, 250000, 500000, Emoji.PACKAGE, " Ho ho ho! Merry christmas!"),
+        FIVE_DAYS(27, 12, 2000, 1000, Emoji.FIVE, "days until 2023!"),
+        FOUR_DAYS(28, 12, 4000, 2000, Emoji.FOUR, "days until 2023!"),
+        THREE_DAYS(29, 12, 8000, 4000, Emoji.THREE, "days until 2023!"),
+        TWO_DAYS(30, 12, 16000, 8000, Emoji.TWO, "days until 2023!"),
+        ONE_DAY(31, 12, 32000, 16000, Emoji.ONE, "days until 2023!");
 
         final int day;
         final int month;
         final int currencyBonus;
         final int xpBonus;
+        final Emoji emoji;
         final String message;
 
-        Bonus(int day, int month, int currencyBonus, int xpBonus, String message){
+        Bonus(int day, int month, int currencyBonus, int xpBonus, Emoji emoji, String message){
             this.day = day;
             this.month = month;
             this.currencyBonus = currencyBonus;
             this.xpBonus = xpBonus;
+            this.emoji = emoji;
             this.message = message;
         }
 
@@ -140,7 +147,7 @@ public class DailyBonusCommand extends Command {
             multiplierString += " | **MAX**";
         String bonusStr = calculator.isWeeklyApplied() ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "";
         if(calculator.isBonusApplied()) {
-            bonusStr += "\n**SEASONAL BONUS APPLIED:** " + calculator.getAppliedBonus().getMessage();
+            bonusStr += "\n**SEASONAL BONUS APPLIED:** " + calculator.getAppliedBonus().getEmoji()  + " *" + calculator.getAppliedBonus().getMessage() + "*";
         }
 
         String msg = MessageFormat.format(MESSAGE_FORMAT, request.getSender().getDisplayName(), multiplierString, bonusStr, calculator.getCurrencyBonus(), calculator.getExperienceBonus(), streakString);

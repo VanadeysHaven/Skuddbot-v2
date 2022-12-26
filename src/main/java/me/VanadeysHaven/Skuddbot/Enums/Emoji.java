@@ -31,6 +31,7 @@ public enum Emoji {
     DIAMONDS                ("♦", "diamonds"),
     HEARTS                  ("♥", "hearts"),
     QUESTION                ("❓", "question"),
+    ONE                     ("1️⃣", "one"),
     TWO                     ("2⃣", "two"),
     THREE                   ("3⃣", "three"),
     FOUR                    ("4⃣", "four"),
