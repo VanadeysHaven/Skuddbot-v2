@@ -1,7 +1,6 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.aggregator.AggregateWith;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -264,8 +263,8 @@ public class DailyBonusCommandTests {
                         37, 4, 0)
                         .runCalculations();
 
-        assertEquals(59453, calculator.getCurrencyBonus());
-        assertEquals(103906, calculator.getExperienceBonus());
+        assertEquals(113453, calculator.getCurrencyBonus());
+        assertEquals(130906, calculator.getExperienceBonus());
     }
 
     @Test
@@ -303,8 +302,8 @@ public class DailyBonusCommandTests {
                         37, 4, 4)
                         .runCalculations();
 
-        assertEquals(10250, calculator.getCurrencyBonus());
-        assertEquals(5500, calculator.getExperienceBonus());
+        assertEquals(64250, calculator.getCurrencyBonus());
+        assertEquals(32500, calculator.getExperienceBonus());
     }
 
     @Test
@@ -329,8 +328,8 @@ public class DailyBonusCommandTests {
                         37, 4, 0)
                         .runCalculations();
 
-        assertEquals(10250, calculator.getCurrencyBonus());
-        assertEquals(5500, calculator.getExperienceBonus());
+        assertEquals(64250, calculator.getCurrencyBonus());
+        assertEquals(32500, calculator.getExperienceBonus());
     }
 
 }

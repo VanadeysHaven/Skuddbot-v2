@@ -38,7 +38,7 @@ public class DailyBonusCommand extends Command {
     @Getter
     private enum Bonus {
 
-        HAPPY_NEW_YEAR(1, 1, 10000, 5000, Emoji.FIREWORKS, "Happy 2023!"),
+        HAPPY_NEW_YEAR(1, 1, 64000, 32000, Emoji.FIREWORKS, "Happy 2023!"),
         VALENTINE(14, 2, 10000, 5000, Emoji.HEART, "Happy valentines day!"),
         CHIRSTMAS(25, 12, 250000, 500000, Emoji.SANTA, "Ho ho ho! Merry christmas!"),
         BOXING_DAY(26, 12, 250000, 500000, Emoji.PACKAGE, " Ho ho ho! Merry christmas!"),
