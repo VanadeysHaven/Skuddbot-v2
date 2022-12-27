@@ -39,4 +39,4 @@ sudo docker compose down
 echo "Rebuilding images and launching..."
 sudo docker compose up -d --remove-orphans --build
 
-echo
+echo "Done! Bot will connect to Discord shortly."
