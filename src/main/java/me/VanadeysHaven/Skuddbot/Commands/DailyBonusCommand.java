@@ -147,7 +147,7 @@ public class DailyBonusCommand extends Command {
             multiplierString += " | **MAX**";
         String bonusStr = calculator.isWeeklyApplied() ? "\n**WEEKLY BONUS APPLIED:** *rewards doubled*" : "";
         if(calculator.isBonusApplied()) {
-            bonusStr += "\n**SEASONAL BONUS APPLIED:** " + calculator.getAppliedBonus().getEmoji()  + " *" + calculator.getAppliedBonus().getMessage() + "*";
+            bonusStr += "\n**SEASONAL BONUS APPLIED:** " + calculator.getAppliedBonus().getEmoji().getUnicode()  + " *" + calculator.getAppliedBonus().getMessage() + "*";
         }
 
         String msg = MessageFormat.format(MESSAGE_FORMAT, request.getSender().getDisplayName(), multiplierString, bonusStr, calculator.getCurrencyBonus(), calculator.getExperienceBonus(), streakString);
