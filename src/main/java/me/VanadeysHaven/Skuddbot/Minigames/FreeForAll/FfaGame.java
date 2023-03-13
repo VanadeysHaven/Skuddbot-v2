@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of Free for All
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.1
+ * @version 2.3.25
  * @since 2.2
  */
 public final class FfaGame {
@@ -129,28 +129,34 @@ public final class FfaGame {
         return "something went wrong, i'm sorry";
     }
 
+    /**
+     * Enters the game with the default bounty
+     *
+     * @param event The event that triggered this method
+     */
     private void enterGameWithDefaultBounty(ReactionButtonClickedEvent event){
-        ServerMember member = event.getUserAsMember();
-        SkuddUser su = member.asSkuddUser();
-        int bounty = su.getSettings().getInt(UserSetting.DEFAULT_BET);
-        if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bounty)) {
-            return;
-        }
+        ServerMember member = event.getUserAsMember(); // get the member that clicked the button
+        SkuddUser su = member.asSkuddUser(); // get the SkuddUser object for the member
+        int bounty = su.getSettings().getInt(UserSetting.DEFAULT_BET); // get the default bet from the user's settings
 
-        su.getCurrencies().incrementInt(Currency.SKUDDBUX, -bounty);
-        enterGame(member, bounty);
+        bounty = Math.min(bounty, su.getCurrencies().getInt(Currency.SKUDDBUX)); // in case the user has less than the default bet lower the bounty to the user's Skuddbux
+        su.getCurrencies().incrementInt(Currency.SKUDDBUX, -bounty); // remove the bounty amount from the user's SkuddBux
+        enterGame(member, bounty); // enter the game with the bounty
     }
 
+    /**
+     * Enters the game with the highest current bounty
+     *
+     * @param event The event that triggered this method
+     */
     private void enterGameWithHighestBounty(ReactionButtonClickedEvent event) {
-        ServerMember member = event.getUserAsMember();
-        SkuddUser su = member.asSkuddUser();
-        int bounty = manager.getCurrentHighestBounty();
-        if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, bounty)) {
-            return;
-        }
+        ServerMember member = event.getUserAsMember(); // get the member that clicked the button
+        SkuddUser su = member.asSkuddUser(); // get the SkuddUser object for the member
+        int bounty = manager.getCurrentHighestBounty(); // get the highest bounty from the game manager
 
-        su.getCurrencies().incrementInt(Currency.SKUDDBUX, -bounty);
-        enterGame(member, bounty);
+        bounty = Math.min(bounty, su.getCurrencies().getInt(Currency.SKUDDBUX)); //in case the user has less than the default bet lower the bounty to the user's Skuddbux
+        su.getCurrencies().incrementInt(Currency.SKUDDBUX, -bounty); // remove the bounty amount from the user's Skuddbux
+        enterGame(member, bounty); // enter the game with the bounty
     }
 
     public void enterGame(ServerMember member){
