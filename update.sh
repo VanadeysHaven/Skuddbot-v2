@@ -12,7 +12,7 @@ time_file=$(date +%Y%m%d%H%M%S)
 time_bot=$(date "+%d-%m-%Y %H:%M:%S \(UTC\)")
 
 echo "Deploying $branch > $commit"
-echo "Updating configs"
+echo "Updating configs..."
 rm configs/git.env -f
 touch configs/git.env
 {
