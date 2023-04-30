@@ -7,7 +7,6 @@ import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
-import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableDrawer;
@@ -22,7 +21,7 @@ import java.util.LinkedHashMap;
  * Command for currency leaderboards.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.3.26
  * @since 2.1.1
  */
 public class CurrenciesLeaderboardCommand extends Command {
@@ -64,26 +63,42 @@ public class CurrenciesLeaderboardCommand extends Command {
 
         LinkedHashMap<Identifier,Integer> sortedMap = ss.getTopCurrencies(LEADERBOARD_LIMIT, currency);
         int i = 0;
+        int leaderValue = -1;
         int lastValue = -1;
 
-        TableRow topRow = new TableRow("Pos", "Name", StringUtils.capitalize(currency.getSuffix()));
+        TableRow topRow = new TableRow("Pos", "Name", StringUtils.capitalize(currency.getSuffix()), "Gap to leader", "Gap to next");
         TableArrayGenerator tag = new TableArrayGenerator(topRow);
 
         for(Identifier id : sortedMap.keySet()){
             TableRow tr = new TableRow();
             String name = getName(id, server);
-            SkuddUser su = pm.getUser(id);
-            if(lastValue == sortedMap.get(id)){
+            int currentValue = sortedMap.get(id);
+            if(lastValue == currentValue){
                 tr.add(" ");
             } else {
                 i++;
                 tr.add(i);
             }
             tr.add(name);
-            tr.add(su.getCurrencies().getString(currency));
+            tr.add(currentValue);
+
+            if(leaderValue == -1) {
+                tr.add(" ");
+                tr.add(" ");
+            } else {
+                int gapToLeader = currentValue - leaderValue;
+                int gapToNext = currentValue - lastValue;
+                tr.add(gapToLeader);
+                if(gapToLeader != gapToNext)
+                    tr.add(currentValue - lastValue);
+                else
+                    tr.add(" ");
+            }
             tag.addRow(tr);
 
-            lastValue = sortedMap.get(id);
+            lastValue = currentValue;
+            if(leaderValue == -1)
+                leaderValue = lastValue;
         }
 
         String sb = "**" + currency.getName() + " leaderboard** | **" + server.getName() + "**\n```\n" +

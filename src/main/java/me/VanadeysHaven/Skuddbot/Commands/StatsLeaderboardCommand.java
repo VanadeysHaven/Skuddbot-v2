@@ -23,7 +23,7 @@ import java.util.LinkedHashMap;
  * Command for stat leaderboards.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.3.26
  * @since 2.0
  */
 public class StatsLeaderboardCommand extends Command {
@@ -66,32 +66,51 @@ public class StatsLeaderboardCommand extends Command {
         LinkedHashMap<Identifier,Integer> sortedMap = ss.getTopStats(LEADERBOARD_LIMIT, stat);
         int i = 0;
         int lastValue = -1;
+        int leaderValue = -1;
         TableRow topRow = new TableRow("Pos", "Name");
-        if(stat == Stat.EXPERIENCE) {
+        if(stat == Stat.EXPERIENCE)
             topRow.add("Level");
-        } else {
+        else
             topRow.add(StringUtils.capitalize(stat.getSuffix()));
-        }
+        topRow.add("Gap to leader");
+        topRow.add("Gap to next");
+
         TableArrayGenerator tag = new TableArrayGenerator(topRow);
         for(Identifier id : sortedMap.keySet()){
             TableRow tr = new TableRow();
             String name = getName(id, server);
             SkuddUser su = pm.getUser(id);
-            if(lastValue == sortedMap.get(id)){
+            int currentValue = sortedMap.get(id);
+            if(lastValue == currentValue){
                 tr.add(" ");
             } else {
                 i++;
                 tr.add(i);
             }
             tr.add(name);
-            if(stat == Stat.EXPERIENCE) {
+            if(stat == Stat.EXPERIENCE)
                 tr.add(su.getStats().formatLevel());
-            } else {
+            else
                 tr.add(su.getStats().getString(stat));
+
+            if(leaderValue == -1) {
+                tr.add(" ");
+                tr.add(" ");
+            } else {
+                int gapToLeader = currentValue - leaderValue;
+                int gapToNext = currentValue - lastValue;
+                tr.add(gapToLeader);
+                if(gapToLeader != gapToNext)
+                    tr.add(currentValue - lastValue);
+                else
+                    tr.add(" ");
             }
+
             tag.addRow(tr);
 
-            lastValue = sortedMap.get(id);
+            lastValue = currentValue;
+            if(leaderValue == -1)
+                leaderValue = currentValue;
         }
 
         String sb = "**" + stat.getCategory().getName() + ": " + stat.getName() + " leaderboard** | **" + server.getName() + "**\n```\n" +
