@@ -22,7 +22,7 @@ public enum Emoji {
     WARNING                 ("⚠", "warning"),
     X                       ("❌", "x"),
     HOURGLASS_FLOWING_SAND  ("⏳", "hourglass_flowing_sand"),
-    CROSSED_SWORDS          ("⚔", "crossed_swords"),
+    CROSSED_SWORDS          ("⚔\uFE0F", "crossed_swords"),
     EYES                    ("\uD83D\uDC40", "eyes"),
     MAILBOX_WITH_MAIL       ("\uD83D\uDCEC", "mailbox_with_mail"),
     NOTEPAD_SPIRAL          ("\uD83D\uDDD2", "spiral_note_pad"),
