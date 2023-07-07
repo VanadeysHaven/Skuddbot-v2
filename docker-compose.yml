@@ -11,7 +11,7 @@ services:
     networks:
       - net
     env_file: configs/.env
-    restart: unless-stopped
+    restart: always
   bot:
     build: .
     container_name: skuddbot_v2
@@ -25,7 +25,7 @@ services:
       - configs/global.env
     environment:
       - MYSQL_HOST=skuddbot_v2_database
-    restart: unless-stopped
+    restart: always
 
 
 volumes:
