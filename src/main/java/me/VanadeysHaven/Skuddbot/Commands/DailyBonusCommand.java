@@ -38,15 +38,15 @@ public class DailyBonusCommand extends Command {
     @Getter
     private enum Bonus {
 
-        HAPPY_NEW_YEAR(1, 1, 64000, 32000, Emoji.FIREWORKS, "Happy 2024!"),
+        HAPPY_NEW_YEAR(1, 1, 64000, 32000, Emoji.FIREWORKS, "Happy 2026!"),
         VALENTINE(14, 2, 10000, 5000, Emoji.HEART, "Happy valentines day!"),
         CHIRSTMAS(25, 12, 250000, 500000, Emoji.SANTA, "Ho ho ho! Merry christmas!"),
         BOXING_DAY(26, 12, 250000, 500000, Emoji.PACKAGE, "Ho ho ho! Merry christmas!"),
-        FIVE_DAYS(27, 12, 2000, 1000, Emoji.FIVE, "days until 2024!"),
-        FOUR_DAYS(28, 12, 4000, 2000, Emoji.FOUR, "days until 2024!"),
-        THREE_DAYS(29, 12, 8000, 4000, Emoji.THREE, "days until 2024!"),
-        TWO_DAYS(30, 12, 16000, 8000, Emoji.TWO, "days until 2024!"),
-        ONE_DAY(31, 12, 32000, 16000, Emoji.ONE, "days until 2024!");
+        FIVE_DAYS(27, 12, 2000, 1000, Emoji.FIVE, "days until 2026!"),
+        FOUR_DAYS(28, 12, 4000, 2000, Emoji.FOUR, "days until 2026!"),
+        THREE_DAYS(29, 12, 8000, 4000, Emoji.THREE, "days until 2026!"),
+        TWO_DAYS(30, 12, 16000, 8000, Emoji.TWO, "days until 2026!"),
+        ONE_DAY(31, 12, 32000, 16000, Emoji.ONE, "day until 2026!");
 
         final int day;
         final int month;
