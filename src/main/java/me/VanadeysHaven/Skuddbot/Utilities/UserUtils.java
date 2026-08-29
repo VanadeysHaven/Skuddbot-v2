@@ -1,15 +1,14 @@
 package me.VanadeysHaven.Skuddbot.Utilities;
 
 import me.VanadeysHaven.Skuddbot.Main;
-import org.javacord.api.entity.user.User;
-
-import java.util.concurrent.CompletionException;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 
 /**
  * Utilities to do with Users.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.4
  * @since 2.2.1
  */
 public class UserUtils {
@@ -29,9 +28,9 @@ public class UserUtils {
 
     public boolean doesUserExist(long userId){
         try {
-            User user = Main.getSkuddbot().getApi().getUserById(userId).join();
+            Main.getSkuddbot().getApi().retrieveUserById(userId).complete();
             return true;
-        } catch (CompletionException e){
+        } catch (ErrorResponseException e){
             return false;
         }
     }
@@ -41,7 +40,7 @@ public class UserUtils {
     }
 
     public User getUser(long userId){
-        return Main.getSkuddbot().getApi().getUserById(userId).join();
+        return Main.getSkuddbot().getApi().retrieveUserById(userId).complete();
     }
 
     public User getUser(String userId){

@@ -7,8 +7,8 @@ import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButtonClickedCallback;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButtonRemovedCallback;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.Message;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,7 +18,7 @@ import java.util.List;
  * Utility to quickly create paged messages. Meant to be extended so specific behaviour can be added easily.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.4
  * @since 2.2.1
  */
 public abstract class PagedMessage {
@@ -42,12 +42,12 @@ public abstract class PagedMessage {
 
     @Getter private long expireAt;
 
-    private TextChannel channel;
+    private MessageChannel channel;
     private Message message;
     private List<ReactionButton> buttons;
     private long[] userLocks;
 
-    protected PagedMessage(int maxPage, TextChannel channel, long... userLocks) {
+    protected PagedMessage(int maxPage, MessageChannel channel, long... userLocks) {
         page = 1;
         this.maxPage = maxPage;
         this.channel = channel;
@@ -109,7 +109,7 @@ public abstract class PagedMessage {
         for(ReactionButton button : buttons)
             button.unregister();
 
-        message.removeAllReactions();
+        message.clearReactions().queue();
         autoExpireMessages.remove(this);
     }
 

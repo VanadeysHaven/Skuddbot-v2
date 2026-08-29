@@ -1,17 +1,15 @@
 package me.VanadeysHaven.Skuddbot.Utilities;
 
 import me.VanadeysHaven.Skuddbot.Main;
-import org.javacord.api.entity.channel.Channel;
-import org.javacord.api.entity.channel.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * Class with constants.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.0
+ * @version 2.4
  * @since 2.0
  */
 public class Constants {
@@ -22,9 +20,9 @@ public class Constants {
     public static final long BOT_LOG = 274542577880006656L;
 
     public static TextChannel getLogChannel(){
-        Optional<Channel> channel = Main.getSkuddbot().getApi().getChannelById(BOT_LOG);
-        assert channel.isPresent();
-        return (TextChannel) channel.get();
+        TextChannel channel = Main.getSkuddbot().getApi().getTextChannelById(BOT_LOG);
+        assert channel != null;
+        return channel;
     }
 
     public static ArrayList<Long> adminUsers = new ArrayList<>();

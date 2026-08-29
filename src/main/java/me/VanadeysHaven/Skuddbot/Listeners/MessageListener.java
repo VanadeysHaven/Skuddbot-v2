@@ -10,10 +10,10 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.RNGManager;
-import org.javacord.api.entity.channel.ChannelType;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 
 import java.text.MessageFormat;
 
@@ -21,7 +21,7 @@ import java.text.MessageFormat;
  * Listens for messages and awards XP.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.1.1
+ * @version 2.4
  * @since 2.0
  */
 public class MessageListener {
@@ -34,16 +34,16 @@ public class MessageListener {
     private static final RNGManager random = new RNGManager();
 
     public static void run(Message message){
-        String content = message.getContent();
-        if(!message.getAuthor().isRegularUser()) return;
-        if(message.getChannel().getType() != ChannelType.SERVER_TEXT_CHANNEL) return;
-        Server server = message.getServer().orElse(null); assert server != null;
-        User user = message.getAuthor().asUser().orElse(null); assert user != null;
-        SkuddServer ss = sm.getServer(server.getId());
+        String content = message.getContentRaw();
+        if(message.getAuthor().isBot()) return;
+        if(message.getChannel().getType() != ChannelType.TEXT) return;
+        Guild server = message.isFromGuild() ? message.getGuild() : null; assert server != null;
+        User user = message.getAuthor();
+        SkuddServer ss = sm.getServer(server.getIdLong());
         String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX);
         if(content.startsWith(commandPrefix)) return;
 
-        SkuddUser su = pm.getUser(server.getId(), message.getAuthor().getId());
+        SkuddUser su = pm.getUser(server.getIdLong(), message.getAuthor().getIdLong());
         su.getStats().incrementInt(Stat.EXPERIENCE, random.integer(ss.getSettings().getInt(ServerSetting.XP_MIN), ss.getSettings().getInt(ServerSetting.XP_MAX)));
 
         if(su.getStats().hasLeveledUp()){
@@ -53,13 +53,13 @@ public class MessageListener {
             }
             switch(notification) {
                 case REACTION:
-                    MessagesUtils.addReaction(message, Emoji.ARROW_UP, MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), su.getStats().getLevelProgress()[0]));
+                    MessagesUtils.addReaction(message, Emoji.ARROW_UP, MessageFormat.format(MESSAGE_FORMAT, message.getMember().getEffectiveName(), su.getStats().getLevelProgress()[0]));
                     break;
                 case DM:
-                    MessagesUtils.sendEmoji(user.getPrivateChannel().orElse(user.openPrivateChannel().join()), Emoji.ARROW_UP, MessageFormat.format(DM_MESSAGE_FORMAT, server.getName(), su.getStats().getLevelProgress()[0]));
+                    MessagesUtils.sendEmoji(user.openPrivateChannel().complete(), Emoji.ARROW_UP, MessageFormat.format(DM_MESSAGE_FORMAT, server.getName(), su.getStats().getLevelProgress()[0]));
                     break;
                 case MESSAGE:
-                    MessagesUtils.sendEmoji(message.getChannel(), Emoji.ARROW_UP, MessageFormat.format(MESSAGE_FORMAT, message.getAuthor().getDisplayName(), su.getStats().getLevelProgress()[0]));
+                    MessagesUtils.sendEmoji(message.getChannel(), Emoji.ARROW_UP, MessageFormat.format(MESSAGE_FORMAT, message.getMember().getEffectiveName(), su.getStats().getLevelProgress()[0]));
                     break;
                 default:
                     break;
