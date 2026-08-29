@@ -3,14 +3,14 @@ package me.VanadeysHaven.Skuddbot.Commands.Useless.ActionCommands;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
-import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 import java.text.MessageFormat;
 
@@ -18,7 +18,7 @@ import java.text.MessageFormat;
  * Hugs punches, whatever, this command can do it.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public abstract class ActionCommand extends Command {
@@ -30,7 +30,7 @@ public abstract class ActionCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         Message message = request.getMessage();
-        Server server = request.getServer();
+        Guild server = request.getGuild();
         User user = request.getUser();
         User selectedUser;
         try {
@@ -40,13 +40,13 @@ public abstract class ActionCommand extends Command {
             return;
         }
 
-        SkuddUser su = pm.getUser(server.getId(), selectedUser.getId());
+        SkuddUser su = pm.getUser(server.getIdLong(), selectedUser.getIdLong());
         boolean allowPing = su.getSettings().getBoolean(UserSetting.MENTION_ME);
 
-        ActionProperties ap = getActionProperties(user.getId());
+        ActionProperties ap = getActionProperties(user.getIdLong());
         String actionString = ap.getActionString();
         boolean shouldCapitalize = ap.shouldCapitalize();
-        actionString = MessageFormat.format(actionString, user.getDisplayName(server), allowPing ? selectedUser.getMentionTag() : selectedUser.getDisplayName(server));
+        actionString = MessageFormat.format(actionString, UserUtils.getDisplayName(server, user), allowPing ? selectedUser.getAsMention() : UserUtils.getDisplayName(server, selectedUser));
 
         if(shouldCapitalize)
             actionString = actionString.toUpperCase();
@@ -54,14 +54,14 @@ public abstract class ActionCommand extends Command {
         MessagesUtils.sendPlain(message.getChannel(), actionString);
     }
 
-    private User getRandomActiveUser(User user, Server server){
+    private User getRandomActiveUser(User user, Guild server){
         long id;
-        SkuddServer ss = sm.getServer(server.getId());
+        SkuddServer ss = sm.getServer(server.getIdLong());
         do {
             id = ss.getRandomActiveUser();
-        } while (id == user.getId());
+        } while (id == user.getIdLong());
 
-        return Main.getSkuddbot().getApi().getUserById(id).join();
+        return UserUtils.getInstance().getUser(id);
     }
 
     protected abstract ActionProperties getActionProperties(long userId);

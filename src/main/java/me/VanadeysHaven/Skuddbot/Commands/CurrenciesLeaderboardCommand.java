@@ -3,7 +3,6 @@ package me.VanadeysHaven.Skuddbot.Commands;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
-import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
@@ -11,9 +10,10 @@ import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableDrawer;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableRow;
+import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
 import org.apache.commons.lang3.StringUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
 
 import java.util.LinkedHashMap;
 
@@ -21,7 +21,7 @@ import java.util.LinkedHashMap;
  * Command for currency leaderboards.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.26
+ * @version 2.4
  * @since 2.1.1
  */
 public class CurrenciesLeaderboardCommand extends Command {
@@ -35,8 +35,8 @@ public class CurrenciesLeaderboardCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         long startTime = System.currentTimeMillis();
-        Server server = request.getServer();
-        SkuddServer ss = sm.getServer(server.getId());
+        Guild server = request.getGuild();
+        SkuddServer ss = sm.getServer(server.getIdLong());
         String[] args = request.getArgs();
         Message message = request.getMessage();
 
@@ -107,9 +107,9 @@ public class CurrenciesLeaderboardCommand extends Command {
         MessagesUtils.sendPlain(message.getChannel(), sb.trim());
     }
 
-    private String getName(Identifier id, Server server){
+    private String getName(Identifier id, Guild server){
         if(id.getDiscordId() != -1){
-            return Main.getSkuddbot().getApi().getUserById(id.getDiscordId()).join().getDisplayName(server);
+            return UserUtils.getDisplayName(server, UserUtils.getInstance().getUser(id.getDiscordId()));
         } else {
             return id.getTwitchUsername();
         }

@@ -6,10 +6,9 @@ import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.MessageAuthor;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 /**
  * Command for kicking a user from a server.
@@ -27,11 +26,11 @@ public class KickCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String[] args = request.getArgs(); //Get arguments in array
-        Server server = request.getServer(); //Get server instance
-        MessageAuthor author = request.getSender(); //Get the author
+        Guild server = request.getGuild(); //Get server instance
+        User author = request.getSender(); //Get the author
         Message message = request.getMessage(); //Get the message
 
-        if(!message.getMentionedUsers().isEmpty()) { //Check if there's a mentioned user
+        if(!message.getMentions().getUsers().isEmpty()) { //Check if there's a mentioned user
             MessagesUtils.addReaction(message, Emoji.X, "You need to specify a user."); //If not, display error
             return; //Stop
         }
@@ -42,12 +41,12 @@ public class KickCommand extends Command {
         String reason = MiscUtils.glueStrings("", " ", " ", "", -1, "", reasonArr); //Glue the array together into a String
 
         if(reason.equalsIgnoreCase("")) //Check if there's a reason
-            reason = "Kicked by " + author.getDiscriminatedName() + " using Skuddbot."; //If not, display default kick message
+            reason = "Kicked by " + author.getName() + " using Skuddbot."; //If not, display default kick message
 
-        User toKick = message.getMentionedUsers().get(0); //Get the user that needs to be kicked.
-        server.kickUser(toKick, reason); //Kick specified user with the reason.
+        User toKick = message.getMentions().getUsers().get(0); //Get the user that needs to be kicked.
+        server.kick(toKick).reason(reason).queue(); //Kick specified user with the reason.
 
-        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Kicked user **" + toKick.getDiscriminatedName() + "** with reason `" + reason + "`."); //Display success message.
+        MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Kicked user **" + toKick.getName() + "** with reason `" + reason + "`."); //Display success message.
     }
 
 }

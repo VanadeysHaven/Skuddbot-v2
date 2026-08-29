@@ -8,12 +8,15 @@ import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.PermissionManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Utilities.Constants;
+import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.permission.Role;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 
 import java.awt.*;
 
@@ -21,7 +24,7 @@ import java.awt.*;
  * Used for viewing info about users.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class UserInfoCommand extends Command {
@@ -32,65 +35,65 @@ public class UserInfoCommand extends Command {
 
     @Override
     public void run(CommandRequest request) {
-        Server server = request.getServer();
+        Guild server = request.getGuild();
         EmbedBuilder eb = new EmbedBuilder();
         SkuddUser su = null;
         User user = request.getUser();
         Message message = request.getMessage();
         String[] args = request.getArgs();
 
-        if(message.getMentionedUsers().size() > 0) {
-            user = message.getMentionedUsers().get(0);
+        if(message.getMentions().getUsers().size() > 0) {
+            user = message.getMentions().getUsers().get(0);
         } else if(args.length >= 2){
             String idStr = args[1];
-            if(MiscUtils.isLong(idStr)){
-                User attemptUser = Main.getSkuddbot().getApi().getUserById(Long.parseLong(idStr)).join();
-                if(attemptUser != null) {
-                    user = attemptUser;
-                }
+            if(MiscUtils.isLong(idStr) && UserUtils.getInstance().doesUserExist(idStr)){
+                user = UserUtils.getInstance().getUser(idStr);
             }
         }
 
-        PermissionManager permManager = new PermissionManager(user.getId());
+        PermissionManager permManager = new PermissionManager(user.getIdLong());
         if(server != null) {
-            su = pm.getUser(server.getId(), user.getId());
+            su = pm.getUser(server.getIdLong(), user.getIdLong());
             permManager = su.getPermissions();
         }
 
-        eb.setAuthor(user.getDiscriminatedName(), null, user.getAvatar());
-        eb.setThumbnail(user.getAvatar());
+        eb.setAuthor(user.getName(), null, user.getEffectiveAvatarUrl());
+        eb.setThumbnail(user.getEffectiveAvatarUrl());
         String title = "";
         Color color = Color.GRAY;
-        if (Constants.adminUsers.contains(user.getId())) {
+        if (Constants.adminUsers.contains(user.getIdLong())) {
             title = "Skuddbot Admin";
             color = Color.RED;
-        } else if (dm.isDonator(user.getId())) {
+        } else if (dm.isDonator(user.getIdLong())) {
             title = "Skuddbot Donator";
             color = Color.ORANGE;
         }
         if (!title.equals(""))
             eb.setTitle(title);
 
-        eb.addField("__User ID:__", user.getId()+"");
-        eb.addField("__Permissions:__", permManager.toString());
+        eb.addField("__User ID:__", user.getId(), false);
+        eb.addField("__Permissions:__", permManager.toString(), false);
 
         if(server != null){
-            eb.addInlineField("__Skuddbot ID:__", su.getId().getId()+"");
-            String nick = user.getDisplayName(server);
+            eb.addField("__Skuddbot ID:__", su.getId().getId()+"", true);
+            String nick = UserUtils.getDisplayName(server, user);
             if(nick.equals(user.getName())){
                 nick = "No nickname";
             }
-            eb.addInlineField("__Server Nickname:__", nick);
-            StringBuilder sbRoles = new StringBuilder();
-            for (Role role : user.getRoles(server)) {
-                sbRoles.append(", ").append(role.getName());
+            eb.addField("__Server Nickname:__", nick, true);
+            Member member = server.getMember(user);
+            if(member != null && !member.getRoles().isEmpty()){
+                StringBuilder sbRoles = new StringBuilder();
+                for (Role role : member.getRoles()) {
+                    sbRoles.append(", ").append(role.getName());
+                }
+                eb.addField("__Server Roles:__", MiscUtils.stripEveryone(sbRoles.substring(2).trim()), false);
             }
-            eb.addField("__Server Roles:__", MiscUtils.stripEveryone(sbRoles.substring(2).trim()));
         }
 
         eb.setColor(color);
         eb.setFooter("Skuddbot " + Main.getSkuddbot().getGlobalSettings().getString(GlobalSetting.VERSION));
 
-        request.getChannel().sendMessage(eb);
+        MessagesUtils.sendEmbed(request.getChannel(), eb);
     }
 }

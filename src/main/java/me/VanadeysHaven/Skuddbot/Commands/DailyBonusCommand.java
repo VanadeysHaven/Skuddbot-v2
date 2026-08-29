@@ -15,8 +15,8 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.StatsContainer;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.TimeUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.text.MessageFormat;
 import java.util.Calendar;
@@ -26,7 +26,7 @@ import java.util.Date;
  * Command used to claim daily bonuses.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.24
+ * @version 2.4
  * @since 2.1.1
  */
 public class DailyBonusCommand extends Command {
@@ -89,10 +89,10 @@ public class DailyBonusCommand extends Command {
 
     @Override
     public void run(CommandRequest request) {
-        Server server = request.getServer();
+        Guild server = request.getGuild();
         Message message = request.getMessage();
-        SkuddUser user = pm.getUser(server.getId(), message.getAuthor().getId());
-        SkuddServer sServer = sm.getServer(server.getId());
+        SkuddUser user = pm.getUser(server.getIdLong(), message.getAuthor().getIdLong());
+        SkuddServer sServer = sm.getServer(server.getIdLong());
         ServerSettingsContainer settings = sServer.getSettings();
         UserSettingsContainer uSettings = user.getSettings();
         StatsContainer stats = user.getStats();
@@ -150,7 +150,7 @@ public class DailyBonusCommand extends Command {
             bonusStr += "\n**SEASONAL BONUS APPLIED:** " + calculator.getAppliedBonus().getEmoji().getUnicode()  + " *" + calculator.getAppliedBonus().getMessage() + "*";
         }
 
-        String msg = MessageFormat.format(MESSAGE_FORMAT, request.getSender().getDisplayName(), multiplierString, bonusStr, calculator.getCurrencyBonus(), calculator.getExperienceBonus(), streakString);
+        String msg = MessageFormat.format(MESSAGE_FORMAT, request.getMember().getEffectiveName(), multiplierString, bonusStr, calculator.getCurrencyBonus(), calculator.getExperienceBonus(), streakString);
         MessagesUtils.sendPlain(request.getChannel(), msg);
     }
 

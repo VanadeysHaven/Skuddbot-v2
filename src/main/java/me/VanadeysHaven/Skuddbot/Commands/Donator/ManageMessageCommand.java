@@ -6,14 +6,13 @@ import me.VanadeysHaven.Skuddbot.Donator.DonatorMessage;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.MessageAttachment;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * Commands for donators so they can add messages to the donator pool.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class ManageMessageCommand extends Command {
@@ -71,7 +70,7 @@ public class ManageMessageCommand extends Command {
             return;
         }
 
-        dm.addMessage(dm.getUser(message.getAuthor().getId()), type, trimmed).save();
+        dm.addMessage(dm.getUser(message.getAuthor().getIdLong()), type, trimmed).save();
         MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + trimmed + "` as a `" + type + "` message!");
     }
 
@@ -84,9 +83,9 @@ public class ManageMessageCommand extends Command {
         }
 
         DonatorMessage lastAdded = null;
-        for(MessageAttachment attachment : message.getAttachments())
-            if(attachment.isImage() && !dm.doesMessageExist(type, attachment.getUrl().toString())) {
-                lastAdded = dm.addMessage(dm.getUser(message.getAuthor().getId()), type, attachment.getUrl().toString());
+        for(Message.Attachment attachment : message.getAttachments())
+            if(attachment.isImage() && !dm.doesMessageExist(type, attachment.getUrl())) {
+                lastAdded = dm.addMessage(dm.getUser(message.getAuthor().getIdLong()), type, attachment.getUrl());
                 lastAdded.save();
                 amountAdded++;
             }

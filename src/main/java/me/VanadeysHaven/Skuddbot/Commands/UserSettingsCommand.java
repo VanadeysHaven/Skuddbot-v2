@@ -16,9 +16,10 @@ import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableDrawer;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableRow;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.MessageAuthor;
-import org.javacord.api.entity.server.Server;
+import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.Arrays;
 
@@ -26,7 +27,7 @@ import java.util.Arrays;
  * Used for viewing and changing usersettings
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class UserSettingsCommand extends Command {
@@ -42,9 +43,9 @@ public class UserSettingsCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String[] args = request.getArgs();
-        MessageAuthor user = request.getSender();
-        Server server = request.getServer();
-        SkuddUser su = pm.getUser(server.getId(), user.getId());
+        User user = request.getSender();
+        Guild server = request.getGuild();
+        SkuddUser su = pm.getUser(server.getIdLong(), user.getIdLong());
         Message message = request.getMessage();
         UserSetting setting = null;
         String newValue = "";
@@ -78,19 +79,19 @@ public class UserSettingsCommand extends Command {
         }
     }
 
-    private void showAll(Message message, MessageAuthor user, SkuddUser su) {
+    private void showAll(Message message, User user, SkuddUser su) {
         TableArrayGenerator tag = new TableArrayGenerator();
         tag.addRow(new TableRow("Setting", "Value"));
         for(UserSetting setting : UserSetting.values()){
             tag.addRow(new TableRow(setting.toString(), su.getSettings().getString(setting)));
         }
         String table = new TableDrawer(tag.generateArray()).drawTable();
-        Server server = message.getServer().orElse(null);
+        Guild server = message.isFromGuild() ? message.getGuild() : null;
         assert server != null;
-        SkuddServer ss = sm.getServer(server.getId());
+        SkuddServer ss = sm.getServer(server.getIdLong());
         String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
 
-        String msg = "User settings for **" + user.getDisplayName() + "** in **" + server.getName() + "**\n```\n" + table + "\n```\n" +
+        String msg = "User settings for **" + UserUtils.getDisplayName(server, user) + "** in **" + server.getName() + "**\n```\n" + table + "\n```\n" +
                 "Type `" + commandPrefix + "usersettings <setting>` for more information about that setting." +
                 "Type `" + commandPrefix + "usersettings <setting> <newValue>` to change it.";
 
@@ -98,9 +99,9 @@ public class UserSettingsCommand extends Command {
     }
 
     private void showDetails(Message message, SkuddUser su, UserSetting setting){
-        Server server = message.getServer().orElse(null);
+        Guild server = message.isFromGuild() ? message.getGuild() : null;
         assert server != null;
-        SkuddServer ss = sm.getServer(server.getId());
+        SkuddServer ss = sm.getServer(server.getIdLong());
         String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
         String msg = "```\n" +
                 "Setting:       " + setting + "\n" +

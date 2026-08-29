@@ -8,11 +8,11 @@ import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.PagedMessage;
-import org.javacord.api.entity.channel.ChannelType;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.List;
  * Help for commands
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class HelpCommand extends Command {
@@ -45,21 +45,21 @@ public class HelpCommand extends Command {
     public void run(CommandRequest request) {
         User user = request.getUser();
         long serverId = -1;
-        Server server = request.getServer();
+        Guild server = request.getGuild();
         Message message = request.getMessage();
         if(server != null)
-            serverId = server.getId();
+            serverId = server.getIdLong();
 
-        TextChannel channel = user.getPrivateChannel().orElse(user.openPrivateChannel().join());
-        int pages = getPageAmount(user.getId(), serverId);
+        MessageChannel channel = user.openPrivateChannel().complete();
+        int pages = getPageAmount(user.getIdLong(), serverId);
 
-        if(hasActiveOverview(user.getId())) {
+        if(hasActiveOverview(user.getIdLong())) {
             if(serverId == -1)
                 MessagesUtils.addReaction(message, Emoji.X, "You already have a active overview.");
             else {
-                getOverview(user.getId()).setServer(server);
+                getOverview(user.getIdLong()).setServer(server);
                 MessagesUtils.addReaction(message, Emoji.MAILBOX_WITH_MAIL, "Head back to your DM's, the help message has been updated.");
-                MessagesUtils.sendPlain(channel, "ding").delete();
+                MessagesUtils.sendPlain(channel, "ding").delete().queue();
             }
         } else {
             if (serverId == -1)
@@ -67,14 +67,14 @@ public class HelpCommand extends Command {
             else
                 overviews.add(new Overview(pages, channel, user, server));
 
-            if (request.getChannel().getType() != ChannelType.PRIVATE_CHANNEL)
+            if (request.getChannel().getType() != ChannelType.PRIVATE)
                 MessagesUtils.addReaction(message, Emoji.MAILBOX_WITH_MAIL, "Sliding into the DM's... :smirk:");
         }
     }
 
     private boolean hasActiveOverview(long userId){
         for(Overview overview : overviews)
-            if(overview.getUser().getId() == userId)
+            if(overview.getUser().getIdLong() == userId)
                 return true;
 
         return false;
@@ -82,7 +82,7 @@ public class HelpCommand extends Command {
 
     private Overview getOverview(long userId){
         for(Overview overview : overviews)
-            if(overview.getUser().getId() == userId)
+            if(overview.getUser().getIdLong() == userId)
                 return overview;
 
         return null;
@@ -96,10 +96,10 @@ public class HelpCommand extends Command {
     private class Overview extends PagedMessage {
 
         @Getter private User user;
-        private Server server;
+        private Guild server;
 
-        private Overview(int maxPages, TextChannel channel, User user, Server server){
-            super(maxPages, channel, user.getId());
+        private Overview(int maxPages, MessageChannel channel, User user, Guild server){
+            super(maxPages, channel, user.getIdLong());
             this.user = user;
             this.server = server;
             construct();
@@ -107,20 +107,20 @@ public class HelpCommand extends Command {
             addButton(Emoji.ARROW_LEFT_HOOK, e -> returnToDm(), e -> returnToDm());
         }
 
-        private Overview(int maxPages, TextChannel channel, User user) {
+        private Overview(int maxPages, MessageChannel channel, User user) {
             this(maxPages, channel, user, null);
         }
 
         public String getContent(){
             long serverId = -1;
             if(server != null)
-                serverId = server.getId();
+                serverId = server.getIdLong();
 
             String username = user.getName();
             String serverName = serverId == -1 ? "DM's" : server.getName();
             int curPage = getPage();
             int maxPage = getMaxPage();
-            String commands = hg.getHelp(user.getId(), serverId, PAGE_SIZE, (getPage() - 1) * PAGE_SIZE);
+            String commands = hg.getHelp(user.getIdLong(), serverId, PAGE_SIZE, (getPage() - 1) * PAGE_SIZE);
             String help = serverId == -1 ? DM_HELP : SERVER_HELP;
 
             return MessageFormat.format(MESSAGE_FORMAT, username, serverName, curPage, maxPage, commands, help);
@@ -129,14 +129,14 @@ public class HelpCommand extends Command {
         private void returnToDm(){
             if(server != null) {
                 server = null;
-                setMaxPage(getPageAmount(user.getId(), -1));
+                setMaxPage(getPageAmount(user.getIdLong(), -1));
                 setPage(1);
             }
         }
 
-        private void setServer(Server server){
+        private void setServer(Guild server){
             this.server = server;
-            setMaxPage(getPageAmount(user.getId(), server.getId()));
+            setMaxPage(getPageAmount(user.getIdLong(), server.getIdLong()));
             setPage(1);
         }
 

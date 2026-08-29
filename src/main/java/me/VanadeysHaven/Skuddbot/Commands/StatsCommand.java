@@ -5,7 +5,6 @@ import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
-import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PagedEmbed;
 import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
@@ -14,19 +13,17 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.ExecutionException;
 
 /**
  * Used to view and edit stats.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.24
+ * @version 2.4
  * @since 2.0
  */
 public final class StatsCommand extends Command {
@@ -60,13 +57,13 @@ public final class StatsCommand extends Command {
 
     private void showStats(Message message, String content){
         String[] args = content.split(" ");
-        Server server = message.getServer().orElse(null); assert server != null;
-        User author = message.getAuthor().asUser().orElse(null); assert author != null;
+        Guild server = message.isFromGuild() ? message.getGuild() : null; assert server != null;
+        User author = message.getAuthor();
 
-        User target = message.getAuthor().asUser().orElse(null); assert target != null;
+        User target = message.getAuthor();
         if(args.length > 1) {
-            if(!message.getMentionedUsers().isEmpty()){
-                target = message.getMentionedUsers().get(0);
+            if(!message.getMentions().getUsers().isEmpty()){
+                target = message.getMentions().getUsers().get(0);
             } else if (MiscUtils.isLong(args[1])) {
                 if(uu.doesUserExist(args[1])) {
                     target = uu.getUser(args[1]);
@@ -80,30 +77,30 @@ public final class StatsCommand extends Command {
             }
         }
 
-        new PagedEmbed(Stat.getPageManager(), message.getChannel(), ProfileManager.getInstance().getUser(server.getId(), target.getId()),
-                ServerManager.getInstance().getServer(server.getId()), author.getId()); //create new embed to show the stats
+        new PagedEmbed(Stat.getPageManager(), message.getChannel(), ProfileManager.getInstance().getUser(server.getIdLong(), target.getIdLong()),
+                ServerManager.getInstance().getServer(server.getIdLong()), author.getIdLong()); //create new embed to show the stats
     }
 
     private void editValue(Message message, String content) { // command name stat operation amount
         String[] args = content.split(" ");
-        Server server = message.getServer().orElse(null); assert server != null;
-        User author = message.getUserAuthor().orElse(null); assert author != null;
-        if(!pm.getUser(server.getId(), author.getId()).getPermissions().hasPermission(PermissionLevel.SERVER_ADMIN)){
+        Guild server = message.isFromGuild() ? message.getGuild() : null; assert server != null;
+        User author = message.getAuthor();
+        if(!pm.getUser(server.getIdLong(), author.getIdLong()).getPermissions().hasPermission(PermissionLevel.SERVER_ADMIN)){
             MessagesUtils.addReaction(message, Emoji.X, "You are missing a required permission to do this; " + PermissionLevel.SERVER_ADMIN);
             return;
         }
 
         User user;
-        if(!message.getMentionedUsers().isEmpty()){
-            user = message.getMentionedUsers().get(0);
-            if(!args[1].replace("<@!", "<@").equalsIgnoreCase(user.getMentionTag())) {
+        if(!message.getMentions().getUsers().isEmpty()){
+            user = message.getMentions().getUsers().get(0);
+            if(!args[1].replace("<@!", "<@").equalsIgnoreCase(user.getAsMention())) {
                 MessagesUtils.addReaction(message, Emoji.X, INVALID_ARGS);
                 return;
             }
         } else if (MiscUtils.isLong(args[1])){
-            try {
-                user = Main.getSkuddbot().getApi().getUserById(Long.parseLong(args[1])).get();
-            } catch (InterruptedException | ExecutionException e) {
+            if(uu.doesUserExist(args[1])){
+                user = uu.getUser(args[1]);
+            } else {
                 MessagesUtils.addReaction(message, Emoji.X, "User with ID " + args[1] + " not found.");
                 return;
             }
@@ -128,11 +125,11 @@ public final class StatsCommand extends Command {
             return;
         }
 
-        SkuddUser su = pm.getUser(server.getId(), user.getId());
+        SkuddUser su = pm.getUser(server.getIdLong(), user.getIdLong());
         if(args[3].equalsIgnoreCase("set")){
             try {
                 su.getStats().setString(stat, args[4]);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Set stat `" + stat + "` to `" + args[4] + "` for user `" + user.getDisplayName(server) + "`");
+                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Set stat `" + stat + "` to `" + args[4] + "` for user `" + UserUtils.getDisplayName(server, user) + "`");
                 return;
             } catch (IllegalArgumentException e){
                 MessagesUtils.addReaction(message, Emoji.X, e.getMessage());
@@ -150,11 +147,11 @@ public final class StatsCommand extends Command {
             switch (args[3].toLowerCase()) {
                 case "add":
                     su.getStats().incrementInt(stat, mutationAmount);
-                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + mutationAmount + "` to stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + mutationAmount + "` to stat `" + stat + "` for user `" + UserUtils.getDisplayName(server, user) + "`");
                     break;
                 case "remove":
                     su.getStats().incrementInt(stat, mutationAmount * -1);
-                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Removed `" + mutationAmount + "` from stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Removed `" + mutationAmount + "` from stat `" + stat + "` for user `" + UserUtils.getDisplayName(server, user) + "`");
                     break;
                 default:
                     MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not an valid operation.");
@@ -170,11 +167,11 @@ public final class StatsCommand extends Command {
             switch (args[3].toLowerCase()) {
                 case "add":
                     su.getStats().incrementLong(stat, mutationAmount);
-                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + mutationAmount + "` to stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Added `" + mutationAmount + "` to stat `" + stat + "` for user `" + UserUtils.getDisplayName(server, user) + "`");
                     break;
                 case "remove":
                     su.getStats().incrementLong(stat, mutationAmount * -1);
-                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Removed `" + mutationAmount + "` from stat `" + stat + "` for user `" + user.getDisplayName(server) + "`");
+                    MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Removed `" + mutationAmount + "` from stat `" + stat + "` for user `" + UserUtils.getDisplayName(server, user) + "`");
                     break;
                 default:
                     MessagesUtils.addReaction(message, Emoji.X, "`" + args[3] + "` is not an valid operation.");

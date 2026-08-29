@@ -5,7 +5,8 @@ import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
+import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import java.util.Arrays;
  * Shows information about the bot.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class AboutCommand extends Command {
@@ -27,12 +28,12 @@ public class AboutCommand extends Command {
     public void run(CommandRequest request) {
         EmbedBuilder eb = new EmbedBuilder();
         GlobalSettingsContainer gsc = Main.getSkuddbot().getGlobalSettings();
-        eb.setAuthor("Skuddbot " + gsc.getString(GlobalSetting.VERSION), null, Main.getSkuddbot().getApi().getYourself().getAvatar());
-        eb.setThumbnail(Main.getSkuddbot().getApi().getYourself().getAvatar());
+        eb.setAuthor("Skuddbot " + gsc.getString(GlobalSetting.VERSION), null, Main.getSkuddbot().getApi().getSelfUser().getEffectiveAvatarUrl());
+        eb.setThumbnail(Main.getSkuddbot().getApi().getSelfUser().getEffectiveAvatarUrl());
 
         for (GlobalSetting gs : new ArrayList<>(Arrays.asList(GlobalSetting.DEPLOY_TIME, GlobalSetting.BRANCH, GlobalSetting.COMMIT, GlobalSetting.WIKI)))
-            eb.addInlineField("__" + gs.getName() + ":__", gsc.getString(gs));
+            eb.addField("__" + gs.getName() + ":__", gsc.getString(gs), true);
 
-        request.getChannel().sendMessage(eb);
+        MessagesUtils.sendEmbed(request.getChannel(), eb);
     }
 }

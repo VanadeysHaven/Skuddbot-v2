@@ -9,15 +9,15 @@ import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 /**
  * Command for viewing and altering server settings.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.24
+ * @version 2.4
  * @since 2.0
  */
 public class ServerSettingsCommand extends Command {
@@ -31,8 +31,8 @@ public class ServerSettingsCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String[] args = request.getArgs();
-        Server server = request.getServer();
-        SkuddServer ss = sm.getServer(server.getId());
+        Guild server = request.getGuild();
+        SkuddServer ss = sm.getServer(server.getIdLong());
         ServerSetting setting = null;
         Message message = request.getMessage();
         String newValue = "";
@@ -58,8 +58,8 @@ public class ServerSettingsCommand extends Command {
         }
 
         if(args.length == 1){
-            User user = message.getUserAuthor().orElse(null); assert user != null;
-            new PagedEmbed(ServerSetting.getPageManager(), message.getChannel(), null, ss, user.getId());
+            User user = message.getAuthor();
+            new PagedEmbed(ServerSetting.getPageManager(), message.getChannel(), null, ss, user.getIdLong());
         } else if (args.length == 2){
             showDetails(message, ss, setting);
         } else if (args.length >= 3){
