@@ -13,9 +13,7 @@ import me.VanadeysHaven.Skuddbot.Commands.Useless.ActionCommands.HugCommand;
 import me.VanadeysHaven.Skuddbot.Commands.Useless.ActionCommands.PunchCommand;
 import me.VanadeysHaven.Skuddbot.Commands.Useless.*;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorMessage;
-import me.VanadeysHaven.Skuddbot.Listeners.JoinQuitServerListener;
-import me.VanadeysHaven.Skuddbot.Listeners.MessageListener;
-import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
+import me.VanadeysHaven.Skuddbot.Listeners.SkuddEventListener;
 import me.VanadeysHaven.Skuddbot.Minigames.Blackjack.BlackjackCommand;
 import me.VanadeysHaven.Skuddbot.Minigames.Challenge.ChallengeCommand;
 import me.VanadeysHaven.Skuddbot.Minigames.DoubleOrNothing.DonCommand;
@@ -25,8 +23,9 @@ import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSettingsSapling;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.DiscordApi;
-import org.javacord.api.DiscordApiBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,14 +42,14 @@ import java.util.Iterator;
  *
  * @author Tim (Vanadey's Haven)
  * @since 2.3.22
- * @version 2.0
+ * @version 2.4
  */
 public final class Skuddbot {
 
     private static final Logger logger = LoggerFactory.getLogger(Skuddbot.class);
     private static final ServerManager sm = ServerManager.getInstance();
 
-    @Getter private DiscordApi api;
+    @Getter private JDA api;
     private String token;
     private CommandManager commandManager;
     @Getter private GlobalSettingsContainer globalSettings;
@@ -63,9 +62,17 @@ public final class Skuddbot {
         logger.info("Creating donator manager and loading data...");
     }
 
-    void buildAndLogin(){
+    void buildAndLogin() throws InterruptedException {
         logger.info("Building client and logging in...");
-        this.api = new DiscordApiBuilder().setToken(token).setAllIntents().login().join();
+        this.api = JDABuilder.createDefault(token,
+                GatewayIntent.GUILD_MESSAGES,
+                GatewayIntent.MESSAGE_CONTENT,
+                GatewayIntent.GUILD_MESSAGE_REACTIONS,
+                GatewayIntent.GUILD_MEMBERS,
+                GatewayIntent.DIRECT_MESSAGES,
+                GatewayIntent.DIRECT_MESSAGE_REACTIONS)
+                .build()
+                .awaitReady();
     }
 
     void registerCommands() {
@@ -85,17 +92,8 @@ public final class Skuddbot {
     }
 
     void registerListeners() {
-        logger.info("Registering MessageCreateListener...");
-        api.addMessageCreateListener(event -> this.commandManager.process(event.getMessage()));
-        api.addMessageCreateListener(event -> MessageListener.run(event.getMessage()));
-        logger.info("Registering ReactionAddListener...");
-        api.addReactionAddListener(ReactionUtils::runClicked);
-        logger.info("Registering ReactionRemoveListener...");
-        api.addReactionRemoveListener(ReactionUtils::runRemoved);
-        logger.info("Registering ServerMemberJoinListener...");
-        api.addServerMemberJoinListener(JoinQuitServerListener::join);
-        logger.info("Registering ServerMemberLeaveListener...");
-        api.addServerMemberLeaveListener(JoinQuitServerListener::leave);
+        logger.info("Registering event listener...");
+        api.addEventListener(new SkuddEventListener(commandManager));
     }
 
     public HelpGenerator getHelpGenerator(){
@@ -115,7 +113,7 @@ public final class Skuddbot {
         }
 
         globalSettings.save();
-        getApi().disconnect();
+        getApi().shutdown();
     }
 
 }
