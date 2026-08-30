@@ -10,9 +10,9 @@ import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButtonRemovedCallba
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +22,7 @@ import java.util.List;
  * Class for paged embeds.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.24
+ * @version 2.4
  * @since 2.3.24
  */
 public class PagedEmbed {
@@ -56,7 +56,7 @@ public class PagedEmbed {
     /** The pages of the paged embed. */
     private PageManager<?,?> pageManager;
     /** The channel in which the paged embed is displayed. */
-    private TextChannel channel;
+    private MessageChannel channel;
     /** The message that the paged embed is displayed in. */
     private Message message;
     /** The buttons that are active on the paged embed. */
@@ -77,7 +77,7 @@ public class PagedEmbed {
      * @param server The server that the paged embed is for.
      * @param callerId The user that initiated the paged embed.
      */
-    public PagedEmbed(PageManager<?,?> pageManager, TextChannel channel, SkuddUser user, SkuddServer server, long callerId) {
+    public PagedEmbed(PageManager<?,?> pageManager, MessageChannel channel, SkuddUser user, SkuddServer server, long callerId) {
         this.pageManager = pageManager; // Set the page manager.
         page = 1; // Set the page to 1.
         this.maxPage = pageManager.getPageAmount(); // Set the max page to the amount of pages in the page manager.
@@ -130,9 +130,9 @@ public class PagedEmbed {
      */
     private void sendMessage(){
         if(message == null)  // If the message is null.
-            message = channel.sendMessage(getDescription(), getContent()).join(); // Send the message
+            message = channel.sendMessageEmbeds(getContent().build()).setContent(getDescription()).complete(); // Send the message
         else // If the message is not null.
-            message.edit(getContent()); // Edit the message.
+            message.editMessageEmbeds(getContent().build()).queue(); // Edit the message.
     }
 
     /**
@@ -194,7 +194,7 @@ public class PagedEmbed {
         for(ReactionButton button : buttons) // For each button.
             button.unregister(); // Unregister the button.
 
-        message.removeAllReactions(); // Remove all reactions from the message.
+        message.clearReactions().queue(); // Remove all reactions from the message.
         autoExpireMessages.remove(this); // Remove the paged embed from the list of auto-expire messages.
     }
 

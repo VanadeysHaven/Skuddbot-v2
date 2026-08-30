@@ -5,9 +5,8 @@ import lombok.Setter;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonRemovedEvent;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.Reaction;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,7 @@ import org.slf4j.LoggerFactory;
  * Information about a reaction button.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.22
+ * @version 2.4
  * @since 2.1.1
  */
 public final class ReactionButton {
@@ -48,7 +47,7 @@ public final class ReactionButton {
     }
 
     public void runClicked(User user){
-        logger.info("Running clicked callback for user " + user.getIdAsString() + " on message id " + message.getId());
+        logger.info("Running clicked callback for user " + user.getId() + " on message id " + message.getId());
         clickedCallback.run(new ReactionButtonClickedEvent(message, emoji, user, this));
 
         if(oneTimeUse) unregister();
@@ -56,19 +55,18 @@ public final class ReactionButton {
 
     public void runRemoved(User user){
         if(removedCallback == null) {
-            logger.info("Removed callback triggered for user " + user.getIdAsString() + " on message id " + message.getId() + " but there's no removed callback present.");
+            logger.info("Removed callback triggered for user " + user.getId() + " on message id " + message.getId() + " but there's no removed callback present.");
             return;
         }
 
-        logger.info("Running removed callback for user " + user.getIdAsString() + " on message id " + message.getId());
+        logger.info("Running removed callback for user " + user.getId() + " on message id " + message.getId());
         removedCallback.run(new ReactionButtonRemovedEvent(message, emoji, user, this));
     }
 
     public void removeReaction(User user){
         if(removedCallback != null) throw new UnsupportedOperationException("You can not remove reactions from a button that has a removed callback associated with it.");
 
-        Reaction reaction = getMessage().getReactionByEmoji(getEmoji().getUnicode()).orElse(null); assert reaction != null;
-        reaction.removeUser(user);
+        getMessage().removeReaction(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode(getEmoji().getUnicode()), user).queue();
     }
 
     public boolean userIsAllowedToRun(long userId){
@@ -108,7 +106,7 @@ public final class ReactionButton {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReactionButton button = (ReactionButton) o;
-        return emoji == button.emoji && message.getId() == button.getMessage().getId();
+        return emoji == button.emoji && message.getIdLong() == button.getMessage().getIdLong();
     }
 
 }

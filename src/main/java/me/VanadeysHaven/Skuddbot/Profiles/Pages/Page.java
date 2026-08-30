@@ -5,7 +5,7 @@ import lombok.Setter;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
+import net.dv8tion.jda.api.EmbedBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * Represents a page for with pageable objects.
  *
  * @author Vanadey's Haven
- * @version 2.3.24
+ * @version 2.4
  * @since 2.3.24
  */
 public abstract class Page<T extends Pageable<C>, C extends PageableCategory<T>> {

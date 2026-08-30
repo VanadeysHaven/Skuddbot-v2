@@ -5,15 +5,15 @@ import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.ServerMember;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 /**
  * Base abstract event class for reaction button events.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.4
  * @since 2.2.1
  */
 public abstract class ReactionButtonEvent {
@@ -35,8 +35,8 @@ public abstract class ReactionButtonEvent {
     }
 
     public Identifier getUserId(){
-        Server server = message.getServer().orElse(null); assert server != null;
-        return new Identifier(server.getId(), user.getId());
+        Guild server = message.isFromGuild() ? message.getGuild() : null; assert server != null;
+        return new Identifier(server.getIdLong(), user.getIdLong());
     }
 
 }

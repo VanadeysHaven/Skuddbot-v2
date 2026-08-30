@@ -7,9 +7,10 @@ import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
 import me.VanadeysHaven.Skuddbot.Utilities.Constants;
-import org.javacord.api.entity.permission.Role;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,7 +20,7 @@ import java.util.List;
  * Class that used to check the global permissions of an user.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.1.1
+ * @version 2.4
  * @since 2.0
  */
 public class PermissionManager {
@@ -54,17 +55,18 @@ public class PermissionManager {
         if(userId == Constants.TIMMY_ID) list.add(PermissionLevel.TIMMY);
 
         if(serverId != -1) {
-            User user = Main.getSkuddbot().getApi().getUserById(userId).join();
-            Server server = Main.getSkuddbot().getApi().getServerById(serverId).orElse(null); assert server != null;
-            if(server.getOwnerId() == user.getId())
+            User user = Main.getSkuddbot().getApi().retrieveUserById(userId).complete();
+            Guild server = Main.getSkuddbot().getApi().getGuildById(serverId); assert server != null;
+            if(server.getOwnerIdLong() == user.getIdLong())
                 list.add(PermissionLevel.SERVER_ADMIN);
             else {
                 SkuddServer ss = sm.getServer(serverId);
 
-                List<Role> roles = server.getRolesByName(ss.getSettings().getString(ServerSetting.ADMIN_ROLE));
+                List<Role> roles = server.getRolesByName(ss.getSettings().getString(ServerSetting.ADMIN_ROLE), true);
                 if (roles.size() > 0) {
                     Role reqRole = roles.get(0);
-                    if (user.getRoles(server).contains(reqRole)) list.add(PermissionLevel.SERVER_ADMIN);
+                    Member member = server.getMember(user);
+                    if (member != null && member.getRoles().contains(reqRole)) list.add(PermissionLevel.SERVER_ADMIN);
                 }
             }
         }

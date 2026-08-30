@@ -10,7 +10,7 @@ import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
  *
  * @author Tim (Vanadey's Haven)
  * @since 2.3.23
- * @version 2.0
+ * @version 2.4
  */
 public class PingCommand extends Command {
 
@@ -20,8 +20,8 @@ public class PingCommand extends Command {
 
     @Override
     public void run(CommandRequest request) {
-        if(dm.isDonator(request.getSender().getId())){
-            String text = dm.getUser(request.getSender().getId()).getPingMessage();
+        if(dm.isDonator(request.getSender().getIdLong())){
+            String text = dm.getUser(request.getSender().getIdLong()).getPingMessage();
             if(text != null){
                 MessagesUtils.sendEmoji(request.getChannel(), Emoji.WHITE_CHECK_MARK, text);
                 return;

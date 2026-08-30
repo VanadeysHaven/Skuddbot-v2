@@ -3,7 +3,6 @@ package me.VanadeysHaven.Skuddbot.Profiles.Server;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.Page;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PageManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
-import org.javacord.api.entity.Icon;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import java.util.List;
  * Represents a server settings page.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.24
+ * @version 2.4
  * @since 2.3.24
  */
 
@@ -43,8 +42,7 @@ public class ServerSettingPage extends Page<ServerSetting, ServerSetting.Categor
     /** @inheritDoc */
     @Override
     public String getPageAuthorImage(SkuddUser user, SkuddServer server) {
-        Icon icon = server.asDiscordServer().getIcon().orElse(null); assert icon != null; //get the icon and assert it's not null
-        return icon.getUrl().toString(); // return the icon url as a string
+        return server.asDiscordServer().getIconUrl(); // return the guild icon url (nullable)
     }
 
     /**

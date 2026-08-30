@@ -12,7 +12,7 @@ import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
  * Used for donators to set their ping message.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class SetPingCommand extends Command {
@@ -33,7 +33,7 @@ public class SetPingCommand extends Command {
         }
         String ping = EmojiParser.parseToAliases(sb.toString().trim());
         if(ping.equalsIgnoreCase("null")) ping = null;
-        DonatorUser du = dm.getUser(request.getMessage().getAuthor().getId());
+        DonatorUser du = dm.getUser(request.getMessage().getAuthor().getIdLong());
         du.setPingMessage(ping);
         du.save();
 

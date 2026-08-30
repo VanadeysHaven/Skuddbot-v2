@@ -6,8 +6,10 @@ import me.VanadeysHaven.Skuddbot.Donator.DonatorMessage;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Icon;
 
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,7 +19,7 @@ import java.util.Date;
  * Managing the playing status and avatar.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.26
+ * @version 2.4
  * @since 2.0
  */
 public class AppearanceManager {
@@ -140,13 +142,13 @@ public class AppearanceManager {
         CalendarEvent event = CalendarEvent.getRandomEventForDay(day, month);
         if(event != null) {
             if(event.getDisplayMessage() != null) {
-                Main.getSkuddbot().getApi().updateActivity(event.getDisplayMessage());
+                Main.getSkuddbot().getApi().getPresence().setActivity(Activity.playing(event.getDisplayMessage()));
             } else {
-                Main.getSkuddbot().getApi().updateActivity(dm.getMessage(event.getMessageType()).getMessage());
+                Main.getSkuddbot().getApi().getPresence().setActivity(Activity.playing(dm.getMessage(event.getMessageType()).getMessage()));
             }
             setAvatar(event.getAvatar());
         } else {
-            Main.getSkuddbot().getApi().updateActivity(dm.getMessage(DonatorMessage.Type.PLAYING).getMessage());
+            Main.getSkuddbot().getApi().getPresence().setActivity(Activity.playing(dm.getMessage(DonatorMessage.Type.PLAYING).getMessage()));
             setAvatar(Avatar.DEFAULT);
         }
     }
@@ -157,15 +159,15 @@ public class AppearanceManager {
 
         settings.setCurrentAvatar(avatar);
         try {
-            Main.getSkuddbot().getApi().updateAvatar(new URL(avatar.getUrl()));
-        } catch (MalformedURLException e) {
+            Main.getSkuddbot().getApi().getSelfUser().getManager().setAvatar(Icon.from(new URL(avatar.getUrl()).openStream())).queue();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void appearanceStartup(){
         GlobalSettingsContainer gsc = Main.getSkuddbot().getGlobalSettings();
-        Main.getSkuddbot().getApi().updateActivity(gsc.getString(GlobalSetting.VERSION) + " | " + gsc.getString(GlobalSetting.BRANCH) + " > " + gsc.getString(GlobalSetting.COMMIT));
+        Main.getSkuddbot().getApi().getPresence().setActivity(Activity.playing(gsc.getString(GlobalSetting.VERSION) + " | " + gsc.getString(GlobalSetting.BRANCH) + " > " + gsc.getString(GlobalSetting.COMMIT)));
     }
 
 }

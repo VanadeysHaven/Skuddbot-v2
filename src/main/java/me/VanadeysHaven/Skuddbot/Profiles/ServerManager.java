@@ -5,7 +5,7 @@ import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSettingsSapling;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
-import org.javacord.api.entity.server.Server;
+import net.dv8tion.jda.api.entities.Guild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ import java.util.Iterator;
  * This class is used for managing server profiles.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.1.1
+ * @version 2.4
  * @since 2.0
  */
 public class ServerManager {
@@ -38,7 +38,7 @@ public class ServerManager {
 
     public SkuddServer getServer(long id){
         logger.info("Requested server profile for id " + id);
-        Server server = Main.getSkuddbot().getApi().getServerById(id).orElse(null); assert server != null;
+        Guild server = Main.getSkuddbot().getApi().getGuildById(id); assert server != null;
 
         SkuddServer ss = searchList(id);
         if(ss != null){

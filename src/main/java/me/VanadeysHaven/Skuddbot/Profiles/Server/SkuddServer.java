@@ -10,7 +10,7 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Utilities.RNGManager;
-import org.javacord.api.entity.server.Server;
+import net.dv8tion.jda.api.entities.Guild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
  *
  * @author Tim (Vanadey's Haven)
  * @since 2.3.24
- * @version 2.0
+ * @version 2.4
  */
 public class SkuddServer {
 
@@ -160,7 +160,7 @@ public class SkuddServer {
     }
 
     public String getName(){
-        Server server = Main.getSkuddbot().getApi().getServerById(serverId).orElse(null); assert server != null;
+        Guild server = Main.getSkuddbot().getApi().getGuildById(serverId); assert server != null;
         return server.getName();
     }
 
@@ -169,7 +169,7 @@ public class SkuddServer {
      *
      * @return The Discord server.
      */
-    public Server asDiscordServer() {
-        return Main.getSkuddbot().getApi().getServerById(serverId).orElse(null);
+    public Guild asDiscordServer() {
+        return Main.getSkuddbot().getApi().getGuildById(serverId);
     }
 }

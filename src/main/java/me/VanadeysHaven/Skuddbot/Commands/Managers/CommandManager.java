@@ -9,9 +9,9 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.PermissionManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.channel.ChannelType;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  *
  * @author Tim (Vanadey's Haven)
  * @since 2.3.23
- * @version 2.0
+ * @version 2.4
  */
 public class CommandManager implements HelpGenerator {
 
@@ -123,21 +123,21 @@ public class CommandManager implements HelpGenerator {
     }
 
     public void process(Message message){
-        if(!message.getAuthor().isRegularUser()) return;
-        if(message.getChannel().getType() == ChannelType.PRIVATE_CHANNEL){
+        if(message.getAuthor().isBot()) return;
+        if(message.getChannel().getType() == ChannelType.PRIVATE){
             processPrivate(message);
             return;
         }
-        Server server = message.getServer().orElse(null);
+        Guild server = message.isFromGuild() ? message.getGuild() : null;
         assert server != null;
-        String commandPrefix = sm.getServer(server.getId()).getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
-        if(!message.getContent().startsWith(commandPrefix)) {
+        String commandPrefix = sm.getServer(server.getIdLong()).getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
+        if(!message.getContentRaw().startsWith(commandPrefix)) {
             processNoPrefix(message, server);
             return;
         }
-        String messageContent = message.getContent().substring(commandPrefix.length());
+        String messageContent = message.getContentRaw().substring(commandPrefix.length());
         String requestedInvoker = messageContent.split(" ")[0];
-        SkuddUser su = pm.getUser(server.getId(), message.getAuthor().getId());
+        SkuddUser su = pm.getUser(server.getIdLong(), message.getAuthor().getIdLong());
         PermissionManager permissions = su.getPermissions();
 
         for(Command command : commands){
@@ -156,10 +156,10 @@ public class CommandManager implements HelpGenerator {
         }
     }
 
-    private void processNoPrefix(Message message, Server server){
-        String messageContent = message.getContent();
+    private void processNoPrefix(Message message, Guild server){
+        String messageContent = message.getContentRaw();
         String requestedInvoker = messageContent.split(" ")[0];
-        SkuddUser su = pm.getUser(server.getId(), message.getAuthor().getId());
+        SkuddUser su = pm.getUser(server.getIdLong(), message.getAuthor().getIdLong());
         PermissionManager permissions = su.getPermissions();
 
         for(Command command : noPrefixCommands){
@@ -177,13 +177,13 @@ public class CommandManager implements HelpGenerator {
 
     private void processPrivate(Message message){
         String commandPrefix = "!";
-        if(!message.getContent().startsWith(commandPrefix)) {
+        if(!message.getContentRaw().startsWith(commandPrefix)) {
             processNoPrefixPrivate(message);
             return;
         }
-        String messageContent = message.getContent().substring(commandPrefix.length());
+        String messageContent = message.getContentRaw().substring(commandPrefix.length());
         String requestedInvoker = messageContent.split(" ")[0];
-        PermissionManager permissions = new PermissionManager(message.getAuthor().getId());
+        PermissionManager permissions = new PermissionManager(message.getAuthor().getIdLong());
 
         for(Command command : commands){
             for(String invoker : command.getInvokers()){
@@ -201,9 +201,9 @@ public class CommandManager implements HelpGenerator {
     }
 
     private void processNoPrefixPrivate(Message message){
-        String messageContent = message.getContent();
+        String messageContent = message.getContentRaw();
         String requestedInvoker = messageContent.split(" ")[0];
-        PermissionManager permissions = new PermissionManager(message.getAuthor().getId());
+        PermissionManager permissions = new PermissionManager(message.getAuthor().getIdLong());
 
         for(Command command : noPrefixCommands){
             for(String invoker : command.getInvokers()){

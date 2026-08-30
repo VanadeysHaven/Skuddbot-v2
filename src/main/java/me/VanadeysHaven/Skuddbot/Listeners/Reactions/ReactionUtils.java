@@ -1,11 +1,12 @@
 package me.VanadeysHaven.Skuddbot.Listeners.Reactions;
 
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.message.Reaction;
-import org.javacord.api.entity.user.User;
-import org.javacord.api.event.message.reaction.ReactionAddEvent;
-import org.javacord.api.event.message.reaction.ReactionRemoveEvent;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageReaction;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ import java.util.Arrays;
  * Listens to reactions being added to messages.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.22
+ * @version 2.4
  * @since 2.0
  */
 public final class ReactionUtils {
@@ -40,7 +41,7 @@ public final class ReactionUtils {
     private static ReactionButton registerButton(Message message, Emoji emoji, ReactionButtonClickedCallback clickedCallback, ReactionButtonRemovedCallback removedCallback, boolean invisibleReaction, long... userLocks){
         logger.info("Registering new button on message id " + message.getId() + " with emoji " +  emoji + " locked to users " + Arrays.toString(userLocks));
         if(!invisibleReaction)
-            message.addReaction(emoji.getUnicode());
+            message.addReaction(net.dv8tion.jda.api.entities.emoji.Emoji.fromUnicode(emoji.getUnicode())).queue();
         ReactionButton button = new ReactionButton(message, emoji, clickedCallback, removedCallback, userLocks);
         buttons.add(button);
         return button;
@@ -51,26 +52,39 @@ public final class ReactionUtils {
         buttons.removeIf(but -> but.equals(button));
     }
 
-    public static void runClicked(ReactionAddEvent event) {
-        User user = event.getUser().orElse(null); assert user != null;
+    public static void runClicked(MessageReactionAddEvent event) {
+        User user = event.retrieveUser().complete(); assert user != null;
         if(user.isBot()) return;
 
-        Message message = event.getMessage().orElse(null); assert message != null;
-        Reaction reaction = event.getReaction().orElse(null); assert reaction != null;
-        ReactionButton button = getButton(user, message, reaction);
+        long messageId = event.getMessageIdLong();
+        MessageReaction reaction = event.getReaction();
+        ReactionButton button = getButton(user, messageId, getUnicode(reaction), reaction);
 
         if(button != null) button.runClicked(user);
     }
 
-    public static void runRemoved(ReactionRemoveEvent event){
-        User user = event.getUser().orElse(null); assert user != null;
+    public static void runRemoved(MessageReactionRemoveEvent event){
+        User user = event.retrieveUser().complete(); assert user != null;
 
         if(user.isBot()) return;
-        Message message = event.getMessage().orElse(null); assert message != null;
-        Reaction reaction = event.getReaction().orElse(null); assert reaction != null;
-        ReactionButton button = getButton(user, message, reaction);
+        long messageId = event.getMessageIdLong();
+        MessageReaction reaction = event.getReaction();
+        ReactionButton button = getButton(user, messageId, getUnicode(reaction), null);
 
         if(button != null) button.runRemoved(user);
+    }
+
+    /**
+     * Extracts the unicode string from a reaction, or null if the reaction is a custom (non-unicode) emoji.
+     *
+     * @param reaction The reaction to extract the unicode from.
+     * @return The unicode string, or null if the reaction is not a unicode emoji.
+     */
+    private static String getUnicode(MessageReaction reaction){
+        EmojiUnion emoji = reaction.getEmoji();
+        if(emoji.getType() == net.dv8tion.jda.api.entities.emoji.Emoji.Type.UNICODE)
+            return emoji.asUnicode().getName();
+        return null;
     }
 
     public static void checkExpire(){
@@ -79,19 +93,19 @@ public final class ReactionUtils {
         }
     }
 
-    private static ReactionButton getButton(User user, Message message, Reaction reaction){
+    private static ReactionButton getButton(User user, long messageId, String unicode, MessageReaction reaction){
         for(ReactionButton button : buttons) {
-            if(message.getId() != button.getMessage().getId()) continue;
+            if(messageId != button.getMessage().getIdLong()) continue;
 
             if(!button.isEnabled()){
                 if(reaction == null) continue;
-                reaction.removeUser(user);
+                reaction.removeReaction(user).queue();
                 continue;
             }
 
-            String unicode = reaction.getEmoji().asUnicodeEmoji().orElse(null); assert unicode != null;
+            if(unicode == null) continue;
             if(!button.getEmoji().getUnicode().equals(unicode)) continue;
-            if(!button.userIsAllowedToRun(user.getId())) continue;
+            if(!button.userIsAllowedToRun(user.getIdLong())) continue;
 
             return button;
         }

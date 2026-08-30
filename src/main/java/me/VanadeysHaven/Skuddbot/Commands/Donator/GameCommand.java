@@ -6,12 +6,13 @@ import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
+import net.dv8tion.jda.api.entities.Activity;
 
 /**
  * Command used to change the current playing status.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class GameCommand extends Command {
@@ -28,7 +29,7 @@ public class GameCommand extends Command {
         }
 
         String game = request.getContent().substring(5);
-        Main.getSkuddbot().getApi().updateActivity(game);
+        Main.getSkuddbot().getApi().getPresence().setActivity(Activity.playing(game));
         MessagesUtils.addReaction(request.getMessage(), Emoji.WHITE_CHECK_MARK, "Game updated to: `" + game + "`!");
     }
 }
