@@ -15,10 +15,10 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.StatsContainer;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.RNGManager;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of challenge between 2 users.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3
+ * @version 2.4
  * @since 2.1
  */
 public class ChallengeGame {
@@ -68,19 +68,19 @@ public class ChallengeGame {
     private static final int XP_STREAK_BONUS = 50;
     private static final int SB_STREAK_BONUS = 25;
 
-    private Server server;
+    private Guild server;
     private ChallengeGameManager manager;
     @Getter private ChallengePlayer challengerOne;
     @Getter private ChallengePlayer challengerTwo;
     @Getter private Message initialMessage;
     private Message gameMessage;
-    private TextChannel channel;
+    private MessageChannel channel;
     private ArrayList<Message> messages;
     private String log;
     private ReactionButton acceptButton;
     private ReactionButton delcineButton;
 
-    public ChallengeGame(ChallengePlayer challengerOne, ChallengePlayer challengerTwo, Message message, Server server, ChallengeGameManager manager){
+    public ChallengeGame(ChallengePlayer challengerOne, ChallengePlayer challengerTwo, Message message, Guild server, ChallengeGameManager manager){
         this.server = server;
         this.manager = manager;
         this.challengerOne = challengerOne;
@@ -116,17 +116,17 @@ public class ChallengeGame {
         log = "";
     }
 
-    public ChallengeGame(ChallengePlayer challengerOne, Message message, Server server, ChallengeGameManager manager){
+    public ChallengeGame(ChallengePlayer challengerOne, Message message, Guild server, ChallengeGameManager manager){
         this(challengerOne, null, message, server, manager);
     }
 
     public void acceptReactionClicked(ReactionButtonClickedEvent event){
-        if(event.getUser().getId() == challengerOne.getMember().getId().getDiscordId()) {
+        if(event.getUser().getIdLong() == challengerOne.getMember().getId().getDiscordId()) {
             event.undoReaction();
             return;
         }
 
-        SkuddUser su = pm.getUser(server.getId(), event.getUser().getId());
+        SkuddUser su = pm.getUser(server.getIdLong(), event.getUser().getIdLong());
         if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, getChallengerOne().getBet())){
             event.undoReaction();
             return;
@@ -139,7 +139,7 @@ public class ChallengeGame {
     }
 
     public void cancelReactionClicked(ReactionButtonClickedEvent event) {
-        if(event.getUser().getId() == challengerOne.getMember().getId().getDiscordId()){
+        if(event.getUser().getIdLong() == challengerOne.getMember().getId().getDiscordId()){
             cancel();
         } else {
             decline();
@@ -152,21 +152,21 @@ public class ChallengeGame {
 
         unregisterButtons();
         manager.startCooldown(this);
-        TextChannel channel = initialMessage.getChannel();
+        MessageChannel channel = initialMessage.getChannel();
         deleteMessages();
 
-        log += "**" + challengerOne.getName() + "** and **" + challengerTwo.getName() + "** go head to head in " + sm.getServer(server.getId()).getSettings().getString(ServerSetting.ARENA_NAME)
+        log += "**" + challengerOne.getName() + "** and **" + challengerTwo.getName() + "** go head to head in " + sm.getServer(server.getIdLong()).getSettings().getString(ServerSetting.ARENA_NAME)
                 + "! Who will win? *3*... *2*... *1*... **FIGHT!**";
 
         sendMessage(channel);
-        channel.type();
+        channel.sendTyping().queue();
 
         int winnerInt = random.integer(1,2);
         ChallengePlayer winner = winnerInt == 1 ? challengerOne : challengerTwo;
         ChallengePlayer loser = winnerInt == 1 ? challengerTwo : challengerOne;
         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
         exec.schedule(() -> {
-            log += "\n" + "A cloud of dust appears in " + sm.getServer(server.getId()).getSettings().getString(ServerSetting.ARENA_NAME) + ", when the dust settles it becomes clear that **" + winner.getName() + "** has won the fight!";
+            log += "\n" + "A cloud of dust appears in " + sm.getServer(server.getIdLong()).getSettings().getString(ServerSetting.ARENA_NAME) + ", when the dust settles it becomes clear that **" + winner.getName() + "** has won the fight!";
             log += "\n" + award(winner, loser);
 
             sendMessage(channel);
@@ -183,8 +183,8 @@ public class ChallengeGame {
         if(challengerOne.hasBetted())
             sb.append(challengerOne.getMember().getDisplayName()).append(", your bet has been refunded.");
 
-        initialMessage.edit(MessageFormat.format(IN_PROGRESS_FORMAT, challengerOne.getName(), challengerTwo.getName(), sb.toString().trim()));
-        initialMessage.removeAllReactions();
+        initialMessage.editMessage(MessageFormat.format(IN_PROGRESS_FORMAT, challengerOne.getName(), challengerTwo.getName(), sb.toString().trim())).queue();
+        initialMessage.clearReactions().queue();
 
         refund(challengerOne);
         manager.removeGame(this);
@@ -211,15 +211,15 @@ public class ChallengeGame {
         if(!deleteInitial)
             messages.remove(initialMessage);
 
-        channel.deleteMessages(messages);
+        channel.purgeMessages(messages);
         messages.clear();
     }
 
     private String award(ChallengePlayer winner, ChallengePlayer loser){
         StringBuilder sb = new StringBuilder();
-        StatsContainer winnerStats = pm.getUser(server.getId(), winner.getMember().getId().getDiscordId()).getStats();
-        CurrenciesContainer winnerCurrencies = pm.getUser(server.getId(), winner.getMember().getId().getDiscordId()).getCurrencies();
-        StatsContainer loserStats = pm.getUser(server.getId(), loser.getMember().getId().getDiscordId()).getStats();
+        StatsContainer winnerStats = pm.getUser(server.getIdLong(), winner.getMember().getId().getDiscordId()).getStats();
+        CurrenciesContainer winnerCurrencies = pm.getUser(server.getIdLong(), winner.getMember().getId().getDiscordId()).getCurrencies();
+        StatsContainer loserStats = pm.getUser(server.getIdLong(), loser.getMember().getId().getDiscordId()).getStats();
 
         int sbWinnings = SB_WIN_REWARD;
 
@@ -264,11 +264,11 @@ public class ChallengeGame {
         return sb.toString().trim();
     }
 
-    private void sendMessage(TextChannel channel){
+    private void sendMessage(MessageChannel channel){
         if(gameMessage == null)
             gameMessage = MessagesUtils.sendPlain(channel, getMessage());
         else
-            gameMessage.edit(getMessage());
+            gameMessage.editMessage(getMessage()).queue();
     }
 
     private String getMessage(){
@@ -282,9 +282,9 @@ public class ChallengeGame {
 
     public boolean isMatch(User user1, User user2, boolean ignoreOpen){
         if(ignoreOpen && isOpen()) return false;
-        if(user1.getId() == user2.getId()) return false;
-        if(isOpen() && user2.getId() == challengerOne.getMember().getId().getDiscordId()) return true;
-        return (user2.getId() == challengerOne.getMember().getId().getDiscordId()) && (user1.getId() == challengerTwo.getMember().getId().getDiscordId());
+        if(user1.getIdLong() == user2.getIdLong()) return false;
+        if(isOpen() && user2.getIdLong() == challengerOne.getMember().getId().getDiscordId()) return true;
+        return (user2.getIdLong() == challengerOne.getMember().getId().getDiscordId()) && (user1.getIdLong() == challengerTwo.getMember().getId().getDiscordId());
     }
 
     public boolean isMatch(User user1, User user2){
@@ -300,7 +300,7 @@ public class ChallengeGame {
     }
 
     public long getServerId(){
-        return server.getId();
+        return server.getIdLong();
     }
 
     private void unregisterButtons(){

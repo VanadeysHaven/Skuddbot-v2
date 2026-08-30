@@ -5,7 +5,7 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.ServerMember;
 import me.VanadeysHaven.Skuddbot.Utilities.CooldownManager;
 import me.VanadeysHaven.Skuddbot.Utilities.RNGManager;
-import org.javacord.api.entity.channel.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Manages games on a server level.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.4
  * @since 2.0
  */
 public class BlackjackGameManager {
@@ -62,12 +62,12 @@ public class BlackjackGameManager {
         return false;
     }
 
-    public void startNewGame(ServerMember member, TextChannel channel, String handInstruction){
+    public void startNewGame(ServerMember member, MessageChannel channel, String handInstruction){
        BlackjackGame game = new BlackjackGame(member, 1, this, channel, handInstruction);
        games.add(game);
     }
 
-    public void startNewGame(ServerMember member, int bet, TextChannel channel) {
+    public void startNewGame(ServerMember member, int bet, MessageChannel channel) {
         BlackjackGame game = new BlackjackGame(member, bet, this, channel);
         games.add(game);
     }

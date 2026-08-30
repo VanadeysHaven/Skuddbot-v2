@@ -8,9 +8,10 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Utilities.CooldownManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  * Manager for managing challenge games on a server level.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3
+ * @version 2.4
  * @since 2.1
  */
 public class ChallengeGameManager {
@@ -45,7 +46,7 @@ public class ChallengeGameManager {
     public void processAccept(User user1, User user2, Message message, int placedBet){
         for(ChallengeGame game : games)
             if(game.isMatch(user1, user2)) {
-                SkuddUser su = pm.getUser(serverId, user1.getId());
+                SkuddUser su = pm.getUser(serverId, user1.getIdLong());
                 su.getCurrencies().incrementInt(Currency.SKUDDBUX, placedBet);
                 if(!su.getCurrencies().hasEnoughBalance(Currency.SKUDDBUX, game.getChallengerOne().getBet())){
                     MessagesUtils.addReaction(message, Emoji.X, "You do not have enough Skuddbux to make this bet: " + game.getChallengerOne().getBet());
@@ -53,7 +54,7 @@ public class ChallengeGameManager {
                 }
 
                 su.getCurrencies().incrementInt(Currency.SKUDDBUX, game.getChallengerOne().getBet() * -1);
-                if(game.isOpen()) game.setChallengerTwo(new ChallengePlayer(serverId, user1.getId()));
+                if(game.isOpen()) game.setChallengerTwo(new ChallengePlayer(serverId, user1.getIdLong()));
                 game.addMessage(message);
                 game.fight();
                 return;
@@ -80,7 +81,7 @@ public class ChallengeGameManager {
         if(toDecline != null)
             toDecline.decline();
         else {
-            MessagesUtils.addReaction(message, Emoji.X, "No fight found with user " + user2.getDisplayName(getServer()) + " that can be declined.");
+            MessagesUtils.addReaction(message, Emoji.X, "No fight found with user " + UserUtils.getDisplayName(getServer(), user2) + " that can be declined.");
             return;
         }
 
@@ -88,36 +89,36 @@ public class ChallengeGameManager {
     }
 
     private void addGame(User user1, User user2, Message message, int placedBet){
-        SkuddUser su1 = pm.getUser(serverId, user1.getId());
+        SkuddUser su1 = pm.getUser(serverId, user1.getIdLong());
 
         int actualBet = placedBet;
         if(user2 != null) {
-            SkuddUser su2 = pm.getUser(serverId, user2.getId());
+            SkuddUser su2 = pm.getUser(serverId, user2.getIdLong());
             int user2bal = su2.getCurrencies().getInt(Currency.SKUDDBUX);
             actualBet = Math.min(placedBet, user2bal);
         }
 
-        ChallengePlayer challengerOne = new ChallengePlayer(serverId, user1.getId(), actualBet);
+        ChallengePlayer challengerOne = new ChallengePlayer(serverId, user1.getIdLong(), actualBet);
         if(actualBet < placedBet)
             su1.getCurrencies().incrementInt(Currency.SKUDDBUX, placedBet - actualBet);
 
         ChallengePlayer challengerTwo = null;
         if(user2 != null)
-            challengerTwo = new ChallengePlayer(serverId, user2.getId());
+            challengerTwo = new ChallengePlayer(serverId, user2.getIdLong());
 
         ChallengeGame game = new ChallengeGame(challengerOne, challengerTwo, message, getServer(), this);
         games.add(game);
     }
 
-    private Server getServer(){
-        Server server = Main.getSkuddbot().getApi().getServerById(serverId).orElse(null); assert server != null;
+    private Guild getServer(){
+        Guild server = Main.getSkuddbot().getApi().getGuildById(serverId); assert server != null;
         return server;
     }
 
     public void cancelGame(User user1){
         ChallengeGame toCancel = null;
         for(ChallengeGame game : games)
-            if(game.getChallengerOne().getMember().getId().getDiscordId() == user1.getId())
+            if(game.getChallengerOne().getMember().getId().getDiscordId() == user1.getIdLong())
                 toCancel = game;
 
         if(toCancel != null)
@@ -126,7 +127,7 @@ public class ChallengeGameManager {
 
     public boolean hasOutstandingGame(User user1){
         for(ChallengeGame game : games)
-            if(game.getChallengerOne().getMember().getId().getDiscordId() == user1.getId())
+            if(game.getChallengerOne().getMember().getId().getDiscordId() == user1.getIdLong())
                 return true;
 
         return false;

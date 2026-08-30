@@ -10,10 +10,10 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.ServerMember;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * The command for Free for All
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.2
  */
 public final class FfaCommand extends Command {
@@ -35,15 +35,15 @@ public final class FfaCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String[] args = request.getArgs();
-        Server server = request.getServer();
+        Guild server = request.getGuild();
         User user = request.getUser();
-        TextChannel channel = request.getChannel();
-        SkuddUser su = pm.getUser(server.getId(), user.getId());
+        MessageChannel channel = request.getChannel();
+        SkuddUser su = pm.getUser(server.getIdLong(), user.getIdLong());
         ServerMember member = su.asMember();
-        FfaGameManager manager = getManager(server.getId());
+        FfaGameManager manager = getManager(server.getIdLong());
         Message message = request.getMessage();
 
-        if(manager.isOnCooldown(user.getId())){
+        if(manager.isOnCooldown(user.getIdLong())){
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You are still wounded from the last fight, you must wait 5 minutes between games.");
             return;
         }
@@ -53,8 +53,8 @@ public final class FfaCommand extends Command {
         try {
             if(args.length > 1){
                 if (args[1].equalsIgnoreCase("leave")){
-                    if(getManager(server.getId()).isInGame(member)){
-                        getManager(server.getId()).leaveGame(member);
+                    if(getManager(server.getIdLong()).isInGame(member)){
+                        getManager(server.getIdLong()).leaveGame(member);
                         MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "Game left!");
                     } else {
                         MessagesUtils.addReaction(message, Emoji.X, "You are not in a game of free for all, or there's no game active.");
@@ -75,7 +75,7 @@ public final class FfaCommand extends Command {
             return;
         }
 
-        message.delete();
+        message.delete().queue();
         manager.enterGame(channel, member, bounty);
     }
 

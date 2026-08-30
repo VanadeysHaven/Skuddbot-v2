@@ -3,7 +3,8 @@ package me.VanadeysHaven.Skuddbot.Minigames.GameLogs;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionButton;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
-import org.javacord.api.entity.message.Message;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * Responsible for sending the game log to Discord based on reaction adds.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.1
+ * @version 2.4
  * @since 2.3.1
  */
 public final class GameLogSender {
@@ -37,7 +38,7 @@ public final class GameLogSender {
     }
 
     private void uploadFile(){
-        message.getChannel().sendMessage(file).join();
+        message.getChannel().sendFiles(FileUpload.fromData(file)).complete();
         file.delete();
         button.unregister();
         senders.remove(this);

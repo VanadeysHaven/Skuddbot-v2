@@ -18,10 +18,10 @@ import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.RNGManager;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableDividers;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of Free for All
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.25
+ * @version 2.4
  * @since 2.2
  */
 public final class FfaGame {
@@ -66,7 +66,7 @@ public final class FfaGame {
     private static final int REMINDER_DELAY = 6; //in hours
 
     private ArrayList<FfaPlayer> entrants;
-    private TextChannel channel;
+    private MessageChannel channel;
     private SkuddServer server;
     private ServerMember host;
     private FfaGameManager manager;
@@ -82,13 +82,13 @@ public final class FfaGame {
     private long timeStarted;
     private int entrantsAtLastReminder;
 
-    public FfaGame(TextChannel channel, ServerMember host, FfaGameManager manager){
+    public FfaGame(MessageChannel channel, ServerMember host, FfaGameManager manager){
         entrants = new ArrayList<>();
         buttons = new ArrayList<>();
         this.channel = channel;
         this.host = host;
         this.manager = manager;
-        server = sm.getServer(host.getServer().getId());
+        server = sm.getServer(host.getServer().getIdLong());
         state = State.OUTSTANDING;
         log = "";
         killFeed = "";
@@ -110,7 +110,7 @@ public final class FfaGame {
         if(message == null)
             message = MessagesUtils.sendPlain(channel, formatMessage());
         else
-            message.edit(formatMessage());
+            message.editMessage(formatMessage()).queue();
     }
 
     private String formatMessage(){
@@ -196,12 +196,12 @@ public final class FfaGame {
 
     private void startGame(){
         unregisterButtons();
-        message.delete();
+        message.delete().queue();
         message = null;
         state = State.IN_PROGRESS;
         appendToLog(MessageFormat.format(FIGHT_STARTED_FORMAT, formatEntrants(false), server.getSettings().getString(ServerSetting.ARENA_NAME)));
         sendMessage();
-        channel.type();
+        channel.sendTyping().queue();
         for(FfaPlayer entrant : entrants)
             gameLog.addEntrant(entrant.getGameLogName() + " (" + entrant.getBounty() + ")");
         FfaPlayer winner = simulateFight();
@@ -295,7 +295,7 @@ public final class FfaGame {
             FfaPlayer victim;
             do {
                victim = getRandomAlivePlayer();
-            } while (victim.getMember().getUser().getId() == killer.getMember().getUser().getId());
+            } while (victim.getMember().getUser().getIdLong() == killer.getMember().getUser().getIdLong());
 
             Pair<String, String> results = processKill(killer, victim);
 
@@ -407,7 +407,7 @@ public final class FfaGame {
 
         if(entrantsAtLastReminder != entrants.size()){
             if(host.asSkuddUser().getSettings().getBoolean(UserSetting.MINIGAME_REMINDERS))
-                host.getUser().sendMessage(MessageFormat.format(REMINDER_FORMAT, entrants.size(), "<#" + channel.getId() + ">", server.getName()));
+                host.getUser().openPrivateChannel().complete().sendMessage(MessageFormat.format(REMINDER_FORMAT, entrants.size(), "<#" + channel.getId() + ">", server.getName())).queue();
         } else {
             if((curTime - timeStarted) > (12 * 60 * 60 * 1000)) {
                 appendToLog("*(Game was auto-started by the bot)*");

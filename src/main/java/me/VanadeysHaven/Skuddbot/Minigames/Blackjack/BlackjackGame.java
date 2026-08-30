@@ -16,8 +16,8 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.Message;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of blackjack.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.4
  * @since 2.0
  */
 public class BlackjackGame {
@@ -109,11 +109,11 @@ public class BlackjackGame {
     private boolean doubleDownAllowed;
     private boolean splitAllowed;
 
-    public BlackjackGame(ServerMember player, int initialBet, BlackjackGameManager manager, TextChannel channel){
+    public BlackjackGame(ServerMember player, int initialBet, BlackjackGameManager manager, MessageChannel channel){
         this(player, initialBet, manager, channel, null);
     }
 
-    public BlackjackGame(ServerMember player, int initialBet, BlackjackGameManager manager, TextChannel channel, String handInstruction){
+    public BlackjackGame(ServerMember player, int initialBet, BlackjackGameManager manager, MessageChannel channel, String handInstruction){
         this.player = player;
         this.initialBet = initialBet;
         this.manager = manager;
@@ -176,14 +176,14 @@ public class BlackjackGame {
 
     private void sendMessage(){
         if(message == null) throw new IllegalStateException("Message has not been sent yet.");
-        message.edit(formatMessage());
+        message.editMessage(formatMessage()).queue();
     }
 
-    private void sendMessage(TextChannel channel){
+    private void sendMessage(MessageChannel channel){
         if(message == null)
             message = MessagesUtils.sendPlain(channel, formatMessage());
         else
-            message.edit(formatMessage());
+            message.editMessage(formatMessage()).queue();
     }
 
     private String formatMessage(){
@@ -373,7 +373,7 @@ public class BlackjackGame {
         gameState = GameState.GAME_ENDED;
         setButtonStates();
         if(message != null)
-            message.removeAllReactions();
+            message.clearReactions().queue();
         calculateResult(BlackjackHand.ONE);
         if (playerHand.isHandSplitted())
             calculateResult(BlackjackHand.TWO);
@@ -386,7 +386,7 @@ public class BlackjackGame {
 
         if (delayReveal) {
             ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
-            message.getChannel().type();
+            message.getChannel().sendTyping().queue();
             exec.schedule(this::showAndReward, 5, TimeUnit.SECONDS);
         } else {
             showAndReward();

@@ -10,8 +10,8 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Command used for invoking the blackjack game.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class BlackjackCommand extends Command {
@@ -33,9 +33,9 @@ public class BlackjackCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String[] args = request.getArgs();
-        Server server = request.getServer();
-        BlackjackGameManager manager = getManager(server.getId());
-        Identifier id = new Identifier(server.getId(), request.getSender().getId());
+        Guild server = request.getGuild();
+        BlackjackGameManager manager = getManager(server.getIdLong());
+        Identifier id = new Identifier(server.getIdLong(), request.getSender().getIdLong());
         SkuddUser su = pm.getUser(id);
         Message message = request.getMessage();
 

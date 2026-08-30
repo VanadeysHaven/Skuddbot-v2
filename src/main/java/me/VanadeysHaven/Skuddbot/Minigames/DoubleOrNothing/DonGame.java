@@ -13,10 +13,11 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.RNGManager;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * Represents a game of double or nothing
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3
+ * @version 2.4
  * @since 2.1.1
  */
 public class DonGame {
@@ -49,14 +50,14 @@ public class DonGame {
     private int bet;
     private int initialBet;
     private int moves;
-    private TextChannel channel;
-    private Server server;
+    private MessageChannel channel;
+    private Guild server;
     private Message message;
     private ArrayList<ReactionButton> buttons;
     private DonGameManager manager;
 
 
-    public DonGame(User user, int bet, TextChannel channel, Server server, DonGameManager manager){
+    public DonGame(User user, int bet, MessageChannel channel, Guild server, DonGameManager manager){
         this.user = user;
         this.bet = bet;
         initialBet = bet;
@@ -68,23 +69,23 @@ public class DonGame {
         sendInProgressFormat("Welcome to Double or Nothing!", PLAYING_INSTRUCTION);
 
         buttons = new ArrayList<>();
-        buttons.add(ReactionUtils.registerButton(message, Emoji.D, this::play, user.getId()));
-        ReactionUtils.registerButton(message, Emoji.MONEYBAG, this::takeMoney, user.getId());
+        buttons.add(ReactionUtils.registerButton(message, Emoji.D, this::play, user.getIdLong()));
+        ReactionUtils.registerButton(message, Emoji.MONEYBAG, this::takeMoney, user.getIdLong());
     }
 
     private void sendInProgressFormat(String topLine, String playingInstruction){
-        sendMessage(MessageFormat.format(IN_PROGRESS_FORMAT, user.getDisplayName(server), topLine, bet, playingInstruction));
+        sendMessage(MessageFormat.format(IN_PROGRESS_FORMAT, UserUtils.getDisplayName(server, user), topLine, bet, playingInstruction));
     }
 
     private void sendEndedFormat(String text){
-        sendMessage(MessageFormat.format(ENDED_FORMAT, user.getDisplayName(server), text));
+        sendMessage(MessageFormat.format(ENDED_FORMAT, UserUtils.getDisplayName(server, user), text));
     }
 
     private void sendMessage(String msg){
         if(message == null)
             message = MessagesUtils.sendPlain(channel, msg);
         else
-            message.edit(msg);
+            message.editMessage(msg).queue();
     }
 
     private void play(ReactionButtonClickedEvent event){
@@ -113,7 +114,7 @@ public class DonGame {
         sendEndedFormat("**NOTHING!** You lost! | **ADDED TO JACKPOT:** *" + initialBet + " Skuddbux*");
 
         getProfile().getStats().incrementInt(Stat.DON_LOSSES);
-        sm.getServer(server.getId()).getSettings().incrementInt(ServerSetting.JACKPOT, initialBet);
+        sm.getServer(server.getIdLong()).getSettings().incrementInt(ServerSetting.JACKPOT, initialBet);
 
         endGame();
     }
@@ -123,7 +124,7 @@ public class DonGame {
 
         if(moves == 0){
             sendEndedFormat("*Game cancelled, amount is refunded.*");
-            pm.getUser(server.getId(), user.getId()).getCurrencies().incrementInt(Currency.SKUDDBUX, bet);
+            pm.getUser(server.getIdLong(), user.getIdLong()).getCurrencies().incrementInt(Currency.SKUDDBUX, bet);
             endGame(false);
         } else {
             sendEndedFormat(award());
@@ -156,7 +157,7 @@ public class DonGame {
 
     private void endGame(boolean startCooldown){
         unregisterButtons();
-        message.removeAllReactions();
+        message.clearReactions().queue();
         manager.endGame(this, startCooldown);
     }
 
@@ -171,7 +172,7 @@ public class DonGame {
     }
 
     private SkuddUser getProfile(){
-        return pm.getUser(server.getId(), user.getId());
+        return pm.getUser(server.getIdLong(), user.getIdLong());
     }
 
 

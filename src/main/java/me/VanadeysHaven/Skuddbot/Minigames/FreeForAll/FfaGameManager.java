@@ -3,7 +3,7 @@ package me.VanadeysHaven.Skuddbot.Minigames.FreeForAll;
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.ServerMember;
 import me.VanadeysHaven.Skuddbot.Utilities.CooldownManager;
-import org.javacord.api.entity.channel.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.util.Iterator;
 
@@ -11,7 +11,7 @@ import java.util.Iterator;
  * Game manager, for managing data that needs to persist between games.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.1
+ * @version 2.4
  * @since 2.2
  */
 public final class FfaGameManager {
@@ -31,15 +31,15 @@ public final class FfaGameManager {
         return currentGame != null;
     }
 
-    private void createNewGame(TextChannel channel, ServerMember host){
+    private void createNewGame(MessageChannel channel, ServerMember host){
         currentGame = new FfaGame(channel, host, this);
     }
 
-    public void enterGame(TextChannel channel, ServerMember player){
+    public void enterGame(MessageChannel channel, ServerMember player){
         enterGame(channel, player, 0);
     }
 
-    public void enterGame(TextChannel channel, ServerMember player, int bounty){
+    public void enterGame(MessageChannel channel, ServerMember player, int bounty){
         if(!gameIsActive())
             createNewGame(channel, player);
 

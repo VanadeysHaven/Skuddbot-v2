@@ -3,9 +3,9 @@ package me.VanadeysHaven.Skuddbot.Minigames.DoubleOrNothing;
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Utilities.CooldownManager;
-import org.javacord.api.entity.channel.TextChannel;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Class for managing Double or Nothing games on a server level.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.1
+ * @version 2.4
  * @since 2.1.1
  */
 public class DonGameManager {
@@ -36,19 +36,19 @@ public class DonGameManager {
 
     public boolean hasGameInProgress(long userId) {
         for(DonGame game : games)
-            if(game.getUser().getId() == userId)
+            if(game.getUser().getIdLong() == userId)
                 return true;
 
         return false;
     }
 
-    public void startGame(User user, int bet, TextChannel channel) {
+    public void startGame(User user, int bet, MessageChannel channel) {
         DonGame game = new DonGame(user, bet, channel, getServerInstance(), this);
         games.add(game);
     }
 
-    private Server getServerInstance(){
-        Server server = Main.getSkuddbot().getApi().getServerById(serverId).orElse(null); assert server != null;
+    private Guild getServerInstance(){
+        Guild server = Main.getSkuddbot().getApi().getGuildById(serverId); assert server != null;
         return server;
     }
 
@@ -60,7 +60,7 @@ public class DonGameManager {
     public void endGame(DonGame game, boolean startCooldown){
         games.remove(game);
         if(startCooldown)
-            cooldownManager.startCooldown(game.getUser().getId());
+            cooldownManager.startCooldown(game.getUser().getIdLong());
     }
 
 }

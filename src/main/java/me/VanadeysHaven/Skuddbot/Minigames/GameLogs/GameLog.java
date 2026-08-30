@@ -5,7 +5,7 @@ import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSettingsContainer;
 import me.VanadeysHaven.Skuddbot.Utilities.TimeUtils;
-import org.javacord.api.entity.message.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,7 +16,7 @@ import java.io.PrintWriter;
  * A game log is a more verbose log of what has happened in a minigame, and is sent to Discord via a upload of a text file.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.1
+ * @version 2.4
  * @since 2.3.1
  */
 public abstract class GameLog {

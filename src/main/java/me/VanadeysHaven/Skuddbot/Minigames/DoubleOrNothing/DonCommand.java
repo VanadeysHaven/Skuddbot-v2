@@ -9,9 +9,9 @@ import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Cashier;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Command for starting a game of double or nothing.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.1.1
  */
 public class DonCommand extends Command {
@@ -34,17 +34,17 @@ public class DonCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String[] args = request.getArgs();
-        Server server = request.getServer();
+        Guild server = request.getGuild();
         User user = request.getUser();
-        SkuddUser su = pm.getUser(server.getId(), user.getId());
-        DonGameManager manager = getManager(server.getId());
+        SkuddUser su = pm.getUser(server.getIdLong(), user.getIdLong());
+        DonGameManager manager = getManager(server.getIdLong());
         Message message = request.getMessage();
 
-        if (manager.isOnCooldown(user.getId())) {
+        if (manager.isOnCooldown(user.getIdLong())) {
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You must wait 1 minute between games.");
             return;
         }
-        if(manager.hasGameInProgress(user.getId())){
+        if(manager.hasGameInProgress(user.getIdLong())){
             MessagesUtils.addReaction(message, Emoji.X, "You still have a game in progress, please finish that first.");
             return;
         }
