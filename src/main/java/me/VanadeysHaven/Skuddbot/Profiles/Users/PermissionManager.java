@@ -62,11 +62,14 @@ public class PermissionManager {
             else {
                 SkuddServer ss = sm.getServer(serverId);
 
-                List<Role> roles = server.getRolesByName(ss.getSettings().getString(ServerSetting.ADMIN_ROLE), true);
-                if (roles.size() > 0) {
-                    Role reqRole = roles.get(0);
-                    Member member = server.getMember(user);
-                    if (member != null && member.getRoles().contains(reqRole)) list.add(PermissionLevel.SERVER_ADMIN);
+                String adminRole = ss.getSettings().getString(ServerSetting.ADMIN_ROLE);
+                if (adminRole != null && !adminRole.isEmpty()) {
+                    List<Role> roles = server.getRolesByName(adminRole, true);
+                    if (roles.size() > 0) {
+                        Role reqRole = roles.get(0);
+                        Member member = server.getMember(user);
+                        if (member != null && member.getRoles().contains(reqRole)) list.add(PermissionLevel.SERVER_ADMIN);
+                    }
                 }
             }
         }
