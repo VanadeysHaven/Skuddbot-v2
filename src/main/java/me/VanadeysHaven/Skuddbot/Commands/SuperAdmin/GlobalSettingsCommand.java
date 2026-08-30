@@ -12,13 +12,13 @@ import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableDrawer;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableRow;
-import org.javacord.api.entity.message.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * Command for editing global settings.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class GlobalSettingsCommand extends Command {

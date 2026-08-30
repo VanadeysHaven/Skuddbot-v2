@@ -8,8 +8,9 @@ import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.user.User;
+import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.HashMap;
  * Used to manage donators.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class ManageDonatorsCommand extends Command {
@@ -49,11 +50,11 @@ public class ManageDonatorsCommand extends Command {
         long id;
         if(MiscUtils.isLong(args[2])){
             id = Long.parseLong(args[2]);
-            user = Main.getSkuddbot().getApi().getUserById(id).join();
-            if(user == null){
+            if(!UserUtils.getInstance().doesUserExist(id)){
                 MessagesUtils.addReaction(message, Emoji.X, "Could not find a user with the ID " + id);
                 return;
             }
+            user = UserUtils.getInstance().getUser(id);
         } else {
             MessagesUtils.addReaction(message, Emoji.X, args[2] + " is not a valid ID.");
             return;
@@ -66,22 +67,22 @@ public class ManageDonatorsCommand extends Command {
                     return;
                 }
                 dm.addDonator(id);
-                MessagesUtils.sendPlain(user.getPrivateChannel().orElse(user.openPrivateChannel().join()), MessageFormat.format(DM_MESSAGE, user.getDiscriminatedName()));
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getDiscriminatedName() + "` has been added as donator!");
+                MessagesUtils.sendPlain(user.openPrivateChannel().complete(), MessageFormat.format(DM_MESSAGE, user.getName()));
+                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getName() + "` has been added as donator!");
                 break;
             case "remove":
                 if(!dm.isDonator(id)){
                     MessagesUtils.addReaction(message, Emoji.WARNING, "This user is not a donator.");
                     return;
                 }
-                if(!confirm.containsKey(message.getAuthor().getId()) || confirm.get(message.getAuthor().getId()) != id){ //TODO: BETTER CONFIRMATION
-                    MessagesUtils.addReaction(message, Emoji.WARNING, "This action will delete all donator data associated with " + user.getDiscriminatedName() + "'s account and remove them as a donator! If you continue, there's no way back. **Run this command again to confirm you action!**");
-                    confirm.put(message.getAuthor().getId(), id);
+                if(!confirm.containsKey(message.getAuthor().getIdLong()) || confirm.get(message.getAuthor().getIdLong()) != id){ //TODO: BETTER CONFIRMATION
+                    MessagesUtils.addReaction(message, Emoji.WARNING, "This action will delete all donator data associated with " + user.getName() + "'s account and remove them as a donator! If you continue, there's no way back. **Run this command again to confirm you action!**");
+                    confirm.put(message.getAuthor().getIdLong(), id);
                     return;
                 }
-                confirm.remove(message.getAuthor().getId());
+                confirm.remove(message.getAuthor().getIdLong());
                 dm.removeDonator(id);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getDiscriminatedName() + "` has been removed as a donator!");
+                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getName() + "` has been removed as a donator!");
                 break;
         }
     }

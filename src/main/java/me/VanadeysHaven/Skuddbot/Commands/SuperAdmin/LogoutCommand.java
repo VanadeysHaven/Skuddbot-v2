@@ -6,13 +6,13 @@ import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
-import org.javacord.api.entity.message.Message;
+import net.dv8tion.jda.api.entities.Message;
 
 /**
  * Logout command
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.2.23
+ * @version 2.4
  * @since 2.0
  */
 public class LogoutCommand extends Command {
@@ -24,7 +24,7 @@ public class LogoutCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         Message message = request.getMessage();
-        if(!message.getMentionedUsers().isEmpty() && message.getMentionedUsers().get(0).getId() == Main.getSkuddbot().getApi().getYourself().getId()){
+        if(!message.getMentions().getUsers().isEmpty() && message.getMentions().getUsers().get(0).getIdLong() == Main.getSkuddbot().getApi().getSelfUser().getIdLong()){
             MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "yes");
             Main.getSkuddbot().logout();
         } else {

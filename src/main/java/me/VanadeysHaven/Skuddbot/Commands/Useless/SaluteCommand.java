@@ -8,9 +8,9 @@ import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.VanadeysHaven.Skuddbot.Utilities.CooldownManager;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.RNGManager;
-import org.javacord.api.entity.emoji.KnownCustomEmoji;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.emoji.RichCustomEmoji;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.HashMap;
  * o7 CMDR
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class SaluteCommand extends NoPrefixCommand {
@@ -34,31 +34,31 @@ public class SaluteCommand extends NoPrefixCommand {
 
     @Override
     public void run(CommandRequest request) {
-        Server server = request.getServer();
+        Guild server = request.getGuild();
         long serverId = -1;
         if (server == null) {
-            if(isOnCooldown(serverId, request.getSender().getId())) return;
+            if(isOnCooldown(serverId, request.getSender().getIdLong())) return;
             User user = request.getUser();
-            MessagesUtils.sendPlain(user.getPrivateChannel().orElse(user.openPrivateChannel().join()), "o7");
-            startCooldown(serverId, user.getId());
+            MessagesUtils.sendPlain(user.openPrivateChannel().complete(), "o7");
+            startCooldown(serverId, user.getIdLong());
             return;
         }
-        serverId = server.getId();
+        serverId = server.getIdLong();
 
-        if(isOnCooldown(serverId, request.getSender().getId())) return;
-        ArrayList<KnownCustomEmoji> emojis = new ArrayList<>(server.getCustomEmojis());
+        if(isOnCooldown(serverId, request.getSender().getIdLong())) return;
+        ArrayList<RichCustomEmoji> emojis = new ArrayList<>(server.getEmojis());
         if(emojis.isEmpty()){
             MessagesUtils.sendPlain(request.getChannel(), "o7");
-            startCooldown(serverId, request.getSender().getId());
+            startCooldown(serverId, request.getSender().getIdLong());
             return;
         }
-        KnownCustomEmoji emoji;
+        RichCustomEmoji emoji;
         do {
             emoji = emojis.get(random.integer(0, emojis.size() - 1));
         } while (emoji.isManaged());
 
-        MessagesUtils.sendPlain(request.getChannel(), emoji.getMentionTag() + "7");
-        startCooldown(serverId, request.getSender().getId());
+        MessagesUtils.sendPlain(request.getChannel(), emoji.getAsMention() + "7");
+        startCooldown(serverId, request.getSender().getIdLong());
     }
 
     private void startCooldown(long serverId, long userId){

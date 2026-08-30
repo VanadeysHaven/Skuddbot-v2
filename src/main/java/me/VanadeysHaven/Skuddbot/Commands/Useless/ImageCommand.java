@@ -8,16 +8,16 @@ import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
-import org.javacord.api.entity.channel.Channel;
-import org.javacord.api.entity.channel.ChannelType;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.server.Server;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 /**
  * Class for handling random image commands.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class ImageCommand extends Command {
@@ -33,14 +33,14 @@ public class ImageCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         Message message = request.getMessage();
-        Channel channel = request.getChannel();
+        MessageChannel channel = request.getChannel();
 
         boolean allowMultiImg;
-        if(channel.getType() == ChannelType.PRIVATE_CHANNEL)
+        if(channel.getType() == ChannelType.PRIVATE)
             allowMultiImg = true;
         else {
-            Server server = request.getServer();
-            allowMultiImg = sm.getServer(server.getId()).getSettings().getBoolean(ServerSetting.ALLOW_MULTI_IMG);
+            Guild server = request.getGuild();
+            allowMultiImg = sm.getServer(server.getIdLong()).getSettings().getBoolean(ServerSetting.ALLOW_MULTI_IMG);
         }
         int imgAmount = 1;
         String[] args = request.getContent().split(" ");

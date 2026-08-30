@@ -11,8 +11,9 @@ import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Utilities.Constants;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
-import org.javacord.api.entity.message.Message;
-import org.javacord.api.entity.user.User;
+import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +23,7 @@ import java.sql.SQLException;
  * Command used to add admins.
  *
  * @author Tim (Vanadey's Haven)
- * @version 2.3.23
+ * @version 2.4
  * @since 2.0
  */
 public class ManageAdminsCommand extends Command {
@@ -55,11 +56,11 @@ public class ManageAdminsCommand extends Command {
         long id;
         if(MiscUtils.isLong(args[2])){
             id = Long.parseLong(args[2]);
-            user = Main.getSkuddbot().getApi().getUserById(id).join();
-            if(user == null){
+            if(!UserUtils.getInstance().doesUserExist(id)){
                 MessagesUtils.addReaction(message, Emoji.X, "Could not find a user with the ID " + id);
                 return;
             }
+            user = UserUtils.getInstance().getUser(id);
         } else {
             MessagesUtils.addReaction(message, Emoji.X, args[2] + " is not a valid ID.");
             return;
@@ -83,8 +84,8 @@ public class ManageAdminsCommand extends Command {
                     qe.close();
                 }
 
-                MessagesUtils.sendPlain(user.getPrivateChannel().orElse(user.openPrivateChannel().join()), DM_MESSAGE);
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getDiscriminatedName() + "` is now a admin.");
+                MessagesUtils.sendPlain(user.openPrivateChannel().complete(), DM_MESSAGE);
+                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getName() + "` is now a admin.");
                 break;
             case "remove":
                 if(!Constants.adminUsers.contains(id)){
@@ -103,7 +104,7 @@ public class ManageAdminsCommand extends Command {
                     qe.close();
                 }
 
-                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getDiscriminatedName() + "` is no longer a admin.");
+                MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "User `" + user.getName() + "` is no longer a admin.");
                 break;
             default:
                 break;
