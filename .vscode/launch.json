@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run Bot",
+      "request": "launch",
+      "mainClass": "me.VanadeysHaven.Skuddbot.Main",
+      "projectName": "Skuddbot",
+      "args": "--skip-db-wait",
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/configs/.env",
+      "preLaunchTask": "Deploy Database"
+    }
+  ]
+}
