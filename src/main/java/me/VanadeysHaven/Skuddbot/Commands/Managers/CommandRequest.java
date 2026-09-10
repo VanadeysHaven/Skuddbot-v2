@@ -1,10 +1,12 @@
 package me.VanadeysHaven.Skuddbot.Commands.Managers;
 
 import lombok.Getter;
+import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
+import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -73,7 +75,6 @@ public class CommandRequest {
         return channel;
     }
 
-
     public Guild getGuild(){
         return getMessage().isFromGuild() ? getMessage().getGuild() : null;
     }
@@ -84,6 +85,22 @@ public class CommandRequest {
 
     public String[] getArgs() {
         return getContent().split(" ");
+    }
+
+    public void replyError(String message){
+        addReaction(Emoji.X, message);
+    }
+    
+    public void reply(Emoji emoji, String message){
+        MessagesUtils.sendEmoji(getChannel(), emoji, message);
+    }
+
+    public void reply(String message) {
+        MessagesUtils.sendPlain(getChannel(), message);
+    }
+
+    public void addReaction(Emoji emoji, String message) {
+        MessagesUtils.addReaction(getMessage(), emoji, message);
     }
 
 }
