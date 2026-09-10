@@ -2,12 +2,10 @@ package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
-import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.PermissionManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
 import net.dv8tion.jda.api.entities.Guild;
@@ -47,11 +45,11 @@ public class ExperienceCommand extends Command {
         }
 
         if(user.getIdLong() != request.getSender().getIdLong() && su.getSettings().getBoolean(UserSetting.PROFILE_PRIVATE) && !authorPermissions.hasPermission(PermissionLevel.SERVER_ADMIN)){
-            MessagesUtils.addReaction(message, Emoji.X, "This user has set their stats to private.");
+            request.replyError("This user has set their stats to private.");
             return;
         }
 
-        MessagesUtils.sendPlain(message.getChannel(), "**" + UserUtils.getDisplayName(server, user) + " | " + su.getStats().formatLevelLong() + "**");
+        request.reply("**" + UserUtils.getDisplayName(server, user) + " | " + su.getStats().formatLevelLong() + "**");
     }
 
 }

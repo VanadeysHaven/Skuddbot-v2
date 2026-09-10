@@ -5,7 +5,6 @@ import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import net.dv8tion.jda.api.entities.Activity;
 
 /**
@@ -24,12 +23,12 @@ public class GameCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         if(request.getContent().split(" ").length < 2){
-            MessagesUtils.addReaction(request.getMessage(), Emoji.X, "You need to specify what the bot needs to play!");
+            request.replyError("You need to specify what the bot needs to play!");
             return;
         }
 
         String game = request.getContent().substring(5);
         Main.getSkuddbot().getApi().getPresence().setActivity(Activity.playing(game));
-        MessagesUtils.addReaction(request.getMessage(), Emoji.WHITE_CHECK_MARK, "Game updated to: `" + game + "`!");
+        request.addReaction(Emoji.WHITE_CHECK_MARK, "Game updated to: `" + game + "`!");
     }
 }

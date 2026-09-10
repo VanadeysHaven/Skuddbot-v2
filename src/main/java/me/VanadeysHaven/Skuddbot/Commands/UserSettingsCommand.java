@@ -53,7 +53,7 @@ public class UserSettingsCommand extends Command {
         if(args.length >= 2){
             setting = fromString(args[1]);
             if(setting == null){
-                MessagesUtils.addReaction(message, Emoji.X, "Setting " + args[1] + " doesn't exist!");
+                request.replyError("Setting " + args[1] + " doesn't exist!");
                 return;
             }
 

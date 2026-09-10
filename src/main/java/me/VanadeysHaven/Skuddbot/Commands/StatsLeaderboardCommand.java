@@ -2,19 +2,16 @@ package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
-import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Stats.Stat;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableDrawer;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableRow;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashMap;
@@ -41,25 +38,24 @@ public class StatsLeaderboardCommand extends Command {
         SkuddServer ss = sm.getServer(server.getIdLong());
         String commandPrefix = ss.getSettings().getString(ServerSetting.COMMAND_PREFIX).replace("_", " ");
         String[] args = request.getArgs();
-        Message message = request.getMessage();
         if(args.length < 2){
-            MessagesUtils.addReaction(message, Emoji.X, "You need to specify which stat leaderboard you want to view. Use `" + commandPrefix + " list` to view all available stats.");
+            request.replyError("You need to specify which stat leaderboard you want to view. Use `" + commandPrefix + " list` to view all available stats.");
             return;
         }
         if(args[1].equalsIgnoreCase("list")){
-            MessagesUtils.sendPlain(request.getChannel(), "Available stats: \n\n" + Stat.formatStats());
+            request.reply("Available stats: \n\n" + Stat.formatStats());
             return;
         }
         Stat stat;
         try {
             stat = Stat.valueOf(args[1].toUpperCase().replace("-", "_"));
         } catch (IllegalArgumentException e){
-            MessagesUtils.addReaction(message, Emoji.X, "`" + args[1] + "` is not a available stat.");
+            request.replyError("`" + args[1] + "` is not a available stat.");
             return;
         }
 
         if(!stat.isHasLeaderboard()) {
-            MessagesUtils.addReaction(message, Emoji.X, "This stat does not have a leaderboard.");
+            request.replyError("This stat does not have a leaderboard.");
             return;
         }
 
@@ -116,7 +112,7 @@ public class StatsLeaderboardCommand extends Command {
         String sb = "**" + stat.getCategory().getName() + ": " + stat.getName() + " leaderboard** | **" + server.getName() + "**\n```\n" +
                 new TableDrawer(tag).drawTable() +
                 "```" + "\n" + "Generated in `" + (System.currentTimeMillis() - startTime) + "ms`";
-        MessagesUtils.sendPlain(request.getChannel(), sb.trim());
+        request.reply(sb.trim());
     }
 
     private String getName(Identifier id, Guild server){

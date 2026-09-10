@@ -36,7 +36,7 @@ public class GlobalSettingsCommand extends Command {
         if(args.length >= 2) {
             setting = fromString(args[1]);
             if(setting == null){
-                MessagesUtils.addReaction(message, Emoji.X, "Setting " + args[1] + " does not exist.");
+                request.replyError("Setting " + args[1] + " does not exist.");
                 return;
             }
 

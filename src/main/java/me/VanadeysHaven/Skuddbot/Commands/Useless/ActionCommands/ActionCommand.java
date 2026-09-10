@@ -2,14 +2,11 @@ package me.VanadeysHaven.Skuddbot.Commands.Useless.ActionCommands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
-import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.SkuddUser;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 
 import java.text.MessageFormat;
@@ -29,14 +26,13 @@ public abstract class ActionCommand extends Command {
 
     @Override
     public void run(CommandRequest request) {
-        Message message = request.getMessage();
         Guild server = request.getGuild();
         User user = request.getUser();
         User selectedUser;
         try {
             selectedUser = getRandomActiveUser(user, server);
         } catch (UnsupportedOperationException e) {
-            MessagesUtils.addReaction(message, Emoji.X, "There are no available users! Try again later.");
+            request.replyError("There are no available users! Try again later.");
             return;
         }
 
@@ -51,7 +47,7 @@ public abstract class ActionCommand extends Command {
         if(shouldCapitalize)
             actionString = actionString.toUpperCase();
 
-        MessagesUtils.sendPlain(message.getChannel(), actionString);
+        request.reply(actionString);
     }
 
     private User getRandomActiveUser(User user, Guild server){

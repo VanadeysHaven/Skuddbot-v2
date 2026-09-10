@@ -6,10 +6,8 @@ import me.VanadeysHaven.Skuddbot.Donator.DonatorManager;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorMessage;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
@@ -32,7 +30,6 @@ public class ImageCommand extends Command {
 
     @Override
     public void run(CommandRequest request) {
-        Message message = request.getMessage();
         MessageChannel channel = request.getChannel();
 
         boolean allowMultiImg;
@@ -54,6 +51,6 @@ public class ImageCommand extends Command {
         for(int i = 0; i < imgAmount; i++)
             sb.append(type.getEmoji().getUnicode()).append(" ").append(dm.getMessage(type)).append("\n");
 
-        MessagesUtils.sendPlain(message.getChannel(), sb.toString().trim());
+        request.reply(sb.toString().trim());
     }
 }

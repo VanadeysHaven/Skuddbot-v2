@@ -3,7 +3,6 @@ package me.VanadeysHaven.Skuddbot.Commands.Useless;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Main;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
 import net.dv8tion.jda.api.entities.Guild;
@@ -29,7 +28,7 @@ public class FlipCommand extends Command {
         Guild server = request.getGuild();
         String[] args = request.getContent().split(" ");
         if(args.length < 2) {
-            MessagesUtils.sendPlain(message.getChannel(), "(╯°□°）╯︵ " + MiscUtils.flipText("WHAT DO YOU WANT TO FLIP?!"));
+            request.reply("(╯°□°）╯︵ " + MiscUtils.flipText("WHAT DO YOU WANT TO FLIP?!"));
             return;
         }
 
@@ -52,6 +51,6 @@ public class FlipCommand extends Command {
                 sb.append(args[i]).append(" ");
             }
         }
-        MessagesUtils.sendPlain(message.getChannel(), "(╯°□°）╯︵ " + MiscUtils.flipText(sb.toString().trim()));
+        request.reply("(╯°□°）╯︵ " + MiscUtils.flipText(sb.toString().trim()));
     }
 }

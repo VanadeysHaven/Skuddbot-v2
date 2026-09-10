@@ -48,7 +48,7 @@ public class SaluteCommand extends NoPrefixCommand {
         if(isOnCooldown(serverId, request.getSender().getIdLong())) return;
         ArrayList<RichCustomEmoji> emojis = new ArrayList<>(server.getEmojis());
         if(emojis.isEmpty()){
-            MessagesUtils.sendPlain(request.getChannel(), "o7");
+            request.reply("o7");
             startCooldown(serverId, request.getSender().getIdLong());
             return;
         }
@@ -57,7 +57,7 @@ public class SaluteCommand extends NoPrefixCommand {
             emoji = emojis.get(random.integer(0, emojis.size() - 1));
         } while (emoji.isManaged());
 
-        MessagesUtils.sendPlain(request.getChannel(), emoji.getAsMention() + "7");
+        request.reply(emoji.getAsMention() + "7");
         startCooldown(serverId, request.getSender().getIdLong());
     }
 

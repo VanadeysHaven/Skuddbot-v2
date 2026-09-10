@@ -3,7 +3,6 @@ package me.VanadeysHaven.Skuddbot.Commands;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 
 /**
  * This class is a simple ping command.
@@ -23,12 +22,12 @@ public class PingCommand extends Command {
         if(dm.isDonator(request.getSender().getIdLong())){
             String text = dm.getUser(request.getSender().getIdLong()).getPingMessage();
             if(text != null){
-                MessagesUtils.sendEmoji(request.getChannel(), Emoji.WHITE_CHECK_MARK, text);
+                request.reply(Emoji.WHITE_CHECK_MARK, text);
                 return;
             }
         }
 
-        MessagesUtils.addReaction(request.getMessage(), Emoji.WHITE_CHECK_MARK, "PONG!");
+        request.addReaction(Emoji.WHITE_CHECK_MARK, "PONG!");
     }
 
 }

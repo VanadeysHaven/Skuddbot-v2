@@ -2,7 +2,6 @@ package me.VanadeysHaven.Skuddbot.Commands.Useless;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 
 /**
  * (╯°□°）╯︵ ┻━┻
@@ -19,6 +18,6 @@ public class RiotCommand extends Command {
 
     @Override
     public void run(CommandRequest request) {
-        MessagesUtils.sendPlain(request.getChannel(), "(╯°□°）╯︵ ┻━┻");
+        request.reply("(╯°□°）╯︵ ┻━┻");
     }
 }

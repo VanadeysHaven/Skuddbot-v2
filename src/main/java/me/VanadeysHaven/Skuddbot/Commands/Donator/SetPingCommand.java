@@ -6,7 +6,6 @@ import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorUser;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 
 /**
  * Used for donators to set their ping message.
@@ -24,7 +23,7 @@ public class SetPingCommand extends Command {
     public void run(CommandRequest request) {
         String[] args = request.getContent().split( " ");
         if(args.length < 2){
-            MessagesUtils.addReaction(request.getMessage(), Emoji.X, "You need to specify your ping message!");
+            request.replyError("You need to specify your ping message!");
             return;
         }
         StringBuilder sb = new StringBuilder();
@@ -37,6 +36,6 @@ public class SetPingCommand extends Command {
         du.setPingMessage(ping);
         du.save();
 
-        MessagesUtils.addReaction(request.getMessage(), Emoji.WHITE_CHECK_MARK, "Updated your ping message to `" + ping + "`!");
+        request.addReaction(Emoji.WHITE_CHECK_MARK, "Updated your ping message to `" + ping + "`!");
     }
 }

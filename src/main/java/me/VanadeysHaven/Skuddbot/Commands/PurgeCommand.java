@@ -34,7 +34,7 @@ public class PurgeCommand extends Command {
     public void run(CommandRequest request) {
         String str = request.getArgs()[1];
         if(!MiscUtils.isInt(str))
-            MessagesUtils.addReaction(request.getMessage(), Emoji.X, str + " is not a integer.");
+            request.replyError(str + " is not a integer.");
         int amountToDelete = Integer.parseInt(str);
 
         new PurgeOperation(request.getMessage(), amountToDelete);

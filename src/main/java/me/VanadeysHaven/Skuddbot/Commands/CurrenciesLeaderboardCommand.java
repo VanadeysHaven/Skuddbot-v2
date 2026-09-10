@@ -2,17 +2,14 @@ package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
-import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.SkuddServer;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Identifier;
-import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableArrayGenerator;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableDrawer;
 import me.VanadeysHaven.Skuddbot.Utilities.TableUtilities.TableRow;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashMap;
@@ -38,27 +35,26 @@ public class CurrenciesLeaderboardCommand extends Command {
         Guild server = request.getGuild();
         SkuddServer ss = sm.getServer(server.getIdLong());
         String[] args = request.getArgs();
-        Message message = request.getMessage();
 
         Currency currency ;
         if(args.length < 2){
             currency = Currency.SKUDDBUX;
         } else {
             if (args[1].equalsIgnoreCase("list")) {
-                MessagesUtils.sendPlain(request.getChannel(), "Available currencies: \n\n" + Currency.formatCurrencies());
+                request.reply("Available currencies: \n\n" + Currency.formatCurrencies());
                 return;
             } else {
                 try {
                     currency = Currency.valueOf(args[1].toUpperCase().replace("-", "_"));
                 } catch (IllegalArgumentException e){
-                    MessagesUtils.addReaction(message, Emoji.X, "`" + args[1] + "` is not a available stat.");
+                    request.replyError("`" + args[1] + "` is not a available stat.");
                     return;
                 }
             }
         }
 
         if(!currency.isHasLeaderboard()){
-            MessagesUtils.addReaction(message, Emoji.X, "The currency `" + currency + "` has no leaderboard.");
+            request.replyError("The currency `" + currency + "` has no leaderboard.");
         }
 
         LinkedHashMap<Identifier,Integer> sortedMap = ss.getTopCurrencies(LEADERBOARD_LIMIT, currency);
@@ -104,7 +100,7 @@ public class CurrenciesLeaderboardCommand extends Command {
         String sb = "**" + currency.getName() + " leaderboard** | **" + server.getName() + "**\n```\n" +
                 new TableDrawer(tag).drawTable() +
                 "```" + "\n" + "Generated in `" + (System.currentTimeMillis() - startTime) + "ms`";
-        MessagesUtils.sendPlain(message.getChannel(), sb.trim());
+        request.reply(sb.trim());
     }
 
     private String getName(Identifier id, Guild server){

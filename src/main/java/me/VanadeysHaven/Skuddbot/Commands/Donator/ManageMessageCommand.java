@@ -27,14 +27,14 @@ public class ManageMessageCommand extends Command {
         DonatorMessage.Type type;
 
         if(args.length < 3){
-            MessagesUtils.addReaction(request.getMessage(), Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
+            request.replyError("Invalid usage: `!message <add> <type> <content/images>`");
             return;
         }
 
         try {
             type = DonatorMessage.Type.valueOf(args[2].toUpperCase().replace("-", "_"));
         } catch (IllegalArgumentException e) {
-            MessagesUtils.addReaction(request.getMessage(), Emoji.X, args[2] + " is not a message type.");
+            request.replyError(args[2] + " is not a message type.");
             return;
         }
 
@@ -44,9 +44,9 @@ public class ManageMessageCommand extends Command {
             addImage(request.getMessage(), type);
         } else {
             if(!type.isAcceptsImages() && request.getMessage().getAttachments().size() > 0){
-                MessagesUtils.addReaction(request.getMessage(), Emoji.X, "Type `" + type + "` does not support image uploads!");
+                request.replyError("Type `" + type + "` does not support image uploads!");
             }
-            MessagesUtils.addReaction(request.getMessage(), Emoji.X, "Invalid usage: `!message <add> <type> <content/images>`");
+            request.replyError("Invalid usage: `!message <add> <type> <content/images>`");
         }
 
     }
