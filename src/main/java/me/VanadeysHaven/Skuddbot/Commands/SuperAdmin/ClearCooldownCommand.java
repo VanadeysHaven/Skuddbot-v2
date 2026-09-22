@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.SuperAdmin;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Utilities.CooldownManager;
@@ -24,7 +24,7 @@ public class ClearCooldownCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String[] args = request.getContent().split(" ");
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         boolean forceClear = false;
         if(args.length > 1) if(args[1].equalsIgnoreCase("-force")) forceClear = true;
 

@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.SuperAdmin;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
@@ -30,7 +30,7 @@ public class GlobalSettingsCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String[] args = request.getContent().split(" ");
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         GlobalSetting setting = null;
         String newValue = "";
         if(args.length >= 2) {

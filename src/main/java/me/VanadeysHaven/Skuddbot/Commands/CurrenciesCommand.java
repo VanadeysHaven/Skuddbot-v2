@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Currencies.Currency;
@@ -35,7 +35,7 @@ public class CurrenciesCommand extends Command {
         User author = request.getUser();
         User user = author;
         String[] args = request.getArgs();
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         String content = request.getContent();
 
         if(!message.getMentions().getUsers().isEmpty())

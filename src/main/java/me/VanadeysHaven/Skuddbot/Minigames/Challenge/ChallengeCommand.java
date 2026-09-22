@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Minigames.Challenge;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Exceptions.InsufficientBalanceException;
 import me.VanadeysHaven.Skuddbot.Exceptions.InvalidBetException;
@@ -38,7 +38,7 @@ public class ChallengeCommand extends Command {
         Guild server = request.getGuild();
         User author = request.getUser();
         ChallengeGameManager manager = getManager(server.getIdLong());
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
 
         if(manager.isOnCooldown(author.getIdLong())){
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You are still wounded from the last fight! You need to wait 1 minute between fights!");

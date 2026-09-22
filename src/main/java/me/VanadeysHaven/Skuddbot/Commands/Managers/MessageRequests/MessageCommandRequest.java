@@ -1,4 +1,4 @@
-package me.VanadeysHaven.Skuddbot.Commands.Managers;
+package me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests;
 
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
@@ -15,13 +15,13 @@ import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 /**
- * [class description]
+ * Class containing useful commands for message commands
  *
- * @author Tim (Cooltimmetje)
+ * @author Tim (Vanadey's Haven)
  * @version 2.4
  * @since ALPHA-2.0
  */
-public class CommandRequest {
+public class MessageCommandRequest implements CommandRequest {
 
     private static final ProfileManager pm = ProfileManager.getInstance();
     private static final ServerManager sm = ServerManager.getInstance();
@@ -33,10 +33,11 @@ public class CommandRequest {
     private SkuddUser profile;
     private MessageChannel channel;
 
-    public CommandRequest(Message message){
+    public MessageCommandRequest(Message message){
         this.message = message;
     }
 
+    @Override
     public String getContent(){
         if(content == null)
             content = getMessage().getContentRaw().substring(sm.getServer(getGuild().getIdLong()).getSettings().getString(ServerSetting.COMMAND_PREFIX).length());
@@ -44,6 +45,7 @@ public class CommandRequest {
         return content;
     }
 
+    @Override
     public User getSender(){
         if(sender == null)
             sender = getMessage().getAuthor();
@@ -51,6 +53,7 @@ public class CommandRequest {
         return sender;
     }
 
+    @Override
     public Member getMember(){
         if(member == null)
             member = getMessage().getMember();
@@ -58,6 +61,7 @@ public class CommandRequest {
         return member;
     }
 
+    @Override
     public SkuddUser getProfile(){
         if(getChannel().getType() != ChannelType.TEXT)
             throw new UnsupportedOperationException("This message doesn't have a server, thus user profile is not available.");
@@ -68,6 +72,7 @@ public class CommandRequest {
         return profile;
     }
 
+    @Override
     public MessageChannel getChannel(){
         if(channel == null)
             channel = getMessage().getChannel();
@@ -75,32 +80,48 @@ public class CommandRequest {
         return channel;
     }
 
+    @Override
     public Guild getGuild(){
         return getMessage().isFromGuild() ? getMessage().getGuild() : null;
     }
 
+    @Override
     public User getUser(){
         return getSender();
     }
 
+    @Override
     public String[] getArgs() {
         return getContent().split(" ");
     }
 
+    @Override
     public void replyError(String message){
         addReaction(Emoji.X, message);
     }
     
+    @Override
     public void reply(Emoji emoji, String message){
         MessagesUtils.sendEmoji(getChannel(), emoji, message);
     }
 
+    @Override
     public void reply(String message) {
         MessagesUtils.sendPlain(getChannel(), message);
     }
 
+    @Override
     public void addReaction(Emoji emoji, String message) {
         MessagesUtils.addReaction(getMessage(), emoji, message);
     }
 
+    @Override
+    public MessageCommandRequest asMessageRequest(){
+        return this;
+    }
+
+    @Override
+    public SlashCommandRequest asSlashRequest(){
+        throw new IllegalStateException("SlashCommandRequest is not available on slash commands.");
+    }
 }

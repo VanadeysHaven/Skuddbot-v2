@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
@@ -28,7 +28,7 @@ public class KickCommand extends Command {
         String[] args = request.getArgs(); //Get arguments in array
         Guild server = request.getGuild(); //Get server instance
         User author = request.getSender(); //Get the author
-        Message message = request.getMessage(); //Get the message
+        Message message = request.asMessageRequest().getMessage(); //Get the message
 
         if(!message.getMentions().getUsers().isEmpty()) { //Check if there's a mentioned user
             MessagesUtils.addReaction(message, Emoji.X, "You need to specify a user."); //If not, display error

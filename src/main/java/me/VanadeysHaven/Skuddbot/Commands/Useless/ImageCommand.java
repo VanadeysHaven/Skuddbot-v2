@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.Useless;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorManager;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorMessage;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;

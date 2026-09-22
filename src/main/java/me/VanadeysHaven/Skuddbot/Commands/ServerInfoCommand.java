@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;

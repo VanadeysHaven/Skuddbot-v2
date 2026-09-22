@@ -2,7 +2,7 @@ package me.VanadeysHaven.Skuddbot.Commands.Donator;
 
 import com.vdurmont.emoji.EmojiParser;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorUser;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
@@ -32,7 +32,7 @@ public class SetPingCommand extends Command {
         }
         String ping = EmojiParser.parseToAliases(sb.toString().trim());
         if(ping.equalsIgnoreCase("null")) ping = null;
-        DonatorUser du = dm.getUser(request.getMessage().getAuthor().getIdLong());
+        DonatorUser du = dm.getUser(request.getSender().getIdLong());
         du.setPingMessage(ping);
         du.save();
 

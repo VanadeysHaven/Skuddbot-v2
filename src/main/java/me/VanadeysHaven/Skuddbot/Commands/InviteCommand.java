@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 
 /**
  * Command used to get the invite link for the bot.

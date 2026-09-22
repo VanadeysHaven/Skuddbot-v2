@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.PermissionManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Users.Settings.UserSetting;
@@ -32,7 +32,7 @@ public class ExperienceCommand extends Command {
         SkuddUser su = pm.getUser(server.getIdLong(), user.getIdLong());
         PermissionManager authorPermissions = su.getPermissions();
         String[] args = request.getArgs();
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
 
         if(args.length >= 2){
             if(!message.getMentions().getUsers().isEmpty()){

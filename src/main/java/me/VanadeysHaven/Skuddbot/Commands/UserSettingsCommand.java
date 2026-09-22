@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Exceptions.CooldownException;
 import me.VanadeysHaven.Skuddbot.Exceptions.SettingOutOfBoundsException;
@@ -46,7 +46,7 @@ public class UserSettingsCommand extends Command {
         User user = request.getSender();
         Guild server = request.getGuild();
         SkuddUser su = pm.getUser(server.getIdLong(), user.getIdLong());
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         UserSetting setting = null;
         String newValue = "";
 

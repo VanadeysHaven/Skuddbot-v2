@@ -2,7 +2,7 @@ package me.VanadeysHaven.Skuddbot.Commands.HelpCommand;
 
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
@@ -46,7 +46,7 @@ public class HelpCommand extends Command {
         User user = request.getUser();
         long serverId = -1;
         Guild server = request.getGuild();
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         if(server != null)
             serverId = server.getIdLong();
 

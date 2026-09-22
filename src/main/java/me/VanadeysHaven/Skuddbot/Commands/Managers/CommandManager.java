@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.Managers;
 
 import me.VanadeysHaven.Skuddbot.Commands.HelpCommand.HelpGenerator;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.MessageCommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
@@ -145,7 +146,7 @@ public class CommandManager implements HelpGenerator {
                 if (requestedInvoker.equalsIgnoreCase(invoker)) {
                     if (command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
                         if (permissions.hasPermission(command.getRequiredPermission())) {
-                            command.run(new CommandRequest(message));
+                            command.run(new MessageCommandRequest(message));
                         } else {
                             MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
                         }
@@ -167,7 +168,7 @@ public class CommandManager implements HelpGenerator {
                 if(requestedInvoker.equalsIgnoreCase(invoker)){
                     if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
                         if(permissions.hasPermission(command.getRequiredPermission())) {
-                            command.run(new CommandRequest(message));
+                            command.run(new MessageCommandRequest(message));
                         }
                     }
                 }
@@ -190,7 +191,7 @@ public class CommandManager implements HelpGenerator {
                 if(requestedInvoker.equalsIgnoreCase(invoker)){
                     if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.DM){
                         if(permissions.hasPermission(command.getRequiredPermission())){
-                            command.run(new CommandRequest(message));
+                            command.run(new MessageCommandRequest(message));
                         }
                     } else {
                         MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
@@ -210,7 +211,7 @@ public class CommandManager implements HelpGenerator {
                 if(requestedInvoker.equalsIgnoreCase(invoker)){
                     if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
                         if(permissions.hasPermission(command.getRequiredPermission())) {
-                            command.run(new CommandRequest(message));
+                            command.run(new MessageCommandRequest(message));
                         }
                     }
                 }

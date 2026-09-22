@@ -1,6 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.Managers;
 
 import lombok.Getter;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorManager;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;

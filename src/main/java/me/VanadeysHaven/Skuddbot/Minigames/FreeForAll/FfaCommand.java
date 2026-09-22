@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Minigames.FreeForAll;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Exceptions.InsufficientBalanceException;
 import me.VanadeysHaven.Skuddbot.Exceptions.InvalidBetException;
@@ -41,7 +41,7 @@ public final class FfaCommand extends Command {
         SkuddUser su = pm.getUser(server.getIdLong(), user.getIdLong());
         ServerMember member = su.asMember();
         FfaGameManager manager = getManager(server.getIdLong());
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
 
         if(manager.isOnCooldown(user.getIdLong())){
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You are still wounded from the last fight, you must wait 5 minutes between games.");

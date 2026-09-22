@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
@@ -39,7 +39,7 @@ public class UserInfoCommand extends Command {
         EmbedBuilder eb = new EmbedBuilder();
         SkuddUser su = null;
         User user = request.getUser();
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         String[] args = request.getArgs();
 
         if(message.getMentions().getUsers().size() > 0) {

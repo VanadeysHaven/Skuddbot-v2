@@ -1,13 +1,12 @@
 package me.VanadeysHaven.Skuddbot.Commands.SuperAdmin;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Database.Query;
 import me.VanadeysHaven.Skuddbot.Database.QueryExecutor;
 import me.VanadeysHaven.Skuddbot.Database.QueryResult;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
-import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Utilities.Constants;
 import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
@@ -46,7 +45,7 @@ public class ManageAdminsCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String[] args = request.getContent().split(" ");
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
 
         if(args.length < 3){
             MessagesUtils.addReaction(message, Emoji.X, "Not enough arguments! `!admins <add/remove> <id>`");

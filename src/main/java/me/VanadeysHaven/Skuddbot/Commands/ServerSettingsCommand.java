@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Profiles.Pages.PagedEmbed;
@@ -34,7 +34,7 @@ public class ServerSettingsCommand extends Command {
         Guild server = request.getGuild();
         SkuddServer ss = sm.getServer(server.getIdLong());
         ServerSetting setting = null;
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         String newValue = "";
         if(args.length >= 2) {
             setting = fromString(args[1]);

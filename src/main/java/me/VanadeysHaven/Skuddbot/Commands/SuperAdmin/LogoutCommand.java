@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.SuperAdmin;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
@@ -23,7 +23,7 @@ public class LogoutCommand extends Command {
 
     @Override
     public void run(CommandRequest request) {
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         if(!message.getMentions().getUsers().isEmpty() && message.getMentions().getUsers().get(0).getIdLong() == Main.getSkuddbot().getApi().getSelfUser().getIdLong()){
             MessagesUtils.addReaction(message, Emoji.WHITE_CHECK_MARK, "yes");
             Main.getSkuddbot().logout();

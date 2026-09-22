@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.Useless;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Utilities.MiscUtils;
 import me.VanadeysHaven.Skuddbot.Utilities.UserUtils;
@@ -24,7 +24,7 @@ public class FlipCommand extends Command {
 
     @Override
     public void run(CommandRequest request) {
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         Guild server = request.getGuild();
         String[] args = request.getContent().split(" ");
         if(args.length < 2) {

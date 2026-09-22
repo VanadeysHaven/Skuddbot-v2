@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Enums.ValueType;
@@ -44,7 +44,7 @@ public final class StatsCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         String content = request.getContent();
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         String[] args = content.split(" ");
 
         if(args.length >= 5)

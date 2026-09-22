@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.Donator;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Donator.DonatorMessage;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
@@ -39,11 +39,11 @@ public class ManageMessageCommand extends Command {
         }
 
         if (args.length >= 4) {
-            addMessage(request.getMessage(), type, args);
+            addMessage(request.asMessageRequest().getMessage(), type, args);
         } else if(type.isAcceptsImages()){
-            addImage(request.getMessage(), type);
+            addImage(request.asMessageRequest().getMessage(), type);
         } else {
-            if(!type.isAcceptsImages() && request.getMessage().getAttachments().size() > 0){
+            if(!type.isAcceptsImages() && request.asMessageRequest().getMessage().getAttachments().size() > 0){
                 request.replyError("Type `" + type + "` does not support image uploads!");
             }
             request.replyError("Invalid usage: `!message <add> <type> <content/images>`");

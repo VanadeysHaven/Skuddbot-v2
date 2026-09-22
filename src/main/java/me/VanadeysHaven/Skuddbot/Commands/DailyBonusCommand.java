@@ -2,7 +2,7 @@ package me.VanadeysHaven.Skuddbot.Commands;
 
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSettingsContainer;
@@ -90,7 +90,7 @@ public class DailyBonusCommand extends Command {
     @Override
     public void run(CommandRequest request) {
         Guild server = request.getGuild();
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
         SkuddUser user = pm.getUser(server.getIdLong(), message.getAuthor().getIdLong());
         SkuddServer sServer = sm.getServer(server.getIdLong());
         ServerSettingsContainer settings = sServer.getSettings();

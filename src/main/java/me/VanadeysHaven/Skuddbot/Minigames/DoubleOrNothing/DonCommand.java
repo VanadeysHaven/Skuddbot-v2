@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Minigames.DoubleOrNothing;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Exceptions.InsufficientBalanceException;
 import me.VanadeysHaven.Skuddbot.Exceptions.InvalidBetException;
@@ -38,7 +38,7 @@ public class DonCommand extends Command {
         User user = request.getUser();
         SkuddUser su = pm.getUser(server.getIdLong(), user.getIdLong());
         DonGameManager manager = getManager(server.getIdLong());
-        Message message = request.getMessage();
+        Message message = request.asMessageRequest().getMessage();
 
         if (manager.isOnCooldown(user.getIdLong())) {
             MessagesUtils.addReaction(message, Emoji.HOURGLASS_FLOWING_SAND, "You must wait 1 minute between games.");

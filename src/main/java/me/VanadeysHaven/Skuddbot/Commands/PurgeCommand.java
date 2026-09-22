@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands;
 
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.Events.ReactionButtonClickedEvent;
@@ -37,7 +37,7 @@ public class PurgeCommand extends Command {
             request.replyError(str + " is not a integer.");
         int amountToDelete = Integer.parseInt(str);
 
-        new PurgeOperation(request.getMessage(), amountToDelete);
+        new PurgeOperation(request.asMessageRequest().getMessage(), amountToDelete);
     }
 
     private class PurgeOperation {

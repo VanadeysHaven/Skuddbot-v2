@@ -1,7 +1,7 @@
 package me.VanadeysHaven.Skuddbot.Commands.Useless;
 
-import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.NoPrefixCommand;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Main;
 import me.VanadeysHaven.Skuddbot.Profiles.GlobalSettings.GlobalSetting;
