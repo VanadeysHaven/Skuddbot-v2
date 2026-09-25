@@ -2,6 +2,7 @@ package me.VanadeysHaven.Skuddbot.Commands;
 
 import lombok.Getter;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.Command;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.SlashCapable;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.CommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
@@ -29,7 +30,7 @@ import java.util.Date;
  * @version 2.4
  * @since 2.1.1
  */
-public class DailyBonusCommand extends Command {
+public class DailyBonusCommand extends Command implements SlashCapable {
 
     private static final long MILLIS_IN_DAY = 86400000;
     private static final long MILLIS_IN_HOUR = 3600000;
