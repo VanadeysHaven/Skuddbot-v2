@@ -2,7 +2,9 @@ package me.VanadeysHaven.Skuddbot.Commands.Managers;
 
 import me.VanadeysHaven.Skuddbot.Commands.HelpCommand.HelpGenerator;
 import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.MessageCommandRequest;
+import me.VanadeysHaven.Skuddbot.Commands.Managers.MessageRequests.SlashCommandRequest;
 import me.VanadeysHaven.Skuddbot.Enums.Emoji;
+import me.VanadeysHaven.Skuddbot.Enums.PermissionLevel;
 import me.VanadeysHaven.Skuddbot.Profiles.ProfileManager;
 import me.VanadeysHaven.Skuddbot.Profiles.Server.ServerSetting;
 import me.VanadeysHaven.Skuddbot.Profiles.ServerManager;
@@ -13,6 +15,7 @@ import me.VanadeysHaven.Skuddbot.Utilities.MessagesUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.ChannelType;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,6 +126,34 @@ public class CommandManager implements HelpGenerator {
         return amount;
     }
 
+    public void processSlash(SlashCommandInteractionEvent event){
+        if(!event.isFromGuild()) {
+            event.reply("Slash commands are currently only available inside servers.").setEphemeral(true).queue();
+            return;
+        }
+
+        SkuddUser su = pm.getUser(event.getGuild().getIdLong(), event.getUser().getIdLong());
+        for(Command command : commands) {
+            if(!(command instanceof SlashCapable))
+                continue;
+            if(!command.getInvokers()[0].toLowerCase().equals(event.getName()))
+                continue;
+            if(command.getAllowedLocation() == Command.Location.DM){
+                event.reply("This command is not available in servers.").setEphemeral(true).queue();
+                return;
+            }
+            if(!hasPermission(su, command.getRequiredPermission())){
+                event.reply("You do not have permission to use this command: " + command.getRequiredPermission()).setEphemeral(true).queue();
+                return;
+            }
+
+            command.run(new SlashCommandRequest(event));
+            return;
+        }
+
+        event.reply("Unknown command: " + event.getName()).setEphemeral(true).queue();
+    }
+
     public void process(Message message){
         if(message.getAuthor().isBot()) return;
         if(message.getChannel().getType() == ChannelType.PRIVATE){
@@ -217,6 +248,11 @@ public class CommandManager implements HelpGenerator {
                 }
             }
         }
+    }
+
+    private boolean hasPermission(SkuddUser su, PermissionLevel permissionLevel){
+        PermissionManager permission = su.getPermissions();
+        return permission.hasPermission(permissionLevel);
     }
 
 }

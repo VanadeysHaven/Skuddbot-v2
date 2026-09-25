@@ -4,6 +4,7 @@ import me.VanadeysHaven.Skuddbot.Commands.Managers.CommandManager;
 import me.VanadeysHaven.Skuddbot.Listeners.Reactions.ReactionUtils;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
@@ -30,6 +31,11 @@ public class SkuddEventListener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         commandManager.process(event.getMessage());
         MessageListener.run(event.getMessage());
+    }
+
+    @Override
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event){
+        commandManager.processSlash(event);
     }
 
     @Override
