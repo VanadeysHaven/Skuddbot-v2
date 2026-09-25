@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * This class is responsible for registering commands and process incoming requests for commands.
@@ -138,7 +139,7 @@ public class CommandManager implements HelpGenerator {
                 continue;
             if(!command.getInvokers()[0].toLowerCase().equals(event.getName()))
                 continue;
-            if(command.getAllowedLocation() == Command.Location.DM){
+            if(!isAllowedIn(command, Command.Location.SERVER)){
                 event.reply("This command is not available in servers.").setEphemeral(true).queue();
                 return;
             }
@@ -170,21 +171,19 @@ public class CommandManager implements HelpGenerator {
         String messageContent = message.getContentRaw().substring(commandPrefix.length());
         String requestedInvoker = messageContent.split(" ")[0];
         SkuddUser su = pm.getUser(server.getIdLong(), message.getAuthor().getIdLong());
-        PermissionManager permissions = su.getPermissions();
 
         for(Command command : commands){
-            for(String invoker : command.getInvokers()){
-                if (requestedInvoker.equalsIgnoreCase(invoker)) {
-                    if (command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
-                        if (permissions.hasPermission(command.getRequiredPermission())) {
-                            command.run(new MessageCommandRequest(message));
-                        } else {
-                            MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
-                        }
-                        return;
-                    }
-                }
+            if(!matchesInvoker(command, requestedInvoker))
+                continue;
+            if(!isAllowedIn(command, Command.Location.SERVER))
+                continue;
+            if(!hasPermission(su, command.getRequiredPermission())){
+                MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
+                return;
             }
+
+            command.run(new MessageCommandRequest(message));
+            return;
         }
     }
 
@@ -192,18 +191,16 @@ public class CommandManager implements HelpGenerator {
         String messageContent = message.getContentRaw();
         String requestedInvoker = messageContent.split(" ")[0];
         SkuddUser su = pm.getUser(server.getIdLong(), message.getAuthor().getIdLong());
-        PermissionManager permissions = su.getPermissions();
 
         for(Command command : noPrefixCommands){
-            for(String invoker : command.getInvokers()){
-                if(requestedInvoker.equalsIgnoreCase(invoker)){
-                    if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
-                        if(permissions.hasPermission(command.getRequiredPermission())) {
-                            command.run(new MessageCommandRequest(message));
-                        }
-                    }
-                }
-            }
+            if(!matchesInvoker(command, requestedInvoker))
+                continue;
+            if(!isAllowedIn(command, Command.Location.SERVER))
+                continue;
+            if(!hasPermission(su, command.getRequiredPermission()))
+                continue;
+
+            command.run(new MessageCommandRequest(message));
         }
     }
 
@@ -218,17 +215,16 @@ public class CommandManager implements HelpGenerator {
         PermissionManager permissions = new PermissionManager(message.getAuthor().getIdLong());
 
         for(Command command : commands){
-            for(String invoker : command.getInvokers()){
-                if(requestedInvoker.equalsIgnoreCase(invoker)){
-                    if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.DM){
-                        if(permissions.hasPermission(command.getRequiredPermission())){
-                            command.run(new MessageCommandRequest(message));
-                        }
-                    } else {
-                        MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
-                    }
-                }
+            if(!matchesInvoker(command, requestedInvoker))
+                continue;
+            if(!isAllowedIn(command, Command.Location.DM))
+                continue;
+            if(!hasPermission(permissions, command.getRequiredPermission())){
+                MessagesUtils.addReaction(message, Emoji.X, "You do not have the required permission to use this command. Permission required: " + command.getRequiredPermission());
+                continue;
             }
+
+            command.run(new MessageCommandRequest(message));
         }
     }
 
@@ -238,21 +234,31 @@ public class CommandManager implements HelpGenerator {
         PermissionManager permissions = new PermissionManager(message.getAuthor().getIdLong());
 
         for(Command command : noPrefixCommands){
-            for(String invoker : command.getInvokers()){
-                if(requestedInvoker.equalsIgnoreCase(invoker)){
-                    if(command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == Command.Location.SERVER) {
-                        if(permissions.hasPermission(command.getRequiredPermission())) {
-                            command.run(new MessageCommandRequest(message));
-                        }
-                    }
-                }
-            }
+            if(!matchesInvoker(command, requestedInvoker))
+                continue;
+            if(!isAllowedIn(command, Command.Location.DM))
+                continue;
+            if(!hasPermission(permissions, command.getRequiredPermission()))
+                continue;
+
+            command.run(new MessageCommandRequest(message));
         }
     }
 
+    private boolean matchesInvoker(Command command, String requestedInvoker){
+        return Arrays.stream(command.getInvokers()).anyMatch(requestedInvoker::equalsIgnoreCase);
+    }
+
+    private boolean isAllowedIn(Command command, Command.Location location){
+        return command.getAllowedLocation() == Command.Location.BOTH || command.getAllowedLocation() == location;
+    }
+
     private boolean hasPermission(SkuddUser su, PermissionLevel permissionLevel){
-        PermissionManager permission = su.getPermissions();
-        return permission.hasPermission(permissionLevel);
+        return hasPermission(su.getPermissions(), permissionLevel);
+    }
+
+    private boolean hasPermission(PermissionManager permissions, PermissionLevel permissionLevel){
+        return permissions.hasPermission(permissionLevel);
     }
 
 }
